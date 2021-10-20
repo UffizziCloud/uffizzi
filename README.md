@@ -1,5 +1,5 @@
 # uffizzi_app
-uffizzi_app is the primary web application than enables a Continuous Previews capability
+uffizzi_app is the primary web application than enables a Continuous Previews capability per https://cpmanifesto.org 
 
 We are in the process of open sourcing core components of uffizzi. uffizzi_controller (https://github.com/UffizziCloud/uffizzi_controller) has been released.
 
