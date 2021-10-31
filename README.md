@@ -1,8 +1,8 @@
 # uffizzi_app
 
-INTRODUCTION-
+## INTRODUCTION-
 
-Why this Open Source Project is Needed:
+# Why this Open Source Project is Needed:
 
 It's 2021 and these are our observations after 2+ years interviewing over 150+ developers, DevOps, and cross-functional team members across a variety of industries and at various levels of business maturity - from nascent start-ups to long-running enterprises.
 
@@ -22,7 +22,7 @@ It's 2021 and these are our observations after 2+ years interviewing over 150+ d
 
 -The maturity of cloud native development, containerization, and container orchestration have laid the foundation for a Preview capability and best practices that nearly all teams can benefit from.
 
-What this Project/Team aims to accomplish:
+# What this Project/Team aims to accomplish:
 
 -Lead a community effort to define best practices for Previewing and to provide a modular, purpose-built, open source preview tool that will more broadly enable teams to benefit from a Preview capability.
 
@@ -35,4 +35,4 @@ uffizzi_app is the primary web application than enables a Continuous Previews ca
 
 We are in the process of open sourcing core components of uffizzi following an open core model. uffizzi_controller (https://github.com/UffizziCloud/uffizzi_controller) has previously been released.
 
-Please FOLLOW this repository for RELEASE updates and opportunities to CONTRIBUTE o/a December 2021.
+# Please FOLLOW this repository for RELEASE updates and opportunities to CONTRIBUTE o/a December 2021.
