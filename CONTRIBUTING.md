@@ -7,7 +7,9 @@ Uffizzi welcomes contributions from everyone -
 ## Procedures:
 
 -Fork the project on Github
+
 -Make any changes you want to uffizzi_app, commit them, and push them to your fork
+
 -Create a pull request against main, and a maintainer will come by and review your inputs.  They may ask for some changes or more information, and hopefully your contribution will be merged to the main branch!
 
 ## Communication:
