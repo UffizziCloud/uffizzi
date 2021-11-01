@@ -1,6 +1,6 @@
 ## Contributing uffizzi_app
 
-**EARLY DRAFT**
+Thanks for your interest we are actively working to release uffizzi_app and define how you can contribute - please follow for updates!
 
 Uffizzi welcomes contributions from everyone -
 
