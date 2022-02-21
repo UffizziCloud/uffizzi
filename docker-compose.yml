@@ -1,0 +1,49 @@
+version: '3.9'
+services:
+  web:
+    build: .
+    volumes: &web-volumes
+      - &app-volume .:/app:cached
+      - ~/.ssh:/root/.ssh
+      - ~/.bash_history:/root/.bash_history
+      - &bundle-cache-volume bundle_cache:/bundle_cache
+    ports:
+      - 7000:7000
+    depends_on:
+      - db
+    environment: &web-environment
+      RAILS_SECRET_KEY_BASE: 44a599292ee918ca52c5060bb73b9a5b754628d6d67c64d0066c2ecf25381ef67b2b7a9981332316cc09e0a4bdbd08f07b7a9277d77fd4b4f2a39a488860c18c
+      DATABASE_HOST: db
+      DATABASE_USERNAME: postgres
+      DATABASE_PASSWORD: postgres
+      BUNDLE_PATH: /bundle_cache
+      GEM_HOME: /bundle_cache
+      GEM_PATH: /bundle_cache
+      RAILS_WORKERS_COUNT: 0
+      RAILS_THREADS_COUNT: 10
+      SIDEKIQ_CONCURRENCY: 1
+      RAILS_PORT: 7000
+      RAILS_ENV: development
+      ALLOWED_HOSTS: lvh.me,.lvh.me,lvh.me:1313,.lvh.me:1313,lvh.me:7000,.lvh.me:7000,localhost,.ngrok.io,localhost:3000,web
+
+    command: bundle exec puma -C config/puma.rb
+
+  db:
+    image: postgres:11.4
+    ports:
+      - 5432:5432
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+
+  bundle_cache:
+    image: busybox
+    volumes:
+      - *bundle-cache-volume
+
+volumes:
+  bundle_cache:
+
+networks:
+  default:
+    name: 'uffizzi_default_network'

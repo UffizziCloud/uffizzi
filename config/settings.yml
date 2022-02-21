@@ -1,0 +1,1 @@
+allowed_hosts: <%= ENV['ALLOWED_HOSTS']&.split(',') || [] %>
