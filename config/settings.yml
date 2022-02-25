@@ -1,1 +1,17 @@
 allowed_hosts: <%= ENV['ALLOWED_HOSTS']&.split(',') || [] %>
+compose:
+  default_memory: 125
+  memory_postfixes: <%= ['b', 'k', 'm', 'g'] %>
+  memory_values: <%= [125, 250, 500, 1000, 2000, 4000] %>
+  port_min_value: 1
+  port_max_value: 65535
+  delete_after_postfixes: <%= ['h'] %>
+  delete_after_min_value: 1
+  delete_after_max_value: 720
+  default_tag: latest
+  dockerfile_default_path: Dockerfile
+  default_branch: 'master'
+features:
+  stripe_enabled: <%= !!ActiveModel::Type::Boolean.new.cast(ENV['STRIPE_ENABLED']) %>
+docker_hub:
+  public_namespace: 'library'
