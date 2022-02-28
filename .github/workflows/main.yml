@@ -2,7 +2,7 @@ name: Uffizzi APP CI/CD
 on:
   push:
     branches:
-      - test_deploy
+      - main
 jobs:
   deploy:
     runs-on: ubuntu-latest
