@@ -1,0 +1,42 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ .Release.Name }}-sidekiq
+  labels:
+    app: uffizzi-sidekiq
+
+spec:
+  replicas: {{ .Values.sidekiq_replicas }}
+  selector:
+    matchLabels:
+      app: uffizzi-sidekiq
+
+  template:
+    metadata:
+      labels:
+        app: uffizzi-sidekiq
+    spec:
+      automountServiceAccountToken: false
+      containers:
+      - name: uffizzi-sidekiq
+        image: {{ .Values.image }}
+        command:
+        - /bin/bash
+        - -c
+        args:
+        - bundle exec bundle exec sidekiq -C /app/config/sidekiq.yml
+        envFrom:
+        - secretRef:
+            name: uffizzi-web-secret-envs
+            optional: false
+        - configMapRef:
+            name: uffizzi-web-common-envs
+            optional: false
+        - configMapRef:
+            name: uffizzi-web-sidekiq-envs
+            optional: false
+        imagePullPolicy: Always
+        resources:
+          requests:
+            cpu: 400m
+            memory: 800Mi

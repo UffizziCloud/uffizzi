@@ -1,0 +1,10 @@
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: uffizzi-web-ingress
+spec:
+  defaultBackend:
+    service:
+      name: uffizzi-web-service
+      port:
+        number: 80
