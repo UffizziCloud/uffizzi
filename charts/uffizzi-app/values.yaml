@@ -1,4 +1,5 @@
 env: production
+app_url: https://uffizzi.example.com
 image: uffizzicloud/uffizzi-app
 web-replicas: 3
 sidekiq-replicas: 1
@@ -28,3 +29,20 @@ feature_email_delivery: false
 feature_google_maps: false
 feature_sentry: false
 feature_stripe: false
+
+uffizzi_controller: #dependency
+  clusterIssuer: "zerossl"
+  image: uffizzicloud/uffizzi-controller:latest
+  ingress:
+    hostname: uffizzi.example.com
+  auth:
+    username: username
+    password: password
+  podCidr: 10.0.0.0/8
+  eab:
+    hmacKey: foo
+    keyId: bar
+  env: "production"
+  sandbox: "false"
+  cert-manager: # dependency of dependency
+    installCRDs: true

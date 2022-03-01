@@ -21,7 +21,7 @@ sources:
   - https://gitlab.com/dualbootpartners/idyl/uffizzi_app
 dependencies:
   - name: uffizzi-controller
-    version: ">= 0.0.3"
+    version: "0.0.5"
     repository: https://uffizzicloud.github.io/uffizzi_controller/
     # condition:
     # tags:

@@ -3,10 +3,10 @@ kind: ConfigMap
 metadata:
   name: uffizzi-web-common-envs
 data:
-  DATABASE_POOL: 16
-  DATABASE_PORT: {{ .Values.db_port }}
-  DATABASE_HOST: {{ .Values.db_host }}
-  RAILS_ENV: {{ .Values.env }}
+  DATABASE_POOL: "16"
+  DATABASE_PORT: {{ .Values.db_port | quote }}
+  DATABASE_HOST: {{ .Values.db_host | quote }}
+  RAILS_ENV: {{ .Values.env | quote }}
   APP_URL: {{ .Values.app_url }}
   CONTROLLER_URL: {{ .Values.controller_url }}
-  EMAIL_DELIVERY_ENABLED: {{ .Values.feature_email_delivery }}
+  EMAIL_DELIVERY_ENABLED: {{ .Values.feature_email_delivery | quote }}
