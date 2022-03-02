@@ -1,3 +1,14 @@
+global:
+  postgresql:
+    auth:
+      postgresPassword: ChangeMeNow
+      username: uffizzi-user
+      password: ChangeMeNow
+      database: uffizzi-app
+    service:
+      ports:
+        postgresql: "5432"
+
 env: production
 app_url: https://uffizzi.example.com
 image: uffizzicloud/uffizzi-app
@@ -6,13 +17,9 @@ sidekiq-replicas: 1
 hostname: localhost
 controller_url: http://localhost:8080
 allowed_hosts: "*"
-db_host: localhost
-db_port: 5432
-db_user: uffizzi-user
-db_name: uffizzi
-db_password: ChangeMeNow
+db_host: "" # default to dependent postgresql
 rails_secret_key_base: ChangeMeNow
-redis_url: localhost
+redis_url: "" # default to dependent redis
 basic_auth_login: username
 basic_auth_password: ChangeMeNow
 controller_basic_auth_login: username
@@ -46,3 +53,9 @@ uffizzi_controller: #dependency
   sandbox: "false"
   cert-manager: # dependency of dependency
     installCRDs: true
+
+postgresql: #dependency
+  enabled: true
+
+redis: # dependency
+  enabled: true

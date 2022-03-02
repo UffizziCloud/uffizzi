@@ -23,10 +23,14 @@ dependencies:
   - name: uffizzi-controller
     version: "0.0.5"
     repository: https://uffizzicloud.github.io/uffizzi_controller/
-    # condition:
-    # tags:
-    # import-values:
-    # alias:
+  - name: postgresql
+    version: "~11.1.3"
+    repository: https://charts.bitnami.com/bitnami
+    condition: postgresql.enabled
+  - name: redis
+    version: "~16.4.5"
+    repository: https://charts.bitnami.com/bitnami
+    condition: redis.enabled
 maintainers:
   - name: Uffizzi
     email: info@uffizzi.com

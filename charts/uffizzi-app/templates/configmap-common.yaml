@@ -4,8 +4,8 @@ metadata:
   name: uffizzi-web-common-envs
 data:
   DATABASE_POOL: "16"
-  DATABASE_PORT: {{ .Values.db_port | quote }}
-  DATABASE_HOST: {{ .Values.db_host | quote }}
+  DATABASE_PORT: {{ .Values.global.postgresql.service.ports.postgresql | quote }}
+  DATABASE_HOST: {{ default (print .Release.Name "-postgresql") .Values.db_host | quote }}
   RAILS_ENV: {{ .Values.env | quote }}
   APP_URL: {{ .Values.app_url }}
   CONTROLLER_URL: {{ .Values.controller_url }}
