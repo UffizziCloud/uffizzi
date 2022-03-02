@@ -18,7 +18,7 @@ hostname: localhost
 controller_url: http://localhost:8080
 allowed_hosts: "*"
 db_host: "" # default to dependent postgresql
-rails_secret_key_base: ChangeMeNow
+rails_secret_key_base: "" # default to half-random string
 redis_url: "" # default to dependent redis
 basic_auth_login: username
 basic_auth_password: ChangeMeNow
