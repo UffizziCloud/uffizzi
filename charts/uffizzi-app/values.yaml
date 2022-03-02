@@ -11,6 +11,7 @@ global:
 
 env: production
 app_url: https://uffizzi.example.com
+webHostname: uffizzi.example.com
 image: uffizzicloud/uffizzi-app
 web-replicas: 3
 sidekiq-replicas: 1
