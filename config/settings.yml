@@ -1,1 +1,4 @@
 allowed_hosts: <%= ENV['ALLOWED_HOSTS']&.split(',') || [] %>
+sidekiq:
+  login:  <%= ENV['SIDEKIQ_LOGIN'] || '' %>
+  password:  <%= ENV['SIDEKIQ_PASSWORD'] || '' %>

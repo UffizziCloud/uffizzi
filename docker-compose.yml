@@ -24,6 +24,7 @@ services:
       SIDEKIQ_CONCURRENCY: 1
       RAILS_PORT: 7000
       RAILS_ENV: development
+      REDIS_URL: redis://redis
       ALLOWED_HOSTS: lvh.me,.lvh.me,lvh.me:1313,.lvh.me:1313,lvh.me:7000,.lvh.me:7000,localhost,.ngrok.io,localhost:3000,web
 
     command: bundle exec puma -C config/puma.rb
