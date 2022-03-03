@@ -39,15 +39,15 @@ spec:
         ports:
         - containerPort: 7000
           protocol: TCP
-        readinessProbe:
-          failureThreshold: 3
-          httpGet:
-            path: /health_check
-            port: 7000
-            scheme: HTTP
-          periodSeconds: 10
-          successThreshold: 1
-          timeoutSeconds: 1
+#        readinessProbe:
+#          failureThreshold: 3
+#          httpGet:
+#            path: /health_check
+#            port: 7000
+#            scheme: HTTP
+#          periodSeconds: 10
+#          successThreshold: 1
+#          timeoutSeconds: 1
         resources:
           requests:
             cpu: 150m
