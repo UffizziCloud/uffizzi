@@ -1,1 +1,3 @@
 allowed_hosts: <%= ENV['ALLOWED_HOSTS']&.split(',') || [] %>
+rails:
+  secret_key_base: <%= ENV['RAILS_SECRET_KEY_BASE'] %>
