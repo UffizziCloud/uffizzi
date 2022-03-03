@@ -51,3 +51,19 @@ This `uffizzi_app` acts as a REST API for [`uffizzi_cli`](https://github.com/Uff
 - `RAILS_ENV` - the rails environment (default: development)
 - `SIDEKIQ_CONCURRENCY` - sidekiq concurrency (default: 5)
 - `ALLOWED_HOSTS` - allowed hosts for rails app used for Rack::Cors
+
+## Prepare
+
+```
+docker-compose run --rm web bundle install && rails db:setup
+docker-compose up
+```
+
+## Connect from uffizzi-cli to the app
+
+```
+docker-compose run --rm gem bash
+bundle exec uffizzi login --hostname http://web:7000 -u admin@uffizzi.com
+```
+
+password - `password`
