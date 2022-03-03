@@ -8,6 +8,10 @@ global:
     service:
       ports:
         postgresql: "5432"
+  uffizzi:
+    controller:
+      username: username
+      password: ChangeMeNow
 
 env: production
 app_url: https://uffizzi.example.com
@@ -23,8 +27,6 @@ rails_secret_key_base: "" # default to half-random string
 redis_url: "" # default to dependent redis
 basic_auth_login: username
 basic_auth_password: ChangeMeNow
-controller_basic_auth_login: username
-controller_basic_auth_password: password
 github_app_id: ChangeMeNow
 github_app_slug: ChangeMeNow
 github_client_id: ChangeMeNow
@@ -43,9 +45,6 @@ uffizzi_controller: #dependency
   image: uffizzicloud/uffizzi-controller:latest
   ingress:
     hostname: uffizzi.example.com
-  auth:
-    username: username
-    password: password
   podCidr: 10.0.0.0/8
   eab:
     hmacKey: foo
