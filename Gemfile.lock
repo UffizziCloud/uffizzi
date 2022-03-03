@@ -1,7 +1,7 @@
 GIT
   remote: https://github.com/UffizziCloud/uffizzi_core.git
-  revision: c017ebb8066fdec56872aaeaf168dc58002c639d
-  tag: v0.1.0
+  revision: 2491cb4a139b4aa970f7aba4ae720a3a6acd4572
+  branch: main
   specs:
     uffizzi_core (0.1.0)
       aasm
