@@ -36,6 +36,18 @@ services:
       POSTGRES_USER: postgres
       POSTGRES_PASSWORD: postgres
 
+  sidekiq:
+    build: .
+    command: bundle exec sidekiq -C /app/config/sidekiq.yml
+    environment: *web-environment
+    volumes: *web-volumes
+    depends_on:
+      - redis
+
+  redis:
+    image: redis
+
+
   bundle_cache:
     image: busybox
     volumes:
