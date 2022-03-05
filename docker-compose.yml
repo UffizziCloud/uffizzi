@@ -13,6 +13,9 @@ services:
       - db
     environment: &web-environment
       RAILS_SECRET_KEY_BASE: 44a599292ee918ca52c5060bb73b9a5b754628d6d67c64d0066c2ecf25381ef67b2b7a9981332316cc09e0a4bdbd08f07b7a9277d77fd4b4f2a39a488860c18c
+      CONTROLLER_URL: 'http://controller:8080'
+      CONTROLLER_LOGIN: 'login'
+      CONTROLLER_PASSWORD: 'password'
       DATABASE_HOST: db
       DATABASE_USERNAME: postgres
       DATABASE_PASSWORD: postgres

@@ -2,3 +2,12 @@ allowed_hosts: <%= ENV['ALLOWED_HOSTS']&.split(',') || [] %>
 sidekiq:
   login:  <%= ENV['SIDEKIQ_LOGIN'] || '' %>
   password:  <%= ENV['SIDEKIQ_PASSWORD'] || '' %>
+controller:
+  url:  <%= ENV['CONTROLLER_URL'] || 'http://controller:8080' %>
+  login:  <%= ENV['CONTROLLER_LOGIN'] || '' %>
+  password:  <%= ENV['CONTROLLER_PASSWORD'] || '' %>
+  connection:
+    retires_count: 1
+    next_retry_timeout_seconds: 1
+    timeout: 7
+    open_timeout: 5
