@@ -25,6 +25,7 @@ services:
       RAILS_PORT: 7000
       RAILS_ENV: development
       ALLOWED_HOSTS: lvh.me,.lvh.me,lvh.me:1313,.lvh.me:1313,lvh.me:7000,.lvh.me:7000,localhost,.ngrok.io,localhost:3000,web
+      REDIS_URL: redis://redis
       APP_URL: http://web:7000
       CONTROLLER_URL: 'http://controller:8080'
       CONTROLLER_LOGIN: 'login'
@@ -67,6 +68,9 @@ services:
     environment:
       POSTGRES_USER: postgres
       POSTGRES_PASSWORD: postgres
+
+  redis:
+    image: redis
 
   bundle_cache:
     image: busybox
