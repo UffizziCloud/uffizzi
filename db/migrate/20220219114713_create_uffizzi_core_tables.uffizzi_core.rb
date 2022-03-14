@@ -1,4 +1,5 @@
 # frozen_string_literal: true
+
 # This migration comes from uffizzi_core (originally 20220218121438)
 
 class CreateUffizziCoreTables < ActiveRecord::Migration[6.1]

@@ -1,0 +1,16 @@
+default: &default
+  adapter: postgresql
+  encoding: unicode
+  host: <%= ENV.fetch("DATABASE_HOST") {"127.0.0.1"} %>
+  port: <%= ENV.fetch("DATABASE_PORT") {5432} %>
+  pool: <%= ENV.fetch("DATABASE_POOL") {5} %>
+  username: <%= ENV.fetch("DATABASE_USER") {"postgres"} %>
+  password: <%= ENV.fetch("DATABASE_PASSWORD") {""} %>
+
+development:
+  <<: *default
+  database: uffizzi_core_development
+
+test:
+  <<: *default
+  database: uffizzi_core_test
