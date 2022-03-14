@@ -12,7 +12,7 @@ gem 'rack-cors'
 gem 'rails', '~> 6.1.0'
 gem 'sidekiq'
 gem 'tzinfo-data', platforms: [:mingw, :mswin, :x64_mingw, :jruby]
-gem 'uffizzi_core', git: 'https://github.com/UffizziCloud/uffizzi_core.git', tag: 'v0.1.0'
+gem 'uffizzi_core', git: 'https://github.com/UffizziCloud/uffizzi_core.git', branch: 'feature/uffizzi-preview'
 
 group :development, :test do
   gem 'byebug', platforms: [:mri, :mingw, :x64_mingw]

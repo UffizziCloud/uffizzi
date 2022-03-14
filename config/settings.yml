@@ -1,4 +1,6 @@
 allowed_hosts: <%= ENV['ALLOWED_HOSTS']&.split(',') || [] %>
+app:
+  managed_dns_zone: <%= ENV['MANAGED_DNS_ZONE_DNS_NAME'] %>
 sidekiq:
   login:  <%= ENV['SIDEKIQ_LOGIN'] || '' %>
   password:  <%= ENV['SIDEKIQ_PASSWORD'] || '' %>
@@ -11,3 +13,20 @@ controller:
     next_retry_timeout_seconds: 1
     timeout: 7
     open_timeout: 5
+compose:
+  default_memory: 125
+  memory_postfixes: <%= ['b', 'k', 'm', 'g'] %>
+  memory_values: <%= [125, 250, 500, 1000, 2000, 4000] %>
+  port_min_value: 1
+  port_max_value: 65535
+  delete_after_postfixes: <%= ['h'] %>
+  delete_after_min_value: 1
+  delete_after_max_value: 720
+  default_tag: latest
+  dockerfile_default_path: Dockerfile
+  default_branch: 'master'
+docker_hub:
+  registry_url: 'https://index.docker.io/v1/'
+  public_namespace: 'library'
+
+
