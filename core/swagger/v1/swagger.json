@@ -516,12 +516,165 @@
         "x-action": "deploy_containers"
       }
     },
+    "/api/cli/v1/projects/{project_slug}/secrets": {
+      "get": {
+        "tags": [
+          "Project/Secrets"
+        ],
+        "operationId": "Project/Secrets-index",
+        "parameters": [
+          {
+            "name": "project_slug",
+            "description": "project_slug",
+            "required": true,
+            "in": "path",
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "secrets": {
+                  "type": "array",
+                  "items": {
+                    "type": "object",
+                    "properties": {
+                      "name": {
+                        "type": "string"
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Not authorized"
+          }
+        },
+        "description": "Get secrets for the project",
+        "summary": "Get secrets for the project",
+        "x-controller": "uffizzi_core/api/cli/v1/projects/secrets",
+        "x-action": "index"
+      },
+      "post": {
+        "tags": [
+          "Project/Secrets"
+        ],
+        "operationId": "Project/Secrets-bulk_create",
+        "parameters": [
+          {
+            "name": "project_slug",
+            "description": "project_slug",
+            "required": true,
+            "in": "path",
+            "type": "string"
+          },
+          {
+            "name": "secrets",
+            "description": "secrets",
+            "required": true,
+            "in": "body",
+            "schema": {
+              "type": "array",
+              "items": {
+                "type": "object",
+                "properties": {
+                  "name": {
+                    "type": "string"
+                  },
+                  "value": {
+                    "type": "string"
+                  }
+                }
+              }
+            }
+          }
+        ],
+        "responses": {
+          "201": {
+            "description": "Created",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "secrets": {
+                  "type": "array",
+                  "items": {
+                    "type": "object",
+                    "properties": {
+                      "name": {
+                        "type": "string"
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "A compose file already exists for this project"
+          },
+          "401": {
+            "description": "Not authorized"
+          }
+        },
+        "description": "Add secret to project",
+        "summary": "Add secret to project",
+        "x-controller": "uffizzi_core/api/cli/v1/projects/secrets",
+        "x-action": "bulk_create"
+      }
+    },
+    "/api/cli/v1/projects/{project_slug}/secrets/{id}": {
+      "delete": {
+        "tags": [
+          "Project/Secrets"
+        ],
+        "operationId": "Project/Secrets-destroy",
+        "parameters": [
+          {
+            "name": "id",
+            "description": "Scope response to id",
+            "required": true,
+            "in": "path",
+            "type": "string"
+          },
+          {
+            "name": "project_slug",
+            "description": "project_slug",
+            "required": true,
+            "in": "path",
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": {
+              "$ref": "#/definitions/Project"
+            }
+          },
+          "422": {
+            "description": "Delete a secret from project by secret id"
+          },
+          "401": {
+            "description": "Not authorized"
+          }
+        },
+        "description": "Delete a secret from project by secret id",
+        "summary": "Delete a secret from project by secret id",
+        "x-controller": "uffizzi_core/api/cli/v1/projects/secrets",
+        "x-action": "destroy"
+      }
+    },
     "/api/cli/v1/projects": {
       "get": {
         "tags": [
-          "Uffizzi"
+          "Project"
         ],
-        "operationId": "Uffizzi-index",
+        "operationId": "Project-index",
         "parameters": [
 
         ],
@@ -664,7 +817,11 @@
       "description": ""
     },
     {
-      "name": "Uffizzi",
+      "name": "Project",
+      "description": ""
+    },
+    {
+      "name": "Project/Secrets",
       "description": ""
     },
     {
@@ -831,6 +988,14 @@
         },
         "deployed_by": {
           "type": "object"
+        }
+      }
+    },
+    "UffizziCore_Project": {
+      "type": "object",
+      "properties": {
+        "slug": {
+          "type": "string"
         }
       }
     }
