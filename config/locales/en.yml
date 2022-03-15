@@ -30,4 +30,63 @@
 # available at https://guides.rubyonrails.org/i18n.html.
 
 en:
-  hello: "Hello world"
+  github:
+    preview_url_message: |
+      **This branch has been deployed using Uffizzi.**
+      Preview URL:
+      https://%{preview_url}
+      View deployment details here:
+      https://%{deployment_url}
+      This is an automated comment. To turn off commenting, visit uffizzi.com.
+    invalid_compose_message: |
+      :exclamation: **Preview failed: invalid compose**
+      &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Uffizzi was unable to deploy a preview of this pull request because the compose file in this branch is invalid.
+  compose:
+    unsupported_file: Unsupported compose file
+    invalid_file: Invalid compose file
+    invalid_config_option: Invalid config option '%{value}' - only [a-zA-Z0-9\._\-] characters are allowed
+    no_services: Service services has neither an image nor a build context specified. At least one must be provided.
+    no_ingress: Service ingress has not been defined.
+    invalid_image_value: Invalid image value '%{value}'
+    invalid_credential: Invalid credential '%{value}'
+    invalid_repo_type: Unsupported repo type
+    repo_not_found: The specified repository doesn't exist '%{name}'
+    ingress_port_not_specified: Ingress port not specified
+    ingress_service_not_found: Ingress service not found
+    invalid_ingress_service: Invalid ingress service '%{value}'
+    no_variable_name: Invalid environment variable 'name=%{name}' 'value=%{value}'
+    invalid_config: Invalid config value 'source=%{source}' 'target=%{target}'
+    invalid_port: Invalid port specification '%{value}'
+    invalid_memory_postfix: The specified value for memory '%{value}' should specify the units. The postfix should be one of the `b` `k` `m` `g` characters
+    invalid_memory_type: Memory '%{value}' contains an invalid type, it should be a string
+    invalid_memory_value: Invalid memory value '%{value}'
+    invalid_memory: The memory should be one of the `125m` `250m` `500m` `1000m` `2000m` `4000m` values
+    image_build_no_specified: Service %{value} has neither an image nor a build context specified. At least one must be provided.
+    build_context_no_specified: The context option should be specified
+    config_file_not_found: Config file not found '%{name}'
+    invalid_context: Invalid context value '%{value}'
+    invalid_bool_value: Invalid %{field} value '%{value}'. The value should be `true` or `false`
+    invalid_delete_after_postfix: The postfix of the delete_preview_after value should be `h`
+    invalid_integer: The specified value for %{option} should be an Integer type
+    invalid_string: The specified value for %{option} should be a String type
+    invalid_delete_after_min: Minimum delete_preview_after allowed is %{value}h
+    invalid_delete_after_max: Maximum delete_preview_after allowed is %{value}h
+    invalid_type: Unsupported type of '%{option}' option
+    empty_env_file: env_file contains an empty value
+    file_not_found: Couldn't find '%{path}' file
+    env_file_duplicates: env_file contains non-unique items '%{values}'
+    boolean_option: The service name %{value} must be a quoted string, i.e. '%{value}'.
+    config_file_option_empty: "'%{config_name}' has an empty file"
+    global_config_not_found: undefined config '%{config}'
+    invalid_branch: Branch '%{branch}' doesn't exist for repository '%{repository_url}'
+    repository_not_found: The specified repository doesn't exist '%{repository_url}'
+    build_context_unknown_repository: Compose repository is undefined
+    secret_name_blank: The specified name for '%{option}' secret can not be blank
+    secret_external: The specified secret '%{secret}' should be external
+    global_secret_not_found: undefined secret '%{secret}'
+    project_secret_not_found: Project secret '%{secret}' not found
+    continuous_preview_in_service_level: The option '%{option}' is not supported for service-level. Use 'x-uffizzi-continuous-preview' instead
+    file_already_exists: A compose file already exists for this project. Run 'uffizzi compose update' to update this file or 'uffizzi compose rm' to remove it. For more options, see 'uffizzi compose --help'"
+  secrets:
+    duplicates_exists: Secret with key %{secrets} already exist.
+    invalid_key_length: A secret key must be no longer than 256 characters.

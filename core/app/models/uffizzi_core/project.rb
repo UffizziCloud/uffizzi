@@ -1,5 +1,8 @@
 # frozen_string_literal: true
 
+# @model
+# @property slug [string]
+
 class UffizziCore::Project < UffizziCore::ApplicationRecord
   include AASM
   include UffizziCore::StateMachineConcern
