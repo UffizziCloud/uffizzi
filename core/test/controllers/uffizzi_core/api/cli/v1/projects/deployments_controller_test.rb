@@ -63,9 +63,6 @@ class UffizziCore::Api::Cli::V1::Projects::DeploymentsControllerTest < ActionCon
     Sidekiq::Worker.clear_all
     Sidekiq::Testing.fake!
 
-    google_dns_stub
-    UffizziCore::GoogleCloudDnsClient.any_instance.stubs(:create_dns_record).returns(true)
-
     create(:credential, :docker_hub, account: @admin.organizational_account)
     file_content = File.read('test/fixtures/files/test-compose-success.yml')
     encoded_content = Base64.encode64(file_content)
@@ -199,7 +196,7 @@ class UffizziCore::Api::Cli::V1::Projects::DeploymentsControllerTest < ActionCon
     assert_response :unprocessable_entity
   end
 
-  test '#create - from an alternative compose file when compose file does not exist' do
+  test '#create - from an alternative compose file' do
     google_dns_stub
     UffizziCore::GoogleCloudDnsClient.any_instance.stubs(:create_dns_record).returns(true)
 
@@ -237,6 +234,46 @@ class UffizziCore::Api::Cli::V1::Projects::DeploymentsControllerTest < ActionCon
     assert_requested(stub_ingresses_request)
     assert_requested(stub_github_repositories)
     assert_requested(stubbed_github_branch_request)
+  end
+
+  test '#create - from an alternative compose file when compose file with same source exists' do
+    Sidekiq::Worker.clear_all
+    Sidekiq::Testing.fake!
+
+    repositories_data = json_fixture('files/github/search_repositories.json')
+    stub_github_repositories = stub_github_search_repositories_request(repositories_data)
+    compose_container_branch = 'main'
+    compose_container_repository_id = 358_291_405
+    github_branch_data = json_fixture('files/github/branches/master.json')
+    stubbed_github_branch_request =
+      stub_github_branch_request(compose_container_repository_id, compose_container_branch, github_branch_data)
+
+    base_attributes = attributes_for(:compose_file).slice(:source, :path)
+    create(:compose_file, project: @project, added_by: @admin, source: base_attributes[:source])
+    content = json_fixture('files/github/compose_files/hello_world_compose.json')[:content]
+    compose_file_attributes = base_attributes.merge(content: content, repository_id: nil)
+    params = {
+      project_slug: @project.slug,
+      compose_file: compose_file_attributes,
+      dependencies: [],
+    }
+
+    differences = {
+      -> { UffizziCore::ComposeFile.temporary.count } => 1,
+      -> { UffizziCore::Template.with_creation_source(UffizziCore::Template.creation_source.compose_file).count } => 1,
+    }
+
+    assert_difference differences do
+      post :create, params: params, format: :json
+    end
+
+    assert_response :success
+
+    assert_requested(stub_github_repositories)
+    assert_requested(stubbed_github_branch_request)
+
+    Sidekiq::Worker.clear_all
+    Sidekiq::Testing.inline!
   end
 
   test '#create - from an alternative compose file when compose file exists' do

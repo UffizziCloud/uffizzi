@@ -22,7 +22,9 @@ class UffizziCore::Api::Cli::V1::Projects::Deployments::ActivityItemsController 
       .result
 
     meta = meta(activity_items)
-    activity_items = activity_items.map { |activity_item| ActivityItemSerializer.new(activity_item).as_json }
+    activity_items = activity_items.map do |activity_item|
+      UffizziCore::Api::Cli::V1::Projects::Deployments::ActivityItemSerializer.new(activity_item).as_json
+    end
 
     render json: {
       activity_items: activity_items,

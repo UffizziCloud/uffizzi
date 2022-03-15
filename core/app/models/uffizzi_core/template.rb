@@ -14,5 +14,6 @@ class UffizziCore::Template < UffizziCore::ApplicationRecord
 
   enumerize :creation_source, in: [:manual, :compose_file, :system], predicates: true, scope: true
 
-  validates :name, presence: true, uniqueness: { scope: :project }
+  validates :name, presence: true
+  validates :name, uniqueness: { scope: :project }, if: -> { compose_file.blank? || compose_file.kind.main? }
 end
