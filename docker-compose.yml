@@ -89,6 +89,7 @@ services:
 
 volumes:
   bundle_cache:
+  core:
 
 networks:
   default:
