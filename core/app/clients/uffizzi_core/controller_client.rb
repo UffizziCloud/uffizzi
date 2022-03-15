@@ -93,7 +93,7 @@ class UffizziCore::ControllerClient
     Faraday.new(url) do |conn|
       conn.options.timeout = connection.timeout
       conn.options.open_timeout = connection.open_timeout
-      conn.basic_auth(login, password)
+      conn.request(:basic_auth, login, password)
       conn.request(:json)
       conn.request(:retry,
                    max: connection.retires_count,
