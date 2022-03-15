@@ -13,6 +13,9 @@ class UffizziCore::Api::Cli::ApplicationController < ActionController::Base
 
   respond_to :json
 
+  DEFAULT_PAGE = 1
+  DEFAULT_PER_PAGE = 20
+
   def self.responder
     UffizziCore::JsonResponder
   end
