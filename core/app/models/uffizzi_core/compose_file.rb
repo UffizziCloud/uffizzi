@@ -26,7 +26,8 @@ class UffizziCore::ComposeFile < UffizziCore::ApplicationRecord
   enumerize :kind, in: [:main, :temporary], predicates: true, scope: :shallow, default: :main
 
   validates :project, uniqueness: { scope: :project }, if: -> { kind.main? }
-  validates :source, presence: true, uniqueness: { scope: :project }
+  validates :source, presence: true
+  validates :source, uniqueness: { scope: :project }, if: -> { kind.main? }
 
   aasm(:auto_deploy) do
     state :disabled, initial: true

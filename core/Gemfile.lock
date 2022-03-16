@@ -19,9 +19,11 @@ PATH
       google-cloud-build
       google-cloud-dns
       hashie
+      kaminari
       octokit
       pg (>= 0.18, < 2.0)
       rails (~> 6.1.0)
+      ransack
       responders
       rolify
       rswag-api
@@ -276,6 +278,18 @@ GEM
     jmespath (1.6.0)
     jsonapi-renderer (0.2.2)
     jwt (2.3.0)
+    kaminari (1.2.2)
+      activesupport (>= 4.1.0)
+      kaminari-actionview (= 1.2.2)
+      kaminari-activerecord (= 1.2.2)
+      kaminari-core (= 1.2.2)
+    kaminari-actionview (1.2.2)
+      actionview
+      kaminari-core (= 1.2.2)
+    kaminari-activerecord (1.2.2)
+      activerecord
+      kaminari-core (= 1.2.2)
+    kaminari-core (1.2.2)
     loofah (2.14.0)
       crass (~> 1.0.2)
       nokogiri (>= 1.5.9)
@@ -349,6 +363,10 @@ GEM
       rake (>= 0.13)
       thor (~> 1.0)
     rake (13.0.6)
+    ransack (2.6.0)
+      activerecord (>= 6.0.4)
+      activesupport (>= 6.0.4)
+      i18n
     redis (4.6.0)
     representable (3.1.1)
       declarative (< 0.1.0)
