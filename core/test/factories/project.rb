@@ -6,7 +6,6 @@ FactoryBot.define do
     slug { generate :slug }
     description { generate :description }
     account
-    secrets { nil }
 
     trait :with_members do
       transient do

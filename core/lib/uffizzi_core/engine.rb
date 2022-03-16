@@ -35,6 +35,7 @@ module UffizziCore
       prices: :uffizzi_core_prices,
       products: :uffizzi_core_products,
       projects: :uffizzi_core_projects,
+      project_secrets: :uffizzi_core_project_secrets,
       ratings: :uffizzi_core_ratings,
       repos: :uffizzi_core_repos,
       roles: :uffizzi_core_roles,
