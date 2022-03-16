@@ -24,6 +24,7 @@ UffizziCore::Engine.routes.draw do
               scope module: :deployments do
                 resources :activity_items, only: ['index']
                 resources :events, only: ['index']
+                resources :containers, only: ['index']
               end
             end
             resources :secrets, only: ['index', 'destroy'] do

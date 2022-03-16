@@ -11,7 +11,7 @@
     "http"
   ],
   "paths": {
-    "/api/cli/v1/account/credential": {
+    "/api/cli/v1/account/credentials": {
       "post": {
         "tags": [
           "Account/Credential"
@@ -41,7 +41,7 @@
         ],
         "responses": {
           "default": {
-            "description": "Create account credential",
+            "description": "rubocop:disable Metrics/LineLength\nCreate account credential",
             "examples": {
               "application/json": "type can be one of UffizziCore::Credential::Amazon, UffizziCore::Credential::Azure, UffizziCore::Credential::DockerHub, UffizziCore::Credential::Google"
             }
@@ -79,8 +79,8 @@
             }
           }
         },
-        "description": "Create account credential",
-        "summary": "Create account credential",
+        "description": "rubocop:disable Metrics/LineLength\nCreate account credential\n\nrubocop:enable Metrics/LineLength",
+        "summary": "rubocop:disable Metrics/LineLength\nCreate account credential",
         "x-controller": "uffizzi_core/api/cli/v1/account/credentials",
         "x-action": "create"
       }
@@ -236,6 +236,55 @@
         "summary": "Delete the compose file for the project",
         "x-controller": "uffizzi_core/api/cli/v1/projects/compose_files",
         "x-action": "destroy"
+      }
+    },
+    "/api/cli/v1/projects/{project_slug}/deployments/{deployment_id}/contaiers": {
+      "get": {
+        "tags": [
+          "Container"
+        ],
+        "operationId": "Container-index",
+        "parameters": [
+          {
+            "name": "deployment_d",
+            "description": "The id of the deployment",
+            "required": true,
+            "in": "path",
+            "type": "integer"
+          },
+          {
+            "name": "deployment_id",
+            "description": "Scope response to deployment_id",
+            "required": true,
+            "in": "path",
+            "type": "string"
+          },
+          {
+            "name": "project_slug",
+            "description": "The project_slug for the project",
+            "required": true,
+            "in": "path",
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": {
+              "$ref": "#/definitions/Container"
+            }
+          },
+          "401": {
+            "description": "Not authorized"
+          },
+          "404": {
+            "description": "Not found"
+          }
+        },
+        "description": "Get a list of container services for a deployment",
+        "summary": "Get a list of container services for a deployment",
+        "x-controller": "uffizzi_core/api/cli/v1/projects/deployments/containers",
+        "x-action": "index"
       }
     },
     "/api/cli/v1/projects/{project_slug}/deployments/{deployment_id}/events": {
@@ -884,6 +933,10 @@
       "description": ""
     },
     {
+      "name": "Container",
+      "description": ""
+    },
+    {
       "name": "Deployment",
       "description": ""
     },
@@ -892,7 +945,11 @@
       "description": ""
     },
     {
-      "name": "Uffizzi",
+      "name": "Project",
+      "description": ""
+    },
+    {
+      "name": "Project/Secrets",
       "description": ""
     },
     {
@@ -1001,6 +1058,35 @@
         },
         "source": {
           "type": "string"
+        }
+      }
+    },
+    "UffizziCore_Container": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "integer"
+        },
+        "name": {
+          "type": "string"
+        },
+        "memory_limit": {
+          "type": "integer"
+        },
+        "memory_request": {
+          "type": "integer"
+        },
+        "continuously_deploy": {
+          "type": "string"
+        },
+        "variables": {
+          "type": "object"
+        },
+        "secret_variables": {
+          "type": "object"
+        },
+        "container_config_files": {
+          "$ref": "#/definitions/ConfigFile"
         }
       }
     },
