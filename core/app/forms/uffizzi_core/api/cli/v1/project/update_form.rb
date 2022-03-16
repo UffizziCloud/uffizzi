@@ -4,7 +4,7 @@ class UffizziCore::Api::Cli::V1::Project::UpdateForm < UffizziCore::Project
   include UffizziCore::ApplicationForm
   MAX_SECRET_KEY_LENGTH = 256
 
-  permit :name, :slug, :description, secrets: [:name, :value]
+  permit :name, :slug, :description
 
   validates :name, presence: true, uniqueness: { scope: :account }
   validates :slug, presence: true, uniqueness: true
@@ -12,10 +12,10 @@ class UffizziCore::Api::Cli::V1::Project::UpdateForm < UffizziCore::Project
   validate :check_duplicates
   validate :check_length
 
-  def assign_secrets!(new_secrets)
-    existing_secrets = secrets.presence || []
-
-    self.secrets = existing_secrets.union(new_secrets)
+  def assign_secrets(new_secrets)
+    new_secrets.each do |new_secret|
+      secrets.build({ name: new_secret['name'], value: new_secret['value'] })
+    end
   end
 
   private
