@@ -21,9 +21,9 @@ class UffizziCore::Project < UffizziCore::ApplicationRecord
   has_many :templates, dependent: :destroy
   has_many :credentials, through: :account
   has_many :compose_files, dependent: :destroy
+  has_many :secrets, dependent: :destroy
 
   validates :name, presence: true, uniqueness: { scope: :account }
-  validates :secrets, 'uffizzi_core/environment_variable_list': true, allow_nil: true
 
   aasm(:state) do
     state :active, initial: true

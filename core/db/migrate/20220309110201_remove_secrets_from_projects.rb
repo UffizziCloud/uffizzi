@@ -1,5 +1,5 @@
 class RemoveSecretsFromProjects < ActiveRecord::Migration[6.1]
   def change
-    remove_column :projects, :secrets
+    remove_column('uffizzi_core_projects', 'secrets')
   end
 end
