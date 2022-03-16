@@ -433,6 +433,7 @@ DEPENDENCIES
   rubocop
   rubocop-minitest
   rubocop-rake
+  sidekiq
   tzinfo-data
   uffizzi_core!
 
