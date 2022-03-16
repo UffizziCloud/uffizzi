@@ -431,7 +431,7 @@ Style/MethodCallWithArgsParentheses:
     - puts
   Exclude:
     - Gemfile
-    - uffizzi_core.gemspec
+    - core/uffizzi_core.gemspec
     - test/test_helper.rb
     - db/migrate/**/*
 
