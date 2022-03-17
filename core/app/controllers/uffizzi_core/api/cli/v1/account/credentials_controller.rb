@@ -5,7 +5,7 @@ class UffizziCore::Api::Cli::V1::Account::CredentialsController < UffizziCore::A
   # rubocop:disable Metrics/LineLength
   # Create account credential
   #
-  # @path [POST] /api/cli/v1/account/credential
+  # @path [POST] /api/cli/v1/account/credentials
   #
   # @parameter credential(required,body) [object<username:string, password: string, type:string>]
   # @response [object<id:integer, username:string, password:string, type:string, state:string>] 201 Created successfully
