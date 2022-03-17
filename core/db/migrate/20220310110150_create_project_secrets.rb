@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class CreateProjectSecrets < ActiveRecord::Migration[6.1]
   def change
     create_table('uffizzi_core_project_secrets', force: :cascade) do |t|
