@@ -4,7 +4,7 @@ module UffizziCore::ProjectService
   class << self
     def update_compose_secrets(project)
       compose_file = project.compose_file
-      return if compose_file.nil?
+      return if compose_file&.template.nil?
 
       project.secrets.each do |secret|
         if UffizziCore::ComposeFileService.has_secret?(compose_file, secret)
