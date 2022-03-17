@@ -1,9 +1,5 @@
-name: Publish persistent branches to Docker Hub.
-on:
-  push:
-    branches:
-      - qa
-      - develop
+name: Build Pull Request images and publish to Docker Hub.
+on: [pull_request]
 jobs:
   build-and-push:
     runs-on: ubuntu-latest
@@ -17,8 +13,14 @@ jobs:
         with:
           username: ${{ secrets.DOCKERHUB_USERNAME }}
           password: ${{ secrets.DOCKERHUB_TOKEN }}
+      - name: Docker metadata
+        id: meta
+        uses: docker/metadata-action@v3
+        with:
+          images: uffizzi/app
       - name: Build and Push Image to Docker Hub
         uses: docker/build-push-action@v2
         with:
           push: true
-          tags: uffizzi/app:${{ github.ref_name }}
+          tags: ${{ steps.meta.outputs.tags }}
+          labels: ${{ steps.meta.outputs.labels }}
