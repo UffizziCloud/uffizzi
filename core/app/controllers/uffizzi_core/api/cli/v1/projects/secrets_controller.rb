@@ -17,9 +17,9 @@ class UffizziCore::Api::Cli::V1::Projects::SecretsController < UffizziCore::Api:
 
   # Add secret to project
   #
-  # @path [POST] /api/cli/v1/projects/{project_slug}/secrets
+  # @path [POST] /api/cli/v1/projects/{project_slug}/secrets/bulk_create
   # @parameter project_slug(required,path) [string]
-  # @parameter secrets(required,body) [Array<object <name: string, value: string>>]
+  # @parameter secrets(required,body) [object<secrets: Array<object <name: string, value: string>>>]
   # @response [object<secrets: Array<object<name: string>>>] 201 Created
   # @response 422 A compose file already exists for this project
   # @response 401 Not authorized

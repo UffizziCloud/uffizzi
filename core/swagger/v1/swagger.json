@@ -80,7 +80,7 @@
           }
         },
         "description": "Create account credential",
-        "summary": "Create account credential",
+        "summary": "reate account credential",
         "x-controller": "uffizzi_core/api/cli/v1/account/credentials",
         "x-action": "create"
       }
@@ -559,7 +559,9 @@
         "summary": "Get secrets for the project",
         "x-controller": "uffizzi_core/api/cli/v1/projects/secrets",
         "x-action": "index"
-      },
+      }
+    },
+    "/api/cli/v1/projects/{project_slug}/secrets/bulk_create": {
       "post": {
         "tags": [
           "Project/Secrets"
@@ -579,15 +581,20 @@
             "required": true,
             "in": "body",
             "schema": {
-              "type": "array",
-              "items": {
-                "type": "object",
-                "properties": {
-                  "name": {
-                    "type": "string"
-                  },
-                  "value": {
-                    "type": "string"
+              "type": "object",
+              "properties": {
+                "secrets": {
+                  "type": "array",
+                  "items": {
+                    "type": "object",
+                    "properties": {
+                      "name": {
+                        "type": "string"
+                      },
+                      "value": {
+                        "type": "string"
+                      }
+                    }
                   }
                 }
               }
