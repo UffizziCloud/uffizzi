@@ -266,6 +266,15 @@ ActiveRecord::Schema.define(version: 2022_03_25_113623) do
     t.string "kind"
   end
 
+  create_table "uffizzi_core_project_secrets", force: :cascade do |t|
+    t.bigint "project_id", null: false
+    t.string "name"
+    t.string "value"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["project_id"], name: "index_project_secrets_on_project_id"
+  end
+
   create_table "uffizzi_core_projects", force: :cascade do |t|
     t.text "name", null: false
     t.datetime "created_at", precision: 6, null: false
@@ -274,7 +283,6 @@ ActiveRecord::Schema.define(version: 2022_03_25_113623) do
     t.string "state"
     t.string "slug"
     t.string "description"
-    t.jsonb "secrets"
     t.index ["account_id", "name"], name: "index_projects_on_account_id_and_name", unique: true
     t.index ["account_id"], name: "index_projects_on_account_id"
   end
