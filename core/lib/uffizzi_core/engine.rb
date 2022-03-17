@@ -6,6 +6,10 @@ module UffizziCore
   class Engine < ::Rails::Engine
     isolate_namespace UffizziCore
 
+    config.before_initialize do
+      config.i18n.load_path += Dir["#{config.root}/config/locales/**/*.yml"]
+    end
+
     config.uffizzi_core = ActiveSupport::OrderedOptions.new
 
     config.uffizzi_core.table_names = {

@@ -1,0 +1,18 @@
+en:
+  activerecord:
+    errors:
+      models:
+        uffizzi_core/project:
+          attributes:
+            secret:
+              not_found: There is no secret with name %{name}
+        uffizzi_core/credential:
+          attributes:
+            registry_url:
+              invalid_scheme: The protocol for the registry url is not specified
+            password:
+              incorrect: We were unable to log you in to docker registry. Please verify that your username and password are correct.
+            username:
+              incorrect: We were unable to log you in to docker registry. Please verify that your username and password are correct.
+            type:
+              exist: Credential of that type already exist.
