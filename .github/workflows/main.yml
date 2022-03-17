@@ -1,4 +1,4 @@
-name: main
+name: Test and lint every push.
 on: [push]
 jobs:
   lint:

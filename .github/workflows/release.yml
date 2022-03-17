@@ -1,4 +1,4 @@
-name: release
+name: Publish `main` branch to Docker Hub as `latest`.
 on:
   push:
     branches:
@@ -16,8 +16,21 @@ jobs:
         with:
           username: ${{ secrets.DOCKERHUB_USERNAME }}
           password: ${{ secrets.DOCKERHUB_TOKEN }}
-      - name: Build and push
+      - name: Build and Push Image to Docker Hub
         uses: docker/build-push-action@v2
         with:
           push: true
-          tags: uffizzicloud/uffizzi-app:latest
+          tags: uffizzi/app:latest
+      - name: Update Docker Hub Description
+        uses: peter-evans/dockerhub-description@v2.4.3
+        with:
+          # Docker Hub username
+          username: ${{ secrets.DOCKERHUB_USERNAME }}
+          # Docker Hub password
+          password: ${{ secrets.DOCKERHUB_PASSWORD }}
+          # Docker Hub repository in the format `<namespace>/<name>` Default: `github.repository`
+          repository: axisofentropy/example-voting-app-${{ matrix.app }}
+          # Docker Hub repository short description Input exceeding 100 characters will be truncated
+          # short-description: # optional
+          # Path to the repository readme Default: `./README.md`
+          # readme-filepath: # optional
