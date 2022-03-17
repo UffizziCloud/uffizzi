@@ -13,6 +13,8 @@ class UffizziCore::Api::Cli::V1::Project::UpdateForm < UffizziCore::Project
   validate :check_length
 
   def assign_secrets(new_secrets)
+    return if new_secrets.blank?
+
     new_secrets.each do |new_secret|
       secrets.build({ name: new_secret['name'], value: new_secret['value'] })
     end
