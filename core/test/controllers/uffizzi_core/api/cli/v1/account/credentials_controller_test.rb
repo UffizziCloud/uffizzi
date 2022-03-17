@@ -20,15 +20,7 @@ class UffizziCore::Api::Cli::V1::Account::CredentialsControllerTest < ActionCont
   end
 
   test '#create docker hub credential' do
-    api_tokens_response = UffizziCore::Converters.deep_lower_camelize_keys(
-      {
-        token: 'aed3ba75-41e2-4e5a-88f6-74406c88db1e',
-      },
-    )
-
-    stub_dockerhub_api_tokens(api_tokens_response)
-    stub_dockerhub_login
-    stub_controller
+    stubbed_dockerhub_login = stub_dockerhub_login
 
     attributes = attributes_for(:credential, :docker_hub)
     params = { account_id: @account.id, credential: attributes }
@@ -42,6 +34,7 @@ class UffizziCore::Api::Cli::V1::Account::CredentialsControllerTest < ActionCont
     end
 
     assert_response :success
+    assert_requested(stubbed_dockerhub_login)
   end
 
   test '#create azure credential' do

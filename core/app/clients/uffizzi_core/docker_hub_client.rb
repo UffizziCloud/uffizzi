@@ -18,7 +18,7 @@ class UffizziCore::DockerHubClient
     url = "#{BASE_URL}/v2/users/login/"
     response = connection.post(url, params)
 
-    RequestResult.new(result: JSON.parse(response.body))
+    RequestResult.new(result: response.body) if response.status == 200
   end
 
   def public_images(q:, page: 1, per_page: 25)
