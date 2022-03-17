@@ -1,4 +1,4 @@
-FROM ruby:2.7-slim
+FROM ruby:2.7.5-slim
 
 ARG RAILS_ROOT=/app
 RUN mkdir -p $RAILS_ROOT
