@@ -1,4 +1,4 @@
-FROM ruby:2.7.2-slim
+FROM ruby:2.7-slim
 
 ARG RAILS_ROOT=/app
 RUN mkdir -p $RAILS_ROOT
@@ -21,7 +21,7 @@ RUN apt-get update \
   && apt-get autoremove -y \
   && rm -rf /var/lib/apt/lists/*
 
-RUN gem install bundler:2.3.8
+RUN gem install bundler:2.3.9
 
 COPY Gemfile Gemfile.lock $RAILS_ROOT/
 COPY core/lib/uffizzi_core/version.rb $RAILS_ROOT/core/lib/uffizzi_core/version.rb
