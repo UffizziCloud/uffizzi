@@ -37,6 +37,25 @@ class UffizziCore::Api::Cli::V1::Account::CredentialsControllerTest < ActionCont
     assert_requested(stubbed_dockerhub_login)
   end
 
+  test '#create if docker hub auth is failed' do
+    data = json_fixture('files/dockerhub/login_fail.json')
+    stubbed_dockerhub_login = stub_dockerhub_login_fail(data)
+
+    attributes = attributes_for(:credential, :docker_hub)
+    params = { account_id: @account.id, credential: attributes }
+
+    differences = {
+      -> { UffizziCore::Credential.count } => 0,
+    }
+
+    assert_difference differences do
+      post :create, params: params, format: :json
+    end
+
+    assert_response :unprocessable_entity
+    assert_requested(stubbed_dockerhub_login)
+  end
+
   test '#create azure credential' do
     registry_url = generate(:url)
     oauth2_token_response = { access_token: generate(:string) }

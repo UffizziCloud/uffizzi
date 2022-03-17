@@ -6,7 +6,15 @@ module UffizziCore::DockerHubStubSupport
 
   def stub_dockerhub_login
     response = { token: 'mytoken' }
-    stub_request(:post, /hub.docker.com\/v2\/users\/login/).to_return(status: 200, body: response.to_json, headers: {})
+    uri = %r{#{API_URL}/users/login/}
+
+    stub_request(:post, uri).to_return(status: 200, body: response.to_json)
+  end
+
+  def stub_dockerhub_login_fail(data)
+    uri = %r{#{API_URL}/users/login/}
+
+    stub_request(:post, uri).to_return(status: 401, body: data.to_json)
   end
 
   def stub_dockerhub_get_webhooks_request(account, repository, data, status = 200)
