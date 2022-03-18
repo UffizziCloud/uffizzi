@@ -30,6 +30,10 @@ services:
       CONTROLLER_URL: 'http://controller:8080'
       CONTROLLER_LOGIN: 'login'
       CONTROLLER_PASSWORD: 'password'
+      MANAGED_DNS_ZONE_DNS_NAME: 'app.qa-gke.uffizzi.com'
+      MANAGED_DNS_ZONE_NAME: terraform-managed-dns-zone
+      GOOGLE_CLOUD_CREDENTIALS: /app/credentials/gke-qa.json
+      GOOGLE_CLOUD_DNS_CREDENTIALS: /app/credentials/dns.qa-gke.json
       GITHUB_PRIVATE_KEY: |
         -----BEGIN RSA PRIVATE KEY-----
         MIIEowIBAAKCAQEAvt9uoL0Ke7He/EmdxhfBn3hwg0WLASk6zoxLlTcvNpCMUEED
