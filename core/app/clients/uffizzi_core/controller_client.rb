@@ -76,7 +76,7 @@ class UffizziCore::ControllerClient
 
   def get(url, params = {})
     response = connection.get(url, params)
-    body = JSON.parse(response.body)
+    body = response.body
     underscored_body = UffizziCore::Converters.deep_underscore_keys(body)
 
     RequestResult.quiet.new(code: response.status, result: underscored_body)
