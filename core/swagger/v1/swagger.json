@@ -238,6 +238,73 @@
         "x-action": "destroy"
       }
     },
+    "/api/cli/v1/projects/{project_slug}/deployments/{deployment_id}/events": {
+      "get": {
+        "tags": [
+          "Event"
+        ],
+        "operationId": "Event-index",
+        "parameters": [
+          {
+            "name": "deployment_id",
+            "description": "The id of the deployment",
+            "required": true,
+            "in": "path",
+            "type": "integer"
+          },
+          {
+            "name": "project_slug",
+            "description": "The project_slug for the project",
+            "required": true,
+            "in": "path",
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "events": {
+                  "type": "array",
+                  "items": {
+                    "type": "object",
+                    "properties": {
+                      "count": {
+                        "type": "integer"
+                      },
+                      "first_timestamp": {
+                        "type": "string"
+                      },
+                      "last_timestamp": {
+                        "type": "string"
+                      },
+                      "reason": {
+                        "type": "string"
+                      },
+                      "message": {
+                        "type": "string"
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Not authorized"
+          },
+          "404": {
+            "description": "Not found"
+          }
+        },
+        "description": "Get the events associated with deployment",
+        "summary": "Get the events associated with deployment",
+        "x-controller": "uffizzi_core/api/cli/v1/projects/deployments/events",
+        "x-action": "index"
+      }
+    },
     "/api/cli/v1/projects/{project_slug}/deployments": {
       "get": {
         "tags": [
@@ -824,11 +891,11 @@
       "description": ""
     },
     {
-      "name": "Project",
+      "name": "Event",
       "description": ""
     },
     {
-      "name": "Project/Secrets",
+      "name": "Uffizzi",
       "description": ""
     },
     {

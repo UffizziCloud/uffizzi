@@ -23,6 +23,7 @@ UffizziCore::Engine.routes.draw do
               post :deploy_containers, on: :member
               scope module: :deployments do
                 resources :activity_items, only: ['index']
+                resources :events, only: ['index']
               end
             end
             resources :secrets, only: ['index', 'destroy'] do
