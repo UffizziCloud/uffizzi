@@ -4,6 +4,9 @@ class UffizziCore::Api::Cli::ApplicationController < ActionController::Base
   include UffizziCore::ResponseService
   include UffizziCore::AuthManagement
 
+  DEFAULT_PAGE = 1
+  DEFAULT_PER_PAGE = 20
+
   protect_from_forgery with: :exception
   rescue_from ActiveRecord::RecordNotFound, with: :render_not_found
 
@@ -13,8 +16,9 @@ class UffizziCore::Api::Cli::ApplicationController < ActionController::Base
 
   respond_to :json
 
-  DEFAULT_PAGE = 1
-  DEFAULT_PER_PAGE = 20
+  def policy_context
+    UffizziCore::BaseContext.new(current_user, user_access_module, params)
+  end
 
   def self.responder
     UffizziCore::JsonResponder

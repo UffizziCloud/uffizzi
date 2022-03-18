@@ -12,6 +12,10 @@ module UffizziCore
 
     config.uffizzi_core = ActiveSupport::OrderedOptions.new
 
+    config.uffizzi_core.module_classes = {
+      rbac: UffizziCore::UserAccessService
+    }
+
     config.uffizzi_core.table_names = {
       accounts: :uffizzi_core_accounts,
       activity_items: :uffizzi_core_activity_items,
