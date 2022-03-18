@@ -40,6 +40,7 @@ Gem::Specification.new do |spec|
   spec.add_dependency 'kaminari'
   spec.add_dependency 'octokit'
   spec.add_dependency 'pg', '>= 0.18', '< 2.0'
+  spec.add_dependency 'pundit'
   spec.add_dependency 'rails', '~> 6.1.0'
   spec.add_dependency 'ransack'
   spec.add_dependency 'responders'
