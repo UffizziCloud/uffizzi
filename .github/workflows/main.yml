@@ -1,5 +1,13 @@
 name: Test, Lint, Build, and Publish Image
-on: [push]
+on:
+  push:
+    branches:
+      - qa
+      - develop
+      - main
+  pull_request:
+    types: [opened,edited]
+
 jobs:
   lint:
     runs-on: ubuntu-latest
