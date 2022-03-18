@@ -28,11 +28,7 @@ class UffizziCore::Api::Cli::V1::Projects::Deployments::Containers::LogsControll
       },
     )
     pod_name = UffizziCore::ContainerService.pod_name(@container)
-
-    url = "#{Settings.controller.url}/deployments/#{@deployment.id}/containers/#{pod_name}/logs?limit=#{limit}"
-
-    stubbed_request = stub_request(:get, url)
-      .to_return(status: 200, body: logs.to_json)
+    stubbed_request = stub_container_log_request(deployment_id, pod_name, limit, logs)
 
     params = {
       project_slug: @project.slug,
@@ -69,10 +65,7 @@ class UffizziCore::Api::Cli::V1::Projects::Deployments::Containers::LogsControll
     )
 
     pod_name = UffizziCore::ContainerService.pod_name(@container)
-
-    stubbed_request =
-      stub_request(:get, "#{Settings.controller.url}/deployments/#{@deployment.id}/containers/#{pod_name}/logs?limit=#{limit}")
-        .to_return(status: 200, body: logs.to_json)
+    stubbed_request = stub_container_log_request(deployment_id, pod_name, limit, logs)
 
     params = {
       project_slug: @project.slug,
@@ -97,10 +90,8 @@ class UffizziCore::Api::Cli::V1::Projects::Deployments::Containers::LogsControll
       },
     )
     pod_name = UffizziCore::ContainerService.pod_name(@container)
+    stubbed_request = stub_container_log_request(deployment_id, pod_name, limit, logs)
 
-    stubbed_request =
-      stub_request(:get, "#{Settings.controller.url}/deployments/#{@deployment.id}/containers/#{pod_name}/logs?limit=#{limit}")
-        .to_return(status: 200, body: logs.to_json)
 
     params = {
       project_slug: @project.slug,
