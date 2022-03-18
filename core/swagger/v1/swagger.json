@@ -238,6 +238,82 @@
         "x-action": "destroy"
       }
     },
+    "/api/cli/v1/projects/{project_slug}/deployments/{deployment_id}/containers/{container_id}/logs": {
+      "get": {
+        "tags": [
+          "Project/Deployment/Container/Log"
+        ],
+        "operationId": "Project/Deployment/Container/Log-index",
+        "parameters": [
+          {
+            "name": "container_id",
+            "description": "The id of the container",
+            "required": true,
+            "in": "path",
+            "type": "integer"
+          },
+          {
+            "name": "deployment_id",
+            "description": "The id of the deployment",
+            "required": true,
+            "in": "path",
+            "type": "integer"
+          },
+          {
+            "name": "project_slug",
+            "description": "The slug of the project",
+            "required": true,
+            "in": "path",
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "logs": {
+                  "type": "array",
+                  "items": {
+                    "type": "object",
+                    "properties": {
+                      "insert_id": {
+                        "type": "string"
+                      },
+                      "payload": {
+                        "type": "string"
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Not found",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "errors": {
+                  "type": "object",
+                  "properties": {
+                    "title": {
+                      "type": "string"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Not authorized"
+          }
+        },
+        "x-controller": "uffizzi_core/api/cli/v1/projects/deployments/containers/logs",
+        "x-action": "index"
+      }
+    },
     "/api/cli/v1/projects/{project_slug}/deployments/{deployment_id}/containers": {
       "get": {
         "tags": [
@@ -939,6 +1015,10 @@
     },
     {
       "name": "Project",
+      "description": ""
+    },
+    {
+      "name": "Project/Deployment/Container/Log",
       "description": ""
     },
     {
