@@ -24,7 +24,7 @@ spec:
         - /bin/bash
         - -c
         args:
-        - bundle exec bundle exec sidekiq -C /app/config/sidekiq.yml
+        - bundle exec sidekiq -C /app/config/sidekiq.yml
         envFrom:
         - secretRef:
             name: uffizzi-web-secret-envs
