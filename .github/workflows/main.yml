@@ -22,7 +22,7 @@ jobs:
     needs:
       - lint
       - test
-    if: ${{ github.ref_name == 'main' || github.ref_name == 'qa' || github.ref_name = 'develop' || github.event_name == 'pull_request' }}
+    if: ${{ github.ref_name == 'main' || github.ref_name == 'qa' || github.ref_name == 'develop' || github.event_name == 'pull_request' }}
     steps:
       - name: Checkout
         uses: actions/checkout@v2
