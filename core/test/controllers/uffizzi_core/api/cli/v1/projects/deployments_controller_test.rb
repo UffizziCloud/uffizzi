@@ -375,7 +375,7 @@ class UffizziCore::Api::Cli::V1::Projects::DeploymentsControllerTest < ActionCon
     deployment_containers_data = json_fixture('files/controller/deployment_containers.json')
     deployment_data = json_fixture('files/controller/deployments.json')
 
-    stubbed_deployment_request = stub_get_controller_deployment_request(@deployment, deployment_data)
+    stubbed_deployment_request = stub_controller_get_deployment_request(@deployment, deployment_data)
     stubbed_containers_request = stub_controller_containers_request(@deployment, deployment_containers_data)
     stubbed_deploy_containers_request = stub_deploy_containers_request(@deployment)
     stubbed_dockerhub_login = stub_dockerhub_login
@@ -452,7 +452,7 @@ class UffizziCore::Api::Cli::V1::Projects::DeploymentsControllerTest < ActionCon
            container: container,
            deployment: @deployment)
 
-    stubbed_deployment_request = stub_get_controller_deployment_request(@deployment, deployment_data)
+    stubbed_deployment_request = stub_controller_get_deployment_request(@deployment, deployment_data)
     stubbed_containers_request = stub_controller_containers_request(@deployment, deployment_containers_data)
     stubbed_deploy_containers_request = stub_deploy_containers_request(@deployment)
     stubbed_dockerhub_login = stub_dockerhub_login
@@ -510,7 +510,7 @@ class UffizziCore::Api::Cli::V1::Projects::DeploymentsControllerTest < ActionCon
            container: container,
            deployment: @deployment)
 
-    stubbed_deployment_request = stub_get_controller_deployment_request(@deployment, deployment_data)
+    stubbed_deployment_request = stub_controller_get_deployment_request(@deployment, deployment_data)
     stubbed_containers_request = stub_controller_containers_request(@deployment, deployment_containers_data)
     stubbed_deploy_containers_request = stub_deploy_containers_request(@deployment)
     stubbed_dockerhub_login = stub_dockerhub_login
@@ -567,7 +567,7 @@ class UffizziCore::Api::Cli::V1::Projects::DeploymentsControllerTest < ActionCon
            container: container,
            deployment: @deployment)
 
-    stubbed_deployment_request = stub_get_controller_deployment_request(@deployment, deployment_data)
+    stubbed_deployment_request = stub_controller_get_deployment_request(@deployment, deployment_data)
     stubbed_containers_request = stub_controller_containers_request(@deployment, deployment_containers_data)
     stubbed_deploy_containers_request = stub_deploy_containers_request(@deployment)
 

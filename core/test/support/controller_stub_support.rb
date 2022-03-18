@@ -4,7 +4,7 @@ module UffizziCore::ControllerStubSupport
   def stub_controller_ingresses_request(data)
     uri = %r{/default_ingress/service}
 
-    stub_request(:get, uri).to_return(status: 200, body: data.to_json)
+    stub_request(:get, uri).to_return(status: 200, body: data.to_json, headers: { 'Content-Type' => 'application/json' })
   end
 
   def stub_controller_create_deployment_request
@@ -25,10 +25,10 @@ module UffizziCore::ControllerStubSupport
     stub_request(:put, uri)
   end
 
-  def stub_get_controller_deployment_request(deployment, data = nil)
+  def stub_controller_get_deployment_request(deployment, data = nil)
     uri = "#{Settings.controller.url}/deployments/#{deployment.id}"
 
-    stub_request(:get, uri).to_return(status: 200, body: data.to_json)
+    stub_request(:get, uri).to_return(status: 200, body: data.to_json, headers: { 'Content-Type' => 'application/json' })
   end
 
   def stub_delete_controller_deployment_request(deployment)
@@ -40,7 +40,7 @@ module UffizziCore::ControllerStubSupport
   def stub_controller_containers_request(deployment, data = nil)
     uri = "#{Settings.controller.url}/deployments/#{deployment.id}/containers"
 
-    stub_request(:get, uri).to_return(status: 200, body: data.to_json)
+    stub_request(:get, uri).to_return(status: 200, body: data.to_json, headers: { 'Content-Type' => 'application/json' })
   end
 
   def stub_controller_nodes_request
@@ -59,9 +59,5 @@ module UffizziCore::ControllerStubSupport
     uri = "#{Settings.controller.url}/deployments/#{deployment.id}/config_files/#{config_file.id}"
 
     stub_request(:post, uri)
-  end
-
-  def stub_controller_get_deployment_request(deployment, data = nil)
-    stub_request(:get, "#{Settings.controller.url}/deployments/#{deployment.id}").to_return(status: 200, body: data.to_json)
   end
 end

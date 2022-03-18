@@ -22,15 +22,16 @@ class UffizziCore::ManageActivityItemsServiceTest < ActiveSupport::TestCase
       },
     )
 
-    stub_request(:get, "#{Settings.controller.url}/nodes")
-    stub_request(:get, "#{Settings.controller.url}/deployments/#{deployment.id}/containers")
-      .to_return(status: 200, body: stubbed_response_containers.to_json)
-    stub_request(:get, "#{Settings.controller.url}/deployments/#{deployment.id}").to_return(status: 200, body: namespace.to_json)
+    stub_controller_containers = stub_controller_containers_request(deployment, stubbed_response_containers)
+    stub_get_controller_deployment = stub_controller_get_deployment_request(deployment, namespace)
 
     service = UffizziCore::ManageActivityItemsService.new(deployment)
     container_status_items = service.container_status_items
 
     assert { container_status_items.empty? }
+    assert_requested(stub_get_controller_deployment)
+    assert_requested(stub_controller_containers)
+    # assert_requested(stub_controller_nodes)
   end
 
   test '#container_status_items - deployment has containers' do
@@ -95,13 +96,14 @@ class UffizziCore::ManageActivityItemsServiceTest < ActiveSupport::TestCase
       },
     )
 
-    stub_request(:get, "#{Settings.controller.url}/deployments/#{deployment.id}/containers")
-      .to_return(status: 200, body: pods.to_json)
-    stub_request(:get, "#{Settings.controller.url}/deployments/#{deployment.id}").to_return(status: 200, body: namespace.to_json)
+    stub_controller_containers = stub_controller_containers_request(deployment, pods)
+    stub_get_controller_deployment = stub_controller_get_deployment_request(deployment, namespace)
 
     service = UffizziCore::ManageActivityItemsService.new(deployment)
     container_status_items = service.container_status_items
 
     assert { container_status_items[0][:status] == UffizziCore::Event.state.deploying }
+    assert_requested(stub_get_controller_deployment)
+    assert_requested(stub_controller_containers)
   end
 end
