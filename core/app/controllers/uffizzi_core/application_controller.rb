@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-class UffizziCore::Api::Cli::ApplicationController < ActionController::Base
+class UffizziCore::ApplicationController < ActionController::Base
   include UffizziCore::ResponseService
   include UffizziCore::AuthManagement
 
