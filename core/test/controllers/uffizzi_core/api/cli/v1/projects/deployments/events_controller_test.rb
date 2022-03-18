@@ -32,10 +32,8 @@ class UffizziCore::Api::Cli::V1::Projects::Deployments::EventsControllerTest < A
       },
     )
 
-    url = "#{Settings.controller.url}/deployments/#{@deployment.id}/containers/events"
-
-    stubbed_request = stub_request(:get, url)
-      .to_return(status: 200, body: events.to_json)
+    stubbed_controller_get_deployment_events = stub_controller_get_deployment_events(@deployment).to_return(status: 200,
+                                                                                                            body: events.to_json)
 
     params = {
       project_slug: @project.slug,
@@ -44,7 +42,7 @@ class UffizziCore::Api::Cli::V1::Projects::Deployments::EventsControllerTest < A
 
     get :index, params: params, format: :json
 
-    assert_requested(stubbed_request)
+    assert_requested(stubbed_controller_get_deployment_events)
 
     assert_response :success
 
@@ -70,8 +68,8 @@ class UffizziCore::Api::Cli::V1::Projects::Deployments::EventsControllerTest < A
       },
     )
 
-    stubbed_request = stub_request(:get, "#{Settings.controller.url}/deployments/#{@deployment.id}/containers/events")
-      .to_return(status: 200, body: events.to_json)
+    stubbed_controller_get_deployment_events = stub_controller_get_deployment_events(@deployment).to_return(status: 200,
+                                                                                                            body: events.to_json)
 
     params = {
       project_slug: @project.slug,
@@ -80,7 +78,7 @@ class UffizziCore::Api::Cli::V1::Projects::Deployments::EventsControllerTest < A
 
     get :index, params: params, format: :json
 
-    assert_requested(stubbed_request)
+    assert_requested(stubbed_controller_get_deployment_events)
 
     assert_response :success
   end
