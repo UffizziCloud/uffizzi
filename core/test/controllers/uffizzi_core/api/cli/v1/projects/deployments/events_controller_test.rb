@@ -12,7 +12,6 @@ class UffizziCore::Api::Cli::V1::Projects::Deployments::EventsControllerTest < A
   end
 
   test '#index' do
-    count = generate(:number)
     first_timestamp = generate(:string)
     last_timestamp = generate(:string)
     reason = generate(:string)
@@ -22,7 +21,6 @@ class UffizziCore::Api::Cli::V1::Projects::Deployments::EventsControllerTest < A
       {
         items: [
           {
-            count: count,
             first_timestamp: first_timestamp,
             last_timestamp: last_timestamp,
             reason: reason,
@@ -48,7 +46,6 @@ class UffizziCore::Api::Cli::V1::Projects::Deployments::EventsControllerTest < A
     collected_result = {
       events: [
         {
-          count: count,
           first_timestamp: first_timestamp,
           last_timestamp: last_timestamp,
           reason: reason,

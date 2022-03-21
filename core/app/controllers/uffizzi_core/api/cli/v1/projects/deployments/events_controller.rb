@@ -12,7 +12,7 @@ class UffizziCore::Api::Cli::V1::Projects::Deployments::EventsController <
   #
   # @response [object<
   #   events: Array<object
-  #     <count: integer, first_timestamp: string, last_timestamp: string, reason: string, message: string>
+  #     <first_timestamp: string, last_timestamp: string, reason: string, message: string>
   #   > >] 200 OK
   #
   # @response 401 Not authorized

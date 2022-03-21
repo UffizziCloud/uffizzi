@@ -271,9 +271,6 @@
                   "items": {
                     "type": "object",
                     "properties": {
-                      "count": {
-                        "type": "integer"
-                      },
                       "first_timestamp": {
                         "type": "string"
                       },
