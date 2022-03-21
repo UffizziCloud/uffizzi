@@ -5,7 +5,7 @@ module UffizziCore::AzureRegistryStubSupport
     service = URI.parse(registry_url).hostname
     uri = "#{registry_url}/oauth2/token?service=#{service}"
 
-    stub_request(:get, uri).to_return(status: code, body: response.to_json, headers: {})
+    stub_request(:get, uri).to_return(status: code, body: response.to_json, headers: { 'Content-Type' => 'application/json' })
   end
 
   def stub_azure_registry_manifests(registry_url, image, tag, headers, body)
