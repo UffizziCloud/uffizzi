@@ -12,7 +12,7 @@ class UffizziCore::Amazon::CredentialService
       token_string = Base64.decode64(base64_data)
       token_items = token_string.split(':')
       token_items.pop
-    rescue StandardError
+    rescue Aws::ECR::Errors::UnrecognizedClientException, Aws::ECR::Errors::InvalidSignatureException
       ''
     end
 

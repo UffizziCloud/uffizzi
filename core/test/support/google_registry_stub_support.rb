@@ -7,7 +7,7 @@ module UffizziCore::GoogleRegistryStubSupport
     service = URI.parse(REGISTRY_URL).hostname
     uri = "#{REGISTRY_URL}/v2/token?service=#{service}"
 
-    stub_request(:get, uri).to_return(status: code, body: response.to_json, headers: {})
+    stub_request(:get, uri).to_return(status: code, body: response.to_json, headers: { 'Content-Type' => 'application/json' })
   end
 
   def stub_google_registry_manifests(image, tag, headers, body)

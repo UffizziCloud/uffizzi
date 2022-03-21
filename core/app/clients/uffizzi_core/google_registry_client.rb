@@ -13,7 +13,7 @@ class UffizziCore::GoogleRegistryClient
     url = "/v2/#{image}/manifests/#{tag}"
     response = connection.get(url)
 
-    RequestResult.quiet.new(result: JSON.parse(response.body), headers: response.headers)
+    RequestResult.quiet.new(result: response.body, headers: response.headers)
   end
 
   def access_token
@@ -22,7 +22,7 @@ class UffizziCore::GoogleRegistryClient
 
     response = connection.get(url, {})
 
-    RequestResult.new(result: JSON.parse(response.body))
+    RequestResult.new(result: response.body)
   end
 
   def authentificated?

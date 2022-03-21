@@ -11,7 +11,7 @@ en:
             registry_url:
               invalid_scheme: The protocol for the registry url is not specified
             password:
-              incorrect: We were unable to log you in to docker registry. Please verify that your username and password are correct.
+              password_blank: Password/Access Token can't be blank
             username:
               incorrect: We were unable to log you in to docker registry. Please verify that your username and password are correct.
             type:
