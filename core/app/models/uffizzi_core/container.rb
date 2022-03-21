@@ -1,8 +1,6 @@
 # frozen_string_literal: true
 
-# frozen_string_literal: true
-
-# @model
+# @model Container
 #
 # @property id [integer]
 # @property name [string]

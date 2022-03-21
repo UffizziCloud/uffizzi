@@ -94,7 +94,7 @@
         "parameters": [
           {
             "name": "project_slug",
-            "description": "The project_slug for the project",
+            "description": "The project slug",
             "required": true,
             "in": "path",
             "type": "string"
@@ -182,7 +182,7 @@
           },
           {
             "name": "project_slug",
-            "description": "The project_slug for the project",
+            "description": "The project slug",
             "required": true,
             "in": "path",
             "type": "string"
@@ -218,7 +218,7 @@
         "parameters": [
           {
             "name": "project_slug",
-            "description": "The project_slug for the project",
+            "description": "The project slug",
             "required": true,
             "in": "path",
             "type": "string"
@@ -238,7 +238,7 @@
         "x-action": "destroy"
       }
     },
-    "/api/cli/v1/projects/{project_slug}/deployments/{deployment_id}/contaiers": {
+    "/api/cli/v1/projects/{project_slug}/deployments/{deployment_id}/containers": {
       "get": {
         "tags": [
           "Container"
@@ -246,22 +246,15 @@
         "operationId": "Container-index",
         "parameters": [
           {
-            "name": "deployment_d",
+            "name": "deployment_id",
             "description": "The id of the deployment",
             "required": true,
             "in": "path",
             "type": "integer"
           },
           {
-            "name": "deployment_id",
-            "description": "Scope response to deployment_id",
-            "required": true,
-            "in": "path",
-            "type": "string"
-          },
-          {
             "name": "project_slug",
-            "description": "The project_slug for the project",
+            "description": "The project slug",
             "required": true,
             "in": "path",
             "type": "string"
@@ -360,7 +353,7 @@
         "parameters": [
           {
             "name": "project_slug",
-            "description": "The slug for the project",
+            "description": "The project slug",
             "required": true,
             "in": "path",
             "type": "string"
@@ -435,7 +428,7 @@
           },
           {
             "name": "project_slug",
-            "description": "The slug for the project",
+            "description": "The project slug",
             "required": true,
             "in": "path",
             "type": "string"
@@ -506,7 +499,7 @@
           },
           {
             "name": "project_slug",
-            "description": "The slug for the project",
+            "description": "The project slug",
             "required": true,
             "in": "path",
             "type": "string"
@@ -559,7 +552,7 @@
           },
           {
             "name": "project_slug",
-            "description": "The slug for the project",
+            "description": "The project slug",
             "required": true,
             "in": "path",
             "type": "string"
@@ -595,7 +588,7 @@
           },
           {
             "name": "project_slug",
-            "description": "The slug for the project",
+            "description": "The project slug",
             "required": true,
             "in": "path",
             "type": "string"
@@ -1015,7 +1008,7 @@
         "name"
       ]
     },
-    "UffizziCore_ComposeFile": {
+    "ComposeFile": {
       "type": "object",
       "properties": {
         "id": {
@@ -1061,7 +1054,7 @@
         }
       }
     },
-    "UffizziCore_Container": {
+    "Container": {
       "type": "object",
       "properties": {
         "id": {
@@ -1090,7 +1083,7 @@
         }
       }
     },
-    "UffizziCore_Deployment": {
+    "Deployment": {
       "type": "object",
       "properties": {
         "id": {
