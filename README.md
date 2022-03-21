@@ -50,7 +50,11 @@ This `uffizzi_app` acts as a REST API for [`uffizzi_cli`](https://github.com/Uff
 - `RAILS_PORT` - the `puma` port (default: 7000)
 - `RAILS_ENV` - the rails environment (default: development)
 - `SIDEKIQ_CONCURRENCY` - sidekiq concurrency (default: 5)
-- `ALLOWED_HOSTS` - allowed hosts for rails app used for Rack::Cors
+- `ALLOWED_HOSTS` - allowed hosts for rails app used for Rack::Cors (default: [])
+- `APP_URL` - URL of the application
+- `CONTROLLER_URL` - URL of the controller application
+- `CONTROLLER_LOGIN` - the login of the controller application
+- `CONTROLLER_PASSWORD` - the password of the controller application
 
 ## Prepare
 
