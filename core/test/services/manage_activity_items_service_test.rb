@@ -31,7 +31,6 @@ class UffizziCore::ManageActivityItemsServiceTest < ActiveSupport::TestCase
     assert { container_status_items.empty? }
     assert_requested(stub_get_controller_deployment)
     assert_requested(stub_controller_containers)
-    # assert_requested(stub_controller_nodes)
   end
 
   test '#container_status_items - deployment has containers' do
