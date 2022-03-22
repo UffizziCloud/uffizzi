@@ -1,35 +1,35 @@
-allowed_hosts: <%= ENV['ALLOWED_HOSTS']&.split(',') || [] %>
 app:
   ttl_reset_password_token: 900
-  host: <%= ENV['APP_URL'] %>
-  login:  <%= ENV['APP_LOGIN'] || '' %>
-  password:  <%= ENV['APP_PASSWORD'] || '' %>
-  managed_dns_zone: <%= ENV['MANAGED_DNS_ZONE_DNS_NAME'] %>
+  host: http://lvh.me
+  login: ''
+  password: ''
+  managed_dns_zone: example.com
 github:
-  app_id: <%= ENV['GITHUB_APP_ID'] %>
-  app_slug: <%= ENV['GITHUB_APP_SLUG'] %>
-  client_id: <%= ENV['GITHUB_CLIENT_ID'] %>
-  client_secret: <%= ENV['GITHUB_CLIENT_SECRET'] %>
-  private_key: "<%= ENV['GITHUB_PRIVATE_KEY'] %>"
-  webhook_secret: <%= ENV['GITHUB_WEBHOOK_SECRET'] %>
-  registry_url: "gcr.io/<%= ENV['BUILD_PROJECT_ID'] %>"
+  app_id: 123
+  app_slug: test
+  client_id: test
+  client_secret: test
+  private_key: "-----BEGIN RSA PRIVATE KEY-----
+  MIIBOgIBAAJBAKUZo1+jM7j760xsPlgt/5WzbRHL62kohW9hy8JpAauglOdgjRbY
+  URXle+6+VNzGBU0kUXYjzUNJLBgC+JeubvUCAwEAAQJAEzQrO6mZD5BF60q/6bPY
+  AcqwChzlEgNDmhQPBlr+db71EuLtmui7moCOTNLnZGIryd0uCGjEhXCwS653ivHW
+  NQIhANcWtxH2xHviNafPAK+5mIABOCL+MXXCI5EnjUdARMc7AiEAxIDWD+bOzavo
+  OGwiYrOQYcxxtZXGUUBKuQzpgvM5H48CIDcwbOj/GItxD7NvOg3c4XR226Ce+LHu
+  jpHARE/z/bHhAiA+hxiWmsU3oPoV6iLO8YCB/kI4m94tQJ4GYFt1tdt5dQIhALQg
+  cNfHZndOE7mwn6pm/JI8bXCseL7V2t+cXyCexlru
+  -----END RSA PRIVATE KEY-----
+  "
+  webhook_secret: test
+  registry_url: gcr.io/test
 docker_hub:
   registry_url: 'https://index.docker.io/v1/'
   public_namespace: 'library'
-azure:
-  username: <%= ENV['AZURE_REGISTRY_USERNAME'] %>
-  password: <%= ENV['AZURE_REGISTRY_PASSWORD'] %>
 build:
-  project_id: <%= ENV['BUILD_PROJECT_ID'] %>
-  service_credential: <%= ENV['BUILD_SERVICE_CREDENTIAL'] %>
-  log_bucket: <%= ENV['BUILD_LOG_BUCKET'] %>
-sidekiq:
-  login:  <%= ENV['SIDEKIQ_LOGIN'] || '' %>
-  password:  <%= ENV['SIDEKIQ_PASSWORD'] || '' %>
+  log_bucket: test
 controller:
-  url:  <%= ENV['CONTROLLER_URL'] || 'http://controller:8080' %>
-  login:  <%= ENV['CONTROLLER_LOGIN'] || '' %>
-  password:  <%= ENV['CONTROLLER_PASSWORD'] || '' %>
+  url: http://controller:8080
+  login: ''
+  password: ''
   connection:
     retires_count: 1
     next_retry_timeout_seconds: 1
@@ -40,47 +40,21 @@ controller:
   namespace_prefix: 'app-'
   resource_create_retry_time: 15.seconds
   resource_create_retry_count: 60
-billing_cycle:
-  hours_count: 720
-stripe:
-  public_key: <%= ENV['STRIPE_PUBLIC_KEY'] %>
-  secret_key: <%= ENV['STRIPE_SECRET_KEY'] %>
-  signing_secret: <%= ENV['STRIPE_SIGNING_SECRET'] %>
-google_maps:
-  public_key: <%= ENV['GOOGLE_MAPS_API_KEY'] %>
-mailchimp:
-  api_key: <%= ENV['MAILCHIMP_API_KEY'] %>
-  api_server: <%= ENV['MAILCHIMP_API_SERVER'] %>
-  community_audience: <%= ENV['MAILCHIMP_COMMUNITY_AUDIENCE'] %>
-google_analytics: 'UA-157967585-1'
-google_tag_manager: 'GTM-NP4974N'
-slack:
-  invite_url: https://join.slack.com/t/uffizzi/shared_invite/zt-ffr4o3x0-J~0yVT6qgFV~wmGm19Ux9A
-cdn_host: <%= ENV['CDN_HOST'] %>
-zendesk_key: eea6ae36-fa55-42c3-8941-ebec356736a7
-allowed_hosts: <%= ENV['ALLOWED_HOSTS']&.split(',') || [] %>
-domain: <%= ENV['APP_URL'] %>
-sentry:
-  dsn: <%= ENV['SENTRY_DSN'] %>
-  release: <%= ENV['SENTRY_RELEASE'] %>
-  env: <%= Rails.env %>
+allowed_hosts: []
+domain: http://lvh.me
 features:
-  mailchimp_enabled: <%= !!ActiveModel::Type::Boolean.new.cast(ENV['MAILCHIMP_ENABLED']) %>
-  email_delivery_enabled: <%= !!ActiveModel::Type::Boolean.new.cast(ENV['EMAIL_DELIVERY_ENABLED']) %>
-  stripe_enabled: <%= !!ActiveModel::Type::Boolean.new.cast(ENV['STRIPE_ENABLED']) %>
-  google_maps_enabled: <%= !!ActiveModel::Type::Boolean.new.cast(ENV['GOOGLE_MAPS_ENABLED']) %>
-  sentry_enabled: <%= !!ActiveModel::Type::Boolean.new.cast(ENV['SENTRY_ENABLED']) %>
+  mailchimp_enabled: false
+  email_delivery_enabled: true
+  stripe_enabled: false
+  google_maps_enabled: false
+  sentry_enabled: false
 dns_zone:
-  name: <%= ENV['MANAGED_DNS_ZONE_NAME'] %>
-  credentials: <%= ENV['GOOGLE_CLOUD_DNS_CREDENTIALS'] %>
+  name: test
+  credentials: test
 platform_cluster:
-  project_id: <%= ENV['PLATFORM_PROJECT_ID'] %>
-workos:
-  api_key: <%= ENV['WORKOS_SECRET_KEY'] %>
-  client_id: <%= ENV['WORKOS_CLIENT_ID'] %>
-  webhook_secret: <%= ENV['WORKOS_WEBHOOK_SECRET'] %>
+  project_id: test
 google:
-  project: <%= ENV['GOOGLE_PROJECT'] %>
+  project: test
   registry_url: 'https://gcr.io/'
 compose:
   default_memory: 125
