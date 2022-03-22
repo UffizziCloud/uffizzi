@@ -52,9 +52,9 @@ This `uffizzi_app` acts as a REST API for [`uffizzi_cli`](https://github.com/Uff
 - `SIDEKIQ_CONCURRENCY` - sidekiq concurrency (default: 5)
 - `ALLOWED_HOSTS` - allowed hosts for rails app used for Rack::Cors (default: [])
 - `APP_URL` - URL of the application
-- `CONTROLLER_URL` - URL of the controller application
-- `CONTROLLER_LOGIN` - the login of the controller application
-- `CONTROLLER_PASSWORD` - the password of the controller application
+- `CONTROLLER_URL` - URL of the controller application (default: http://controller:8080)
+- `CONTROLLER_LOGIN` - the login of the controller application (default: '')
+- `CONTROLLER_PASSWORD` - the password of the controller application (default: '')
 
 ## Prepare
 

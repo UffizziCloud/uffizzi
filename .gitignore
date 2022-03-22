@@ -34,3 +34,4 @@
 /config/master.key
 
 /credentials/*.json
+.env
