@@ -1,0 +1,131 @@
+{
+  "metadata": {
+    "name": "ingress-nginx",
+    "namespace": "ingress-nginx",
+    "selfLink": "/api/v1/namespaces/ingress-nginx/services/ingress-nginx",
+    "uid": "8ad0a9ab-a6ed-49d6-9efd-94de3775fbdb",
+    "resourceVersion": "184064098",
+    "creationTimestamp": "2021-03-01T18:01:10Z",
+    "labels": {
+      "app.kubernetes.io/managed-by": "terraform",
+      "app.kubernetes.io/name": "ingress-nginx",
+      "app.kubernetes.io/part-of": "ingress-nginx"
+    },
+    "annotations": {
+      "service.beta.kubernetes.io/aws-load-balancer-type": "nlb"
+    },
+    "finalizers": [
+      "service.kubernetes.io/load-balancer-cleanup"
+    ],
+    "managedFields": [
+      {
+        "manager": "HashiCorp",
+        "operation": "Update",
+        "apiVersion": "v1",
+        "time": "2021-03-01T18:01:10Z",
+        "fieldsType": "FieldsV1",
+        "fieldsV1": {
+          "f:metadata": {
+            "f:annotations": {
+              ".": {},
+              "f:service.beta.kubernetes.io/aws-load-balancer-type": {}
+            },
+            "f:labels": {
+              ".": {},
+              "f:app.kubernetes.io/managed-by": {},
+              "f:app.kubernetes.io/name": {},
+              "f:app.kubernetes.io/part-of": {}
+            }
+          },
+          "f:spec": {
+            "f:externalTrafficPolicy": {},
+            "f:loadBalancerSourceRanges": {},
+            "f:ports": {
+              ".": {},
+              "k:{\"port\":80,\"protocol\":\"TCP\"}": {
+                ".": {},
+                "f:name": {},
+                "f:port": {},
+                "f:protocol": {},
+                "f:targetPort": {}
+              },
+              "k:{\"port\":443,\"protocol\":\"TCP\"}": {
+                ".": {},
+                "f:name": {},
+                "f:port": {},
+                "f:protocol": {},
+                "f:targetPort": {}
+              }
+            },
+            "f:selector": {
+              ".": {},
+              "f:app.kubernetes.io/name": {},
+              "f:app.kubernetes.io/part-of": {}
+            },
+            "f:sessionAffinity": {},
+            "f:type": {}
+          }
+        }
+      },
+      {
+        "manager": "kube-controller-manager",
+        "operation": "Update",
+        "apiVersion": "v1",
+        "time": "2021-03-01T18:01:49Z",
+        "fieldsType": "FieldsV1",
+        "fieldsV1": {
+          "f:metadata": {
+            "f:finalizers": {
+              ".": {},
+              "v:\"service.kubernetes.io/load-balancer-cleanup\"": {}
+            }
+          },
+          "f:status": {
+            "f:loadBalancer": {
+              "f:ingress": {}
+            }
+          }
+        }
+      }
+    ]
+  },
+  "spec": {
+    "ports": [
+      {
+        "name": "http",
+        "protocol": "TCP",
+        "port": 80,
+        "targetPort": "http",
+        "nodePort": 31986
+      },
+      {
+        "name": "https",
+        "protocol": "TCP",
+        "port": 443,
+        "targetPort": "https",
+        "nodePort": 31911
+      }
+    ],
+    "selector": {
+      "app.kubernetes.io/name": "ingress-nginx",
+      "app.kubernetes.io/part-of": "ingress-nginx"
+    },
+    "clusterIP": "10.0.10.31",
+    "type": "LoadBalancer",
+    "sessionAffinity": "None",
+    "loadBalancerSourceRanges": [
+      "0.0.0.0/0"
+    ],
+    "externalTrafficPolicy": "Local",
+    "healthCheckNodePort": 31365
+  },
+  "status": {
+    "loadBalancer": {
+      "ingress": [
+        {
+          "ip": "34.69.45.155"
+        }
+      ]
+    }
+  }
+}

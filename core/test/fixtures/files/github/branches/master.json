@@ -1,0 +1,67 @@
+{
+  "name": "master",
+  "commit": {
+    "sha": "546677b32124d425926c78c51a155ca3cb038698",
+    "node_id": "C_kwDOFVsXzdoAKDU0NjY3N2IzMjEyNGQ0MjU5MjZjNzhjNTFhMTU1Y2EzY2IwMzg2OTg",
+    "commit": {
+      "author": {
+        "name": "name",
+        "email": "account@example.com",
+        "date": "2021-12-07T14:46:28Z"
+      },
+      "committer": {
+        "name": "name",
+        "email": "account@example.com",
+        "date": "2021-12-07T14:46:28Z"
+      },
+      "message": "Merge branch 'compose'",
+      "tree": {
+        "sha": "fad3640ab18328363fc6581fd56c02ef7513855d",
+        "url": "https://api.github.com/repos/ACCOUNT/hello-world/git/trees/fad3640ab18328363fc6581fd56c02ef7513855d"
+      },
+      "url": "https://api.github.com/repos/ACCOUNT/hello-world/git/commits/546677b32124d425926c78c51a155ca3cb038698",
+      "comment_count": 0,
+      "verification": {
+        "verified": false,
+        "reason": "unsigned",
+        "signature": null,
+        "payload": null
+      }
+    },
+    "url": "https://api.github.com/repos/ACCOUNT/hello-world/commits/546677b32124d425926c78c51a155ca3cb038698",
+    "html_url": "https://github.com/ACCOUNT/hello-world/commit/546677b32124d425926c78c51a155ca3cb038698",
+    "comments_url": "https://api.github.com/repos/ACCOUNT/hello-world/commits/546677b32124d425926c78c51a155ca3cb038698/comments",
+    "author": null,
+    "committer": null,
+    "parents": [
+      {
+        "sha": "02f267112fc5faed82105418d04bef12e35e2707",
+        "url": "https://api.github.com/repos/ACCOUNT/hello-world/commits/02f267112fc5faed82105418d04bef12e35e2707",
+        "html_url": "https://github.com/ACCOUNT/hello-world/commit/02f267112fc5faed82105418d04bef12e35e2707"
+      },
+      {
+        "sha": "90a6f8459cec333c9f84e97efc2cc48f0eb417fe",
+        "url": "https://api.github.com/repos/ACCOUNT/hello-world/commits/90a6f8459cec333c9f84e97efc2cc48f0eb417fe",
+        "html_url": "https://github.com/ACCOUNT/hello-world/commit/90a6f8459cec333c9f84e97efc2cc48f0eb417fe"
+      }
+    ]
+  },
+  "_links": {
+    "self": "https://api.github.com/repos/ACCOUNT/hello-world/branches/master",
+    "html": "https://github.com/ACCOUNT/hello-world/tree/master"
+  },
+  "protected": false,
+  "protection": {
+    "enabled": false,
+    "required_status_checks": {
+      "enforcement_level": "off",
+      "contexts": [
+
+      ],
+      "checks": [
+
+      ]
+    }
+  },
+  "protection_url": "https://api.github.com/repos/ACCOUNT/hello-world/branches/master/protection"
+}

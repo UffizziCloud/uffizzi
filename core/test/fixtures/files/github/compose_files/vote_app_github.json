@@ -1,0 +1,18 @@
+{
+  "name": "uffizzi-compose.yml",
+  "path": "uffizzi-compose.yml",
+  "sha": "04620f110042ffba54ff823d03321a4ca090ce4b",
+  "size": 809,
+  "url": "https://api.github.com/repos/ACCOUNT/hello-world/contents/uffizzi-compose.yml?ref=compose",
+  "html_url": "https://github.com/ACCOUNT/hello-world/blob/compose/uffizzi-compose.yml",
+  "git_url": "https://api.github.com/repos/ACCOUNT/hello-world/git/blobs/04620f110042ffba54ff823d03321a4ca090ce4b",
+  "download_url": "https://raw.githubusercontent.com/ACCOUNT/hello-world/compose/uffizzi-compose.yml",
+  "type": "file",
+  "content": "c2VydmljZXM6CiAgcmVkaXM6CiAgICBpbWFnZTogcmVkaXM6bGF0ZXN0CgogIHBvc3RncmVzOgogICAgaW1hZ2U6IHBvc3RncmVzOjkuNgogICAgZW52X2ZpbGU6IC5lbnYKCiAgbmdpbng6CiAgICBpbWFnZTogbmdpbng6bGF0ZXN0CiAgICBjb25maWdzOgogICAgICAtIHNvdXJjZTogdm90ZV9jb25mCiAgICAgICAgdGFyZ2V0OiAvZXRjL25naW54L2NvbmYuZC9kZWZhdWx0LmNvbmYKCiAgd29ya2VyOgogICAgYnVpbGQ6CiAgICAgIGNvbnRleHQ6IGh0dHBzOi8vZ2l0aHViLmNvbS9BQ0NPVU5UL2V4YW1wbGUtdm90aW5nLXdvcmtlcgogICAgZGVwbG95OgogICAgICByZXNvdXJjZXM6CiAgICAgICAgbGltaXRzOgogICAgICAgICAgbWVtb3J5OiAyNTBNCgogIHZvdGU6CiAgICBidWlsZDoKICAgICAgY29udGV4dDogaHR0cHM6Ly9naXRodWIuY29tL0FDQ09VTlQvZXhhbXBsZS12b3Rpbmctdm90ZQoKICByZXN1bHQ6CiAgICBidWlsZDoKICAgICAgY29udGV4dDogaHR0cHM6Ly9naXRodWIuY29tL0FDQ09VTlQvZXhhbXBsZS12b3RpbmctcmVzdWx0Cgpjb25maWdzOgogIHZvdGVfY29uZjoKICAgIGZpbGU6IC4vY29uZmlncy92b3RlLmNvbmYKCngtdWZmaXp6aS1jb250aW51b3VzLXByZXZpZXc6CiAgZGVwbG95X3ByZXZpZXdfd2hlbl9wdWxsX3JlcXVlc3RfaXNfb3BlbmVkOiB0cnVlCiAgZGVsZXRlX3ByZXZpZXdfd2hlbl9wdWxsX3JlcXVlc3RfaXNfY2xvc2VkOiB0cnVlCiAgc2hhcmVfdG9fZ2l0aHViOiB0cnVlCiAgZGVsZXRlX3ByZXZpZXdfYWZ0ZXI6IDEwaAoKeC11ZmZpenppLWluZ3Jlc3M6CiAgc2VydmljZTogbmdpbngKICBwb3J0OiA4MDgwCg==\n",
+  "encoding": "base64",
+  "_links": {
+    "self": "https://api.github.com/repos/ACCOUNT/hello-world/contents/uffizzi-compose.yml?ref=compose",
+    "git": "https://api.github.com/repos/ACCOUNT/hello-world/git/blobs/04620f110042ffba54ff823d03321a4ca090ce4b",
+    "html": "https://github.com/ACCOUNT/hello-world/blob/compose/uffizzi-compose.yml"
+  }
+}

@@ -1,0 +1,169 @@
+[
+  {
+    "metadata": {
+      "name": "app-test-env-1-6f4c8896d-xrcfq",
+      "generateName": "app-test-env-1-6f4c8896d-",
+      "namespace": "test-env-1",
+      "uid": "7ed22d85-495e-457f-9916-880b54f8d1bc",
+      "resourceVersion": "72170704",
+      "creationTimestamp": "2021-08-20T13:05:33Z",
+      "labels": {
+        "app": "app-test-env-1",
+        "app.kubernetes.io/managed-by": "uffizzi",
+        "pod-template-hash": "6f4c8896d"
+      },
+      "annotations": {
+        "kubectl.kubernetes.io/restartedAt": "2021-08-20T13:05:33Z"
+      },
+      "ownerReferences": [
+        {
+          "apiVersion": "apps/v1",
+          "kind": "ReplicaSet",
+          "name": "app-test-env-1-6f4c8896d",
+          "uid": "81df5b4b-acbd-4384-9e97-9dc663275728",
+          "controller": true,
+          "blockOwnerDeletion": true
+        }
+      ]
+    },
+    "spec": {
+      "containers": [
+        {
+          "name": "f03d008a48",
+          "image": "uffizzitest/webhooks-test-app:latestt",
+          "ports": [
+            {
+              "name": "default-port",
+              "containerPort": 80,
+              "protocol": "TCP"
+            }
+          ],
+          "env": [
+            {
+              "name": "PORT",
+              "value": "80"
+            }
+          ],
+          "resources": {
+            "limits": {
+              "cpu": "25m",
+              "memory": "250Mi"
+            },
+            "requests": {
+              "cpu": "25m",
+              "memory": "250Mi"
+            }
+          },
+          "startupProbe": {
+            "tcpSocket": {
+              "port": 80
+            },
+            "initialDelaySeconds": 10,
+            "timeoutSeconds": 1,
+            "periodSeconds": 15,
+            "successThreshold": 1,
+            "failureThreshold": 80
+          },
+          "terminationMessagePath": "/dev/termination-log",
+          "terminationMessagePolicy": "File",
+          "imagePullPolicy": "Always",
+          "controllerName" : "f03d008a48"
+        }
+      ],
+      "restartPolicy": "Always",
+      "terminationGracePeriodSeconds": 30,
+      "dnsPolicy": "ClusterFirst",
+      "serviceAccountName": "default",
+      "serviceAccount": "default",
+      "automountServiceAccountToken": false,
+      "nodeName": "gke-example-default-pool-8139be1d-wmaj",
+      "securityContext": {},
+      "imagePullSecrets": [
+        {
+          "name": "credential-dockerhub-3"
+        }
+      ],
+      "schedulerName": "default-scheduler",
+      "tolerations": [
+        {
+          "key": "sandbox.gke.io/runtime",
+          "operator": "Exists"
+        },
+        {
+          "key": "node.kubernetes.io/not-ready",
+          "operator": "Exists",
+          "effect": "NoExecute",
+          "tolerationSeconds": 300
+        },
+        {
+          "key": "node.kubernetes.io/unreachable",
+          "operator": "Exists",
+          "effect": "NoExecute",
+          "tolerationSeconds": 300
+        }
+      ],
+      "priority": 0,
+      "enableServiceLinks": true,
+      "preemptionPolicy": "PreemptLowerPriority"
+    },
+    "status": {
+      "phase": "Running",
+      "conditions": [
+        {
+          "type": "Initialized",
+          "status": "True",
+          "lastProbeTime": null,
+          "lastTransitionTime": "2021-08-20T13:05:33Z"
+        },
+        {
+          "type": "Ready",
+          "status": "False",
+          "lastProbeTime": null,
+          "lastTransitionTime": "2021-08-20T13:05:33Z",
+          "reason": "ContainersNotReady",
+          "message": "containers with unready status: [f03d008a48]"
+        },
+        {
+          "type": "ContainersReady",
+          "status": "False",
+          "lastProbeTime": null,
+          "lastTransitionTime": "2021-08-20T13:05:33Z",
+          "reason": "ContainersNotReady",
+          "message": "containers with unready status: [f03d008a48]"
+        },
+        {
+          "type": "PodScheduled",
+          "status": "True",
+          "lastProbeTime": null,
+          "lastTransitionTime": "2021-08-20T13:05:33Z"
+        }
+      ],
+      "hostIP": "10.128.0.18",
+      "podIP": "10.108.4.232",
+      "podIPs": [
+        {
+          "ip": "10.108.4.232"
+        }
+      ],
+      "startTime": "2021-08-20T13:05:33Z",
+      "containerStatuses": [
+        {
+          "name": "f03d008a48",
+          "state": {
+            "running": {
+              "startedAt": "2021-08-20T13:05:57Z"
+            }
+          },
+          "lastState": {},
+          "ready": false,
+          "restartCount": 0,
+          "image": "uffizzitest/webhooks-test-app:latest",
+          "imageID": "docker-pullable://uffizzitest/webhooks-test-app@sha256:a1efdad4c909517ae9eecd1a362d6f30046822f8e47793d0211aa0d5a3cc2b16",
+          "containerID": "docker://4b04f42cb9c9c24837b9ae4e458c57a31abebc2f03529447aae5350834185c80",
+          "started": true
+        }
+      ],
+      "qosClass": "Guaranteed"
+    }
+  }
+]

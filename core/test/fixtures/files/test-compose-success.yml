@@ -1,0 +1,19 @@
+services:
+  hello-world:
+    image: redis
+    env_file:
+      - local.env
+      - ./env_files/env_file.env
+    configs:
+      - source: vote_conf
+        target: /etc/nginxz
+
+configs:
+  vote_conf:
+    file: ./vote.conf
+  defaulf_conf:
+    file: config_files/config_file.conf
+
+x-uffizzi-ingress:
+  service: hello-world
+  port: 80

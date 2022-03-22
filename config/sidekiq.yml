@@ -1,0 +1,18 @@
+---
+:concurrency: <%= ENV["SIDEKIQ_CONCURRENCY"].nil? ? 5 : ENV["SIDEKIQ_CONCURRENCY"].to_i %>
+:verbose: true
+:queues:
+  - [default, 5]
+  - [active_storage_analysis, 5]
+  - [active_storage_purge, 5]
+  - [mailers, 5]
+  - [billing, 6]
+  - [deployments, 10]
+  - [config_files, 10]
+  - [compose_files, 10]
+  - [resources, 10]
+  - [databases, 10]
+  - [projects, 10]
+  - [accounts, 10]
+  - [containers, 10]
+  - [github, 10]

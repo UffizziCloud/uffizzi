@@ -2,15 +2,6 @@ version: '3.9'
 services:
   web:
     build: .
-    volumes: &web-volumes
-      - &app-volume .:/app:cached
-      - ~/.ssh:/root/.ssh
-      - ~/.bash_history:/root/.bash_history
-      - &bundle-cache-volume bundle_cache:/bundle_cache
-    ports:
-      - 7000:7000
-    depends_on:
-      - db
     environment: &web-environment
       RAILS_SECRET_KEY_BASE: 44a599292ee918ca52c5060bb73b9a5b754628d6d67c64d0066c2ecf25381ef67b2b7a9981332316cc09e0a4bdbd08f07b7a9277d77fd4b4f2a39a488860c18c
       DATABASE_HOST: db
@@ -25,8 +16,32 @@ services:
       RAILS_PORT: 7000
       RAILS_ENV: development
       ALLOWED_HOSTS: lvh.me,.lvh.me,lvh.me:1313,.lvh.me:1313,lvh.me:7000,.lvh.me:7000,localhost,.ngrok.io,localhost:3000,web
-
+      REDIS_URL: redis://redis
+      APP_URL: http://web:7000
+    env_file:
+      - .env
+    volumes: &web-volumes
+      - &app-volume .:/app:cached
+      - ~/.ssh:/root/.ssh
+      - &bash-history ~/.bash_history:/root/.bash_history
+      - &bundle-cache-volume bundle_cache:/bundle_cache
+    ports:
+      - 7000:7000
+    depends_on:
+      - db
     command: bundle exec puma -C config/puma.rb
+
+  core:
+    build: core
+    environment: *web-environment
+    env_file:
+      - .env
+    volumes:
+      - ./core:/gem:cached
+      - *bash-history
+      - *bundle-cache-volume
+    depends_on:
+      - db
 
   db:
     image: postgres:11.4
@@ -36,6 +51,19 @@ services:
       POSTGRES_USER: postgres
       POSTGRES_PASSWORD: postgres
 
+  sidekiq:
+    build: .
+    environment: *web-environment
+    env_file:
+      - .env
+    volumes: *web-volumes
+    depends_on:
+      - redis
+    command: bundle exec sidekiq -C /app/config/sidekiq.yml
+
+  redis:
+    image: redis
+
   bundle_cache:
     image: busybox
     volumes:
@@ -43,6 +71,7 @@ services:
 
 volumes:
   bundle_cache:
+  core:
 
 networks:
   default:

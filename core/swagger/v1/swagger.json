@@ -1,0 +1,838 @@
+{
+  "swagger": "2.0",
+  "info": {
+    "title": "Uffizzi docs",
+    "description": "Your API does this",
+    "version": "1.0"
+  },
+  "host": "lvh.me:7000",
+  "basePath": "/",
+  "schemes": [
+    "http"
+  ],
+  "paths": {
+    "/api/cli/v1/account/credential": {
+      "post": {
+        "tags": [
+          "Account/Credential"
+        ],
+        "operationId": "Account/Credential-create",
+        "parameters": [
+          {
+            "name": "credential",
+            "description": "credential",
+            "required": true,
+            "in": "body",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "username": {
+                  "type": "string"
+                },
+                "password": {
+                  "type": "string"
+                },
+                "type": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        ],
+        "responses": {
+          "default": {
+            "description": "Create account credential",
+            "examples": {
+              "application/json": "type can be one of UffizziCore::Credential::Amazon, UffizziCore::Credential::Azure, UffizziCore::Credential::DockerHub, UffizziCore::Credential::Google"
+            }
+          },
+          "201": {
+            "description": "Created successfully",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "id": {
+                  "type": "integer"
+                },
+                "username": {
+                  "type": "string"
+                },
+                "password": {
+                  "type": "string"
+                },
+                "type": {
+                  "type": "string"
+                },
+                "state": {
+                  "type": "string"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Unprocessable entity",
+            "schema": {
+              "type": "object",
+              "additionalProperties": {
+                "type": "errors"
+              }
+            }
+          }
+        },
+        "description": "Create account credential",
+        "summary": "Create account credential",
+        "x-controller": "uffizzi_core/api/cli/v1/account/credentials",
+        "x-action": "create"
+      }
+    },
+    "/api/cli/v1/projects/{project_slug}/compose_file": {
+      "get": {
+        "tags": [
+          "ComposeFile"
+        ],
+        "operationId": "ComposeFile-show",
+        "parameters": [
+          {
+            "name": "project_slug",
+            "description": "The project_slug for the project",
+            "required": true,
+            "in": "path",
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": {
+              "$ref": "#/definitions/ComposeFile"
+            }
+          },
+          "401": {
+            "description": "Not authorized"
+          },
+          "404": {
+            "description": "Not found",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "errors": {
+                  "type": "object",
+                  "properties": {
+                    "title": {
+                      "type": "string"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "description": "Get the compose file for the project",
+        "summary": "Get the compose file for the project",
+        "x-controller": "uffizzi_core/api/cli/v1/projects/compose_files",
+        "x-action": "show"
+      },
+      "post": {
+        "tags": [
+          "ComposeFile"
+        ],
+        "operationId": "ComposeFile-create",
+        "parameters": [
+          {
+            "name": "params",
+            "description": "params",
+            "required": true,
+            "in": "body",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "compose_file": {
+                  "type": "object",
+                  "properties": {
+                    "path": {
+                      "type": "string"
+                    },
+                    "source": {
+                      "type": "string"
+                    },
+                    "content": {
+                      "type": "string"
+                    }
+                  }
+                },
+                "dependencies": {
+                  "type": "array",
+                  "items": {
+                    "type": "object",
+                    "properties": {
+                      "path": {
+                        "type": "string"
+                      },
+                      "source": {
+                        "type": "string"
+                      },
+                      "content": {
+                        "type": "string"
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          {
+            "name": "project_slug",
+            "description": "The project_slug for the project",
+            "required": true,
+            "in": "path",
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "201": {
+            "description": "OK",
+            "schema": {
+              "$ref": "#/definitions/ComposeFile"
+            }
+          },
+          "422": {
+            "description": "Invalid compose file",
+            "schema": {
+              "$ref": "#/definitions/ComposeFile"
+            }
+          },
+          "401": {
+            "description": "Not authorized"
+          }
+        },
+        "description": "Create a compose file for the project",
+        "summary": "Create a compose file for the project",
+        "x-controller": "uffizzi_core/api/cli/v1/projects/compose_files",
+        "x-action": "create"
+      },
+      "delete": {
+        "tags": [
+          "ComposeFile"
+        ],
+        "operationId": "ComposeFile-destroy",
+        "parameters": [
+          {
+            "name": "project_slug",
+            "description": "The project_slug for the project",
+            "required": true,
+            "in": "path",
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": "No Content"
+          },
+          "401": {
+            "description": "Not authorized"
+          }
+        },
+        "description": "Delete the compose file for the project",
+        "summary": "Delete the compose file for the project",
+        "x-controller": "uffizzi_core/api/cli/v1/projects/compose_files",
+        "x-action": "destroy"
+      }
+    },
+    "/api/cli/v1/projects/{project_slug}/deployments": {
+      "get": {
+        "tags": [
+          "Deployment"
+        ],
+        "operationId": "Deployment-index",
+        "parameters": [
+          {
+            "name": "project_slug",
+            "description": "The slug for the project",
+            "required": true,
+            "in": "path",
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": {
+              "type": "array",
+              "items": {
+                "$ref": "#/definitions/Deployment"
+              }
+            }
+          },
+          "401": {
+            "description": "Not authorized"
+          }
+        },
+        "description": "Get a list of active deployements for a project",
+        "summary": "Get a list of active deployements for a project",
+        "x-controller": "uffizzi_core/api/cli/v1/projects/deployments",
+        "x-action": "index"
+      },
+      "post": {
+        "tags": [
+          "Deployment"
+        ],
+        "operationId": "Deployment-create",
+        "parameters": [
+          {
+            "name": "params",
+            "description": "params",
+            "required": true,
+            "in": "body",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "compose_file": {
+                  "type": "object",
+                  "properties": {
+                    "path": {
+                      "type": "string"
+                    },
+                    "source": {
+                      "type": "string"
+                    },
+                    "content": {
+                      "type": "string"
+                    }
+                  }
+                },
+                "dependencies": {
+                  "type": "array",
+                  "items": {
+                    "type": "object",
+                    "properties": {
+                      "path": {
+                        "type": "string"
+                      },
+                      "source": {
+                        "type": "string"
+                      },
+                      "content": {
+                        "type": "string"
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          {
+            "name": "project_slug",
+            "description": "The slug for the project",
+            "required": true,
+            "in": "path",
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "201": {
+            "description": "OK",
+            "schema": {
+              "$ref": "#/definitions/Deployment"
+            }
+          },
+          "422": {
+            "description": "Unprocessable Entity",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "errors": {
+                  "type": "object",
+                  "properties": {
+                    "state": {
+                      "type": "string"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Not found",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "errors": {
+                  "type": "object",
+                  "properties": {
+                    "title": {
+                      "type": "string"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Not authorized"
+          }
+        },
+        "description": "Create a deployment from a compose file",
+        "summary": "Create a deployment from a compose file",
+        "x-controller": "uffizzi_core/api/cli/v1/projects/deployments",
+        "x-action": "create"
+      }
+    },
+    "/api/cli/v1/projects/{project_slug}/deployments/{id}": {
+      "get": {
+        "tags": [
+          "Deployment"
+        ],
+        "operationId": "Deployment-show",
+        "parameters": [
+          {
+            "name": "id",
+            "description": "Scope response to id",
+            "required": true,
+            "in": "path",
+            "type": "string"
+          },
+          {
+            "name": "project_slug",
+            "description": "The slug for the project",
+            "required": true,
+            "in": "path",
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": {
+              "$ref": "#/definitions/Deployment"
+            }
+          },
+          "404": {
+            "description": "Not found",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "errors": {
+                  "type": "object",
+                  "properties": {
+                    "title": {
+                      "type": "string"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Not authorized"
+          }
+        },
+        "description": "Get deployment information by id",
+        "summary": "Get deployment information by id",
+        "x-controller": "uffizzi_core/api/cli/v1/projects/deployments",
+        "x-action": "show"
+      },
+      "delete": {
+        "tags": [
+          "Deployment"
+        ],
+        "operationId": "Deployment-destroy",
+        "parameters": [
+          {
+            "name": "id",
+            "description": "Scope response to id",
+            "required": true,
+            "in": "path",
+            "type": "string"
+          },
+          {
+            "name": "project_slug",
+            "description": "The slug for the project",
+            "required": true,
+            "in": "path",
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": "No Content"
+          },
+          "401": {
+            "description": "Not authorized"
+          }
+        },
+        "description": "Disable deployment by id",
+        "summary": "Disable deployment by id",
+        "x-controller": "uffizzi_core/api/cli/v1/projects/deployments",
+        "x-action": "destroy"
+      }
+    },
+    "/api/cli/v1/projects/{project_slug}/deployments/{id}/deploy_containers": {
+      "post": {
+        "tags": [
+          "Deployment"
+        ],
+        "operationId": "Deployment-deploy_containers",
+        "parameters": [
+          {
+            "name": "id",
+            "description": "The id of the deployment",
+            "required": true,
+            "in": "path",
+            "type": "string"
+          },
+          {
+            "name": "project_slug",
+            "description": "The slug for the project",
+            "required": true,
+            "in": "path",
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": "No Content"
+          },
+          "404": {
+            "description": "Not found",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "errors": {
+                  "type": "object",
+                  "properties": {
+                    "title": {
+                      "type": "string"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Not authorized"
+          }
+        },
+        "x-controller": "uffizzi_core/api/cli/v1/projects/deployments",
+        "x-action": "deploy_containers"
+      }
+    },
+    "/api/cli/v1/projects": {
+      "get": {
+        "tags": [
+          "Uffizzi"
+        ],
+        "operationId": "Uffizzi-index",
+        "parameters": [
+
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "projects": {
+                  "type": "array",
+                  "items": {
+                    "type": "object",
+                    "properties": {
+                      "slug": {
+                        "type": "string"
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Not authorized"
+          }
+        },
+        "description": "Get projects of current user",
+        "summary": "Get projects of current user",
+        "x-controller": "uffizzi_core/api/cli/v1/projects",
+        "x-action": "index"
+      }
+    },
+    "/api/cli/v1/session": {
+      "post": {
+        "tags": [
+          "Uffizzi"
+        ],
+        "operationId": "Uffizzi-create",
+        "parameters": [
+          {
+            "name": "user",
+            "description": "user",
+            "required": true,
+            "in": "body",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "email": {
+                  "type": "string"
+                },
+                "password": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        ],
+        "responses": {
+          "201": {
+            "description": "Created successfully",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "user": {
+                  "type": "object",
+                  "properties": {
+                    "accounts": {
+                      "type": "array",
+                      "items": {
+                        "type": "object",
+                        "properties": {
+                          "id": {
+                            "type": "integer"
+                          },
+                          "state": {
+                            "type": "string"
+                          }
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Unprocessable entity",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "errors": {
+                  "type": "object",
+                  "properties": {
+                    "password": {
+                      "type": "string"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "description": "Create session",
+        "summary": "Create session",
+        "x-controller": "uffizzi_core/api/cli/v1/sessions",
+        "x-action": "create"
+      },
+      "delete": {
+        "tags": [
+          "Uffizzi"
+        ],
+        "operationId": "Uffizzi-destroy",
+        "parameters": [
+
+        ],
+        "responses": {
+          "204": {
+            "description": "No Content"
+          }
+        },
+        "description": "Destroy session",
+        "summary": "Destroy session",
+        "x-controller": "uffizzi_core/api/cli/v1/sessions",
+        "x-action": "destroy"
+      }
+    }
+  },
+  "tags": [
+    {
+      "name": "Account/Credential",
+      "description": ""
+    },
+    {
+      "name": "ComposeFile",
+      "description": ""
+    },
+    {
+      "name": "Deployment",
+      "description": ""
+    },
+    {
+      "name": "Uffizzi",
+      "description": ""
+    },
+    {
+      "name": "Uffizzi",
+      "description": ""
+    }
+  ],
+  "securityDefinitions": {
+  },
+  "definitions": {
+    "UffizziCore_ActivityItem": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "integer"
+        },
+        "namespace": {
+          "type": "string"
+        },
+        "name": {
+          "type": "string"
+        },
+        "tag": {
+          "type": "string"
+        },
+        "branch": {
+          "type": "string"
+        },
+        "type": {
+          "type": "string"
+        },
+        "container_id": {
+          "type": "string"
+        },
+        "commit": {
+          "type": "string"
+        },
+        "commit_message": {
+          "type": "string"
+        },
+        "build_id": {
+          "type": "integer"
+        },
+        "created_at": {
+          "type": "string",
+          "format": "date"
+        },
+        "updated_at": {
+          "type": "string",
+          "format": "date"
+        },
+        "data": {
+          "type": "object"
+        },
+        "digest": {
+          "type": "string"
+        },
+        "meta": {
+          "type": "object"
+        }
+      },
+      "required": [
+        "name"
+      ]
+    },
+    "UffizziCore_ComposeFile": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "integer"
+        },
+        "source": {
+          "type": "string"
+        },
+        "path": {
+          "type": "string"
+        },
+        "content": {
+          "type": "string"
+        },
+        "auto_deploy": {
+          "type": "boolean"
+        },
+        "state": {
+          "type": "string"
+        },
+        "payload": {
+          "type": "string"
+        }
+      },
+      "required": [
+        "content"
+      ]
+    },
+    "UffizziCore_ConfigFile": {
+      "type": "object",
+      "properties": {
+        "filename": {
+          "type": "string"
+        },
+        "kind": {
+          "type": "string"
+        },
+        "payload": {
+          "type": "string"
+        },
+        "source": {
+          "type": "string"
+        }
+      }
+    },
+    "UffizziCore_Deployment": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "integer"
+        },
+        "project_id": {
+          "type": "integer"
+        },
+        "kind": {
+          "type": "string"
+        },
+        "state": {
+          "type": "string"
+        },
+        "preview_url": {
+          "type": "string"
+        },
+        "tag": {
+          "type": "string"
+        },
+        "branch": {
+          "type": "string"
+        },
+        "commit": {
+          "type": "string"
+        },
+        "image_id": {
+          "type": "string"
+        },
+        "created_at": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "updated_at": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "ingress_container_ready": {
+          "type": "boolean"
+        },
+        "ingress_container_state": {
+          "type": "string"
+        },
+        "creation_source": {
+          "type": "string"
+        },
+        "contaners": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "deployed_by": {
+          "type": "object"
+        }
+      }
+    }
+  }
+}
