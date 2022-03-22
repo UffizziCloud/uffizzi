@@ -51,6 +51,16 @@ services:
       POSTGRES_USER: postgres
       POSTGRES_PASSWORD: postgres
 
+  sidekiq:
+    build: .
+    environment: *web-environment
+    env_file:
+      - .env
+    volumes: *web-volumes
+    depends_on:
+      - redis
+    command: bundle exec sidekiq -C /app/config/sidekiq.yml
+
   redis:
     image: redis
 
