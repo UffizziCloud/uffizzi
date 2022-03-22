@@ -4,11 +4,11 @@
 
 class UffizziCore::Api::Cli::V1::Projects::Deployments::Containers::LogsController <
   UffizziCore::Api::Cli::V1::Projects::Deployments::Containers::ApplicationController
-  # @path [GET] /api/cli/v1/projects/{project_slug}/deployments/{deployment_id}/containers/{container_id}/logs
+  # @path [GET] /api/cli/v1/projects/{project_slug}/deployments/{deployment_id}/containers/{container_name}/logs
   #
   # @parameter project_slug(required,path) [string] The slug of the project
   # @parameter deployment_id(required,path) [integer] The id of the deployment
-  # @parameter container_id(required,path) [integer] The id of the container
+  # @parameter container_name(required,path) [integer] The name of the container
   #
   # @response [object <logs: Array<object<insert_id: string, payload: string>>>] 200 OK
   # @response [object<errors: object<title: string>>] 404 Not found

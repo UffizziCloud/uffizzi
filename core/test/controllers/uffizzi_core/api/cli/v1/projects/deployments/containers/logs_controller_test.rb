@@ -28,12 +28,12 @@ class UffizziCore::Api::Cli::V1::Projects::Deployments::Containers::LogsControll
       },
     )
     pod_name = UffizziCore::ContainerService.pod_name(@container)
-    stubbed_request = stub_container_log_request(deployment_id, pod_name, limit, logs)
+    stubbed_request = stub_container_log_request(@deployment.id, pod_name, limit, logs)
 
     params = {
       project_slug: @project.slug,
       deployment_id: @deployment.id,
-      container_id: @container.id,
+      container_name: @container.name,
       limit: 30,
     }
 
@@ -65,12 +65,12 @@ class UffizziCore::Api::Cli::V1::Projects::Deployments::Containers::LogsControll
     )
 
     pod_name = UffizziCore::ContainerService.pod_name(@container)
-    stubbed_request = stub_container_log_request(deployment_id, pod_name, limit, logs)
+    stubbed_request = stub_container_log_request(@deployment.id, pod_name, limit, logs)
 
     params = {
       project_slug: @project.slug,
       deployment_id: @deployment.id,
-      container_id: @container.id,
+      container_name: @container.name,
       limit: 30,
     }
 
@@ -90,13 +90,12 @@ class UffizziCore::Api::Cli::V1::Projects::Deployments::Containers::LogsControll
       },
     )
     pod_name = UffizziCore::ContainerService.pod_name(@container)
-    stubbed_request = stub_container_log_request(deployment_id, pod_name, limit, logs)
-
+    stubbed_request = stub_container_log_request(@deployment.id, pod_name, limit, logs)
 
     params = {
       project_slug: @project.slug,
       deployment_id: @deployment.id,
-      container_id: @container.id,
+      container_name: @container.name,
       limit: 30,
     }
 

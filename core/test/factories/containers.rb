@@ -4,6 +4,7 @@ FactoryBot.define do
   factory :container, class: UffizziCore::Container do
     image
     tag
+    name
     variables { nil }
     secret_variables { nil }
     deployment

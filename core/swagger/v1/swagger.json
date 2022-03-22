@@ -238,7 +238,7 @@
         "x-action": "destroy"
       }
     },
-    "/api/cli/v1/projects/{project_slug}/deployments/{deployment_id}/containers/{container_id}/logs": {
+    "/api/cli/v1/projects/{project_slug}/deployments/{deployment_id}/containers/{container_name}/logs": {
       "get": {
         "tags": [
           "Project/Deployment/Container/Log"
@@ -246,8 +246,8 @@
         "operationId": "Project/Deployment/Container/Log-index",
         "parameters": [
           {
-            "name": "container_id",
-            "description": "The id of the container",
+            "name": "container_name",
+            "description": "The name of the container",
             "required": true,
             "in": "path",
             "type": "integer"
