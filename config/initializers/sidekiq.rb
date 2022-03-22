@@ -11,14 +11,14 @@ Sidekiq.configure_server do |config|
 end
 
 if Settings.sidekiq.login.present?
-  Sidekiq::Web.use Rack::Auth::Basic do |username, password|
+  Sidekiq::Web.use(Rack::Auth::Basic) do |username, password|
     valid_login = ActiveSupport::SecurityUtils.secure_compare(
       ::Digest::SHA256.hexdigest(username),
-      ::Digest::SHA256.hexdigest(Settings.sidekiq.login)
+      ::Digest::SHA256.hexdigest(Settings.sidekiq.login),
     )
     valid_password = ActiveSupport::SecurityUtils.secure_compare(
       ::Digest::SHA256.hexdigest(password),
-      ::Digest::SHA256.hexdigest(Settings.sidekiq.password)
+      ::Digest::SHA256.hexdigest(Settings.sidekiq.password),
     )
     valid_login & valid_password
   end
