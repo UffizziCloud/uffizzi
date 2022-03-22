@@ -12,6 +12,7 @@ gem 'pg', '>= 0.18', '< 2.0'
 gem 'puma', '~> 4.1'
 gem 'rack-cors'
 gem 'rails', '~> 6.1.0'
+gem 'sidekiq'
 gem 'tzinfo-data', platforms: [:mingw, :mswin, :x64_mingw, :jruby]
 gem 'uffizzi_core', path: './core'
 

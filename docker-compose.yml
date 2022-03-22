@@ -2,15 +2,6 @@ version: '3.9'
 services:
   web:
     build: .
-    volumes: &web-volumes
-      - &app-volume .:/app:cached
-      - ~/.ssh:/root/.ssh
-      - &bash-history ~/.bash_history:/root/.bash_history
-      - &bundle-cache-volume bundle_cache:/bundle_cache
-    ports:
-      - 7000:7000
-    depends_on:
-      - db
     environment: &web-environment
       RAILS_SECRET_KEY_BASE: 44a599292ee918ca52c5060bb73b9a5b754628d6d67c64d0066c2ecf25381ef67b2b7a9981332316cc09e0a4bdbd08f07b7a9277d77fd4b4f2a39a488860c18c
       DATABASE_HOST: db
@@ -27,43 +18,24 @@ services:
       ALLOWED_HOSTS: lvh.me,.lvh.me,lvh.me:1313,.lvh.me:1313,lvh.me:7000,.lvh.me:7000,localhost,.ngrok.io,localhost:3000,web
       REDIS_URL: redis://redis
       APP_URL: http://web:7000
-      CONTROLLER_URL: 'http://controller:8080'
-      CONTROLLER_LOGIN: 'login'
-      CONTROLLER_PASSWORD: 'password'
-      GITHUB_PRIVATE_KEY: |
-        -----BEGIN RSA PRIVATE KEY-----
-        MIIEowIBAAKCAQEAvt9uoL0Ke7He/EmdxhfBn3hwg0WLASk6zoxLlTcvNpCMUEED
-        OTehkOSpZwwIeLOWwefc36xE4Yc/GG2EhBqku9UMAc4K4/v+oO/OgC4M09R41RbZ
-        X+NRn6mD/336n5K2hwcygLwqw84U748v/RZQyGHBqsrRj+eDEN7QaxqRsV0dKAB1
-        1YVKPr05QVrW4YxUh/q1rt8GmMtYYPmkGn6ImNeOzB3foCFn+FOpkpNa8erK8Ck1
-        j1EDwTZuSDJ0KXEKDNJZg7yz8yTG6a48DB/NYg25fKMXAAB48B1K2VwQgQWzGZfX
-        7ztAVOAI78dRvl8xJ760w21wSxGo15/RHRJT2wIDAQABAoIBAQChLu8t/9WNdTxX
-        khcRBFi2wS9KO3zSAy4s5B6jqFFPY6uJzgzZ0Ze3UtGXOnsg6o9Bufo0TDZyuRJY
-        H4vLPvCjyZp1H7jko5V39GpOphShAYj0cXIpXj48dRsJsynkfTF0P2ive7clWK8n
-        SaR9tc2MGblA8DsdqaRtp6sa9vnXatIAzZN1v3yDAOD79TdttNUHkR4GV96+QxC1
-        IR8Jjx+JuVHDrlEeFfe42slmak1zKG/btV+XZtcvX5tRwGJiP9CpuOY1illHDqnp
-        tk8P2LrExrTDSaWvDsNMNOHVzYWun3pU6qIQ4mQc6R53Yp5fsl2W/d3PoYdkFbs7
-        Cl4ErxAZAoGBAPS7cnUQ4t/KDxwD3be4WMnhF8w/de2zxumG0e629Ij6BGmnlO20
-        JvFQSDychQ/yCGa/UmLssZTktZZ74S3mphB+L6n4NCMmIOZOY+b9aQUL2n/y3W20
-        s2v8FCmORa6fP/aEC+uQeTiCA0QpppCxIgSiCuQggg0h1PTkh4egN1dXAoGBAMep
-        Kstgdef7KBgL2XZ2S/BSqTZ5XGPaeeqod3bMy8tDSZoyLP3fa1FKdbRZPv0CFjHJ
-        2y3GwujRHtNqeeDSMEcshGf+Ix2cHf6Dvpmn5kpOp0Rj3NTg+1vv7C6nXlLWpsgd
-        PKl9SkC0WabIgCMZ5pRbuNpwygpkHycK6hlk46kdAoGAE7pkkKFK2KVuMGDzZ5L5
-        vVRi2bkn5YB/gWW32Jlw/vXAk0/KBptmJD/HgvNPGqj1GmtD1eukqQ8CwF2+Gjgk
-        nOG/L+FtOoQhVM9u6Dj3VUvOUlAen3BYolTQv0TTwy7dNh8Q4u1jiDWa08zTu4g7
-        6MmzPQ6NzUcz5oXhkwJMU8MCgYB8CvF3YPpfoX4LUnFMU7piGDjgiw2HS9iqnPd7
-        a0jBg5BaqAmjwAZgfq4Z2ch0T7OSQyJUkkPNeP55wpDtyCgOT+4C3bTbVH6d/SOR
-        OuqsB6mLp68u4ofHWouVgI3tUUZU1TU254wWHvYD1FUneZPzX/i8XY5oXkOsce92
-        z2NRUQKBgGtkRQavE2j6b9O87zp066pbZEzOWv7I1YnPs0FtITxD+wfjSZQOM0lr
-        QkUUQX9S1PCUDuW8Urr87ZRCnzurnj7EGjFSeKS7qt4kesIfaAsyBC8Sf8D7IZ7d
-        QuOS/f1R5Qt1ofSSmgmUvg6rROJs7CqtI0YLYysr2Dn2fuTZf4Jc
-        -----END RSA PRIVATE KEY-----
-
+    env_file:
+      - .env
+    volumes: &web-volumes
+      - &app-volume .:/app:cached
+      - ~/.ssh:/root/.ssh
+      - &bash-history ~/.bash_history:/root/.bash_history
+      - &bundle-cache-volume bundle_cache:/bundle_cache
+    ports:
+      - 7000:7000
+    depends_on:
+      - db
     command: bundle exec puma -C config/puma.rb
 
   core:
     build: core
     environment: *web-environment
+    env_file:
+      - .env
     volumes:
       - ./core:/gem:cached
       - *bash-history
@@ -79,6 +51,16 @@ services:
       POSTGRES_USER: postgres
       POSTGRES_PASSWORD: postgres
 
+  sidekiq:
+    build: .
+    environment: *web-environment
+    env_file:
+      - .env
+    volumes: *web-volumes
+    depends_on:
+      - redis
+    command: bundle exec sidekiq -C /app/config/sidekiq.yml
+
   redis:
     image: redis
 
@@ -89,6 +71,7 @@ services:
 
 volumes:
   bundle_cache:
+  core:
 
 networks:
   default:

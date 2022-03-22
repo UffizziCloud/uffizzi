@@ -23,6 +23,8 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
+      - name: Create env file
+        uses: SpicyPizza/create-envfile@v1.3
       - name: Run tests
         run: docker-compose run --rm core bash -c "bundle install && bundle exec rails db:create && bundle exec rails test"
   build-and-push-some-branches:
@@ -60,13 +62,6 @@ jobs:
         uses: peter-evans/dockerhub-description@v2.4.3
         if: ${{ github.ref == format('refs/heads/{0}', github.event.repository.default_branch) }}
         with:
-          # Docker Hub username
           username: ${{ secrets.DOCKERHUB_USERNAME }}
-          # Docker Hub password
           password: ${{ secrets.DOCKERHUB_PASSWORD }}
-          # Docker Hub repository in the format `<namespace>/<name>` Default: `github.repository`
           repository: uffizzi/app
-          # Docker Hub repository short description Input exceeding 100 characters will be truncated
-          # short-description: # optional
-          # Path to the repository readme Default: `./README.md`
-          # readme-filepath: # optional

@@ -33,7 +33,7 @@ class UffizziCore::GoogleRegistryClient
 
   def build_connection(registry_url, username, password)
     Faraday.new(registry_url) do |conn|
-      conn.basic_auth(username, password)
+      conn.request(:basic_auth, username, password)
       conn.request(:json)
       conn.response(:json)
       conn.adapter(Faraday.default_adapter)

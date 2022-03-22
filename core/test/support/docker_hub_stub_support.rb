@@ -8,13 +8,13 @@ module UffizziCore::DockerHubStubSupport
     response = { token: 'mytoken' }
     uri = %r{#{API_URL}/users/login/}
 
-    stub_request(:post, uri).to_return(status: 200, body: response.to_json)
+    stub_request(:post, uri).to_return(status: 200, body: response.to_json, headers: { 'Content-Type' => 'application/json' })
   end
 
   def stub_dockerhub_login_fail(data)
     uri = %r{#{API_URL}/users/login/}
 
-    stub_request(:post, uri).to_return(status: 401, body: data.to_json)
+    stub_request(:post, uri).to_return(status: 401, body: data.to_json, headers: { 'Content-Type' => 'application/json' })
   end
 
   def stub_dockerhub_get_webhooks_request(account, repository, data, status = 200)
@@ -26,7 +26,7 @@ module UffizziCore::DockerHubStubSupport
   def stub_dockerhub_auth_for_digest(repository)
     response = { token: 'mytoken' }
     url = %r{#{AUTH_URL}.+scope=repository:#{repository}:pull&service=registry[.]docker[.]io.+}
-    stub_request(:get, url).to_return(status: 200, body: response.to_json, headers: {})
+    stub_request(:get, url).to_return(status: 200, body: response.to_json, headers: { 'Content-Type' => 'application/json' })
   end
 
   def stub_dockerhub_get_digest(image, tag, data)

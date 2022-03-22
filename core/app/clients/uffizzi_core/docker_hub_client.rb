@@ -17,7 +17,7 @@ class UffizziCore::DockerHubClient
     params = { username: credential.username, password: credential.password }
     url = "#{BASE_URL}/v2/users/login/"
     response = connection.post(url, params)
-    request_result = RequestResult.new(result: JSON.parse(response.body))
+    request_result = RequestResult.new(result: response.body)
     request_result.result.token
   end
 
@@ -110,7 +110,7 @@ class UffizziCore::DockerHubClient
     params = { username: credential.username, password: credential.password }
     url = "https://auth.docker.io/token?service=registry.docker.io&scope=repository:#{repository}:pull"
     response = connection.get(url, params)
-    RequestResult.new(result: JSON.parse(response.body))
+    RequestResult.new(result: response.body)
   end
 
   def send_webhook_answer(url, params)

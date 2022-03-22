@@ -7,9 +7,9 @@ class UffizziCore::Api::Cli::V1::Projects::Deployments::ActivityItemSerializer <
              :updated_at, :build_id, :data, :container_id, :digest
 
   def type
-    return :github if object.type == ActivityItem::Github.name
-    return :docker if object.type == ActivityItem::Docker.name
-    return :memory_limit if object.type == ActivityItem::MemoryLimit.name
+    return :github if object.type == UffizziCore::ActivityItem::Github.name
+    return :docker if object.type == UffizziCore::ActivityItem::Docker.name
+    return :memory_limit if object.type == UffizziCore::ActivityItem::MemoryLimit.name
 
     nil
   end
