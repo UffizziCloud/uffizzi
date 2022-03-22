@@ -1,0 +1,52 @@
+{
+  "push_data": {
+    "pushed_at": 1613134095,
+    "images": [],
+    "tag": "latest",
+    "pusher": "uffizzitest"
+  },
+  "callback_url": "https://registry.hub.docker.com/u/uffizzitest/webhooks-test-app/hook/2i4i3icb013ec45fffigg200jaf2hjf50/",
+  "repository": {
+    "status": "Active",
+    "description": "",
+    "is_trusted": false,
+    "full_description": "",
+    "repo_url": "https://hub.docker.com/r/uffizzitest/webhooks-test-app",
+    "owner": "uffizzitest",
+    "is_official": false,
+    "is_private": false,
+    "name": "webhooks-test-app",
+    "namespace": "uffizzitest",
+    "star_count": 0,
+    "comment_count": 0,
+    "date_created": 1613133268,
+    "repo_name": "uffizzitest/webhooks-test-app"
+  },
+  "webhook": {
+    "push_data": {
+      "pushed_at": 1613134095,
+      "images": [
+
+      ],
+      "tag": "latest",
+      "pusher": "uffizzitest"
+    },
+    "callback_url": "https://registry.hub.docker.com/u/uffizzitest/webhooks-test-app/hook/2i4i3icb013ec45fffigg200jaf2hjf50/",
+    "repository": {
+      "status": "Active",
+      "description": "",
+      "is_trusted": false,
+      "full_description": "",
+      "repo_url": "https://hub.docker.com/r/uffizzitest/webhooks-test-app",
+      "owner": "uffizzitest",
+      "is_official": false,
+      "is_private": false,
+      "name": "webhooks-test-app",
+      "namespace": "uffizzitest",
+      "star_count": 0,
+      "comment_count": 0,
+      "date_created": 1613133268,
+      "repo_name": "uffizzitest/webhooks-test-app"
+    }
+  }
+}

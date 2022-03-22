@@ -5,7 +5,7 @@ services:
     volumes: &web-volumes
       - &app-volume .:/app:cached
       - ~/.ssh:/root/.ssh
-      - ~/.bash_history:/root/.bash_history
+      - &bash-history ~/.bash_history:/root/.bash_history
       - &bundle-cache-volume bundle_cache:/bundle_cache
     ports:
       - 7000:7000
@@ -60,6 +60,16 @@ services:
         -----END RSA PRIVATE KEY-----
 
     command: bundle exec puma -C config/puma.rb
+
+  core:
+    build: core
+    environment: *web-environment
+    volumes:
+      - ./core:/gem:cached
+      - *bash-history
+      - *bundle-cache-volume
+    depends_on:
+      - db
 
   db:
     image: postgres:11.4

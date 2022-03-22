@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require_relative 'boot'
 
 require 'rails/all'
@@ -10,11 +12,11 @@ require 'uffizzi_core'
 
 module UffizziApp
   class Application < Rails::Application
-    config.load_defaults 6.0
+    config.load_defaults(6.0)
 
     config.hosts = Settings.allowed_hosts
 
-    config.middleware.insert_before 0, Rack::Cors do
+    config.middleware.insert_before(0, Rack::Cors) do
       allow do
         origins do |source|
           uri = URI.parse(source)
