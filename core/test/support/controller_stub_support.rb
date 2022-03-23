@@ -62,12 +62,14 @@ module UffizziCore::ControllerStubSupport
   end
 
   def stub_controller_get_deployment_request(deployment, data = nil)
-    stub_request(:get, "#{Settings.controller.url}/deployments/#{deployment.id}").to_return(status: 200, body: data.to_json)
+    uri = "#{Settings.controller.url}/deployments/#{deployment.id}"
+
+    stub_request(:get, uri).to_return(status: 200, body: data.to_json, headers: { 'Content-Type' => 'application/json' })
   end
 
   def stub_container_log_request(deployment_id, pod_name, limit, data)
-    url = "#{Settings.controller.url}/deployments/#{deployment_id}/containers/#{pod_name}/logs?limit=#{limit}"
+    uri = "#{Settings.controller.url}/deployments/#{deployment_id}/containers/#{pod_name}/logs?limit=#{limit}"
 
-    stub_request(:get, url).to_return(status: 200, body: data.to_json)
+    stub_request(:get, uri).to_return(status: 200, body: data.to_json, headers: { 'Content-Type' => 'application/json' })
   end
 end
