@@ -8,6 +8,8 @@ global:
     service:
       ports:
         postgresql: "5432"
+  redis:
+    password: ChangeMeNow
   uffizzi:
     controller:
       username: username
