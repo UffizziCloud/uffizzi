@@ -49,7 +49,8 @@ class UffizziCore::ControllerClient
 
   def deployment_containers_events(deployment_id:)
     events = get("/deployments/#{deployment_id}/containers/events").result.items
-    events.map do |event|
+    pods_events = events.select { |event| event.involved_object.kind == 'Pod' }
+    pods_events.map do |event|
       { first_timestamp: event.first_timestamp, last_timestamp: event.last_timestamp, reason: event.reason, message: event.message }
     end
   end
