@@ -36,4 +36,4 @@ ENV PATH=$RAILS_ROOT/bin:${PATH}
 
 EXPOSE 7000
 
-CMD /bin/bash -c "bundle exec rails db:setup && bundle exec puma -C config/puma.rb"
+CMD /bin/bash -c "bundle exec rails db:create db:migrate && bundle exec puma -C config/puma.rb"
