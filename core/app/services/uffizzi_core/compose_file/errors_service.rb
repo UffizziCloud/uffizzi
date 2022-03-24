@@ -1,6 +1,7 @@
 # frozen_string_literal: true
 
 class UffizziCore::ComposeFile::ErrorsService
+  SECRETS_ERROR_KEY = 'secret_variables'
   class << self
     def has_error?(compose_file, error_code)
       error = compose_file.payload.dig('errors', error_code)

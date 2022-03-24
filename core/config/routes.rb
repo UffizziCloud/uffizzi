@@ -25,6 +25,11 @@ UffizziCore::Engine.routes.draw do
                 resources :activity_items, only: ['index']
               end
             end
+            resources :secrets, only: ['index', 'destroy'] do
+              collection do
+                post :bulk_create
+              end
+            end
           end
         end
         resource :session, only: ['create', 'destroy']
