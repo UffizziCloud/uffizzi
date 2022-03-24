@@ -60,7 +60,7 @@ This `uffizzi_app` acts as a REST API for [`uffizzi_cli`](https://github.com/Uff
 ## Prepare
 
 ```bash
-docker-compose run --rm web bundle install && rails db:setup
+docker-compose run --rm web bash -c "bundle install && bundle exec rails db:setup"
 docker-compose up
 ```
 
