@@ -80,7 +80,7 @@
           }
         },
         "description": "Create account credential",
-        "summary": "reate account credential",
+        "summary": "Create account credential",
         "x-controller": "uffizzi_core/api/cli/v1/account/credentials",
         "x-action": "create"
       }
