@@ -21,6 +21,7 @@ class UffizziCore::Api::Cli::V1::Projects::Deployments::EventsControllerTest < A
       {
         items: [
           {
+            involved_object: { kind: 'Pod' },
             first_timestamp: first_timestamp,
             last_timestamp: last_timestamp,
             reason: reason,

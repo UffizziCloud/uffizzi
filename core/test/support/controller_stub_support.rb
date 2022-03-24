@@ -61,13 +61,9 @@ module UffizziCore::ControllerStubSupport
     stub_request(:post, uri)
   end
 
-  def stub_controller_get_deployment_request(deployment, data = nil)
-    stub_request(:get, "#{Settings.controller.url}/deployments/#{deployment.id}").to_return(status: 200, body: data.to_json)
-  end
-
   def stub_controller_get_deployment_events(deployment, body)
     uri = "#{Settings.controller.url}/deployments/#{deployment.id}/containers/events"
 
-    stub_request(:get, uri).to_return(status: 200, body: body.to_json)
+    stub_request(:get, uri).to_return(status: 200, body: body.to_json, headers: { 'Content-Type' => 'application/json' })
   end
 end
