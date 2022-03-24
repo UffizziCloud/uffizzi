@@ -27,6 +27,7 @@ allowed_hosts: ""
 db_host: "" # default to dependent postgresql
 rails_secret_key_base: "" # default to half-random string
 redis_url: "" # default to dependent redis
+managed_dns_zone_dns_name: uffizzi.example.com
 basic_auth_login: username
 basic_auth_password: ChangeMeNow
 github_app_id: ChangeMeNow
