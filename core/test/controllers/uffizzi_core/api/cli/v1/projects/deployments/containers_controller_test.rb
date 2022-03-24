@@ -21,6 +21,7 @@ class UffizziCore::Api::Cli::V1::Projects::Deployments::ContainersControllerTest
       repo: repo,
       image: 'uffizzitest/webhooks-test-app',
       tag: 'latest',
+      secret_variables: [ name: 'test', value: 'test']
     )
 
     params = { project_slug: @project.slug, deployment_id: @deployment.id }
