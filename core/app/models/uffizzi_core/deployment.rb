@@ -73,9 +73,5 @@ class UffizziCore::Deployment < UffizziCore::ApplicationRecord
   def clean
     active_containers.each(&:disable!)
     UffizziCore::Deployment::DeleteJob.perform_async(id)
-
-    preview_url = UffizziCore::DeploymentService.build_preview_url(self)
-
-    UffizziCore::Deployment::DeleteDnsRecordJob.perform_async(preview_url)
   end
 end

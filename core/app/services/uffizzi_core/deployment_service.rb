@@ -23,7 +23,6 @@ module UffizziCore::DeploymentService
         update_subdomain!(deployment_form)
 
         UffizziCore::Deployment::CreateJob.perform_async(deployment_form.id)
-        UffizziCore::Deployment::CreateDnsRecordJob.perform_async(deployment_form.id)
         UffizziCore::Deployment::CreateWebhooksJob.perform_async(deployment_form.id)
       end
 
@@ -148,7 +147,6 @@ module UffizziCore::DeploymentService
 
     def setup_ingress_container(deployment, ingress_container, port)
       old_deployment_subdomain = deployment.subdomain
-      old_preview_url = build_preview_url(deployment)
 
       containers = deployment.containers.active
 
@@ -163,9 +161,6 @@ module UffizziCore::DeploymentService
 
       if new_deployment_subdomain != old_deployment_subdomain
         deployment.update(subdomain: new_deployment_subdomain)
-
-        UffizziCore::Deployment::CreateDnsRecordJob.perform_async(deployment.id)
-        UffizziCore::Deployment::DeleteDnsRecordJob.perform_async(old_preview_url)
       end
 
       UffizziCore::Deployment::DeployContainersJob.perform_async(deployment.id)
