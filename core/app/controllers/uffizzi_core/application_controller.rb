@@ -1,8 +1,11 @@
 # frozen_string_literal: true
 
 class UffizziCore::ApplicationController < ActionController::Base
+  include Pundit::Authorization
   include UffizziCore::ResponseService
   include UffizziCore::AuthManagement
+  include UffizziCore::AuthorizationConcern
+  include UffizziCore::DependencyInjectionConcern
 
   DEFAULT_PAGE = 1
   DEFAULT_PER_PAGE = 20

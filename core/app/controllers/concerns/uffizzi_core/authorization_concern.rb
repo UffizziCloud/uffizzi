@@ -8,7 +8,7 @@ module UffizziCore::AuthorizationConcern
   end
 
   def init_authorize
-    return unless self.class.ancestors.include?(ApplicationController)
+    return unless self.class.ancestors.include?(UffizziCore::ApplicationController)
 
     self.class.send(:define_method, policy_method_name) { send(:authorize, policy_method_params) }
   end
@@ -20,25 +20,19 @@ module UffizziCore::AuthorizationConcern
   private
 
   def policy_method_name
-    name = [:authorize, policy_name].join('_')
-
-    name
+    [:authorize, policy_name].join('_')
   end
 
   def policy_name
     controller_class = self.class.to_s
 
-    name = controller_class.gsub(/::|Controller/, '').underscore
-
-    name
+    controller_class.gsub(/::|Controller/, '').underscore
   end
 
   def policy_method_params
     controller_class = self.class.to_s
 
     params = controller_class.gsub(/Controller/, '').split('::')
-    params = params.map(&:underscore).map(&:downcase).map(&:to_sym)
-
-    params
+    params.map(&:underscore).map(&:downcase).map(&:to_sym)
   end
 end

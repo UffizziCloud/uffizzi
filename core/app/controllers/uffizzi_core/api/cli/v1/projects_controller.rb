@@ -3,7 +3,7 @@
 # @resource Project
 
 class UffizziCore::Api::Cli::V1::ProjectsController < UffizziCore::Api::Cli::V1::ApplicationController
-  before_action :authorize_api_v1_projects
+  before_action :authorize_uffizzi_core_api_cli_v1_projects
 
   # Get projects of current user
   #

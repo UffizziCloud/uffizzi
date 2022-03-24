@@ -12,8 +12,8 @@ module UffizziCore
 
     config.uffizzi_core = ActiveSupport::OrderedOptions.new
 
-    config.uffizzi_core.module_classes = {
-      rbac: UffizziCore::UserAccessService
+    config.uffizzi_core.dependencies = {
+      rbac: 'UffizziCore::Rbac::UserAccessService',
     }
 
     config.uffizzi_core.table_names = {
