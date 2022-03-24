@@ -2,6 +2,8 @@
 
 # @resource ComposeFile
 class UffizziCore::Api::Cli::V1::Projects::ComposeFilesController < UffizziCore::Api::Cli::V1::Projects::ApplicationController
+  before_action :authorize_uffizzi_core_api_cli_v1_projects_compose_files
+
   # Get the compose file for the project
   #
   # @path [GET] /api/cli/v1/projects/{project_slug}/compose_file
