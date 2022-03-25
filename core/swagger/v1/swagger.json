@@ -41,7 +41,7 @@
         ],
         "responses": {
           "default": {
-            "description": "rubocop:disable Metrics/LineLength\nCreate account credential",
+            "description": "rubocop:disable Layout/LineLength\nCreate account credential",
             "examples": {
               "application/json": "type can be one of UffizziCore::Credential::Amazon, UffizziCore::Credential::Azure, UffizziCore::Credential::DockerHub, UffizziCore::Credential::Google"
             }
@@ -79,8 +79,8 @@
             }
           }
         },
-        "description": "rubocop:disable Metrics/LineLength\nCreate account credential\n\nrubocop:enable Metrics/LineLength",
-        "summary": "rubocop:disable Metrics/LineLength\nCreate account credential",
+        "description": "rubocop:disable Layout/LineLength\nCreate account credential\n\nrubocop:enable Layout/LineLength",
+        "summary": "rubocop:disable Layout/LineLength\nCreate account credential",
         "x-controller": "uffizzi_core/api/cli/v1/account/credentials",
         "x-action": "create"
       }
