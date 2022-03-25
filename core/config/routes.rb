@@ -11,7 +11,6 @@ UffizziCore::Engine.routes.draw do
           post :docker_hub
           post :github
           post :azure
-          post :workos
           post :amazon
           post :google
         end

@@ -13,17 +13,9 @@ github:
   client_secret: <%= ENV['GITHUB_CLIENT_SECRET'] %>
   private_key: "<%= ENV['GITHUB_PRIVATE_KEY'] %>"
   webhook_secret: <%= ENV['GITHUB_WEBHOOK_SECRET'] %>
-  registry_url: "gcr.io/<%= ENV['BUILD_PROJECT_ID'] %>"
 docker_hub:
   registry_url: 'https://index.docker.io/v1/'
   public_namespace: 'library'
-azure:
-  username: <%= ENV['AZURE_REGISTRY_USERNAME'] %>
-  password: <%= ENV['AZURE_REGISTRY_PASSWORD'] %>
-build:
-  project_id: <%= ENV['BUILD_PROJECT_ID'] %>
-  service_credential: <%= ENV['BUILD_SERVICE_CREDENTIAL'] %>
-  log_bucket: <%= ENV['BUILD_LOG_BUCKET'] %>
 sidekiq:
   login:  <%= ENV['SIDEKIQ_LOGIN'] || '' %>
   password:  <%= ENV['SIDEKIQ_PASSWORD'] || '' %>
@@ -43,22 +35,8 @@ controller:
   resource_create_retry_count: 60
 billing_cycle:
   hours_count: 720
-stripe:
-  public_key: <%= ENV['STRIPE_PUBLIC_KEY'] %>
-  secret_key: <%= ENV['STRIPE_SECRET_KEY'] %>
-  signing_secret: <%= ENV['STRIPE_SIGNING_SECRET'] %>
-google_maps:
-  public_key: <%= ENV['GOOGLE_MAPS_API_KEY'] %>
-mailchimp:
-  api_key: <%= ENV['MAILCHIMP_API_KEY'] %>
-  api_server: <%= ENV['MAILCHIMP_API_SERVER'] %>
-  community_audience: <%= ENV['MAILCHIMP_COMMUNITY_AUDIENCE'] %>
-google_analytics: 'UA-157967585-1'
-google_tag_manager: 'GTM-NP4974N'
 slack:
   invite_url: https://join.slack.com/t/uffizzi/shared_invite/zt-ffr4o3x0-J~0yVT6qgFV~wmGm19Ux9A
-cdn_host: <%= ENV['CDN_HOST'] %>
-zendesk_key: eea6ae36-fa55-42c3-8941-ebec356736a7
 allowed_hosts: <%= ENV['ALLOWED_HOSTS']&.split(',') || [] %>
 domain: <%= ENV['APP_URL'] %>
 sentry:
@@ -66,19 +44,11 @@ sentry:
   release: <%= ENV['SENTRY_RELEASE'] %>
   env: <%= Rails.env %>
 features:
-  mailchimp_enabled: <%= !!ActiveModel::Type::Boolean.new.cast(ENV['MAILCHIMP_ENABLED']) %>
   email_delivery_enabled: <%= !!ActiveModel::Type::Boolean.new.cast(ENV['EMAIL_DELIVERY_ENABLED']) %>
   stripe_enabled: <%= !!ActiveModel::Type::Boolean.new.cast(ENV['STRIPE_ENABLED']) %>
-  google_maps_enabled: <%= !!ActiveModel::Type::Boolean.new.cast(ENV['GOOGLE_MAPS_ENABLED']) %>
-  sentry_enabled: <%= !!ActiveModel::Type::Boolean.new.cast(ENV['SENTRY_ENABLED']) %>
 platform_cluster:
   project_id: <%= ENV['PLATFORM_PROJECT_ID'] %>
-workos:
-  api_key: <%= ENV['WORKOS_SECRET_KEY'] %>
-  client_id: <%= ENV['WORKOS_CLIENT_ID'] %>
-  webhook_secret: <%= ENV['WORKOS_WEBHOOK_SECRET'] %>
 google:
-  project: <%= ENV['GOOGLE_PROJECT'] %>
   registry_url: 'https://gcr.io/'
 compose:
   default_memory: 125

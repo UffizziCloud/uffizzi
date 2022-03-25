@@ -32,7 +32,6 @@ module UffizziCore::DeploymentService
     def deploy_containers(deployment, repeated = false)
       if !repeated
         create_activity_items(deployment)
-        run_github_containers_build_process(deployment)
         update_controller_container_names(deployment)
       end
 
@@ -244,12 +243,6 @@ module UffizziCore::DeploymentService
     def create_default_activity_item_event(activity_item)
       activity_item.events.create(state: UffizziCore::Event.state.building) if activity_item.github?
       activity_item.events.create(state: UffizziCore::Event.state.deploying) if activity_item.docker?
-    end
-
-    def run_github_containers_build_process(deployment)
-      deployment.active_containers.with_github_repo.each do |container|
-        UffizziCore::Repo::QueueBuildJob.perform_async(container.repo.id)
-      end
     end
 
     def update_controller_container_names(deployment)
