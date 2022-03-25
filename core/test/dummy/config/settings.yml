@@ -48,9 +48,6 @@ features:
   stripe_enabled: false
   google_maps_enabled: false
   sentry_enabled: false
-dns_zone:
-  name: test
-  credentials: test
 platform_cluster:
   project_id: test
 google:

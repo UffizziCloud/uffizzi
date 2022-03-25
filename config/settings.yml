@@ -71,9 +71,6 @@ features:
   stripe_enabled: <%= !!ActiveModel::Type::Boolean.new.cast(ENV['STRIPE_ENABLED']) %>
   google_maps_enabled: <%= !!ActiveModel::Type::Boolean.new.cast(ENV['GOOGLE_MAPS_ENABLED']) %>
   sentry_enabled: <%= !!ActiveModel::Type::Boolean.new.cast(ENV['SENTRY_ENABLED']) %>
-dns_zone:
-  name: <%= ENV['MANAGED_DNS_ZONE_NAME'] %>
-  credentials: <%= ENV['GOOGLE_CLOUD_DNS_CREDENTIALS'] %>
 platform_cluster:
   project_id: <%= ENV['PLATFORM_PROJECT_ID'] %>
 workos:
