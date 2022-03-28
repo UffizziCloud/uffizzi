@@ -41,7 +41,7 @@
         ],
         "responses": {
           "default": {
-            "description": "rubocop:disable Layout/LineLength\nCreate account credential",
+            "description": "Create account credential",
             "examples": {
               "application/json": "type can be one of UffizziCore::Credential::Amazon, UffizziCore::Credential::Azure, UffizziCore::Credential::DockerHub, UffizziCore::Credential::Google"
             }
@@ -79,8 +79,8 @@
             }
           }
         },
-        "description": "rubocop:disable Layout/LineLength\nCreate account credential\n\nrubocop:enable Layout/LineLength",
-        "summary": "rubocop:disable Layout/LineLength\nCreate account credential",
+        "description": "Create account credential",
+        "summary": "Create account credential",
         "x-controller": "uffizzi_core/api/cli/v1/account/credentials",
         "x-action": "create"
       }
@@ -108,7 +108,20 @@
             "description": "Not authorized"
           },
           "404": {
-            "description": "Not found"
+            "description": "Not found",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "errors": {
+                  "type": "object",
+                  "properties": {
+                    "title": {
+                      "type": "string"
+                    }
+                  }
+                }
+              }
+            }
           }
         },
         "description": "Delete account credential",
