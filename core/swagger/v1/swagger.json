@@ -85,6 +85,38 @@
         "x-action": "create"
       }
     },
+    "/api/cli/v1/account/credentials/{type}": {
+      "delete": {
+        "tags": [
+          "Account/Credential"
+        ],
+        "operationId": "Account/Credential-destroy",
+        "parameters": [
+          {
+            "name": "type",
+            "description": "Type of the credential",
+            "required": true,
+            "in": "path",
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": "No Content"
+          },
+          "401": {
+            "description": "Not authorized"
+          },
+          "404": {
+            "description": "Not found"
+          }
+        },
+        "description": "Delete account credential",
+        "summary": "Delete account credential",
+        "x-controller": "uffizzi_core/api/cli/v1/account/credentials",
+        "x-action": "destroy"
+      }
+    },
     "/api/cli/v1/projects/{project_slug}/compose_file": {
       "get": {
         "tags": [
