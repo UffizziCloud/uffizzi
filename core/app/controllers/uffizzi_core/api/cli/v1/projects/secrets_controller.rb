@@ -2,6 +2,8 @@
 
 # @resource Project/Secrets
 class UffizziCore::Api::Cli::V1::Projects::SecretsController < UffizziCore::Api::Cli::V1::Projects::ApplicationController
+  before_action :authorize_uffizzi_core_api_cli_v1_projects_secrets
+
   # Get secrets for the project
   #
   # @path [GET] /api/cli/v1/projects/{project_slug}/secrets

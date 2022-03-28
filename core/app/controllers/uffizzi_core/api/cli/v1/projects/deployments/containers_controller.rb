@@ -4,6 +4,8 @@
 
 class UffizziCore::Api::Cli::V1::Projects::Deployments::ContainersController <
   UffizziCore::Api::Cli::V1::Projects::Deployments::ApplicationController
+  before_action :authorize_uffizzi_core_api_cli_v1_projects_deployments_containers
+
   # Get a list of container services for a deployment
   #
   # @path [GET] /api/cli/v1/projects/{project_slug}/deployments/{deployment_id}/containers
