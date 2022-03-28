@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-# @model
+# @model ComposeFile
 # @property id [integer]
 # @property source [string]
 # @property path [string]

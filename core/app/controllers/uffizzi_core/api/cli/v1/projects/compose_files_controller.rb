@@ -6,7 +6,7 @@ class UffizziCore::Api::Cli::V1::Projects::ComposeFilesController < UffizziCore:
   #
   # @path [GET] /api/cli/v1/projects/{project_slug}/compose_file
   #
-  # @parameter project_slug(required,path) [string] The project_slug for the project
+  # @parameter project_slug(required,path) [string] The project slug
   #
   # @response [ComposeFile] 200 OK
   # @response 401 Not authorized
@@ -19,7 +19,7 @@ class UffizziCore::Api::Cli::V1::Projects::ComposeFilesController < UffizziCore:
   #
   # @path [POST] /api/cli/v1/projects/{project_slug}/compose_file
   #
-  # @parameter project_slug(required,path) [string] The project_slug for the project
+  # @parameter project_slug(required,path) [string] The project slug
   # @parameter params(required,body) [object <
   #    compose_file: object<path: string, source: string, content: string>,
   #    dependencies: Array<object<path: string, source: string, content: string>>>]
@@ -46,7 +46,7 @@ class UffizziCore::Api::Cli::V1::Projects::ComposeFilesController < UffizziCore:
   #
   # @path [DELETE] /api/cli/v1/projects/{project_slug}/compose_file
   #
-  # @parameter project_slug(required,path) [string] The project_slug for the project
+  # @parameter project_slug(required,path) [string] The project slug
   #
   # @response 204 No Content
   # @response 401 Not authorized

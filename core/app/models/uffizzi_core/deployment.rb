@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-# @model
+# @model Deployment
 #
 # @property id [integer]
 # @property project_id [integer]
