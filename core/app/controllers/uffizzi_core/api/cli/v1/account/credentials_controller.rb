@@ -41,7 +41,7 @@ class UffizziCore::Api::Cli::V1::Account::CredentialsController < UffizziCore::A
   # @parameter type(required,path) [string] Type of the credential
   # @response 204 No Content
   # @response 401 Not authorized
-  # @response 404 Not found
+  # @response [object<errors: object<title: string>>] 404 Not found
   def destroy
     credential.destroy
   end
