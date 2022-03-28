@@ -132,5 +132,10 @@ docker-compose run --rm core bash
 bin/rails test
 ```
 
+# Health checks
+
+The default health check uri is `health_check`. To use a custom uri please add the `HEALTH_CHECK_URI` environment
+variable to the docker-compose.yml
+
 ## Contributing
 Bug reports and pull requests are welcome on GitHub at https://github.com/UffizziCloud/uffizzi_app.
