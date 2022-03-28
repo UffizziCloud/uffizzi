@@ -11,7 +11,7 @@
     "http"
   ],
   "paths": {
-    "/api/cli/v1/account/credential": {
+    "/api/cli/v1/account/credentials": {
       "post": {
         "tags": [
           "Account/Credential"
@@ -41,7 +41,7 @@
         ],
         "responses": {
           "default": {
-            "description": "Create account credential",
+            "description": "rubocop:disable Layout/LineLength\nCreate account credential",
             "examples": {
               "application/json": "type can be one of UffizziCore::Credential::Amazon, UffizziCore::Credential::Azure, UffizziCore::Credential::DockerHub, UffizziCore::Credential::Google"
             }
@@ -79,8 +79,8 @@
             }
           }
         },
-        "description": "Create account credential",
-        "summary": "Create account credential",
+        "description": "rubocop:disable Layout/LineLength\nCreate account credential\n\nrubocop:enable Layout/LineLength",
+        "summary": "rubocop:disable Layout/LineLength\nCreate account credential",
         "x-controller": "uffizzi_core/api/cli/v1/account/credentials",
         "x-action": "create"
       }
@@ -94,7 +94,7 @@
         "parameters": [
           {
             "name": "project_slug",
-            "description": "The project_slug for the project",
+            "description": "The project slug",
             "required": true,
             "in": "path",
             "type": "string"
@@ -182,7 +182,7 @@
           },
           {
             "name": "project_slug",
-            "description": "The project_slug for the project",
+            "description": "The project slug",
             "required": true,
             "in": "path",
             "type": "string"
@@ -218,7 +218,7 @@
         "parameters": [
           {
             "name": "project_slug",
-            "description": "The project_slug for the project",
+            "description": "The project slug",
             "required": true,
             "in": "path",
             "type": "string"
@@ -238,6 +238,112 @@
         "x-action": "destroy"
       }
     },
+    "/api/cli/v1/projects/{project_slug}/deployments/{deployment_id}/containers": {
+      "get": {
+        "tags": [
+          "Container"
+        ],
+        "operationId": "Container-index",
+        "parameters": [
+          {
+            "name": "deployment_id",
+            "description": "The id of the deployment",
+            "required": true,
+            "in": "path",
+            "type": "integer"
+          },
+          {
+            "name": "project_slug",
+            "description": "The project slug",
+            "required": true,
+            "in": "path",
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": {
+              "$ref": "#/definitions/Container"
+            }
+          },
+          "401": {
+            "description": "Not authorized"
+          },
+          "404": {
+            "description": "Not found"
+          }
+        },
+        "description": "Get a list of container services for a deployment",
+        "summary": "Get a list of container services for a deployment",
+        "x-controller": "uffizzi_core/api/cli/v1/projects/deployments/containers",
+        "x-action": "index"
+      }
+    },
+    "/api/cli/v1/projects/{project_slug}/deployments/{deployment_id}/events": {
+      "get": {
+        "tags": [
+          "Event"
+        ],
+        "operationId": "Event-index",
+        "parameters": [
+          {
+            "name": "deployment_id",
+            "description": "The id of the deployment",
+            "required": true,
+            "in": "path",
+            "type": "integer"
+          },
+          {
+            "name": "project_slug",
+            "description": "The project_slug for the project",
+            "required": true,
+            "in": "path",
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "events": {
+                  "type": "array",
+                  "items": {
+                    "type": "object",
+                    "properties": {
+                      "first_timestamp": {
+                        "type": "string"
+                      },
+                      "last_timestamp": {
+                        "type": "string"
+                      },
+                      "reason": {
+                        "type": "string"
+                      },
+                      "message": {
+                        "type": "string"
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Not authorized"
+          },
+          "404": {
+            "description": "Not found"
+          }
+        },
+        "description": "Get the events associated with deployment",
+        "summary": "Get the events associated with deployment",
+        "x-controller": "uffizzi_core/api/cli/v1/projects/deployments/events",
+        "x-action": "index"
+      }
+    },
     "/api/cli/v1/projects/{project_slug}/deployments": {
       "get": {
         "tags": [
@@ -247,7 +353,7 @@
         "parameters": [
           {
             "name": "project_slug",
-            "description": "The slug for the project",
+            "description": "The project slug",
             "required": true,
             "in": "path",
             "type": "string"
@@ -322,7 +428,7 @@
           },
           {
             "name": "project_slug",
-            "description": "The slug for the project",
+            "description": "The project slug",
             "required": true,
             "in": "path",
             "type": "string"
@@ -393,7 +499,7 @@
           },
           {
             "name": "project_slug",
-            "description": "The slug for the project",
+            "description": "The project slug",
             "required": true,
             "in": "path",
             "type": "string"
@@ -446,7 +552,7 @@
           },
           {
             "name": "project_slug",
-            "description": "The slug for the project",
+            "description": "The project slug",
             "required": true,
             "in": "path",
             "type": "string"
@@ -482,7 +588,7 @@
           },
           {
             "name": "project_slug",
-            "description": "The slug for the project",
+            "description": "The project slug",
             "required": true,
             "in": "path",
             "type": "string"
@@ -516,12 +622,172 @@
         "x-action": "deploy_containers"
       }
     },
+    "/api/cli/v1/projects/{project_slug}/secrets": {
+      "get": {
+        "tags": [
+          "Project/Secrets"
+        ],
+        "operationId": "Project/Secrets-index",
+        "parameters": [
+          {
+            "name": "project_slug",
+            "description": "project_slug",
+            "required": true,
+            "in": "path",
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "secrets": {
+                  "type": "array",
+                  "items": {
+                    "type": "object",
+                    "properties": {
+                      "name": {
+                        "type": "string"
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Not authorized"
+          }
+        },
+        "description": "Get secrets for the project",
+        "summary": "Get secrets for the project",
+        "x-controller": "uffizzi_core/api/cli/v1/projects/secrets",
+        "x-action": "index"
+      }
+    },
+    "/api/cli/v1/projects/{project_slug}/secrets/bulk_create": {
+      "post": {
+        "tags": [
+          "Project/Secrets"
+        ],
+        "operationId": "Project/Secrets-bulk_create",
+        "parameters": [
+          {
+            "name": "project_slug",
+            "description": "project_slug",
+            "required": true,
+            "in": "path",
+            "type": "string"
+          },
+          {
+            "name": "secrets",
+            "description": "secrets",
+            "required": true,
+            "in": "body",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "secrets": {
+                  "type": "array",
+                  "items": {
+                    "type": "object",
+                    "properties": {
+                      "name": {
+                        "type": "string"
+                      },
+                      "value": {
+                        "type": "string"
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        ],
+        "responses": {
+          "201": {
+            "description": "Created",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "secrets": {
+                  "type": "array",
+                  "items": {
+                    "type": "object",
+                    "properties": {
+                      "name": {
+                        "type": "string"
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "A compose file already exists for this project"
+          },
+          "401": {
+            "description": "Not authorized"
+          }
+        },
+        "description": "Add secret to project",
+        "summary": "Add secret to project",
+        "x-controller": "uffizzi_core/api/cli/v1/projects/secrets",
+        "x-action": "bulk_create"
+      }
+    },
+    "/api/cli/v1/projects/{project_slug}/secrets/{id}": {
+      "delete": {
+        "tags": [
+          "Project/Secrets"
+        ],
+        "operationId": "Project/Secrets-destroy",
+        "parameters": [
+          {
+            "name": "id",
+            "description": "Scope response to id",
+            "required": true,
+            "in": "path",
+            "type": "string"
+          },
+          {
+            "name": "project_slug",
+            "description": "project_slug",
+            "required": true,
+            "in": "path",
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": {
+              "$ref": "#/definitions/Project"
+            }
+          },
+          "422": {
+            "description": "Delete a secret from project by secret id"
+          },
+          "401": {
+            "description": "Not authorized"
+          }
+        },
+        "description": "Delete a secret from project by secret id",
+        "summary": "Delete a secret from project by secret id",
+        "x-controller": "uffizzi_core/api/cli/v1/projects/secrets",
+        "x-action": "destroy"
+      }
+    },
     "/api/cli/v1/projects": {
       "get": {
         "tags": [
-          "Uffizzi"
+          "Project"
         ],
-        "operationId": "Uffizzi-index",
+        "operationId": "Project-index",
         "parameters": [
 
         ],
@@ -660,11 +926,23 @@
       "description": ""
     },
     {
+      "name": "Container",
+      "description": ""
+    },
+    {
       "name": "Deployment",
       "description": ""
     },
     {
-      "name": "Uffizzi",
+      "name": "Event",
+      "description": ""
+    },
+    {
+      "name": "Project",
+      "description": ""
+    },
+    {
+      "name": "Project/Secrets",
       "description": ""
     },
     {
@@ -730,7 +1008,7 @@
         "name"
       ]
     },
-    "UffizziCore_ComposeFile": {
+    "ComposeFile": {
       "type": "object",
       "properties": {
         "id": {
@@ -776,7 +1054,36 @@
         }
       }
     },
-    "UffizziCore_Deployment": {
+    "Container": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "integer"
+        },
+        "name": {
+          "type": "string"
+        },
+        "memory_limit": {
+          "type": "integer"
+        },
+        "memory_request": {
+          "type": "integer"
+        },
+        "continuously_deploy": {
+          "type": "string"
+        },
+        "variables": {
+          "type": "object"
+        },
+        "secret_variables": {
+          "type": "object"
+        },
+        "container_config_files": {
+          "$ref": "#/definitions/ConfigFile"
+        }
+      }
+    },
+    "Deployment": {
       "type": "object",
       "properties": {
         "id": {
@@ -831,6 +1138,14 @@
         },
         "deployed_by": {
           "type": "object"
+        }
+      }
+    },
+    "UffizziCore_Project": {
+      "type": "object",
+      "properties": {
+        "slug": {
+          "type": "string"
         }
       }
     }

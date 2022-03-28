@@ -6,7 +6,7 @@ class UffizziCore::Api::Cli::V1::Projects::Deployments::ActivityItemsController 
   #
   # @path [GET] /api/cli/v1/projects/{project_slug}/compose_file
   #
-  # @parameter project_slug(required,path) [string] The project_slug for the project
+  # @parameter project_slug(required,path) [string] The project slug
   # @parameter deployment_d(required,path) [integer] The id of the deployment
   #
   # @response [ActivtyItem] 200 OK

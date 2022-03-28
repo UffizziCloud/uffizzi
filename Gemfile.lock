@@ -268,6 +268,8 @@ GEM
       googleapis-common-protos-types (~> 1.0)
     hashie (5.0.0)
     httpclient (2.8.3)
+    health_check (3.1.0)
+      railties (>= 5.0)
     i18n (1.10.0)
       concurrent-ruby (~> 1.0)
     ice_nine (0.11.2)
@@ -445,6 +447,7 @@ DEPENDENCIES
   bootsnap (>= 1.4.2)
   byebug
   config
+  health_check
   listen (~> 3.2)
   pg (>= 0.18, < 2.0)
   puma (~> 4.1)

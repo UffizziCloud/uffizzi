@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-# @resource Uffizzi
+# @resource Project
 
 class UffizziCore::Api::Cli::V1::ProjectsController < UffizziCore::Api::Cli::V1::ApplicationController
   # Get projects of current user

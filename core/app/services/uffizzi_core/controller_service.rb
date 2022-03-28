@@ -55,10 +55,7 @@ module UffizziCore::ControllerService
     end
 
     def fetch_deployment_events(deployment)
-      response = request_events(deployment).result || {}
-      response = Hashie::Mash.new(response)
-
-      response.items || []
+      request_events(deployment) || []
     end
 
     def fetch_pods(deployment)

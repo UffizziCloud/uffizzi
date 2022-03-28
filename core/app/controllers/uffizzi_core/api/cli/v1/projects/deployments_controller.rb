@@ -7,7 +7,7 @@ class UffizziCore::Api::Cli::V1::Projects::DeploymentsController < UffizziCore::
   #
   # @path [GET] /api/cli/v1/projects/{project_slug}/deployments
   #
-  # @parameter project_slug(required,path) [string] The slug for the project
+  # @parameter project_slug(required,path) [string] The project slug
   #
   # @response [Array<Deployment>] 200 OK
   # @response 401 Not authorized
@@ -19,7 +19,7 @@ class UffizziCore::Api::Cli::V1::Projects::DeploymentsController < UffizziCore::
   #
   # @path [GET] /api/cli/v1/projects/{project_slug}/deployments/{id}
   #
-  # @parameter project_slug(required,path) [string] The slug for the project
+  # @parameter project_slug(required,path) [string] The project slug
   #
   # @response [Deployment] 200 OK
   # @response [object<errors: object<title: string>>] 404 Not found
@@ -32,7 +32,7 @@ class UffizziCore::Api::Cli::V1::Projects::DeploymentsController < UffizziCore::
   #
   # @path [POST] /api/cli/v1/projects/{project_slug}/deployments
   #
-  # @parameter project_slug(required,path) [string] The slug for the project
+  # @parameter project_slug(required,path) [string] The project slug
   # @parameter params(required,body)   [object<
   #    compose_file: object<path: string, source: string, content: string>,
   #    dependencies: Array<object<path: string, source: string, content: string>>>]
@@ -56,7 +56,7 @@ class UffizziCore::Api::Cli::V1::Projects::DeploymentsController < UffizziCore::
 
   # @path [POST] /api/cli/v1/projects/{project_slug}/deployments/{id}/deploy_containers
   #
-  # @parameter project_slug(required,path) [string] The slug for the project
+  # @parameter project_slug(required,path) [string] The project slug
   # @parameter id(required,path) [string] The id of the deployment
   #
   # @response 204 No Content
@@ -78,7 +78,7 @@ class UffizziCore::Api::Cli::V1::Projects::DeploymentsController < UffizziCore::
   #
   # @path [DELETE] /api/cli/v1/projects/{project_slug}/deployments/{id}
   #
-  # @parameter project_slug(required,path) [string] The slug for the project
+  # @parameter project_slug(required,path) [string] The project slug
   #
   # @response 204 No Content
   # @response 401 Not authorized
