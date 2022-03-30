@@ -214,7 +214,6 @@ GEM
     globalid (1.0.0)
       activesupport (>= 5.0)
     hashie (5.0.0)
-    httpclient (2.8.3)
     health_check (3.1.0)
       railties (>= 5.0)
     i18n (1.10.0)
