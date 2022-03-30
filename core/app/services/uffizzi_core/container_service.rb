@@ -14,7 +14,7 @@ class UffizziCore::ContainerService
       formatted_name = if should_build?(container)
         "#{UffizziCore::RepoService.image(container.repo)}-#{UffizziCore::RepoService.tag(container.repo)}"
       else
-        container.name
+        container.image_name
       end
 
       formatted_name.parameterize.gsub('_', '-')

@@ -45,6 +45,7 @@ class UffizziCore::ComposeFile::Builders::ContainerBuilderService
       continuously_deploy: continuously_deploy(deploy_data),
       receive_incoming_requests: is_ingress,
       container_config_files_attributes: config_files(configs_data, configs_dependencies),
+      name: container_name,
     }
   end
 

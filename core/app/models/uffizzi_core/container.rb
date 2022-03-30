@@ -70,7 +70,7 @@ class UffizziCore::Container < UffizziCore::ApplicationRecord
     end
   end
 
-  def name
+  def image_name
     "#{image}:#{tag}"
   end
 

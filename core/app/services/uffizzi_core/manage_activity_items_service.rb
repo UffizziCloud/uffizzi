@@ -49,9 +49,12 @@ class UffizziCore::ManageActivityItemsService
 
         if build.nil? || build.building?
           return [{ id: container.id,
-                    items: [{ name: container.name, status: UffizziCore::Event.state.building }] }]
+                    items: [{ name: container.image_name, status: UffizziCore::Event.state.building }] }]
         end
-        return [{ id: container.id, items: [{ name: container.name, status: UffizziCore::Event.state.failed }] }] if !build.successful?
+        if !build.successful?
+          return [{ id: container.id,
+                    items: [{ name: container.image_name, status: UffizziCore::Event.state.failed }] }]
+        end
       end
 
       items = pods.map do |pod|
@@ -118,7 +121,7 @@ class UffizziCore::ManageActivityItemsService
 
   def item_name(pod, container)
     hash = pod.metadata.name.split('-').last
-    "#{container.name}-#{hash}"
+    "#{container.image_name}-#{hash}"
   end
 
   def get_status(pod, container)

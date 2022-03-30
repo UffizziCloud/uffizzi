@@ -59,7 +59,7 @@ class UffizziCore::ManageActivityItemsServiceTest < ActiveSupport::TestCase
               {
                 name: pod_name,
                 restart_count: 0,
-                image: container.name,
+                image: container.image_name,
                 state: {
                   running: {
                     started_at: current_time,

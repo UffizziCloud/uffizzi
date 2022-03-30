@@ -23,7 +23,16 @@ UffizziCore::Engine.routes.draw do
               scope module: :deployments do
                 resources :activity_items, only: ['index']
                 resources :events, only: ['index']
-                resources :containers, only: ['index']
+                resources :containers, only: ['index'], param: :name do
+                  scope module: :containers do
+                    resources :logs, only: ['index']
+                    resources :builds, only: [] do
+                      collection do
+                        get :logs
+                      end
+                    end
+                  end
+                end
               end
             end
             resources :secrets, only: ['index', 'destroy'] do
