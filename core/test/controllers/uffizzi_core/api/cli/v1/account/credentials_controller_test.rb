@@ -127,4 +127,82 @@ class UffizziCore::Api::Cli::V1::Account::CredentialsControllerTest < ActionCont
     assert_response :unprocessable_entity
     assert_equal UffizziCore::Credential.last.id, credential.id
   end
+
+  test '#destroy docker hub credential' do
+    credential = create(:credential, :docker_hub, account: @account)
+
+    params = { type: credential.type }
+
+    differences = {
+      -> { UffizziCore::Credential.count } => -1,
+    }
+
+    assert_difference differences do
+      delete :destroy, params: params, format: :json
+    end
+
+    assert_response :success
+  end
+
+  test '#destroy azure credential' do
+    credential = create(:credential, :azure, account: @account)
+
+    params = { type: credential.type }
+
+    differences = {
+      -> { UffizziCore::Credential.count } => -1,
+    }
+
+    assert_difference differences do
+      delete :destroy, params: params, format: :json
+    end
+
+    assert_response :success
+  end
+
+  test '#destroy google credential' do
+    credential = create(:credential, :google, account: @account)
+
+    params = { type: credential.type }
+
+    differences = {
+      -> { UffizziCore::Credential.count } => -1,
+    }
+
+    assert_difference differences do
+      delete :destroy, params: params, format: :json
+    end
+
+    assert_response :success
+  end
+
+  test '#destroy amazon credential' do
+    credential = create(:credential, :amazon, account: @account)
+
+    params = { type: credential.type }
+
+    differences = {
+      -> { UffizziCore::Credential.count } => -1,
+    }
+
+    assert_difference differences do
+      delete :destroy, params: params, format: :json
+    end
+
+    assert_response :success
+  end
+
+  test '#destroy unexisted credential' do
+    params = { type: UffizziCore::Credential::DockerHub.name }
+
+    differences = {
+      -> { UffizziCore::Credential.count } => 0,
+    }
+
+    assert_difference differences do
+      delete :destroy, params: params, format: :json
+    end
+
+    assert_response :not_found
+  end
 end

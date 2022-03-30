@@ -41,7 +41,7 @@
         ],
         "responses": {
           "default": {
-            "description": "rubocop:disable Layout/LineLength\nCreate account credential",
+            "description": "Create account credential",
             "examples": {
               "application/json": "type can be one of UffizziCore::Credential::Amazon, UffizziCore::Credential::Azure, UffizziCore::Credential::DockerHub, UffizziCore::Credential::Google"
             }
@@ -79,10 +79,55 @@
             }
           }
         },
-        "description": "rubocop:disable Layout/LineLength\nCreate account credential\n\nrubocop:enable Layout/LineLength",
-        "summary": "rubocop:disable Layout/LineLength\nCreate account credential",
+        "description": "Create account credential",
+        "summary": "Create account credential",
         "x-controller": "uffizzi_core/api/cli/v1/account/credentials",
         "x-action": "create"
+      }
+    },
+    "/api/cli/v1/account/credentials/{type}": {
+      "delete": {
+        "tags": [
+          "Account/Credential"
+        ],
+        "operationId": "Account/Credential-destroy",
+        "parameters": [
+          {
+            "name": "type",
+            "description": "Type of the credential",
+            "required": true,
+            "in": "path",
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": "No Content"
+          },
+          "401": {
+            "description": "Not authorized"
+          },
+          "404": {
+            "description": "Not found",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "errors": {
+                  "type": "object",
+                  "properties": {
+                    "title": {
+                      "type": "string"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "description": "Delete account credential",
+        "summary": "Delete account credential",
+        "x-controller": "uffizzi_core/api/cli/v1/account/credentials",
+        "x-action": "destroy"
       }
     },
     "/api/cli/v1/projects/{project_slug}/compose_file": {

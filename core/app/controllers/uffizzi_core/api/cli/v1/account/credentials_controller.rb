@@ -34,6 +34,19 @@ class UffizziCore::Api::Cli::V1::Account::CredentialsController < UffizziCore::A
     respond_with credential_form
   end
 
+  # Delete account credential
+  #
+  # @path [DELETE] /api/cli/v1/account/credentials/{type}
+  #
+  # @parameter type(required,path) [string] Type of the credential
+  # @response 204 No Content
+  # @response 401 Not authorized
+  # @response [object<errors: object<title: string>>] 404 Not found
+  def destroy
+    credential = resource_account.credentials.find_by!(type: params[:type])
+    credential.destroy
+  end
+
   private
 
   def credential_params
