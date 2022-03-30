@@ -43,14 +43,11 @@ class UffizziCore::Api::Cli::V1::Account::CredentialsController < UffizziCore::A
   # @response 401 Not authorized
   # @response [object<errors: object<title: string>>] 404 Not found
   def destroy
+    credential = resource_account.credentials.find_by!(type: params[:type])
     credential.destroy
   end
 
   private
-
-  def credential
-    @credential ||= resource_account.credentials.find_by!(type: params[:type])
-  end
 
   def credential_params
     params.require(:credential)
