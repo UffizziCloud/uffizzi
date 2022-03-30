@@ -54,7 +54,6 @@ class UffizziCore::DeploymentServiceTest < ActiveSupport::TestCase
       -> { UffizziCore::ActivityItem::Github.count } => 1,
       -> { UffizziCore::Deployment::DeployContainersJob.jobs.size } => 1,
       -> { UffizziCore::Deployment::ManageDeployActivityItemJob.jobs.size } => 1,
-      -> { UffizziCore::Repo::QueueBuildJob.jobs.size } => 1,
     }
 
     assert_difference differences do

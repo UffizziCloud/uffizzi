@@ -108,12 +108,7 @@ class UffizziCore::Api::Cli::V1::Projects::DeploymentsControllerTest < ActionCon
   end
 
   test '#create - from the existing compose file when credentials are removed' do
-    google_dns_stub
-    UffizziCore::GoogleCloudDnsClient.any_instance.stubs(:create_dns_record).returns(true)
-
     create_deployment_request = stub_controller_create_deployment_request
-    ingresses_data = json_fixture('files/controller/gke_ingress_service.json')
-    stub_ingresses_request = stub_controller_ingresses_request(ingresses_data)
     file_content = File.read('test/fixtures/files/uffizzi-compose-vote-app-docker.yml')
     encoded_content = Base64.encode64(file_content)
     compose_file = create(:compose_file, project: @project, added_by: @admin, content: encoded_content)
@@ -153,7 +148,6 @@ class UffizziCore::Api::Cli::V1::Projects::DeploymentsControllerTest < ActionCon
 
     assert_response :unprocessable_entity
     assert_not_requested(create_deployment_request)
-    assert_not_requested(stub_ingresses_request)
   end
 
   test '#create - from the existing compose file - when the file is invalid' do
@@ -197,12 +191,7 @@ class UffizziCore::Api::Cli::V1::Projects::DeploymentsControllerTest < ActionCon
   end
 
   test '#create - from an alternative compose file' do
-    google_dns_stub
-    UffizziCore::GoogleCloudDnsClient.any_instance.stubs(:create_dns_record).returns(true)
-
     create_deployment_request = stub_controller_create_deployment_request
-    ingresses_data = json_fixture('files/controller/gke_ingress_service.json')
-    stub_ingresses_request = stub_controller_ingresses_request(ingresses_data)
     base_attributes = attributes_for(:compose_file).slice(:source, :path)
     content = json_fixture('files/github/compose_files/hello_world_compose.json')[:content]
     repositories_data = json_fixture('files/github/search_repositories.json')
@@ -231,7 +220,6 @@ class UffizziCore::Api::Cli::V1::Projects::DeploymentsControllerTest < ActionCon
 
     assert_response :success
     assert_requested(create_deployment_request)
-    assert_requested(stub_ingresses_request)
     assert_requested(stub_github_repositories)
     assert_requested(stubbed_github_branch_request)
   end
@@ -278,12 +266,8 @@ class UffizziCore::Api::Cli::V1::Projects::DeploymentsControllerTest < ActionCon
 
   test '#create - from an alternative compose file when compose file exists' do
     create(:compose_file, project: @project)
-    google_dns_stub
-    UffizziCore::GoogleCloudDnsClient.any_instance.stubs(:create_dns_record).returns(true)
 
     create_deployment_request = stub_controller_create_deployment_request
-    ingresses_data = json_fixture('files/controller/gke_ingress_service.json')
-    stub_ingresses_request = stub_controller_ingresses_request(ingresses_data)
     base_attributes = attributes_for(:compose_file).slice(:source, :path)
     content = json_fixture('files/github/compose_files/hello_world_compose.json')[:content]
     repositories_data = json_fixture('files/github/search_repositories.json')
@@ -312,7 +296,6 @@ class UffizziCore::Api::Cli::V1::Projects::DeploymentsControllerTest < ActionCon
 
     assert_response :success
     assert_requested(create_deployment_request)
-    assert_requested(stub_ingresses_request)
     assert_requested(stub_github_repositories)
     assert_requested(stubbed_github_branch_request)
   end
@@ -584,9 +567,6 @@ class UffizziCore::Api::Cli::V1::Projects::DeploymentsControllerTest < ActionCon
   end
 
   test '#destroy' do
-    google_dns_stub
-    UffizziCore::GoogleCloudDnsClient.any_instance.stubs(:delete_dns_record).returns(true)
-
     stubbed_request = stub_delete_controller_deployment_request(@deployment)
     container = create(:container, :with_public_port, deployment: @deployment)
 

@@ -1,12 +1,6 @@
 # frozen_string_literal: true
 
 module UffizziCore::ControllerStubSupport
-  def stub_controller_ingresses_request(data)
-    uri = %r{/default_ingress/service}
-
-    stub_request(:get, uri).to_return(status: 200, body: data.to_json, headers: { 'Content-Type' => 'application/json' })
-  end
-
   def stub_controller_create_deployment_request
     uri = %r{#{Regexp.quote(Settings.controller.url.to_s)}/deployments/[0-9]*$}
 
