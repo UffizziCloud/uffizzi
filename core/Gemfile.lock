@@ -22,6 +22,7 @@ PATH
       kaminari
       octokit
       pg (>= 0.18, < 2.0)
+      pundit
       rails (~> 6.1.0)
       ransack
       responders
@@ -330,6 +331,8 @@ GEM
     public_suffix (4.0.6)
     puma (5.6.2)
       nio4r (~> 2.0)
+    pundit (2.2.0)
+      activesupport (>= 3.0.0)
     racc (1.6.0)
     rack (2.2.3)
     rack-cors (1.1.1)

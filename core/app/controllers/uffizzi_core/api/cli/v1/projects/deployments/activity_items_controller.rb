@@ -2,6 +2,8 @@
 
 class UffizziCore::Api::Cli::V1::Projects::Deployments::ActivityItemsController <
   UffizziCore::Api::Cli::V1::Projects::Deployments::ApplicationController
+  before_action :authorize_uffizzi_core_api_cli_v1_projects_deployments_activity_items
+
   # Get the compose file for the project
   #
   # @path [GET] /api/cli/v1/projects/{project_slug}/compose_file

@@ -3,6 +3,8 @@
 # @resource Event
 class UffizziCore::Api::Cli::V1::Projects::Deployments::EventsController <
   UffizziCore::Api::Cli::V1::Projects::Deployments::ApplicationController
+  before_action :authorize_uffizzi_core_api_cli_v1_projects_deployments_events
+
   # Get the events associated with deployment
   #
   # @path [GET] /api/cli/v1/projects/{project_slug}/deployments/{deployment_id}/events

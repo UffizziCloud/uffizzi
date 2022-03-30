@@ -2,6 +2,8 @@
 
 # @resource Account/Credential
 class UffizziCore::Api::Cli::V1::Account::CredentialsController < UffizziCore::Api::Cli::V1::Account::ApplicationController
+  before_action :authorize_uffizzi_core_api_cli_v1_account_credentials
+
   # rubocop:disable Layout/LineLength
   # Create account credential
   #
