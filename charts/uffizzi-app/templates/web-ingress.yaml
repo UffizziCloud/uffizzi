@@ -3,7 +3,7 @@ kind: Ingress
 metadata:
   name: {{ .Release.Name }}-web-ingress
   annotations:
-    cert-manager.io/cluster-issuer: {{ .Values.uffizzi_controller.clusterIssuer }}
+    cert-manager.io/cluster-issuer: {{ print .Release.Name "-" (index (.Values) "uffizzi-controller" "clusterIssuer") }}
     kubernetes.io/ingress.class: nginx
 spec:
   rules:

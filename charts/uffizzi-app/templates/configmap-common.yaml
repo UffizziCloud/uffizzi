@@ -8,6 +8,6 @@ data:
   DATABASE_HOST: {{ default (print .Release.Name "-postgresql") .Values.db_host | quote }}
   RAILS_ENV: {{ .Values.env | quote }}
   APP_URL: {{ .Values.app_url }}
-  CONTROLLER_URL: {{ .Values.controller_url }}
+  CONTROLLER_URL: {{ default (print "http://" .Release.Name "-controller:8080") .Values.controller_url }}
   EMAIL_DELIVERY_ENABLED: {{ .Values.feature_email_delivery | quote }}
   MANAGED_DNS_ZONE_DNS_NAME: {{ .Values.managed_dns_zone_dns_name | quote }}

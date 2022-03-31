@@ -18,11 +18,11 @@ global:
 env: production
 app_url: https://uffizzi.example.com
 webHostname: uffizzi.example.com
-image: uffizzicloud/uffizzi-app
+image: uffizzi/app
 web-replicas: 3
 sidekiq-replicas: 1
 hostname: localhost
-controller_url: http://localhost:8080
+controller_url: ""
 allowed_hosts: ""
 db_host: "" # default to dependent postgresql
 rails_secret_key_base: "" # default to half-random string
@@ -43,17 +43,19 @@ feature_google_maps: false
 feature_sentry: false
 feature_stripe: false
 
-uffizzi_controller: #dependency
-  clusterIssuer: "zerossl"
-  image: uffizzicloud/uffizzi-controller:latest
+uffizzi-controller: #dependency
+  clusterIssuer: "letsencrypt"
+  image: uffizzi/controller:latest
   ingress:
     hostname: uffizzi.example.com
   podCidr: 10.0.0.0/8
-  eab:
-    hmacKey: foo
-    keyId: bar
+  zerossl:
+    eab:
+      hmacKey: foo
+      keyId: bar
   env: "production"
   sandbox: "false"
+  certEmail: "user@example.com"
   cert-manager: # dependency of dependency
     installCRDs: true
 
