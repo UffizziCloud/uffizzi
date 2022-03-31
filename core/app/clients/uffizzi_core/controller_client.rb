@@ -31,10 +31,6 @@ class UffizziCore::ControllerClient
     get("/deployments/#{deployment_id}/containers")
   end
 
-  def ingress_service
-    get('/default_ingress/service')
-  end
-
   def deploy_containers(deployment_id:, body:)
     connection.post("/deployments/#{deployment_id}/containers", body)
   end

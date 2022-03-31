@@ -24,8 +24,6 @@ github:
 docker_hub:
   registry_url: 'https://index.docker.io/v1/'
   public_namespace: 'library'
-build:
-  log_bucket: test
 controller:
   url: http://controller:8080
   login: ''
@@ -43,18 +41,11 @@ controller:
 allowed_hosts: []
 domain: http://lvh.me
 features:
-  mailchimp_enabled: false
   email_delivery_enabled: true
   stripe_enabled: false
-  google_maps_enabled: false
-  sentry_enabled: false
-dns_zone:
-  name: test
-  credentials: test
 platform_cluster:
   project_id: test
 google:
-  project: test
   registry_url: 'https://gcr.io/'
 compose:
   default_memory: 125

@@ -2,9 +2,11 @@
 
 class UffizziCore::Api::Cli::V1::Projects::Deployments::ActivityItemsController <
   UffizziCore::Api::Cli::V1::Projects::Deployments::ApplicationController
-  # Get the compose file for the project
+  before_action :authorize_uffizzi_core_api_cli_v1_projects_deployments_activity_items
+
+  # Get activity items for a deployment
   #
-  # @path [GET] /api/cli/v1/projects/{project_slug}/compose_file
+  # @path [GET] /api/cli/v1/projects/{project_slug}/deployment/{deployment_id}/actiivity_items
   #
   # @parameter project_slug(required,path) [string] The project slug
   # @parameter deployment_d(required,path) [integer] The id of the deployment

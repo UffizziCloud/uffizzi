@@ -3,6 +3,8 @@
 # @resource Deployment
 
 class UffizziCore::Api::Cli::V1::Projects::DeploymentsController < UffizziCore::Api::Cli::V1::Projects::ApplicationController
+  before_action :authorize_uffizzi_core_api_cli_v1_projects_deployments
+
   # Get a list of active deployements for a project
   #
   # @path [GET] /api/cli/v1/projects/{project_slug}/deployments

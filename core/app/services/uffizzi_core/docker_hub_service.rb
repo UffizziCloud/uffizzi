@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 module UffizziCore::DockerHubService
-  HOOK_NAME = "Uffizzi Deploy Webhook #{Settings.google.project}"
+  HOOK_NAME = 'Uffizzi OpenSource Deploy Webhook'
   HOOK_URL = "#{Settings.app.host}api/cli/v1/webhooks/docker_hub"
   REGISTRY = 'registry-1.docker.io'
 

@@ -6,6 +6,7 @@ class UffizziCore::Api::Cli::V1::Deployment::CreateForm < UffizziCore::Deploymen
   permit :creation_source,
          containers_attributes: [
            :image,
+           :name,
            :tag,
            :port,
            :public,

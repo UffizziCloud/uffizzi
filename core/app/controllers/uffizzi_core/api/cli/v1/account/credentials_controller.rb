@@ -2,6 +2,8 @@
 
 # @resource Account/Credential
 class UffizziCore::Api::Cli::V1::Account::CredentialsController < UffizziCore::Api::Cli::V1::Account::ApplicationController
+  before_action :authorize_uffizzi_core_api_cli_v1_account_credentials
+
   # rubocop:disable Layout/LineLength
   # Create account credential
   #
@@ -30,6 +32,19 @@ class UffizziCore::Api::Cli::V1::Account::CredentialsController < UffizziCore::A
     end
 
     respond_with credential_form
+  end
+
+  # Delete account credential
+  #
+  # @path [DELETE] /api/cli/v1/account/credentials/{type}
+  #
+  # @parameter type(required,path) [string] Type of the credential
+  # @response 204 No Content
+  # @response 401 Not authorized
+  # @response [object<errors: object<title: string>>] 404 Not found
+  def destroy
+    credential = resource_account.credentials.find_by!(type: params[:type])
+    credential.destroy
   end
 
   private

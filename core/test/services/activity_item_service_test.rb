@@ -71,7 +71,7 @@ class UffizziCore::ActivityItemServiceTest < ActiveSupport::TestCase
               {
                 name: UffizziCore::ContainerService.pod_name(container),
                 restart_count: restart_count,
-                image: container.name,
+                image: container.image_name,
                 state: {
                   running: {
                     started_at: current_time,
@@ -158,7 +158,7 @@ class UffizziCore::ActivityItemServiceTest < ActiveSupport::TestCase
               {
                 name: UffizziCore::ContainerService.pod_name(container),
                 restart_count: restart_count,
-                image: container.name,
+                image: container.image_name,
                 state: {
                   terminated: {},
                 },
@@ -244,7 +244,7 @@ class UffizziCore::ActivityItemServiceTest < ActiveSupport::TestCase
               {
                 name: UffizziCore::ContainerService.pod_name(container),
                 restart_count: restart_count,
-                image: container.name,
+                image: container.image_name,
                 state: {
                   running: {
                     started_at: current_time,
@@ -334,7 +334,7 @@ class UffizziCore::ActivityItemServiceTest < ActiveSupport::TestCase
               {
                 name: UffizziCore::ContainerService.pod_name(container),
                 restart_count: restart_count,
-                image: container.name,
+                image: container.image_name,
                 state: {
                   running: {
                     started_at: current_time,
