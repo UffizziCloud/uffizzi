@@ -1,6 +1,6 @@
 apiVersion: v2
 name: uffizzi-app
-version: 1.0.1
+version: 1.0.2
 kubeVersion: ">= 1.21.0-0" # https://issuetracker.google.com/issues/77503699
 description: "Uffizzi is the Full-stack Previews Engine that makes it easy for your team to preview code changes before merging — whether frontend, backend or microserivce. This is the primary web application that enables a Continuous Previews capability."
 type: application
@@ -38,7 +38,7 @@ maintainers:
   - name: Adam Vollrath
     email: adam.vollrath@uffizzi.com
     url: https://github.com/axisofentropy
-icon: https://uffizzi.com/favicon.png
+icon: https://app.uffizzi.com/favicon.png
 appVersion: "0.0.1"
 deprecated: false
 annotations:
