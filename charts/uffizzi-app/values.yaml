@@ -1,0 +1,66 @@
+global:
+  postgresql:
+    auth:
+      postgresPassword: ChangeMeNow
+      username: uffizzi-user
+      password: ChangeMeNow
+      database: uffizzi-app
+    service:
+      ports:
+        postgresql: "5432"
+  redis:
+    password: ChangeMeNow
+  uffizzi:
+    controller:
+      username: username
+      password: ChangeMeNow
+
+env: production
+app_url: https://uffizzi.example.com
+webHostname: uffizzi.example.com
+image: uffizzi/app
+web-replicas: 3
+sidekiq-replicas: 1
+hostname: localhost
+controller_url: ""
+allowed_hosts: ""
+db_host: "" # default to dependent postgresql
+rails_secret_key_base: "" # default to half-random string
+redis_url: "" # default to dependent redis
+managed_dns_zone_dns_name: uffizzi.example.com
+basic_auth_login: username
+basic_auth_password: ChangeMeNow
+github_app_id: ChangeMeNow
+github_app_slug: ChangeMeNow
+github_client_id: ChangeMeNow
+github_client_secret: ChangeMeNow
+github_private_key: ChangeMeNow
+github_webhook_secret: ChangeMeNow
+sql_credentials_secret_name: example
+feature_mailchimp: false
+feature_email_delivery: false
+feature_google_maps: false
+feature_sentry: false
+feature_stripe: false
+
+uffizzi-controller: #dependency
+  clusterIssuer: "letsencrypt"
+  image: uffizzi/controller:latest
+  ingress:
+    hostname: uffizzi.example.com
+  podCidr: 10.0.0.0/8
+  zerossl:
+    eab:
+      hmacKey: foo
+      keyId: bar
+  env: "production"
+  sandbox: "false"
+  certEmail: "user@example.com"
+  cert-manager: # dependency of dependency
+    installCRDs: true
+
+postgresql: #dependency
+  enabled: true
+
+redis: # dependency
+  enabled: true

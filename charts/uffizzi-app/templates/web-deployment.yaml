@@ -1,0 +1,54 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ .Release.Name }}-web
+  labels:
+    app: uffizzi-web
+
+spec:
+  replicas: {{ .Values.web_replicas }}
+  selector:
+    matchLabels:
+      app: uffizzi-web
+
+  template:
+    metadata:
+      labels:
+        app: uffizzi-web
+    spec:
+      automountServiceAccountToken: false
+      containers:
+      - name: uffizzi-web
+        image: {{ .Values.image }}
+        command:
+        - /bin/bash
+        - -c
+        args:
+        - bundle exec rails db:create db:migrate && bundle exec puma -C config/puma.rb
+        envFrom:
+        - secretRef:
+            name: uffizzi-web-secret-envs
+            optional: false
+        - configMapRef:
+            name: uffizzi-web-common-envs
+            optional: false
+        - configMapRef:
+            name: uffizzi-web-service-envs
+            optional: false
+        imagePullPolicy: Always
+        ports:
+        - containerPort: 7000
+          protocol: TCP
+#        readinessProbe:
+#          failureThreshold: 3
+#          httpGet:
+#            path: /health_check
+#            port: 7000
+#            scheme: HTTP
+#          periodSeconds: 10
+#          successThreshold: 1
+#          timeoutSeconds: 1
+        resources:
+          requests:
+            cpu: 150m
+            memory: 800Mi

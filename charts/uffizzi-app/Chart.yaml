@@ -1,0 +1,47 @@
+apiVersion: v2
+name: uffizzi-app
+version: 1.0.0
+kubeVersion: ">= 1.21.0-0" # https://issuetracker.google.com/issues/77503699
+description: "Uffizzi is the Full-stack Previews Engine that makes it easy for your team to preview code changes before merging — whether frontend, backend or microserivce. This is the primary web application that enables a Continuous Previews capability."
+type: application
+keywords:
+  - devops
+  - uffizzi
+  - continuous-previews
+  - ephemeral
+  - environments
+  - pull-request
+  - merge-request
+  - on-demand
+  - ci
+  - cd
+home: https://uffizzi.com/
+sources:
+  - https://github.com/UffizziCloud/uffizzi_app
+  - https://gitlab.com/dualbootpartners/idyl/uffizzi_app
+dependencies:
+  - name: uffizzi-controller
+    version: "1.0.0"
+    repository: https://uffizzicloud.github.io/uffizzi_controller/
+  - name: postgresql
+    version: "~11.1.12"
+    repository: https://charts.bitnami.com/bitnami
+    condition: postgresql.enabled
+  - name: redis
+    version: "~16.8.0"
+    repository: https://charts.bitnami.com/bitnami
+    condition: redis.enabled
+maintainers:
+  - name: Uffizzi
+    email: info@uffizzi.com
+    url: https://uffizzi.com
+  - name: Adam Vollrath
+    email: adam.vollrath@uffizzi.com
+    url: https://github.com/axisofentropy
+icon: https://uffizzi.com/favicon.png
+appVersion: "0.0.1"
+deprecated: false
+annotations:
+  # Use this annotation to indicate that this chart version is a pre-release.
+  # https://artifacthub.io/docs/topics/annotations/helm/
+  artifacthub.io/prerelease: "false"

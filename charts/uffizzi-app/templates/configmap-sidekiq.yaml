@@ -1,0 +1,7 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: uffizzi-web-sidekiq-envs
+
+data:
+  SIDEKIQ_CONCURRENCY: "10"
