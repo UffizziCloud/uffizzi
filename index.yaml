@@ -5,6 +5,57 @@ entries:
       artifacthub.io/prerelease: "false"
     apiVersion: v2
     appVersion: 0.0.1
+    created: "2022-03-31T19:33:29.062572776Z"
+    dependencies:
+    - name: uffizzi-controller
+      repository: https://uffizzicloud.github.io/uffizzi_controller/
+      version: 1.0.0
+    - condition: postgresql.enabled
+      name: postgresql
+      repository: https://charts.bitnami.com/bitnami
+      version: ~11.1.12
+    - condition: redis.enabled
+      name: redis
+      repository: https://charts.bitnami.com/bitnami
+      version: ~16.8.0
+    description: Uffizzi is the Full-stack Previews Engine that makes it easy for
+      your team to preview code changes before merging — whether frontend, backend
+      or microserivce. This is the primary web application that enables a Continuous
+      Previews capability.
+    digest: 8fb30aae431a47b3e229b815fd2beffb200ff3b08fc5c792533b945b40b7ce6f
+    home: https://uffizzi.com/
+    icon: https://app.uffizzi.com/favicon.png
+    keywords:
+    - devops
+    - uffizzi
+    - continuous-previews
+    - ephemeral
+    - environments
+    - pull-request
+    - merge-request
+    - on-demand
+    - ci
+    - cd
+    kubeVersion: '>= 1.21.0-0'
+    maintainers:
+    - email: info@uffizzi.com
+      name: Uffizzi
+      url: https://uffizzi.com
+    - email: adam.vollrath@uffizzi.com
+      name: Adam Vollrath
+      url: https://github.com/axisofentropy
+    name: uffizzi-app
+    sources:
+    - https://github.com/UffizziCloud/uffizzi_app
+    - https://gitlab.com/dualbootpartners/idyl/uffizzi_app
+    type: application
+    urls:
+    - https://github.com/UffizziCloud/uffizzi_app/releases/download/uffizzi-app-1.0.2/uffizzi-app-1.0.2.tgz
+    version: 1.0.2
+  - annotations:
+      artifacthub.io/prerelease: "false"
+    apiVersion: v2
+    appVersion: 0.0.1
     created: "2022-03-31T19:20:13.210908392Z"
     dependencies:
     - name: uffizzi-controller
@@ -52,4 +103,4 @@ entries:
     urls:
     - https://github.com/UffizziCloud/uffizzi_app/releases/download/uffizzi-app-1.0.1/uffizzi-app-1.0.1.tgz
     version: 1.0.1
-generated: "2022-03-31T19:20:13.211192996Z"
+generated: "2022-03-31T19:33:29.062591876Z"
