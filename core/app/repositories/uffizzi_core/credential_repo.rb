@@ -32,5 +32,9 @@ module UffizziCore::CredentialRepo
     scope :amazon, -> {
       where(type: UffizziCore::Credential::Amazon.name)
     }
+
+    scope :github_container_registry, -> {
+      where(type: UffizziCore::Credential::GithubContainerRegistry.name)
+    }
   end
 end

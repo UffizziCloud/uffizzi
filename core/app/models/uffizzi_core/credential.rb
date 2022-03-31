@@ -30,6 +30,10 @@ class UffizziCore::Credential < UffizziCore::ApplicationRecord
     type == UffizziCore::Credential::Github.name
   end
 
+  def github_container_registry?
+    type == UffizziCore::Credential::GithubContainerRegistry.name
+  end
+
   def docker_hub?
     type == UffizziCore::Credential::DockerHub.name
   end

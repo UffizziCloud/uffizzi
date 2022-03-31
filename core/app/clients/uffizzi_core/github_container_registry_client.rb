@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-class UffizziCore::GithubRegistryClient
+class UffizziCore::GithubContainerRegistryClient
   attr_accessor :connection, :token, :registry_url
 
   def initialize(registry_url:)

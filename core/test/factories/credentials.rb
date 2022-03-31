@@ -24,6 +24,11 @@ FactoryBot.define do
       registry_url { 'https://gcr.io/' }
     end
 
+    trait :github_container_registry do
+      type { UffizziCore::Credential::GithubContainerRegistry.name }
+      registry_url { 'https://ghcr.io/' }
+    end
+
     trait :amazon do
       type { UffizziCore::Credential::Amazon.name }
       registry_url { 'https://123456789876.dkr.ecr.us-east-1.amazonaws.com' }
