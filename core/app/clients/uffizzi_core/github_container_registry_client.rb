@@ -3,9 +3,9 @@
 class UffizziCore::GithubContainerRegistryClient
   attr_accessor :connection, :token, :registry_url
 
-  def initialize(registry_url:)
-    @registry_url = "https://#{registry_url}"
-    @connection = build_connection(@registry_url)
+  def initialize(registry_url:, username:, password:)
+    @registry_url = registry_url
+    @connection = build_connection(@registry_url, username, password)
   end
 
   def manifests(image:, tag:)
@@ -17,9 +17,9 @@ class UffizziCore::GithubContainerRegistryClient
 
   private
 
-  def build_connection(registry_url)
+  def build_connection(registry_url, username, password)
     Faraday.new(registry_url) do |conn|
-      conn.request(:token_auth, ENV['GITHUB_ACCESS_TOKEN'])
+      conn.request(:basic_auth, username, password)
       conn.request(:json)
       conn.response(:json)
       conn.adapter(Faraday.default_adapter)

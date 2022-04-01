@@ -177,7 +177,7 @@ class UffizziCore::ComposeFile::Builders::ContainerBuilderService
     elsif UffizziCore::ComposeFile::ContainerService.google?(container_data)
       UffizziCore::Repo::Google.name
     elsif UffizziCore::ComposeFile::ContainerService.github_container_registry?(container_data)
-        UffizziCore::Repo::GithubContainerRegistry.name
+      UffizziCore::Repo::GithubContainerRegistry.name
     end
   end
 

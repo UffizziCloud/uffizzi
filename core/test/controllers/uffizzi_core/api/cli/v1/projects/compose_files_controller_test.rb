@@ -290,7 +290,6 @@ class UffizziCore::Api::Cli::V1::Projects::ComposeFilesControllerTest < ActionCo
     assert_requested(stub_github_repositories)
   end
 
-
   test '#create - check github registry creation' do
     sign_in @admin
 
@@ -312,16 +311,15 @@ class UffizziCore::Api::Cli::V1::Projects::ComposeFilesControllerTest < ActionCo
     params = {
       project_slug: project.slug,
       compose_file: compose_file_attributes,
-      dependencies: []
+      dependencies: [],
     }
 
     assert_difference differences do
       post :create, params: params, format: :json
     end
-byebug
+
     assert_response :success
   end
-
 
   test '#destroy - deletes compose file' do
     sign_in @admin
