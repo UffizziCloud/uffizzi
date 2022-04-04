@@ -14,6 +14,12 @@ class UffizziCore::ComposeFile::ContainerService
       registry_url.present? && registry_url.include?('gcr.io')
     end
 
+    def amazon?(container)
+      registry_url = container.dig(:image, :registry_url)
+
+      registry_url.present? && registry_url.include?('amazonaws.com')
+    end
+
     def docker_hub?(container)
       registry_url = container.dig(:image, :registry_url)
       repository_url = container.dig(:build, :repository_url)
