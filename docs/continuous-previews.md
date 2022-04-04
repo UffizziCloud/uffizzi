@@ -16,7 +16,7 @@ These are our observations after 2+ years interviewing over 150+ developers, Dev
 
 -There's no official Open Source Preview specific tool within the CNCF.  There are several CI, CD, and deployment tools within the CNCF and more broadly across the industry.  These tools, while useful, are not purpose built for the task of Previewing.  They fit in the Ops and DevOps lane and do not provide a Developer friendly interface for configuration.  
 
--Docker compose is a configuration-as-code format that best balances DevOps requirements with Developer accessibility.
+-Docker compose is a configuration-as-code format that best balances DevOps requirements (GitOps, Infrastructure-as-code, Functionality) with Developer accessibility.
 
 -Previewing should be more about collaboration between the teammate(s) writing the code and the teammate(s) previewing what they've done than it is about deploying - "Individuals and Interactions over processes and tools." https://agilemanifesto.org/
 
