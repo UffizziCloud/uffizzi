@@ -26,6 +26,7 @@ module UffizziCore::CredentialRepo
               UffizziCore::Credential::Azure.name,
               UffizziCore::Credential::Google.name,
               UffizziCore::Credential::Amazon.name,
+              UffizziCore::Credential::GithubContainerRegistry.name,
             ])
     }
 
