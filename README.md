@@ -64,6 +64,24 @@ docker-compose run --rm web bash -c "bundle install && bundle exec rails db:setu
 docker-compose up
 ```
 
+## Create a new user
+
+Run the following command and follow instructions:
+
+```bash
+docker-compose run --rm web bash -c "rake uffizzi_core:create_user"
+```
+
+or run the command with environment variables:
+
+- `UFFIZZI_USER_EMAIL` - user's email
+- `UFFIZZI_USER_PASSWORD` - user's password
+- `UFFIZZI_PROJECT_NAME` - user's project name
+
+```bash
+docker-compose run --rm -e UFFIZZI_USER_EMAIL=user@uffizzi.com -e UFFIZZI_USER_PASSWORD=password -e UFFIZZI_PROJECT_NAME=project web bash -c "rake uffizzi_core:create_user"
+```
+
 ## Connect from uffizzi-cli to the app
 
 ```bash
