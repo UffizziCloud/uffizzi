@@ -2,17 +2,23 @@
 
 class UffizziCore::GithubContainerRegistry::CredentialService
   class << self
-    def access_token(credential, image)
-      client(credential, image).token
+    def credential_correct?(credential)
+      client(credential).authentificated?
+    rescue URI::InvalidURIError, Faraday::ConnectionFailed
+      false
+    end
+
+    def access_token(credential)
+      client(credential).token
     rescue URI::InvalidURIError, Faraday::ConnectionFailed
       false
     end
 
     private
 
-    def client(credential, image)
+    def client(credential)
       UffizziCore::GithubContainerRegistryClient.new(registry_url: credential.registry_url, username: credential.username,
-                                                     password: credential.password, image: image)
+                                                     password: credential.password)
     end
   end
 end

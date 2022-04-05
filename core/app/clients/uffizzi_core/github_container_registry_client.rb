@@ -3,17 +3,16 @@
 class UffizziCore::GithubContainerRegistryClient
   attr_accessor :token, :registry_url
 
-  def initialize(registry_url:, image:, username:, password:)
+  def initialize(registry_url:, username:, password:)
     @registry_url = registry_url
     @username = username
     @password = password
-    @image = image
     @token = access_token&.result&.token
   end
 
   def access_token
     service = URI.parse(registry_url).hostname
-    url = "/token?service=#{service}&scope=repository:#{@username}/#{@image}:pull"
+    url = "/token?service=#{service}"
 
     response = connection.get(url, {})
 
@@ -24,8 +23,8 @@ class UffizziCore::GithubContainerRegistryClient
     token.present?
   end
 
-  def manifests(tag:)
-    url = "/v2/#{@username}/#{@image}/manifests/#{tag}"
+  def manifests(image:, tag:)
+    url = "/v2/#{@username}/#{image}/manifests/#{tag}"
     response = token_connection.get(url)
 
     RequestResult.quiet.new(result: response.body, headers: response.headers)

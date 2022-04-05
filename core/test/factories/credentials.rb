@@ -26,7 +26,7 @@ FactoryBot.define do
 
     trait :github_container_registry do
       type { UffizziCore::Credential::GithubContainerRegistry.name }
-      registry_url { 'https://ghcr.io/' }
+      registry_url { 'https://ghcr.io' }
     end
 
     trait :amazon do

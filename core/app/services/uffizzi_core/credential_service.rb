@@ -8,6 +8,8 @@ module UffizziCore::CredentialService
                  UffizziCore::DockerHub::CredentialService.credential_correct?(credential)
                when UffizziCore::Credential::Github.name
                  UffizziCore::Github::CredentialService.credential_correct?(credential)
+               when UffizziCore::Credential::GithubContainerRegistry.name
+                 UffizziCore::GithubContainerRegistry::CredentialService.credential_correct?(credential)
                when UffizziCore::Credential::Azure.name
                  UffizziCore::Azure::CredentialService.credential_correct?(credential)
                when UffizziCore::Credential::Google.name
