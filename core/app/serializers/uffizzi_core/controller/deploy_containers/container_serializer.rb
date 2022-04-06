@@ -29,7 +29,7 @@ class UffizziCore::Controller::DeployContainers::ContainerSerializer < UffizziCo
       "#{registry_host}/#{object.image}"
     when UffizziCore::Repo::GithubContainerRegistry.name
       registry_host = URI.parse(credential.registry_url).host
-      "#{registry_host}/#{credential.username}/#{object.image}"
+      "#{registry_host}/#{credential.username.downcase}/#{object.image}"
     else
       object.image
     end
