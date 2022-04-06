@@ -78,10 +78,10 @@ class UffizziCore::Api::Cli::V1::Projects::ComposeFilesController < UffizziCore:
   def create_or_update_compose_file(params)
     existing_compose_file = resource_project.compose_file
     if existing_compose_file.present?
-      UffizziCore::Cli::ComposeFileService.update(existing_compose_file, params)
+      UffizziCore::ComposeFileService.update(existing_compose_file, params)
     else
       kind = UffizziCore::ComposeFile.kind.main
-      UffizziCore::Cli::ComposeFileService.create(params, kind)
+      UffizziCore::ComposeFileService.create(params, kind)
     end
   end
 

@@ -18,13 +18,13 @@ class UffizziCore::Api::Cli::V1::ComposeFile::CliForm
 
   def check_compose_parsed_data
     compose_content = Base64.decode64(content)
-    self.compose_data = UffizziCore::Cli::ComposeFileService.parse(compose_content)
+    self.compose_data = UffizziCore::ComposeFileService.parse(compose_content)
   rescue UffizziCore::ComposeFile::ParseError => e
     errors.add(:content, e.message)
   end
 
   def check_repositories
-    self.compose_repositories = UffizziCore::Cli::ComposeFileService.load_repositories(compose_data, credential)
+    self.compose_repositories = UffizziCore::ComposeFileService.load_repositories(compose_data, credential)
   rescue UffizziCore::ComposeFile::NotFoundError => e
     errors.add(:content, e.message)
   end
@@ -32,7 +32,7 @@ class UffizziCore::Api::Cli::V1::ComposeFile::CliForm
   def check_branches
     return if compose_repositories.blank?
 
-    UffizziCore::Cli::ComposeFileService.check_github_branches(compose_data, compose_repositories, credential)
+    UffizziCore::ComposeFileService.check_github_branches(compose_data, compose_repositories, credential)
   rescue UffizziCore::ComposeFile::NotFoundError => e
     errors.add(:content, e.message)
   end
