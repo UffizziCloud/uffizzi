@@ -1,0 +1,48 @@
+services:
+  redis:
+    image: redis:latest
+
+  postgres:
+    image: postgres:9.6
+    environment:
+      POSTGRES_USER: USER
+      POSTGRES_PASSWORD: PASSWORD
+
+  nginx:
+    image: nginx:latest
+    configs:
+      - source: vote_conf
+        target: /etc/nginx/conf.d
+
+  worker:
+    build:
+      context: https://github.com/ACCOUNT/example-voting-worker
+      dockerfile: Dockerfile
+    deploy:
+      resources:
+        limits:
+          memory: 250M
+
+  vote:
+    build:
+      context: https://github.com/ACCOUNT/example-voting-vote
+      dockerfile: Dockerfile
+
+  result:
+    build:
+      context: https://github.com/ACCOUNT/example-voting-result
+      dockerfile: Dockerfile
+
+configs:
+  vote_conf:
+    file: ./vote.conf
+
+continuous_preview:
+  deploy_preview_when_pull_request_is_opened: true
+  delete_preview_when_pull_request_is_closed: true
+  delete_preview_after: 10h
+  share_to_github: true
+
+x-uffizzi-ingress:
+  service: nginx
+  port: 8080

@@ -189,14 +189,14 @@ class UffizziCore::ComposeFile::Builders::ContainerBuilderService
 
   def build_github_repo_attributes(build_data, credentials)
     credential = credentials.github.first
-    raise UffizziCore::ComposeFile::BuildError, 'Invalid credential: GitHub' if credential.nil?
+    raise UffizziCore::ComposeFile::BuildError, I18n.t('compose.invalid_credential', value: :github) if credential.nil?
 
     github_builder.build_attributes(build_data)
   end
 
   def build_docker_repo_attributes(image_data, credentials, scope, repo_type)
     credential = credentials.send(scope).first
-    raise UffizziCore::ComposeFile::BuildError, 'Invalid credential: Docker' if credential.nil?
+    raise UffizziCore::ComposeFile::BuildError, I18n.t('compose.invalid_credential', value: scope) if credential.nil?
 
     docker_builder(repo_type).build_attributes(image_data)
   end

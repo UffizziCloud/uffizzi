@@ -1,0 +1,20 @@
+services:
+  hello-world:
+    image: nginx
+    environment:
+      MULTILINE_KEY: |
+        -----BEGIN RSA PRIVATE KEY-----
+        MIIEowIBAAKCAQEAvt9uoL0Ke7He/EmdxhfBn3hwg0WLASk6zoxLlTcvNpCMUEED
+        QkUUQX9S1PCUDuW8Urr87ZRCnzurnj7EGjFSeKS7qt4kesIfaAsyBC8Sf8D7IZ7d
+        QuOS/f1R5Qt1ofSSmgmUvg6rROJs7CqtI0YLYysr2Dn2fuTZf4Jc
+        -----END RSA PRIVATE KEY-----
+      SECRET: 'secret'
+      RAILS_WORKERS_COUNT: 0
+      APP_URL: 'http://lvh.me:7000'
+      APP_PASSWORD: ''
+      RUBYOPT: -W:no-deprecated -W:no-experimental
+      CDN_HOST: https://cdn.cloud?k=1
+
+x-uffizzi-ingress:
+  service: hello-world
+  port: 80
