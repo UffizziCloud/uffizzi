@@ -107,7 +107,7 @@ class UffizziCore::Api::Cli::V1::Projects::DeploymentsController < UffizziCore::
       }
 
       kind = UffizziCore::ComposeFile.kind.temporary
-      UffizziCore::Cli::ComposeFileService.create(create_params, kind)
+      UffizziCore::ComposeFileService.create(create_params, kind)
     else
       raise ActiveRecord::RecordNotFound if existing_compose_file.blank?
 
