@@ -1,0 +1,9 @@
+services:
+  hello-world:
+    image: nginx
+    deploy:
+      x-uffizzi-auto-deploy-updates: false
+
+x-uffizzi-ingress:
+  service: hello-world
+  port: 80

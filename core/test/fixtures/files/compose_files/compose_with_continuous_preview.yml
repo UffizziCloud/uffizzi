@@ -1,0 +1,16 @@
+services:
+  redis:
+    image: redis:latest
+
+  hello-world:
+    image: nginx
+    x-uffizzi-continuous-preview:
+      delete_preview_after: 12h
+
+x-uffizzi:
+  continuous_preview:
+    delete_preview_after: 10h
+
+x-uffizzi-ingress:
+  service: hello-world
+  port: 80

@@ -1,0 +1,32 @@
+services:
+  nginx:
+    image: nginx:latest
+    deploy:
+      resources:
+        limits:
+          memory: 1000m
+
+  redis:
+    image: redis:latest
+    deploy:
+      resources:
+        limits:
+          memory: 250000000b
+
+  ubuntu:
+    image: ubuntu:latest
+    deploy:
+      resources:
+        limits:
+          memory: 4g
+
+  postgres:
+    image: postgres:latest
+    deploy:
+      resources:
+        limits:
+          memory: 125000k
+
+x-uffizzi-ingress:
+  service: nginx
+  port: 80

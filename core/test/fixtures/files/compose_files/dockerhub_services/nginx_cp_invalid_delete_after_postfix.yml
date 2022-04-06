@@ -1,0 +1,10 @@
+services:
+  hello-world:
+    image: nginx
+
+x-uffizzi-continuous-preview:
+  delete_preview_after: 24m
+
+x-uffizzi-ingress:
+  service: hello-world
+  port: 80

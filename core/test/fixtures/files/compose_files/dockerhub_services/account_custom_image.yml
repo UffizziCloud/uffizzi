@@ -1,0 +1,7 @@
+services:
+  nginx:
+    image: account/custom_image:v1.0
+
+x-uffizzi-ingress:
+  service: nginx
+  port: 80

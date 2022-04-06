@@ -1,0 +1,10 @@
+services:
+  nginx:
+    image: nginx:latest
+    configs:
+      - source: vote.conf
+        target: /etc/nginx/conf.d
+
+x-uffizzi-ingress:
+  service: nginx
+  port: 8080

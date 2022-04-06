@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 class UffizziCore::ComposeFile::Parsers::Services::HealthcheckParserService
-  REQUIRED_START_COMMANDS = ['NONE', 'CMD', 'CMD-SHELL']
+  REQUIRED_START_COMMANDS = ['NONE', 'CMD', 'CMD-SHELL'].freeze
 
   class << self
     def parse(healthcheck_data)

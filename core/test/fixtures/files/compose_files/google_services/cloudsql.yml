@@ -1,0 +1,15 @@
+services:
+  nginx:
+    image: gcr.io/project-name/nginx:latest
+
+  sql_proxy:
+    image: gcr.io/cloudsql-docker/gce-proxy:1.19.1
+    command:
+      - '/cloud_sql_proxy'
+      - '-dir=/cloudsql'
+      - '-instances=instance=tcp:5432'
+      - '-credential_file=/sql-proxy.json'
+
+x-uffizzi-ingress:
+  service: nginx
+  port: 80
