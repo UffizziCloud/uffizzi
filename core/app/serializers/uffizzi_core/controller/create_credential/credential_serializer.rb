@@ -12,8 +12,6 @@ class UffizziCore::Controller::CreateCredential::CredentialSerializer < UffizziC
   def password
     if object.amazon?
       UffizziCore::Amazon::CredentialService.access_token(object)
-    elsif object.github_container_registry?
-      UffizziCore::GithubContainerRegistry::CredentialService.access_token(object)
     else
       object.password
     end
