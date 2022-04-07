@@ -6,9 +6,9 @@ While it provides a documented REST API for anyone to use, it's most valuable wh
 
 ## Uffizzi Overview
 
-Uffizzi is an open-source engine for creating lightweight, ephemeral test environments for APIs and full-stack applications. Uffizzi enables teams to preview code changes before merging and to mitigate the risk of introducing regressions into a codebase. Each preview gets a shareable URL that's updated when you push new commits or image tags, so teams can provide continual feedback during the development/QA process. Previews can be configured to expire or be destroyed when a pull request is closed, so environments exist only as long as they are needed. Uffizzi also helps deconflict shared development environments since previews are deployed as isolated namespaces—there is no risk of clobbering another developer's preview. 
+Uffizzi is an open-source engine for creating lightweight, ephemeral test environments for APIs and full-stack applications. Uffizzi enables teams to preview new features before merging and to mitigate the risk of introducing regressions into a codebase. Each preview gets a shareable URL that's updated when you push new commits or image tags, so teams can provide continual feedback during the development/QA process. Previews can be configured to expire or be destroyed when a pull request is closed, so environments exist only as long as they are needed. Uffizzi also helps deconflict shared development environments since previews are deployed as isolated namespaces—there is no risk of clobbering another developer's preview. 
 
-While Uffizzi depends on Kubernetes, it does not require end-users to interface with Kubernetes directly. Instead, Uffizzi leverages Docker Compose as its configuration file format, so a developer does not need modify Kubernetes manifests or even know about Kubernetes.
+While Uffizzi depends on Kubernetes, it does not require end-users to interface with Kubernetes directly. Instead, Uffizzi leverages Docker Compose as its configuration file format, so developers do not need modify Kubernetes manifests or even know about Kubernetes.
 
 Uffizzi is designed to integrate with any CI/CD system.
 
