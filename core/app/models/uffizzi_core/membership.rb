@@ -4,7 +4,7 @@ class UffizziCore::Membership < UffizziCore::ApplicationRecord
   include UffizziCore::MembershipRepo
   extend Enumerize
 
-  self.table_name = Rails.application.config.uffizzi_core[:table_names][:memberships]
+  self.table_name = UffizziCore.table_names[:memberships]
 
   enumerize :role, in: [:admin, :developer, :viewer], predicates: true
   validates :role, presence: true

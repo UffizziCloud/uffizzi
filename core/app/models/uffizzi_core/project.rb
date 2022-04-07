@@ -8,7 +8,7 @@ class UffizziCore::Project < UffizziCore::ApplicationRecord
   include UffizziCore::StateMachineConcern
   include UffizziCore::ProjectRepo
 
-  self.table_name = Rails.application.config.uffizzi_core[:table_names][:projects]
+  self.table_name = UffizziCore.table_names[:projects]
 
   belongs_to :account
 

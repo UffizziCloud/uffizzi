@@ -21,7 +21,7 @@
 class UffizziCore::ActivityItem < UffizziCore::ApplicationRecord
   include UffizziCore::ActivityItemRepo
 
-  self.table_name = Rails.application.config.uffizzi_core[:table_names][:activity_items]
+  self.table_name = UffizziCore.table_names[:activity_items]
 
   belongs_to :deployment
   belongs_to :container

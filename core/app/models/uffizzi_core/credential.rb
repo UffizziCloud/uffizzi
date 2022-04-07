@@ -4,7 +4,7 @@ class UffizziCore::Credential < UffizziCore::ApplicationRecord
   include AASM
   include UffizziCore::CredentialRepo
 
-  self.table_name = Rails.application.config.uffizzi_core[:table_names][:credentials]
+  self.table_name = UffizziCore.table_names[:credentials]
 
   belongs_to :account
 

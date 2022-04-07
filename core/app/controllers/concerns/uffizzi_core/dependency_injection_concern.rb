@@ -14,6 +14,6 @@ module UffizziCore::DependencyInjectionConcern
   end
 
   def module_class(module_name)
-    Rails.application.config.uffizzi_core[:dependencies][module_name]&.constantize
+    UffizziCore.dependencies[module_name]&.constantize
   end
 end

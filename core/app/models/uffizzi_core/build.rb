@@ -3,7 +3,7 @@
 class UffizziCore::Build < UffizziCore::ApplicationRecord
   include UffizziCore::BuildRepo
 
-  self.table_name = Rails.application.config.uffizzi_core[:table_names][:builds]
+  self.table_name = UffizziCore.table_names[:builds]
 
   BUILDING = 1
   SUCCESS = 2
