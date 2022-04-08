@@ -12,7 +12,7 @@ class UffizziCore::ApplicationController < ActionController::Base
 
   protect_from_forgery with: :exception
   rescue_from ActiveRecord::RecordNotFound, with: :render_not_found
-  RESCUABLE_EXCEPTIONS = [RuntimeError, TypeError, NameError, ArgumentError, SyntaxError]
+  RESCUABLE_EXCEPTIONS = [RuntimeError, TypeError, NameError, ArgumentError, SyntaxError].freeze
   rescue_from *RESCUABLE_EXCEPTIONS do |exception|
     render_server_error(exception)
   end
