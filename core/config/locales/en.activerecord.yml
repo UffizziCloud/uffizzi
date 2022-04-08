@@ -16,3 +16,8 @@ en:
               incorrect: We were unable to log you in to docker registry. Please verify that your username and password are correct.
             type:
               exist: Credential of that type already exist.
+        uffizzi_core/deployment:
+          attributes:
+            containers:
+              max_memory_limit_error: 'Memory limit of containers must be less than %{max}'
+              max_memory_request_error: 'Memory request of containers must be less than %{max}'
