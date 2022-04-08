@@ -4,19 +4,6 @@ class UffizziCore::ActivityItemService
   COMPLETED_STATES = ['deployed', 'failed', 'cancelled'].freeze
 
   class << self
-    def create_github_item!(repo, container)
-      activity_item_attributes = {
-        namespace: repo.namespace,
-        name: repo.name,
-        container: container,
-        deployment_id: container.deployment_id,
-        branch: repo.branch,
-        type: UffizziCore::ActivityItem::Github.name,
-      }
-
-      create_item!(activity_item_attributes)
-    end
-
     def create_docker_item!(repo, container)
       activity_item_attributes = {
         namespace: repo.namespace,

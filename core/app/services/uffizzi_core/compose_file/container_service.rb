@@ -2,12 +2,6 @@
 
 class UffizziCore::ComposeFile::ContainerService
   class << self
-    def github?(container)
-      repository_url = container.dig(:build, :repository_url)
-
-      repository_url.present? && repository_url.include?('github.com')
-    end
-
     def azure?(container)
       registry_url = container.dig(:image, :registry_url)
 
@@ -45,9 +39,7 @@ class UffizziCore::ComposeFile::ContainerService
     end
 
     def credential_for_container(container, credentials)
-      if UffizziCore::ComposeFile::ContainerService.github?(container)
-        detect_credential(credentials, :github)
-      elsif UffizziCore::ComposeFile::ContainerService.azure?(container)
+      if UffizziCore::ComposeFile::ContainerService.azure?(container)
         detect_credential(credentials, :azure)
       elsif UffizziCore::ComposeFile::ContainerService.docker_hub?(container)
         detect_credential(credentials, :docker_hub)

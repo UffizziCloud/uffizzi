@@ -26,10 +26,6 @@ class UffizziCore::Credential < UffizziCore::ApplicationRecord
     end
   end
 
-  def github?
-    type == UffizziCore::Credential::Github.name
-  end
-
   def github_container_registry?
     type == UffizziCore::Credential::GithubContainerRegistry.name
   end
@@ -58,11 +54,8 @@ class UffizziCore::Credential < UffizziCore::ApplicationRecord
         containers = deployment.containers
         attributes = { continuously_deploy: UffizziCore::Container::STATE_DISABLED }
 
-        containers.with_github_repo.update_all(attributes) if github?
         containers.with_docker_hub_repo.update_all(attributes) if docker_hub?
       end
     end
-
-    UffizziCore::Credential::RemoveInstallationJob.perform_async(provider_ref) if github?
   end
 end

@@ -148,12 +148,10 @@ class UffizziCore::ComposeFile::Builders::ContainerBuilderService
     memory_value
   end
 
-  def build_repo_attributes(container_data, image_data, build_data, credentials)
+  def build_repo_attributes(container_data, image_data, _build_data, credentials)
     repo_type = repo_type(container_data)
 
     case repo_type
-    when UffizziCore::Repo::Github.name
-      build_github_repo_attributes(build_data, credentials)
     when UffizziCore::Repo::DockerHub.name
       build_docker_repo_attributes(image_data, credentials, :docker_hub, UffizziCore::Repo::DockerHub.name)
     when UffizziCore::Repo::Azure.name
@@ -168,9 +166,7 @@ class UffizziCore::ComposeFile::Builders::ContainerBuilderService
   end
 
   def repo_type(container_data)
-    if UffizziCore::ComposeFile::ContainerService.github?(container_data)
-      UffizziCore::Repo::Github.name
-    elsif UffizziCore::ComposeFile::ContainerService.azure?(container_data)
+    if UffizziCore::ComposeFile::ContainerService.azure?(container_data)
       UffizziCore::Repo::Azure.name
     elsif UffizziCore::ComposeFile::ContainerService.docker_hub?(container_data)
       UffizziCore::Repo::DockerHub.name
@@ -185,13 +181,6 @@ class UffizziCore::ComposeFile::Builders::ContainerBuilderService
     return :disabled if deploy_data[:auto] == false
 
     :enabled
-  end
-
-  def build_github_repo_attributes(build_data, credentials)
-    credential = credentials.github.first
-    raise UffizziCore::ComposeFile::BuildError, I18n.t('compose.invalid_credential', value: :github) if credential.nil?
-
-    github_builder.build_attributes(build_data)
   end
 
   def build_docker_repo_attributes(image_data, credentials, scope, repo_type)
@@ -213,10 +202,6 @@ class UffizziCore::ComposeFile::Builders::ContainerBuilderService
     builder = UffizziCore::ComposeFile::Builders::ConfigFilesBuilderService.new(project)
 
     builder.build_attributes(config_files_data, dependencies)
-  end
-
-  def github_builder
-    @github_builder ||= UffizziCore::ComposeFile::Builders::GithubRepoBuilderService.new(repositories)
   end
 
   def docker_builder(type)
