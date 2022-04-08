@@ -56,6 +56,19 @@ class UffizziCore::Api::Cli::V1::Projects::DeploymentsController < UffizziCore::
     respond_with deployment
   end
 
+  # Update the deployment with new compose file
+  #
+  # @path [PUT] /api/cli/v1/projects/{project_slug}/deployments/{id}"
+  #
+  # @parameter project_slug(required,path) [string] The project slug
+  # @parameter params(required,body)   [object<
+  #    compose_file: object<path: string, source: string, content: string>,
+  #    dependencies: Array<object<path: string, source: string, content: string>>>]
+  #
+  # @response [Deployment] 201 OK
+  # @response [object<errors: object<state: string>>] 422 Unprocessable Entity
+  # @response [object<errors: object<title: string>>] 404 Not found
+  # @response 401 Not authorized
   def update
     compose_file, errors = create_temporary_compose_file
     return render_invalid_file if compose_file.invalid_file?
