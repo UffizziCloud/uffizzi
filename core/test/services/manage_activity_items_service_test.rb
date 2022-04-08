@@ -34,9 +34,9 @@ class UffizziCore::ManageActivityItemsServiceTest < ActiveSupport::TestCase
   end
 
   test '#container_status_items - deployment has containers' do
-    create(:credential, :github, account: @user.organizational_account)
+    create(:credential, :docker_hub, account: @user.organizational_account)
     deployment = create(:deployment, project: @project)
-    repo = create(:repo, :github, project: @project)
+    repo = create(:repo, :docker_hub, project: @project)
     create(:build, :successful, :deployed, repo: repo)
     container = create(:container, :active, :with_public_port, repo: repo, deployment: deployment)
 

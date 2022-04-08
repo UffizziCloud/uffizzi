@@ -45,22 +45,6 @@ class UffizziCore::DeploymentServiceTest < ActiveSupport::TestCase
     assert_requested stubbed_deploy_containers_request
   end
 
-  test '#deploy_containers - start to deploy github container' do
-    create(:credential, :github, account: @user.organizational_account)
-    repo = create(:repo, :github, project: @project)
-    create(:container, :active, deployment: @deployment, repo: repo)
-
-    differences = {
-      -> { UffizziCore::ActivityItem::Github.count } => 1,
-      -> { UffizziCore::Deployment::DeployContainersJob.jobs.size } => 1,
-      -> { UffizziCore::Deployment::ManageDeployActivityItemJob.jobs.size } => 1,
-    }
-
-    assert_difference differences do
-      UffizziCore::DeploymentService.deploy_containers(@deployment)
-    end
-  end
-
   test '#disable when deployment has no compose file' do
     container = create(:container, :with_public_port, deployment: @deployment)
 

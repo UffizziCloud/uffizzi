@@ -61,25 +61,12 @@ class UffizziCore::ActivityItemService
 
       activity_item.events.create(state: status) if last_event&.state != status
 
-      update_build_data(activity_item) if activity_item.github?
-
-      if status == UffizziCore::Event.state.deployed && UffizziCore::DeploymentService.pull_request_payload_present?(deployment)
-        UffizziCore::Deployment::SendGithubPreviewMessageJob.perform_async(deployment.id)
-      end
       return unless [UffizziCore::Event.state.building, UffizziCore::Event.state.deploying].include?(status)
 
       UffizziCore::Deployment::ManageDeployActivityItemJob.perform_in(5.seconds, activity_item.id)
     end
 
     private
-
-    def update_build_data(activity_item)
-      build = activity_item.container.repo.builds.deployed.last
-
-      return if !build.present? || !activity_item.build_id.nil?
-
-      activity_item.update(build_id: build.id, commit: build.commit, commit_message: build.message)
-    end
 
     def create_item!(activity_item_attributes)
       activity_item = UffizziCore::ActivityItem.find_by(activity_item_attributes)

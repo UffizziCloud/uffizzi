@@ -35,40 +35,6 @@ module UffizziCore::ComposeFileService
       }
     end
 
-    def load_repositories(compose_data, credential)
-      containers = github_containers(compose_data)
-      return [] if containers.empty?
-
-      search_query = 'fork:true '
-      search_query += containers.reduce('') do |query, container|
-        query += "repo:#{credential.username}/#{container[:build][:repository_name]} "
-        query
-      end
-
-      UffizziCore::Github::CredentialService.search_repositories(credential, search_query)
-    end
-
-    def check_github_branches(compose_data, repositories, credential)
-      containers = github_containers_with_branches(compose_data)
-      return [] if containers.empty?
-
-      containers.map do |container|
-        repository = repositories.detect { |item| item[:clone_url].to_s.start_with?(container[:build][:repository_url]) }
-        error_message = I18n.t('compose.repository_not_found', repository_url: container[:build][:repository_url])
-        raise UffizziCore::ComposeFile::NotFoundError, error_message if repository.nil?
-
-        branch = begin
-          UffizziCore::Github::CredentialService.branch(credential, repository[:id], container[:build][:branch])
-        rescue Octokit::NotFound
-          nil
-        end
-
-        error_message = I18n.t('compose.invalid_branch', branch: container[:build][:branch],
-                                                         repository_url: container[:build][:repository_url])
-        raise UffizziCore::ComposeFile::NotFoundError, error_message if branch.nil?
-      end
-    end
-
     def build_template_attributes(compose_data, source, credentials, project, compose_dependencies = [], compose_repositories = [])
       builder = UffizziCore::ComposeFile::Builders::TemplateBuilderService.new(credentials, project, compose_repositories)
 
@@ -119,8 +85,8 @@ module UffizziCore::ComposeFileService
     private
 
     def process_compose_file(compose_file_form, params)
-      credential = compose_file_form.project.account.credentials.github.last
-      cli_form = create_cli_form(compose_file_form.content, credential)
+      cli_form = UffizziCore::Api::Cli::V1::ComposeFile::CliForm.new
+      cli_form.content = compose_file_form.content
       return [compose_file_form, cli_form.errors] if cli_form.invalid?
 
       dependencies = params[:dependencies].to_a
@@ -152,14 +118,6 @@ module UffizziCore::ComposeFileService
       compose_file_form.payload['dependencies'] = payload_dependencies
 
       compose_file_form
-    end
-
-    def create_cli_form(content, credential)
-      cli_form = UffizziCore::Api::Cli::V1::ComposeFile::CliForm.new
-      cli_form.content = content
-      cli_form.credential = credential
-
-      cli_form
     end
 
     def build_compose_dependecies(compose_data, compose_path, dependencies)
@@ -218,14 +176,6 @@ module UffizziCore::ComposeFileService
 
         raise UffizziCore::ComposeFile::ParseError, I18n.t('compose.invalid_config_option', value: option)
       end
-    end
-
-    def github_containers(compose_data)
-      compose_data[:containers].select { |container| UffizziCore::ComposeFile::ContainerService.github?(container) }
-    end
-
-    def github_containers_with_branches(compose_data)
-      github_containers(compose_data).reject { |container| container[:build][:branch].nil? }
     end
   end
 end
