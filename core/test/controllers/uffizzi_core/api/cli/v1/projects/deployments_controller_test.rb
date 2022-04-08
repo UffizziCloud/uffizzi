@@ -209,6 +209,39 @@ class UffizziCore::Api::Cli::V1::Projects::DeploymentsControllerTest < ActionCon
     assert_response :not_found
   end
 
+  test '#update - success' do
+    base_attributes = attributes_for(:compose_file).slice(:source, :path)
+    content = json_fixture('files/github/compose_files/hello_world_compose.json')[:content]
+    repositories_data = json_fixture('files/github/search_repositories.json')
+    stub_github_repositories = stub_github_search_repositories_request(repositories_data)
+    compose_container_branch = 'main'
+    compose_container_repository_id = 358_291_405
+    github_branch_data = json_fixture('files/github/branches/master.json')
+    stubbed_github_branch_request =
+      stub_github_branch_request(compose_container_repository_id, compose_container_branch, github_branch_data)
+
+    compose_file_attributes = base_attributes.merge(content: content, repository_id: nil)
+    params = {
+      project_slug: @project.slug,
+      compose_file: compose_file_attributes,
+      dependencies: [],
+      id: @deployment[:id],
+    }
+
+    differences = {
+      -> { UffizziCore::ComposeFile.temporary.count } => 1,
+      -> { UffizziCore::Template.with_creation_source(UffizziCore::Template.creation_source.compose_file).count } => 1,
+    }
+
+    assert_difference differences do
+      post :update, params: params, format: :json
+    end
+
+    assert_response :success
+    assert_requested(stub_github_repositories)
+    assert_requested(stubbed_github_branch_request)
+  end
+
   test '#deploy_containers' do
     Sidekiq::Worker.clear_all
     Sidekiq::Testing.fake!
