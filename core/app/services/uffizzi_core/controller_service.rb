@@ -25,7 +25,13 @@ module UffizziCore::ControllerService
     end
 
     def apply_credential(deployment, credential)
-      body = UffizziCore::Controller::CreateCredential::CredentialSerializer.new(credential).as_json
+      image = if credential.github_container_registry?
+        deployment.containers.by_repo_type(UffizziCore::Repo::GithubContainerRegistry.name).first&.image
+      end
+
+      options = { image: image }
+
+      body = UffizziCore::Controller::CreateCredential::CredentialSerializer.new(credential, options).as_json
       controller_client.apply_credential(deployment_id: deployment.id, body: body)
     end
 

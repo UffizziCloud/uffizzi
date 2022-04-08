@@ -160,6 +160,8 @@ class UffizziCore::ComposeFile::Builders::ContainerBuilderService
       build_docker_repo_attributes(image_data, credentials, :azure, UffizziCore::Repo::Azure.name)
     when UffizziCore::Repo::Google.name
       build_docker_repo_attributes(image_data, credentials, :google, UffizziCore::Repo::Google.name)
+    when UffizziCore::Repo::GithubContainerRegistry.name
+      build_docker_repo_attributes(image_data, credentials, :github_container_registry, UffizziCore::Repo::GithubContainerRegistry.name)
     else
       raise UffizziCore::ComposeFile::BuildError, I18n.t('compose.invalid_repo_type')
     end
@@ -174,6 +176,8 @@ class UffizziCore::ComposeFile::Builders::ContainerBuilderService
       UffizziCore::Repo::DockerHub.name
     elsif UffizziCore::ComposeFile::ContainerService.google?(container_data)
       UffizziCore::Repo::Google.name
+    elsif UffizziCore::ComposeFile::ContainerService.github_container_registry?(container_data)
+      UffizziCore::Repo::GithubContainerRegistry.name
     end
   end
 

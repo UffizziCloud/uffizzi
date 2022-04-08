@@ -1,0 +1,18 @@
+{
+  "name": "uffizzi-compose-github-container-registry.yml.yml",
+  "path": "uffizzi-compose-github-container-registry.yml.yml",
+  "sha": "401853dba1c7299da89c6593d9b8347cf6442b1a",
+  "size": 141,
+  "url": "https://api.github.com/repos/ACCOUNT/hello-world/contents/uffizzi-compose-github-container-registry.yml.yml?ref=compose",
+  "html_url": "https://github.com/ACCOUNT/hello-world/blob/compose/uffizzi-compose-github-container-registry.yml.yml",
+  "git_url": "https://api.github.com/repos/ACCOUNT/hello-world/git/blobs/401853dba1c7299da89c6593d9b8347cf6442b1a",
+  "download_url": "https://raw.githubusercontent.com/ACCOUNT/hello-world/compose/uffizzi-compose-github-container-registry.yml.yml",
+  "type": "file",
+  "content": "c2VydmljZXM6CiAgaGVsbG8td29ybGQtYToKICAgIGltYWdlOiBnaGNyLmlv\nL1VmZml6emkvdGVzdC1jb21wb3NlOmxhdGVzdAoKeC11ZmZpenppLWluZ3Jl\nc3M6CiAgc2VydmljZTogaGVsbG8td29ybGQtYQogIHBvcnQ6IDgwCgp4LXVm\nZml6emktY29udGludW91c19wcmV2aWV3OgogIGRlcGxveV9wcmV2aWV3X3do\nZW5fcHVsbF9yZXF1ZXN0X2lzX29wZW5lZDogdHJ1ZQogIGRlbGV0ZV9wcmV2\naWV3X3doZW5fcHVsbF9yZXF1ZXN0X2lzX2Nsb3NlZDogdHJ1ZQogIGRlbGV0\nZV9wcmV2aWV3X2FmdGVyOiAxMGgKICBzaGFyZV90b19naXRodWI6IHRydWUK\nICBkZXBsb3lfcHJldmlld193aGVuX2ltYWdlX3RhZ19pc19jcmVhdGVkOiB0\ncnVlCiAgZGVsZXRlX3ByZXZpZXdfd2hlbl9pbWFnZV90YWdfaXNfdXBkYXRl\nZDogdHJ1ZQ==\n",
+  "encoding": "base64",
+  "_links": {
+    "self": "https://api.github.com/repos/ACCOUNT/hello-world/contents/uffizzi-compose-github-container-registry.yml.yml?ref=compose",
+    "git": "https://api.github.com/repos/ACCOUNT/hello-world/git/blobs/401853dba1c7299da89c6593d9b8347cf6442b1a",
+    "html": "https://github.com/ACCOUNT/hello-world/blob/compose/uffizzi-compose-github-container-registry.yml.yml"
+  }
+}

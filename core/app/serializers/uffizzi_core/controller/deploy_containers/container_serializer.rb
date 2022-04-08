@@ -29,6 +29,9 @@ class UffizziCore::Controller::DeployContainers::ContainerSerializer < UffizziCo
       registry_host = URI.parse(credential.registry_url).host
 
       "#{registry_host}/#{object.image}"
+    when UffizziCore::Repo::GithubContainerRegistry.name
+      registry_host = URI.parse(credential.registry_url).host
+      "#{registry_host}/#{credential.username}/#{object.image}"
     else
       object.image
     end
@@ -36,7 +39,7 @@ class UffizziCore::Controller::DeployContainers::ContainerSerializer < UffizziCo
 
   def tag
     case object.repo.type
-    when UffizziCore::Repo::Github.name
+    when UffizziCore::Repo::Github.name, UffizziCore::Repo::GithubContainerRegistry.name
       UffizziCore::RepoService.tag(object.repo)
     else
       object.tag
