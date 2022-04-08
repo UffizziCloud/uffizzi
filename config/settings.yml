@@ -50,6 +50,8 @@ platform_cluster:
   project_id: <%= ENV['PLATFORM_PROJECT_ID'] %>
 google:
   registry_url: 'https://gcr.io/'
+github_container_registry:
+  registry_url: 'https://ghcr.io/'
 compose:
   default_memory: 125
   memory_postfixes: <%= ['b', 'k', 'm', 'g'] %>

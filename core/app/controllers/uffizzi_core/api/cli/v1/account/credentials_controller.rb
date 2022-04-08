@@ -20,16 +20,11 @@ class UffizziCore::Api::Cli::V1::Account::CredentialsController < UffizziCore::A
     credential_form = UffizziCore::Api::Cli::V1::Account::Credential::CreateForm.new
     credential_form.assign_attributes(credential_params)
     credential_form.account = resource_account
-    credential_form.registry_url = Settings.docker_hub.registry_url if credential_form.docker_hub?
-    if credential_form.google?
-      credential_form.registry_url = Settings.google.registry_url
-      credential_form.username = '_json_key'
-    end
+    credential_form.registry_url = registry_url(credential_form)
+    credential_form.username = '_json_key' if credential_form.google?
     credential_form.activate
 
-    if credential_form.save
-      UffizziCore::Account::CreateCredentialJob.perform_async(credential_form.id)
-    end
+    UffizziCore::Account::CreateCredentialJob.perform_async(credential_form.id) if credential_form.save
 
     respond_with credential_form
   end
@@ -51,5 +46,17 @@ class UffizziCore::Api::Cli::V1::Account::CredentialsController < UffizziCore::A
 
   def credential_params
     params.require(:credential)
+  end
+
+  def registry_url(credential_form)
+    if credential_form.docker_hub?
+      Settings.docker_hub.registry_url
+    elsif credential_form.google?
+      Settings.google.registry_url
+    elsif credential_form.github_container_registry?
+      Settings.github_container_registry.registry_url
+    else
+      credential_form.registry_url
+    end
   end
 end

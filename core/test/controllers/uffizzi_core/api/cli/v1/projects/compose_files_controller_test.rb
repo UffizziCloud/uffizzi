@@ -290,6 +290,37 @@ class UffizziCore::Api::Cli::V1::Projects::ComposeFilesControllerTest < ActionCo
     assert_requested(stub_github_repositories)
   end
 
+  test '#create - check github registry creation' do
+    sign_in @admin
+
+    project = create(:project, :with_members, account: @account, members: [@admin, @developer, @viewer])
+    create(:credential, :github, account: @account, provider_ref: generate(:number))
+    create(:credential, :github_container_registry, account: @account)
+    create(:credential, :docker_hub, account: @account)
+
+    @compose_file.destroy!
+    base_attributes = attributes_for(:compose_file).slice(:source, :path)
+    content = json_fixture('files/github/compose_files/hello_world_compose_github_container_registry.json')[:content]
+    compose_file_attributes = base_attributes.merge(content: content)
+
+    differences = {
+      -> { UffizziCore::Template.count } => 1,
+      -> { UffizziCore::ComposeFile.count } => 1,
+    }
+
+    params = {
+      project_slug: project.slug,
+      compose_file: compose_file_attributes,
+      dependencies: [],
+    }
+
+    assert_difference differences do
+      post :create, params: params, format: :json
+    end
+
+    assert_response :success
+  end
+
   test '#destroy - deletes compose file' do
     sign_in @admin
 

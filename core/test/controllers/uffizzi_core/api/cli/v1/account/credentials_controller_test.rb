@@ -111,6 +111,24 @@ class UffizziCore::Api::Cli::V1::Account::CredentialsControllerTest < ActionCont
     assert_response :success
   end
 
+  test '#create github_container_registry credential' do
+    attributes = attributes_for(:credential, :github_container_registry)
+    params = { account_id: @account.id, credential: attributes }
+    registry_url = attributes[:registry_url]
+    token_response = { token: generate(:string) }
+    stub_github_container_registry_access_token(registry_url, token_response)
+
+    differences = {
+      -> { UffizziCore::Credential.count } => 1,
+    }
+
+    assert_difference differences do
+      post :create, params: params, format: :json
+    end
+
+    assert_response :success
+  end
+
   test '#create duplicate credential' do
     stub_dockerhub_login
     stub_controller
@@ -178,6 +196,22 @@ class UffizziCore::Api::Cli::V1::Account::CredentialsControllerTest < ActionCont
 
   test '#destroy amazon credential' do
     credential = create(:credential, :amazon, account: @account)
+
+    params = { type: credential.type }
+
+    differences = {
+      -> { UffizziCore::Credential.count } => -1,
+    }
+
+    assert_difference differences do
+      delete :destroy, params: params, format: :json
+    end
+
+    assert_response :success
+  end
+
+  test '#destroy github_container_registry credential' do
+    credential = create(:credential, :github_container_registry, account: @account)
 
     params = { type: credential.type }
 

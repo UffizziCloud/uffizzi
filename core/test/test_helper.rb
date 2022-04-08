@@ -48,6 +48,7 @@ class ActiveSupport::TestCase
   include UffizziCore::GoogleRegistryStubSupport
   include UffizziCore::StubSupport
   include UffizziCore::AzureRegistryStubSupport
+  include UffizziCore::GithubContainerRegistryStubSupport
 
   setup do
     @routes = UffizziCore::Engine.routes

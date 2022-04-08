@@ -27,6 +27,12 @@ class UffizziCore::ComposeFile::ContainerService
       registry_url.nil? && repository_url.nil?
     end
 
+    def github_container_registry?(container)
+      registry_url = container.dig(:image, :registry_url)
+
+      registry_url.present? && registry_url.include?('ghcr.io')
+    end
+
     def has_secret?(container, secret)
       container['secret_variables'].any? { |container_secret| container_secret['name'] == secret['name'] }
     end

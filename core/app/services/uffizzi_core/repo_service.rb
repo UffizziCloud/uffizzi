@@ -65,6 +65,8 @@ module UffizziCore::RepoService
       case repo.type
       when UffizziCore::Repo::Github.name
         credentials.github.first
+      when UffizziCore::Repo::GithubContainerRegistry.name
+        credentials.github_container_registry.first
       when UffizziCore::Repo::DockerHub.name
         credentials.docker_hub.first
       when UffizziCore::Repo::Azure.name
