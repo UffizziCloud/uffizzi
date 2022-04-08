@@ -29,6 +29,24 @@ module UffizziCore::DeploymentService
       deployment_form
     end
 
+    def update_from_compose(compose_file, project, user, deployment_id)
+      deployment_attributes = ActionController::Parameters.new(compose_file.template.payload)
+
+      deployment_form = UffizziCore::Api::Cli::V1::Deployment::UpdateForm.new(deployment_attributes)
+      deployment_form.assign_dependences!(project, user)
+      deployment_form.compose_file = compose_file
+
+      if deployment_form.valid?
+        deployment = UffizziCore::Deployment.find(deployment_id)
+        deployment.containers.destroy_all
+        deployment.update!(containers: deployment_form.containers, compose_file_id: compose_file.id)
+
+        return deployment
+      end
+
+      deployment_form
+    end
+
     def deploy_containers(deployment, repeated = false)
       if !repeated
         create_activity_items(deployment)
