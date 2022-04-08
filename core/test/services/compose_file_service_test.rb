@@ -359,6 +359,16 @@ class UffizziCore::ComposeFileServiceTest < ActiveSupport::TestCase
     assert_match("'postgres_password' secret can not be blank", e.message)
   end
 
+  test '#parse - raise an error if a build option is specified' do
+    content = file_fixture('files/compose_files/github_services/hello_world.yml').read
+
+    e = assert_raise(UffizziCore::ComposeFile::ParseError) do
+      UffizziCore::ComposeFileService.parse(content)
+    end
+
+    assert_match("'build' option is not implemented", e.message)
+  end
+
   test '#build_template_attributes - check if x-uffizzi ingress is specified' do
     create(:credential, :docker_hub, account: @account)
     content = file_fixture('files/compose_files/dockerhub_services/nginx_uffizzi_ingress.yml').read
