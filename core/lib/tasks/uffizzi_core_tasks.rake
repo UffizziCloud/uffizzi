@@ -11,4 +11,9 @@ namespace :uffizzi_core do
       Rake::Task['app:uffizzi_core:install:migrations'].invoke
     end
   end
+
+  desc 'Create a new user'
+  task create_user: :environment do
+    UffizziCore::UserGeneratorService.generate(ENV['UFFIZZI_USER_EMAIL'], ENV['UFFIZZI_USER_PASSWORD'], ENV['UFFIZZI_PROJECT_NAME'])
+  end
 end

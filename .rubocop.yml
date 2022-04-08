@@ -199,6 +199,7 @@ Metrics/BlockLength:
     - config/environments/**/*
     - core/test/**/*
     - core/app/repositories/**/*
+    - core/config/routes.rb
 
 Metrics/CyclomaticComplexity:
   Description: >-
