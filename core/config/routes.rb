@@ -18,7 +18,7 @@ UffizziCore::Engine.routes.draw do
         resources :projects, only: ['index'], param: :slug do
           scope module: :projects do
             resource :compose_file, only: ['show', 'create', 'destroy']
-            resources :deployments, only: ['index', 'show', 'create', 'destroy'] do
+            resources :deployments, only: ['index', 'show', 'create', 'destroy', 'update'] do
               post :deploy_containers, on: :member
               scope module: :deployments do
                 resources :activity_items, only: ['index']
