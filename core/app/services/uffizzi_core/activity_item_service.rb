@@ -22,7 +22,7 @@ class UffizziCore::ActivityItemService
 
       activity_item.events.create(state: UffizziCore::Event.state.failed)
 
-      DeploymentService.disable!(deployment)
+      UffizziCore::DeploymentService.disable!(deployment)
     end
 
     def update_docker_digest!(activity_item)
