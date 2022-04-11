@@ -17,6 +17,14 @@ class UffizziCore::ActivityItemService
       create_item!(activity_item_attributes)
     end
 
+    def disable_deployment!(activity_item)
+      deployment = activity_item.container.deployment
+
+      activity_item.events.create(state: UffizziCore::Event.state.failed)
+
+      DeploymentService.disable!(deployment)
+    end
+
     def update_docker_digest!(activity_item)
       container = activity_item.container
       repo = container.repo
