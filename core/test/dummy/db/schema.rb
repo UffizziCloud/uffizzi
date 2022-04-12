@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2022_03_25_113342) do
+ActiveRecord::Schema.define(version: 2022_03_29_143241) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -266,15 +266,6 @@ ActiveRecord::Schema.define(version: 2022_03_25_113342) do
     t.string "kind"
   end
 
-  create_table "uffizzi_core_project_secrets", force: :cascade do |t|
-    t.bigint "project_id", null: false
-    t.string "name"
-    t.string "value"
-    t.datetime "created_at", precision: 6, null: false
-    t.datetime "updated_at", precision: 6, null: false
-    t.index ["project_id"], name: "index_project_secrets_on_project_id"
-  end
-
   create_table "uffizzi_core_projects", force: :cascade do |t|
     t.text "name", null: false
     t.datetime "created_at", precision: 6, null: false
@@ -329,6 +320,16 @@ ActiveRecord::Schema.define(version: 2022_03_25_113342) do
     t.datetime "updated_at", precision: 6, null: false
     t.index ["name", "resource_type", "resource_id"], name: "index_roles_on_name_and_resource_type_and_resource_id"
     t.index ["resource_type", "resource_id"], name: "index_roles_on_resource_type_and_resource_id"
+  end
+
+  create_table "uffizzi_core_secrets", force: :cascade do |t|
+    t.string "name"
+    t.string "value"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.string "resource_type"
+    t.bigint "resource_id"
+    t.index ["resource_type", "resource_id"], name: "index_uffizzi_core_secrets_on_resource"
   end
 
   create_table "uffizzi_core_templates", force: :cascade do |t|
