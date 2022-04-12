@@ -1,8 +1,8 @@
 # frozen_string_literal: true
 
 FactoryBot.define do
-  factory :project_secret, class: 'UffizziCore::Project::Secret' do
-    project { nil }
+  factory :secret, class: UffizziCore::Secret do
+    resource { nil }
     name { nil }
     value { nil }
   end
