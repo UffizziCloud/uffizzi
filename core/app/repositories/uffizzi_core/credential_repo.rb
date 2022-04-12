@@ -4,38 +4,28 @@ module UffizziCore::CredentialRepo
   extend ActiveSupport::Concern
 
   included do
-    scope :docker_hub, -> {
-      where(type: UffizziCore::Credential::DockerHub.name)
-    }
+    scope :by_type, ->(type) { where(type: type) }
 
-    scope :github, -> {
-      where(type: UffizziCore::Credential::Github.name)
-    }
+    scope :docker_hub, -> { by_type(UffizziCore::Credential::DockerHub.name) }
 
-    scope :azure, -> {
-      where(type: UffizziCore::Credential::Azure.name)
-    }
+    scope :github, -> { by_type(UffizziCore::Credential::Github.name) }
 
-    scope :google, -> {
-      where(type: UffizziCore::Credential::Google.name)
-    }
+    scope :azure, -> { by_type(UffizziCore::Credential::Azure.name) }
+
+    scope :google, -> { by_type(UffizziCore::Credential::Google.name) }
+
+    scope :amazon, -> { by_type(UffizziCore::Credential::Amazon.name) }
+
+    scope :github_container_registry, -> { by_type(UffizziCore::Credential::GithubContainerRegistry.name) }
 
     scope :deployable, -> {
-      where(type: [
-              UffizziCore::Credential::DockerHub.name,
-              UffizziCore::Credential::Azure.name,
-              UffizziCore::Credential::Google.name,
-              UffizziCore::Credential::Amazon.name,
-              UffizziCore::Credential::GithubContainerRegistry.name,
-            ])
-    }
-
-    scope :amazon, -> {
-      where(type: UffizziCore::Credential::Amazon.name)
-    }
-
-    scope :github_container_registry, -> {
-      where(type: UffizziCore::Credential::GithubContainerRegistry.name)
+      by_type([
+                UffizziCore::Credential::DockerHub.name,
+                UffizziCore::Credential::Azure.name,
+                UffizziCore::Credential::Google.name,
+                UffizziCore::Credential::Amazon.name,
+                UffizziCore::Credential::GithubContainerRegistry.name,
+              ])
     }
   end
 end

@@ -12,6 +12,43 @@
   ],
   "paths": {
     "/api/cli/v1/account/credentials": {
+      "get": {
+        "tags": [
+          "Account/Credential"
+        ],
+        "operationId": "Account/Credential-index",
+        "parameters": [
+          {
+            "name": "credential",
+            "description": "credential",
+            "required": true,
+            "in": "body",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "username": {
+                  "type": "string"
+                },
+                "password": {
+                  "type": "string"
+                },
+                "type": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        ],
+        "responses": {
+          "default": {
+            "description": "Get a list of accounts credential"
+          }
+        },
+        "description": "Get a list of accounts credential",
+        "summary": "Get a list of accounts credential",
+        "x-controller": "uffizzi_core/api/cli/v1/account/credentials",
+        "x-action": "index"
+      },
       "post": {
         "tags": [
           "Account/Credential"
@@ -43,7 +80,7 @@
           "default": {
             "description": "Create account credential",
             "examples": {
-              "application/json": "type can be one of UffizziCore::Credential::Amazon, UffizziCore::Credential::Azure,\nUffizziCore::Credential::DockerHub, UffizziCore::Credential::Google"
+              "application/json": "type can be one of UffizziCore::Credential::Amazon, UffizziCore::Credential::Azure, UffizziCore::Credential::DockerHub, UffizziCore::Credential::Google, UffizziCore::Credential::GithubContainerRegistry"
             }
           },
           "201": {
@@ -83,6 +120,49 @@
         "summary": "Create account credential",
         "x-controller": "uffizzi_core/api/cli/v1/account/credentials",
         "x-action": "create"
+      }
+    },
+    "/api/cli/v1/account/credentials/{type}/check_credential": {
+      "get": {
+        "tags": [
+          "Account/Credential"
+        ],
+        "operationId": "Account/Credential-check_credential",
+        "parameters": [
+          {
+            "name": "credential",
+            "description": "credential",
+            "required": true,
+            "in": "body",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "type": {
+                  "type": "string"
+                }
+              }
+            }
+          },
+          {
+            "name": "type",
+            "description": "Scope response to type",
+            "required": true,
+            "in": "path",
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "422": {
+            "description": "Unprocessable entity"
+          },
+          "200": {
+            "description": "OK"
+          }
+        },
+        "description": "Check if credential of the type already exists in the account",
+        "summary": "Check if credential of the type already exists in the account",
+        "x-controller": "uffizzi_core/api/cli/v1/account/credentials",
+        "x-action": "check_credential"
       }
     },
     "/api/cli/v1/account/credentials/{type}": {
