@@ -11,7 +11,7 @@ class UffizziCore::Api::Cli::V1::Projects::SecretsController < UffizziCore::Api:
   # @response [object<secrets: Array<object<name: string>> >] 200 OK
   # @response 401 Not authorized
   def index
-    respond_with resource_project.secrets, root: 'secrets'
+    respond_with resource_project.secrets
   end
 
   # Add secret to project
@@ -23,17 +23,16 @@ class UffizziCore::Api::Cli::V1::Projects::SecretsController < UffizziCore::Api:
   # @response 422 A compose file already exists for this project
   # @response 401 Not authorized
   def bulk_create
-    project_form = resource_project.becomes(UffizziCore::Api::Cli::V1::Project::UpdateForm)
-    project_form.assign_secrets(secrets_params)
+    secrets_form = UffizziCore::Api::Cli::V1::Secret::BulkAssignForm.new
+    secrets_form.secrets = resource_project.secrets
+    secrets_form.assign_secrets(secrets_params)
+    return respond_with secrets_form unless secrets_form.valid?
 
-    unless project_form.save
-      respond_with project_form
-      return
-    end
+    resource_project.secrets.replace(secrets_form.secrets)
 
-    UffizziCore::ProjectService.update_compose_secrets(project_form)
+    UffizziCore::ProjectService.update_compose_secrets(resource_project)
 
-    respond_with project_form.secrets, root: 'secrets'
+    respond_with project_form.secrets
   end
 
   # Delete a secret from project by secret name
