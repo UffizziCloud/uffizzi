@@ -68,30 +68,12 @@ class UffizziCore::Account < UffizziCore::ApplicationRecord
     update(payment_issue_at: DateTime.current)
   end
 
-  def can_create_new_resources?
-    return active? if Settings.features.stripe_enabled
-
-    true
-  end
-
   def active_projects
     projects.active
   end
 
-  def disable_paid_deployments
-    deployments.active.where('kind != ?', UffizziCore::Deployment.kind.free).each(&:disable!)
-  end
-
   def disable_projects
     active_projects.each(&:disable_deployments)
-  end
-
-  def any_paid_projects?
-    projects.any?(&:any_paid_deployments?)
-  end
-
-  def cards
-    StripeService.cards(self)
   end
 
   #  This method is deprecated. Don't use it.
