@@ -4,7 +4,7 @@ module UffizziCore::DependencyInjectionConcern
   def user_access_module
     return unless module_exists?(:rbac)
 
-    module_class(:rbac).new
+    UffizziCore::UserAccessService.new(module_class(:rbac))
   end
 
   private
