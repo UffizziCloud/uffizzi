@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 class UffizziCore::Api::Cli::V1::Secret::BulkAssignForm
-  include ApplicationFormWithoutActiveRecord
+  include UffizziCore::ApplicationFormWithoutActiveRecord
 
   attribute :secrets, Array
   validate :check_duplicates
@@ -10,7 +10,7 @@ class UffizziCore::Api::Cli::V1::Secret::BulkAssignForm
     return if new_secrets.blank?
 
     new_secrets.each do |new_secret|
-      secret = Secret.new(name: new_secret['name'], value: new_secret['value'])
+      secret = UffizziCore::Secret.new(name: new_secret['name'], value: new_secret['value'])
       secrets.append(secret)
     end
   end
