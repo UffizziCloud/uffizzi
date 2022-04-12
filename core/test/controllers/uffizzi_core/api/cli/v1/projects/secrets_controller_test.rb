@@ -63,6 +63,25 @@ class UffizziCore::Api::Cli::V1::Projects::SecretsControllerTest < ActionControl
     assert { response_body['errors']['secrets'].present? }
   end
 
+  test '#bulk_create check if a secret name too long' do
+    length = UffizziCore::Api::Cli::V1::Secret::BulkAssignForm::MAX_SECRET_KEY_LENGTH + 1
+    long_name = SecureRandom.alphanumeric(length)
+    new_secrets = [
+      { name: long_name, value: generate(:string) },
+    ]
+
+    params = {
+      project_slug: @project.slug,
+      secrets: new_secrets,
+    }
+
+    post :bulk_create, params: params, format: :json
+    assert_response :unprocessable_entity
+
+    response_body = JSON.parse(response.body)
+    assert { response_body['errors']['secrets'].present? }
+  end
+
   test '#bulk_create check update secret in a compose' do
     new_secrets = [
       { name: generate(:string), value: generate(:string) },
