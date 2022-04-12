@@ -23,8 +23,6 @@ class UffizziCore::Controller::DeployContainers::ContainerSerializer < UffizziCo
     credential = UffizziCore::RepoService.credential(object.repo)
 
     case object.repo.type
-    when UffizziCore::Repo::Github.name
-      UffizziCore::RepoService.image(object.repo)
     when UffizziCore::Repo::Google.name, UffizziCore::Repo::Amazon.name, UffizziCore::Repo::Azure.name
       registry_host = URI.parse(credential.registry_url).host
 

@@ -1,0 +1,8 @@
+services:
+  hello-world:
+    build:
+      context: https://github.com/ACCOUNT/hello-world
+
+x-uffizzi-ingress:
+  service: hello-world
+  port: 80

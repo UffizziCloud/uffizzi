@@ -41,7 +41,6 @@ class ActiveSupport::TestCase
   include Minitest::Hooks
   include ActiveModel::Validations
   include UffizziCore::AuthManagement
-  include UffizziCore::GithubStubSupport
   include UffizziCore::ControllerStubSupport
   include UffizziCore::DockerHubStubSupport
   include UffizziCore::FixtureSupport

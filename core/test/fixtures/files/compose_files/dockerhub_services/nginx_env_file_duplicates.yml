@@ -1,0 +1,13 @@
+services:
+  hello-world:
+    image: nginx
+    env_file:
+      - ./.env
+      - .env
+      - .env/
+      - .env
+      - infra/secrets.env
+
+x-uffizzi-ingress:
+  service: hello-world
+  port: 80

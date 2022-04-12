@@ -1,0 +1,8 @@
+services:
+  nginx:
+    environment:
+      TEST: 123
+
+x-uffizzi-ingress:
+  service: nginx
+  port: 80

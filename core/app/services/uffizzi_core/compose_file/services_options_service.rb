@@ -18,7 +18,7 @@ class UffizziCore::ComposeFile::ServicesOptionsService
 
     private
 
-    def prepare_service_data(service_name, service_data, global_configs_data, global_secrets_data, compose_payload)
+    def prepare_service_data(service_name, service_data, global_configs_data, global_secrets_data, _compose_payload)
       options_data = {}
       service_data.each_pair do |key, value|
         service_key = key.to_sym
@@ -27,7 +27,7 @@ class UffizziCore::ComposeFile::ServicesOptionsService
                                     when :image
                                       UffizziCore::ComposeFile::ServicesOptions::ImageService.parse(value)
                                     when :build
-                                      UffizziCore::ComposeFile::ServicesOptions::BuildService.parse(value, compose_payload)
+                                      raise UffizziCore::ComposeFile::ParseError, I18n.t('compose.not_implemented', option: :build)
                                     when :env_file
                                       UffizziCore::ComposeFile::ServicesOptions::EnvFileService.parse(value)
                                     when :environment

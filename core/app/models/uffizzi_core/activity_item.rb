@@ -37,10 +37,6 @@ class UffizziCore::ActivityItem < UffizziCore::ApplicationRecord
     where(type: UffizziCore::ActivityItem::Github.name)
   }
 
-  def github?
-    type == UffizziCore::ActivityItem::Github.name
-  end
-
   def docker?
     type == UffizziCore::ActivityItem::Docker.name
   end
@@ -50,7 +46,6 @@ class UffizziCore::ActivityItem < UffizziCore::ApplicationRecord
   end
 
   def full_image
-    return "#{image}:#{branch}" if github?
     return "#{image}:#{tag}" if docker?
 
     ''

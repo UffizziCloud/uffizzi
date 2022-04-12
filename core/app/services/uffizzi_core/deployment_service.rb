@@ -224,12 +224,7 @@ module UffizziCore::DeploymentService
     def create_activity_items(deployment)
       deployment.active_containers.each do |container|
         repo = container.repo
-        activity_item = case repo.type
-                        when UffizziCore::Repo::Github.name
-                          UffizziCore::ActivityItemService.create_github_item!(repo, container)
-                        else
-                          UffizziCore::ActivityItemService.create_docker_item!(repo, container)
-        end
+        activity_item = UffizziCore::ActivityItemService.create_docker_item!(repo, container)
 
         create_default_activity_item_event(activity_item)
 
@@ -241,7 +236,6 @@ module UffizziCore::DeploymentService
     end
 
     def create_default_activity_item_event(activity_item)
-      activity_item.events.create(state: UffizziCore::Event.state.building) if activity_item.github?
       activity_item.events.create(state: UffizziCore::Event.state.deploying) if activity_item.docker?
     end
 

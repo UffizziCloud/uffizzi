@@ -15,10 +15,6 @@ class UffizziCore::Repo < UffizziCore::ApplicationRecord
   validates :dockerfile_path, presence: true, if: :dockerfile?
   validates :delete_preview_after, numericality: { greater_than: 0, only_integer: true }, allow_nil: true
 
-  def github?
-    type == UffizziCore::Repo::Github.name
-  end
-
   def docker_hub?
     type == UffizziCore::Repo::DockerHub.name
   end
@@ -29,11 +25,5 @@ class UffizziCore::Repo < UffizziCore::ApplicationRecord
 
   def google?
     type == UffizziCore::Repo::Google.name
-  end
-
-  def url
-    return unless github?
-
-    ['https://github.com', namespace, name].join('/')
   end
 end

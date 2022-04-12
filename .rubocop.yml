@@ -432,9 +432,10 @@ Style/MethodCallWithArgsParentheses:
     - puts
   Exclude:
     - Gemfile
-    - core/uffizzi_core.gemspec
     - test/test_helper.rb
     - db/migrate/**/*
+    - core/uffizzi_core.gemspec
+    - core/db/migrate/**/*
 
 Layout/ParameterAlignment:
   Description: 'Here we check if the parameters on a multi-line method call or definition are aligned.'
