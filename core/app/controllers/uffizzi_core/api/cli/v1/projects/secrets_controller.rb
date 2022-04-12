@@ -11,7 +11,7 @@ class UffizziCore::Api::Cli::V1::Projects::SecretsController < UffizziCore::Api:
   # @response [object<secrets: Array<object<name: string>> >] 200 OK
   # @response 401 Not authorized
   def index
-    respond_with resource_project.secrets
+    respond_with resource_project.secrets, root: :secrets
   end
 
   # Add secret to project
@@ -32,7 +32,7 @@ class UffizziCore::Api::Cli::V1::Projects::SecretsController < UffizziCore::Api:
 
     UffizziCore::ProjectService.update_compose_secrets(resource_project)
 
-    respond_with project_form.secrets
+    respond_with resource_project.secrets, root: :secrets
   end
 
   # Delete a secret from project by secret name
