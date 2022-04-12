@@ -8,7 +8,7 @@ class UffizziCore::Api::Cli::V1::Projects::SecretsControllerTest < ActionControl
     @account = @admin.organizational_account
     @developer = create(:user, :developer_in_organization, organization: @account)
     @viewer = create(:user, :viewer_in_organization, organization: @account)
-    secrets = [build(:project_secret, name: generate(:string), value: generate(:string))]
+    secrets = [build(:secret, name: generate(:string), value: generate(:string))]
     @project = create(:project, :with_members, account: @account, members: [@admin, @developer, @viewer], secrets: secrets)
 
     sign_in @admin
