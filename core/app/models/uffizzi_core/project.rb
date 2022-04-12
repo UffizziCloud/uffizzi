@@ -21,7 +21,7 @@ class UffizziCore::Project < UffizziCore::ApplicationRecord
   has_many :templates, dependent: :destroy
   has_many :credentials, through: :account
   has_many :compose_files, dependent: :destroy
-  has_many :secrets, dependent: :destroy
+  has_many :secrets, dependent: :destroy, as: :resource
 
   validates :name, presence: true, uniqueness: { scope: :account }
 
