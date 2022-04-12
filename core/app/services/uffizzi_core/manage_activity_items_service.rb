@@ -42,21 +42,6 @@ class UffizziCore::ManageActivityItemsService
 
   def build_containers_replicas
     containers.map do |container|
-      repo = container.repo
-
-      if repo.github?
-        build = container.repo.builds.deployed.last
-
-        if build.nil? || build.building?
-          return [{ id: container.id,
-                    items: [{ name: container.image_name, status: UffizziCore::Event.state.building }] }]
-        end
-        if !build.successful?
-          return [{ id: container.id,
-                    items: [{ name: container.image_name, status: UffizziCore::Event.state.failed }] }]
-        end
-      end
-
       items = pods.map do |pod|
         {
           name: item_name(pod, container),
@@ -106,9 +91,7 @@ class UffizziCore::ManageActivityItemsService
     container_status(error, deployed)
   end
 
-  def building_container_status(container)
-    return UffizziCore::Event.state.building if container.repo.github?
-
+  def building_container_status(_container)
     UffizziCore::Event.state.deploying
   end
 

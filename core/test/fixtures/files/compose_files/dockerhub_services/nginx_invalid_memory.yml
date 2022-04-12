@@ -1,0 +1,11 @@
+services:
+  nginx:
+    image: nginx:latest
+    deploy:
+      resources:
+        limits:
+          memory: 3g
+
+x-uffizzi-ingress:
+  service: nginx
+  port: 80

@@ -1,0 +1,7 @@
+services:
+  nginx:
+    image: nginx:latest
+
+ingress:
+  service: nginx
+  port: 80

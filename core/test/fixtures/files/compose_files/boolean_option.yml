@@ -1,0 +1,3 @@
+services:
+  on:
+    image: nginx:latest

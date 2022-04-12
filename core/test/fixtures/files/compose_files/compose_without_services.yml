@@ -1,0 +1,3 @@
+x-uffizzi-ingress:
+  service: hello-world
+  port: 80

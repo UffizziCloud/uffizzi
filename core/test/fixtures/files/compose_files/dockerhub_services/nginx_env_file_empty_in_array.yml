@@ -1,0 +1,11 @@
+services:
+  hello-world:
+    image: nginx
+    env_file:
+      - .env
+      -
+      - .local.env
+
+x-uffizzi-ingress:
+  service: hello-world
+  port: 80

@@ -3,6 +3,7 @@
 class UffizziCore::ComposeFile::DependenciesService
   ENV_FILE_TYPE = 'env_file'
   CONFIG_TYPE = 'config'
+
   class << self
     def build_dependencies(compose_data, compose_path, dependencies_params)
       dependencies = compose_data[:containers].map do |container|

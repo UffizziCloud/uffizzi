@@ -19,7 +19,7 @@ class UffizziCore::Api::Cli::V1::ComposeFile::TemplateForm
   validate :check_template_attributes
 
   def assign_template_attributes!
-    self.template_attributes = UffizziCore::Cli::ComposeFileService.build_template_attributes(
+    self.template_attributes = UffizziCore::ComposeFileService.build_template_attributes(
       compose_data,
       source,
       credentials,

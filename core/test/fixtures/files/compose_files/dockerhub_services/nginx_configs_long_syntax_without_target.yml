@@ -1,0 +1,13 @@
+services:
+  nginx:
+    image: nginx:latest
+    configs:
+      - source: vote_conf
+
+configs:
+  vote_conf:
+    file: ./etc/nginx/vote.conf
+
+x-uffizzi-ingress:
+  service: nginx
+  port: 80

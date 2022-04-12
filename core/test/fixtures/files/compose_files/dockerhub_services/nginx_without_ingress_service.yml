@@ -1,0 +1,6 @@
+services:
+  nginx:
+    image: nginx:latest
+
+x-uffizzi-ingress:
+  port: 80

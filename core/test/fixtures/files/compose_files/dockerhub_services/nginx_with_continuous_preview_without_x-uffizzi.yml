@@ -1,0 +1,14 @@
+services:
+  nginx:
+    image: nginx:latest
+    continuous_preview:
+      delete_preview_after: 10h
+      share_to_github: false
+
+x-uffizzi-ingress:
+  service: nginx
+  port: 80
+
+continuous_preview:
+  delete_preview_after: 10h
+  share_to_github: false

@@ -6,8 +6,6 @@ module UffizziCore::CredentialService
       status = case credential.type
                when UffizziCore::Credential::DockerHub.name
                  UffizziCore::DockerHub::CredentialService.credential_correct?(credential)
-               when UffizziCore::Credential::Github.name
-                 UffizziCore::Github::CredentialService.credential_correct?(credential)
                when UffizziCore::Credential::GithubContainerRegistry.name
                  UffizziCore::GithubContainerRegistry::CredentialService.credential_correct?(credential)
                when UffizziCore::Credential::Azure.name
