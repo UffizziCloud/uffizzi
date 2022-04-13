@@ -90,7 +90,7 @@ class UffizziCore::Api::Cli::V1::Projects::ComposeFilesControllerTest < ActionCo
   test '#create - check amazon ecr creation' do
     sign_in @admin
 
-    project = create(:project, :with_members, account: @account, members: [@admin, @developer, @viewer])
+    project = create(:project, :with_members, account: @account, members: [@admin])
     create(:credential, :github, account: @account, provider_ref: generate(:number))
     create(:credential, :amazon, account: @account)
 
