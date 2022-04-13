@@ -538,8 +538,9 @@ class UffizziCore::ComposeFileServiceTest < ActiveSupport::TestCase
   end
 
   test '#build_template_attributes - check secrets variables build' do
-    project_secrets = [{ name: 'POSTGRES_USER', value: generate(:string) }, { name: 'POSTGRES_PASSWORD', value: generate(:string) }]
-    @project.update(secrets: project_secrets)
+    project_secrets = [build(:secret, name: 'POSTGRES_USER', value: generate(:string)),
+                       build(:secret, name: 'POSTGRES_PASSWORD', value: generate(:string))]
+    @project.secrets.append(project_secrets)
     create(:credential, :docker_hub, account: @account)
 
     content = file_fixture('files/compose_files/dockerhub_services/postgres_secrets.yml').read
@@ -571,8 +572,9 @@ class UffizziCore::ComposeFileServiceTest < ActiveSupport::TestCase
   end
 
   test '#build_template_attributes - check secrets variables build if a compose has duplicates' do
-    project_secrets = [{ name: 'POSTGRES_USER', value: generate(:string) }, { name: 'POSTGRES_PASSWORD', value: generate(:string) }]
-    @project.update(secrets: project_secrets)
+    project_secrets = [build(:secret, name: 'POSTGRES_USER', value: generate(:string)),
+                       build(:secret, name: 'POSTGRES_PASSWORD', value: generate(:string))]
+    @project.secrets.append(project_secrets)
     create(:credential, :docker_hub, account: @account)
 
     content = file_fixture('files/compose_files/dockerhub_services/postgres_secrets_duplicates.yml').read
