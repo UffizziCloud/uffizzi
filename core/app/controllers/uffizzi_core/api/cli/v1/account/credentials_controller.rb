@@ -51,9 +51,11 @@ class UffizziCore::Api::Cli::V1::Account::CredentialsController < UffizziCore::A
     credential_form = UffizziCore::Api::Cli::V1::Account::Credential::CheckCredentialForm.new
     credential_form.type = params[:type]
     credential_form.account = resource_account
-    return respond_with credential_form.errors if credential_form.invalid?
-
-    head :ok
+    if credential_form.valid?
+      respond_with credential_form
+    else
+      respond_with credential_form.errors, status: :unprocessable_entity
+    end
   end
 
   # Delete account credential
