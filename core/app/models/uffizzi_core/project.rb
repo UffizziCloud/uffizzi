@@ -38,14 +38,6 @@ class UffizziCore::Project < UffizziCore::ApplicationRecord
     end
   end
 
-  def any_paid_deployments?
-    !all_deployments_free?
-  end
-
-  def all_deployments_free?
-    active_deployments.all?(&:free?)
-  end
-
   def after_disable
     update(name: "#{name} deleted #{DateTime.current.strftime('%H:%M:%S-%m%d%Y')}")
     update(slug: "#{slug} deleted #{DateTime.current.strftime('%H:%M:%S-%m%d%Y')}")
@@ -57,7 +49,9 @@ class UffizziCore::Project < UffizziCore::ApplicationRecord
   end
 
   def disable_deployments
-    active_deployments.each(&:disable!)
+    active_deployments.each do |deployment|
+      UffizziCore::DeploymentService.disable!(deployment)
+    end
   end
 
   def compose_file
