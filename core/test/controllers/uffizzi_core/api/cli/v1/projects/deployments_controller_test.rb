@@ -209,8 +209,11 @@ class UffizziCore::Api::Cli::V1::Projects::DeploymentsControllerTest < ActionCon
     assert_response :not_found
   end
 
-  test '#update - success' do
+  test '#update - update deployment created from main compose file' do
     file_content = File.read('test/fixtures/files/test-compose-success-without-dependencies.yml')
+    compose_file = create(:compose_file, project: @project, added_by: @admin)
+    create(:template, :compose_file_source, compose_file: compose_file, project: @project, added_by: @admin, payload: @template.payload)
+    @deployment.update!(compose_file: compose_file)
     encoded_content = Base64.encode64(file_content)
     compose_file_attributes = attributes_for(:compose_file, :temporary, project: @project, added_by: @admin, content: encoded_content)
     create(:credential, :docker_hub, account: @admin.organizational_account)
@@ -225,6 +228,34 @@ class UffizziCore::Api::Cli::V1::Projects::DeploymentsControllerTest < ActionCon
     differences = {
       -> { UffizziCore::ComposeFile.temporary.count } => 1,
       -> { UffizziCore::Template.with_creation_source(UffizziCore::Template.creation_source.compose_file).count } => 1,
+    }
+
+    assert_difference differences do
+      put :update, params: params, format: :json
+    end
+
+    assert_response :success
+  end
+
+  test '#update - update deployment created from temporary compose file' do
+    file_content = File.read('test/fixtures/files/test-compose-success-without-dependencies.yml')
+    compose_file = create(:compose_file, :temporary, project: @project, added_by: @admin)
+    create(:template, :compose_file_source, compose_file: compose_file, project: @project, added_by: @admin, payload: @template.payload)
+    @deployment.update!(compose_file: compose_file)
+    encoded_content = Base64.encode64(file_content)
+    compose_file_attributes = attributes_for(:compose_file, :temporary, project: @project, added_by: @admin, content: encoded_content)
+    create(:credential, :docker_hub, account: @admin.organizational_account)
+
+    params = {
+      project_slug: @project.slug,
+      compose_file: compose_file_attributes,
+      dependencies: [],
+      id: @deployment[:id],
+    }
+
+    differences = {
+      -> { UffizziCore::ComposeFile.temporary.count } => 0,
+      -> { UffizziCore::Template.with_creation_source(UffizziCore::Template.creation_source.compose_file).count } => 0,
     }
 
     assert_difference differences do
