@@ -122,7 +122,9 @@ class UffizziCore::ManageActivityItemsService
     when :terminated
       UffizziCore::Event.state.failed
     when :waiting
-      return UffizziCore::Event.state.failed if ['ErrImagePull', 'ImagePullBackOff', 'CrashLoopBackOff'].include?(reason)
+      return UffizziCore::Event.state.failed if ['CrashLoopBackOff'].include?(reason)
+
+      raise UffizziCore::Deployment::ImagePullError, @deployment.id if ['ErrImagePull', 'ImagePullBackOff'].include?(reason)
 
       UffizziCore::Event.state.deploying
     else

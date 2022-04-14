@@ -861,7 +861,7 @@
         "x-action": "bulk_create"
       }
     },
-    "/api/cli/v1/projects/{project_slug}/secrets/{id}": {
+    "/api/cli/v1/projects/{project_slug}/secrets/{secret_name}": {
       "delete": {
         "tags": [
           "Project/Secrets"
@@ -869,15 +869,15 @@
         "operationId": "Project/Secrets-destroy",
         "parameters": [
           {
-            "name": "id",
-            "description": "Scope response to id",
+            "name": "project_slug",
+            "description": "project_slug",
             "required": true,
             "in": "path",
             "type": "string"
           },
           {
-            "name": "project_slug",
-            "description": "project_slug",
+            "name": "secret_name",
+            "description": "Scope response to secret_name",
             "required": true,
             "in": "path",
             "type": "string"
@@ -891,14 +891,14 @@
             }
           },
           "422": {
-            "description": "Delete a secret from project by secret id"
+            "description": "Delete a secret from project by secret name"
           },
           "401": {
             "description": "Not authorized"
           }
         },
-        "description": "Delete a secret from project by secret id",
-        "summary": "Delete a secret from project by secret id",
+        "description": "Delete a secret from project by secret name",
+        "summary": "Delete a secret from project by secret name",
         "x-controller": "uffizzi_core/api/cli/v1/projects/secrets",
         "x-action": "destroy"
       }

@@ -36,9 +36,9 @@ class UffizziCore::Api::Cli::V1::Projects::SecretsController < UffizziCore::Api:
     render json: { secrets: secrets }, status: :created
   end
 
-  # Delete a secret from project by secret id
+  # Delete a secret from project by secret name
   #
-  # @path [DELETE] /api/cli/v1/projects/{project_slug}/secrets/{id}
+  # @path [DELETE] /api/cli/v1/projects/{project_slug}/secrets/{secret_name}
   # @parameter project_slug(required,path) [string]
   # @response [Project] 200 OK
   # @response 422
