@@ -271,4 +271,31 @@ class UffizziCore::ActivityItemServiceTest < ActiveSupport::TestCase
       assert_requested stubbed_controller_containers_request
     end
   end
+
+  test '#disable_deployment' do
+    repo = create(:repo, :docker_hub, project: @project)
+    container = create(:container, :with_public_port, deployment: @deployment, repo: repo, image: 'library/nginx')
+    namespace, name = container.image.split('/')
+
+    activity_item = create(:activity_item,
+                           :docker,
+                           :with_deploying_event,
+                           namespace: namespace,
+                           name: name,
+                           tag: container.tag,
+                           container: container,
+                           deployment: @deployment)
+
+    differences = {
+      -> { UffizziCore::Event.with_state(UffizziCore::Event.state.failed).count } => 1,
+    }
+
+    assert_difference differences do
+      UffizziCore::ActivityItemService.disable_deployment!(activity_item)
+    end
+
+    @deployment.reload
+
+    assert { @deployment.disabled? }
+  end
 end
