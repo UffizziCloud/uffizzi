@@ -39,8 +39,10 @@ class UffizziCore::ComposeFile::IngressOptionsService
 
       raise UffizziCore::ComposeFile::ParseError, I18n.t('compose.invalid_integer', option: :port) unless port.is_a?(Integer)
 
-      if port < Settings.compose.port_min_value || port > Settings.compose.port_max_value
-        raise UffizziCore::ComposeFile::ParseError, I18n.t('compose.invalid_port')
+      port_min = Settings.compose.port_min_value
+      port_max = Settings.compose.port_max_value
+      if port < port_min || port > port_max
+        raise UffizziCore::ComposeFile::ParseError, I18n.t('compose.port_out_of_range', port_min: port_min, port_max: port_max)
       end
 
       port

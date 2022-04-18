@@ -147,14 +147,14 @@ class UffizziCore::ComposeFileServiceTest < ActiveSupport::TestCase
     assert_match('At least one must be provided', e.message)
   end
 
-  test '#parse - check if a port is invalid' do
+  test '#parse - check if a port is  out of acceptable range' do
     content = file_fixture('files/compose_files/dockerhub_services/nginx_invalid_port.yml').read
 
     e = assert_raise(UffizziCore::ComposeFile::ParseError) do
       UffizziCore::ComposeFileService.parse(content)
     end
 
-    assert_match('Invalid port specification', e.message)
+    assert_match("Port should be specified between #{Settings.compose.port_min_value} - #{Settings.compose.port_max_value}", e.message)
   end
 
   test '#parse - check if a memory has invalid postfix' do

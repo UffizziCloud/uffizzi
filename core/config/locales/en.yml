@@ -25,7 +25,7 @@ en:
     invalid_ingress_service: Invalid ingress service '%{value}'
     no_variable_name: Invalid environment variable 'name=%{name}' 'value=%{value}'
     invalid_config: Invalid config value 'source=%{source}' 'target=%{target}'
-    invalid_port: Invalid port specification '%{value}'
+    port_out_of_range: Port should be specified between %{port_min} - %{port_max}
     invalid_memory_postfix: The specified value for memory '%{value}' should specify the units. The postfix should be one of the `b` `k` `m` `g` characters
     invalid_memory_type: Memory '%{value}' contains an invalid type, it should be a string
     invalid_memory_value: Invalid memory value '%{value}'
