@@ -369,6 +369,14 @@ class UffizziCore::ComposeFileServiceTest < ActiveSupport::TestCase
     assert_match("'build' option is not implemented", e.message)
   end
 
+  test '#parse - raise an error if the test options is neither array or string' do
+    content = file_fixture('files/compose_files/compose_with_healthcheck.yml').read
+
+    UffizziCore::ComposeFileService.parse(content)
+
+    assert_match("'build' option is not implemented", e.message)
+  end
+
   test '#build_template_attributes - check if x-uffizzi ingress is specified' do
     create(:credential, :docker_hub, account: @account)
     content = file_fixture('files/compose_files/dockerhub_services/nginx_uffizzi_ingress.yml').read

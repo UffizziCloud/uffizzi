@@ -44,6 +44,8 @@ class UffizziCore::ComposeFile::ServicesOptionsService
                                       UffizziCore::ComposeFile::ServicesOptions::EntrypointService.parse(value)
                                     when :command
                                       UffizziCore::ComposeFile::ServicesOptions::CommandService.parse(value)
+                                    when :healthcheck
+                                      UffizziCore::ComposeFile::Parsers::Services::HealthcheckParserService.parse(value)
                                     when :'x-uffizzi-continuous-preview', :'x-uffizzi-continuous-previews'
                                       UffizziCore::ComposeFile::ContinuousPreviewOptionsService.parse(value)
         end
