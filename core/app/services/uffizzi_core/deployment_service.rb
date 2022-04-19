@@ -14,7 +14,6 @@ module UffizziCore::DeploymentService
   class << self
     def create_from_compose(compose_file, project, user)
       deployment_attributes = ActionController::Parameters.new(compose_file.template.payload)
-
       deployment_form = UffizziCore::Api::Cli::V1::Deployment::CreateForm.new(deployment_attributes)
       deployment_form.assign_dependences!(project, user)
       deployment_form.compose_file = compose_file

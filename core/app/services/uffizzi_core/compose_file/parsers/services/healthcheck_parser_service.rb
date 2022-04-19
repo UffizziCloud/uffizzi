@@ -13,7 +13,7 @@ class UffizziCore::ComposeFile::Parsers::Services::HealthcheckParserService
         test: command,
         interval: parse_time(healthcheck_data['interval']),
         timeout: parse_time(healthcheck_data['timeout']),
-        retries: healthcheck_data['retries'],
+        retries: parse_retries(healthcheck_data['retries']),
         start_period: parse_time(healthcheck_data['start_period']),
       }
     end
@@ -28,6 +28,7 @@ class UffizziCore::ComposeFile::Parsers::Services::HealthcheckParserService
       when Array
         start_command = command.first
         raise UffizziCore::ComposeFile::ParseError unless REQUIRED_START_COMMANDS.include?(start_command)
+
         command
       when String
         command
@@ -42,13 +43,11 @@ class UffizziCore::ComposeFile::Parsers::Services::HealthcheckParserService
 
     def parse_time(value)
       tokens = {
-        "s" => (1),
-        "m" => (60),
-        "h" => (60 * 60),
-        "d" => (60 * 60 * 24)
+        's' => 1,
+        'm' => 60,
+        'h' => (60 * 60),
+        'd' => (60 * 60 * 24),
       }
-
-      interval_in_seconds = 0
 
       time_parts = value.scan(/(\d+)(\w)/).compact
 
@@ -57,8 +56,8 @@ class UffizziCore::ComposeFile::Parsers::Services::HealthcheckParserService
         acc += amount.to_i * tokens[measure]
 
         acc
-      rescue Exception
-        raise UffizziCore::ComposeFile::ParseError, I18n.t('compose.invalid_time_interval', option: :test) if command.nil?
+      rescue StandardError
+        raise UffizziCore::ComposeFile::ParseError, I18n.t('compose.invalid_time_interval')
       end
     end
   end

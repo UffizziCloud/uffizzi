@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 class UffizziCore::Api::Cli::V1::Projects::Deployments::ContainerSerializer < UffizziCore::BaseSerializer
-  attributes :id, :name, :memory_limit, :memory_request, :continuously_deploy, :variables, :secret_variables
+  attributes :id, :name, :memory_limit, :memory_request, :continuously_deploy, :variables, :secret_variables, :healthcheck
 
   has_many :container_config_files
 

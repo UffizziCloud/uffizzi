@@ -1,12 +1,12 @@
 # frozen_string_literal: true
 
 class UffizziCore::ComposeFile::TemplateService
-  def initialize(github_form, project, user)
+  def initialize(cli_form, project, user)
     @project = project
     @user = user
-    @compose_dependencies = github_form.compose_dependencies
-    @compose_data = github_form.compose_data
-    @compose_repositories = github_form.compose_repositories
+    @compose_dependencies = cli_form.compose_dependencies
+    @compose_data = cli_form.compose_data
+    @compose_repositories = cli_form.compose_repositories
   end
 
   def create_template(compose_file_form)
