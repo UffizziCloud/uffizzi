@@ -376,6 +376,16 @@ class UffizziCore::ComposeFileServiceTest < ActiveSupport::TestCase
     container_with_healthcheck = result[:containers].select { |container| container[:container_name] == 'hello-world' }.first
 
     assert_equal(90, container_with_healthcheck[:healthcheck][:interval])
+    refute(container_with_healthcheck[:healthcheck][:disable])
+  end
+
+  test "#parse - parses compose file with healthcheck and sets disabled to false if the command is 'NONE'" do
+    content = file_fixture('files/compose_files/healthcheck/disabled_healthcheck.yml').read
+
+    result = UffizziCore::ComposeFileService.parse(content)
+    container_with_healthcheck = result[:containers].select { |container| container[:container_name] == 'hello-world' }.first
+
+    assert(container_with_healthcheck[:healthcheck][:disable])
   end
 
   test '#parse - raises error if the healthcheck command has invalid type' do

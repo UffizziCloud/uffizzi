@@ -15,6 +15,7 @@ class UffizziCore::ComposeFile::Parsers::Services::HealthcheckParserService
         timeout: parse_time(healthcheck_data['timeout']),
         retries: parse_retries(healthcheck_data['retries']),
         start_period: parse_time(healthcheck_data['start_period']),
+        disable: parse_disable_option(healthcheck_data['disable'], command),
       }
     end
 
@@ -59,6 +60,14 @@ class UffizziCore::ComposeFile::Parsers::Services::HealthcheckParserService
       rescue StandardError
         raise UffizziCore::ComposeFile::ParseError, I18n.t('compose.invalid_time_interval')
       end
+    end
+
+    def parse_disable_option(value, command)
+      return true if command.is_a?(Array) && command.first == 'NONE'
+      return false if value.nil?
+      return value if value.in?([true, false])
+
+      raise UffizziCore::ComposeFile::ParseError, I18n.t('compose.invalid_bool_value', field: 'disable', value: value)
     end
   end
 end
