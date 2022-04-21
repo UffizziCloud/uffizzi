@@ -34,13 +34,6 @@ services:
     depends_on:
       - db
     command: bash -c "bundle install && bundle exec rails db:create db:migrate && bundle exec puma -C config/puma.rb"
-    healthcheck:
-      test: ["CMD", "curl", "-f", "http://web:7000"]
-      interval: 1m30s
-      timeout: 10s
-      retries: 3
-      start_period: 40s
-
   core:
     build: core
     environment: *web-environment

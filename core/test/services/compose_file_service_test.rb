@@ -369,8 +369,18 @@ class UffizziCore::ComposeFileServiceTest < ActiveSupport::TestCase
     assert_match("'build' option is not implemented", e.message)
   end
 
-  test '#parse - parses compose file with healthcheck and converts time to seconds' do
-    content = file_fixture('files/compose_files/healthcheck/success.yaml').read
+  test '#parse - parses compose file with healthcheck and converts time to seconds when the test command is array' do
+    content = file_fixture('files/compose_files/healthcheck/array_command_success.yml').read
+
+    result = UffizziCore::ComposeFileService.parse(content)
+    container_with_healthcheck = result[:containers].select { |container| container[:container_name] == 'hello-world' }.first
+
+    assert_equal(90, container_with_healthcheck[:healthcheck][:interval])
+    refute(container_with_healthcheck[:healthcheck][:disable])
+  end
+
+  test '#parse - parses compose file with healthcheck and converts time to seconds when the test command is string' do
+    content = file_fixture('files/compose_files/healthcheck/string_command_success.yml').read
 
     result = UffizziCore::ComposeFileService.parse(content)
     container_with_healthcheck = result[:containers].select { |container| container[:container_name] == 'hello-world' }.first
