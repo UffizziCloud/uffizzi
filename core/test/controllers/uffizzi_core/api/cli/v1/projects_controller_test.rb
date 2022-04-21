@@ -15,4 +15,15 @@ class UffizziCore::Api::Cli::V1::ProjectsControllerTest < ActionController::Test
 
     assert_response :success
   end
+
+  test '#show' do
+    create(:compose_file, project: @project, added_by: @user)
+    create(:deployment, project: @project)
+
+    get :show, params: { slug: @project.slug }, format: :json
+
+    assert_response :success
+
+    assert_equal(@project.name, JSON.parse(response.body)['project']['name'] )
+  end
 end

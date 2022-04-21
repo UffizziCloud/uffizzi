@@ -15,7 +15,7 @@ UffizziCore::Engine.routes.draw do
           post :google
         end
 
-        resources :projects, only: ['index'], param: :slug do
+        resources :projects, only: ['index', 'show'], param: :slug do
           scope module: :projects do
             resource :compose_file, only: ['show', 'create', 'destroy']
             resources :deployments, only: ['index', 'show', 'create', 'destroy', 'update'] do

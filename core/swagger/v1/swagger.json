@@ -78,7 +78,7 @@
         ],
         "responses": {
           "default": {
-            "description": "Create account credential",
+            "description": "rubocop:disable Layout/LineLength\nCreate account credential",
             "examples": {
               "application/json": "type can be one of UffizziCore::Credential::Amazon, UffizziCore::Credential::Azure, UffizziCore::Credential::DockerHub, UffizziCore::Credential::Google, UffizziCore::Credential::GithubContainerRegistry"
             }
@@ -116,8 +116,8 @@
             }
           }
         },
-        "description": "Create account credential",
-        "summary": "Create account credential",
+        "description": "rubocop:disable Layout/LineLength\nCreate account credential\n\nrubocop:enable Layout/LineLength",
+        "summary": "rubocop:disable Layout/LineLength\nCreate account credential",
         "x-controller": "uffizzi_core/api/cli/v1/account/credentials",
         "x-action": "create"
       }
@@ -1151,6 +1151,46 @@
         "x-action": "index"
       }
     },
+    "/api/cli/v1/projects/{slug}": {
+      "get": {
+        "tags": [
+          "Project"
+        ],
+        "operationId": "Project-show",
+        "parameters": [
+          {
+            "name": "slug",
+            "description": "Scope response to slug",
+            "required": true,
+            "in": "path",
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "project": {
+                  "$ref": "#/definitions/Project"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Not Found"
+          },
+          "401": {
+            "description": "Not authorized"
+          }
+        },
+        "description": "Get a project by slug",
+        "summary": "Get a project by slug",
+        "x-controller": "uffizzi_core/api/cli/v1/projects",
+        "x-action": "show"
+      }
+    },
     "/api/cli/v1/session": {
       "post": {
         "tags": [
@@ -1475,11 +1515,27 @@
         }
       }
     },
-    "UffizziCore_Project": {
+    "Project": {
       "type": "object",
       "properties": {
         "slug": {
           "type": "string"
+        },
+        "name": {
+          "type": "string"
+        },
+        "description": {
+          "type": "string"
+        },
+        "created_at": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "secrets": {
+          "type": "string"
+        },
+        "default_compose": {
+          "$ref": "#/definitions/ComposeFile"
         }
       }
     }
