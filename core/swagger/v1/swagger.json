@@ -771,6 +771,14 @@
                     "properties": {
                       "name": {
                         "type": "string"
+                      },
+                      "created_at": {
+                        "type": "string",
+                        "format": "date"
+                      },
+                      "updated_at": {
+                        "type": "string",
+                        "format": "date"
                       }
                     }
                   }
@@ -841,6 +849,14 @@
                     "properties": {
                       "name": {
                         "type": "string"
+                      },
+                      "created_at": {
+                        "type": "string",
+                        "format": "date"
+                      },
+                      "updated_at": {
+                        "type": "string",
+                        "format": "date"
                       }
                     }
                   }
