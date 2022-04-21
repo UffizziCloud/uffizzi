@@ -16,4 +16,21 @@ class UffizziCore::Api::Cli::V1::ProjectsController < UffizziCore::Api::Cli::V1:
 
     respond_with projects
   end
+
+  # Get a project by slug
+  #
+  # @path [GET] /api/cli/v1/projects/{slug}
+  #
+  # @response <object< project: Project>> 200 OK
+  # @response 404 Not Found
+  # @response 401 Not authorized
+  def show
+    respond_with project
+  end
+
+  private
+
+  def project
+    project ||= current_user.projects.find_by!(slug: params[:slug])
+  end
 end

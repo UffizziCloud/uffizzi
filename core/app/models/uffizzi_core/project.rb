@@ -1,7 +1,12 @@
 # frozen_string_literal: true
 
-# @model
+# @model Project
 # @property slug [string]
+# @property name [string]
+# @property description [string]
+# @property created_at [date-time]
+# @property secrets [string]
+# @property default_compose [ComposeFile]
 
 class UffizziCore::Project < UffizziCore::ApplicationRecord
   include AASM
