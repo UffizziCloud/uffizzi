@@ -31,6 +31,6 @@ class UffizziCore::Api::Cli::V1::ProjectsController < UffizziCore::Api::Cli::V1:
   private
 
   def project
-    project ||= current_user.projects.find_by!(slug: params[:slug])
+    @project ||= current_user.projects.find_by!(slug: params[:slug])
   end
 end

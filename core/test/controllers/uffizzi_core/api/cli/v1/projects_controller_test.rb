@@ -24,6 +24,6 @@ class UffizziCore::Api::Cli::V1::ProjectsControllerTest < ActionController::Test
 
     assert_response :success
 
-    assert_equal(@project.name, JSON.parse(response.body)['project']['name'] )
+    assert_equal(@project.name, JSON.parse(response.body)['project']['name'])
   end
 end
