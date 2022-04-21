@@ -12,7 +12,7 @@ class UffizziCore::Api::Cli::V1::ProjectSerializer < UffizziCore::BaseSerializer
              :default_compose
 
   private
-  
+
   def default_compose
     compose_file = object.compose_files.main.first
 
@@ -20,6 +20,6 @@ class UffizziCore::Api::Cli::V1::ProjectSerializer < UffizziCore::BaseSerializer
   end
 
   def secrets
-    object.secrets.map{ |secret| secret.name }
+    object.secrets.map(&:name)
   end
 end

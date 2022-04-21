@@ -4,5 +4,5 @@ class UffizziCore::Api::Cli::V1::ProjectSerializer::DeploymentSerializer < Uffiz
   type :deployment
 
   attributes :id,
-             :subdomain    
+             :subdomain
 end
