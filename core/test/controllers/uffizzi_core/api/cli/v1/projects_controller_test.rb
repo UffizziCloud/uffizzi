@@ -26,4 +26,71 @@ class UffizziCore::Api::Cli::V1::ProjectsControllerTest < ActionController::Test
 
     assert_equal(@project.name, JSON.parse(response.body)['project']['name'])
   end
+
+  test '#create' do
+    attributes = attributes_for(:project)
+
+    differences = {
+      -> { UffizziCore::Project.count } => 1,
+      -> { UffizziCore::UserProject.count } => 1,
+      -> { UffizziCore::Template.count } => 1,
+      -> { UffizziCore::ConfigFile.count } => 1,
+    }
+
+    assert_difference differences do
+      post :create, params: { project: attributes }, format: :json
+    end
+
+    assert_response :success
+  end
+
+  test '#create for disabled account should return forbidden' do
+    account = @user.organizational_account
+    account.disable!
+    attributes = attributes_for(:project)
+
+    differences = {
+      -> { UffizziCore::Project.count } => 0,
+    }
+
+    assert_difference differences do
+      post :create, params: { project: attributes }, format: :json
+    end
+
+    assert_response :forbidden
+  end
+
+  test '#create for payment_issue account should return forbidden' do
+    account = @user.organizational_account
+    account.raise_payment_issue!
+    attributes = attributes_for(:project)
+
+    differences = {
+      -> { UffizziCore::Deployment.active.count } => 0,
+    }
+
+    assert_difference differences do
+      post :create, params: { project: attributes }, format: :json
+    end
+
+    assert_response :forbidden
+  end
+
+  test '#destroy' do
+    deployment_ids = @project.deployment_ids
+
+    stubbed_requests = deployment_ids.map do |deployment_id|
+      stub_request(:post, "#{Settings.controller.url}/clean")
+        .with(body: { deployment_id: deployment_id })
+        .to_return(status: 200, body: "", headers: {})
+    end
+
+    assert_difference('UffizziCore::Project.active.count', -1) do
+      put :destroy, params: { id: @project.id }, format: :json
+    end
+
+    stubbed_requests.each(&method(:assert_requested))
+
+    assert_response :success
+  end
 end
