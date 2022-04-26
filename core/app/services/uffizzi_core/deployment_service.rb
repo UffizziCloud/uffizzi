@@ -59,6 +59,14 @@ module UffizziCore::DeploymentService
       compose_file.destroy!
     end
 
+    def fail!(deployment)
+      deployment.fail!
+      compose_file = deployment.compose_file || deployment.template&.compose_file
+      return unless compose_file&.kind&.temporary?
+
+      compose_file.destroy!
+    end
+
     def build_subdomain(deployment)
       if deployment.continuous_preview_payload.present?
         continuous_preview_payload = deployment.continuous_preview_payload

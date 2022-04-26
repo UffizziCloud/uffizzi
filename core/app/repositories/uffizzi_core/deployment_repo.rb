@@ -19,5 +19,6 @@ module UffizziCore::DeploymentRepo
     scope :with_containers, ->(source, image, tag) {
       includes(containers: :repo).where(containers: { image: image, tag: tag, repos: { type: source } })
     }
+    scope :existed, -> { where(state: [:active, :failed]) }
   end
 end
