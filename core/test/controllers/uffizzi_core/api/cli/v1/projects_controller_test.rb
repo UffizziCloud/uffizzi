@@ -44,38 +44,6 @@ class UffizziCore::Api::Cli::V1::ProjectsControllerTest < ActionController::Test
     assert_response :success
   end
 
-  test '#create for disabled account should return forbidden' do
-    account = @user.organizational_account
-    account.disable!
-    attributes = attributes_for(:project)
-
-    differences = {
-      -> { UffizziCore::Project.count } => 0,
-    }
-
-    assert_difference differences do
-      post :create, params: { project: attributes }, format: :json
-    end
-
-    assert_response :forbidden
-  end
-
-  test '#create for payment_issue account should return forbidden' do
-    account = @user.organizational_account
-    account.raise_payment_issue!
-    attributes = attributes_for(:project)
-
-    differences = {
-      -> { UffizziCore::Deployment.active.count } => 0,
-    }
-
-    assert_difference differences do
-      post :create, params: { project: attributes }, format: :json
-    end
-
-    assert_response :forbidden
-  end
-
   test '#destroy' do
     deployment_ids = @project.deployment_ids
 
@@ -85,8 +53,12 @@ class UffizziCore::Api::Cli::V1::ProjectsControllerTest < ActionController::Test
         .to_return(status: 200, body: "", headers: {})
     end
 
-    assert_difference('UffizziCore::Project.active.count', -1) do
-      put :destroy, params: { id: @project.id }, format: :json
+    differences = {
+      -> { UffizziCore::Project.active.count } => -1,
+    }
+
+    assert_difference differences do
+      delete :destroy, params: {slug: @project.slug }, format: :json
     end
 
     stubbed_requests.each(&method(:assert_requested))

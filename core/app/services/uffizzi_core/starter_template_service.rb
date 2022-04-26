@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-class StarterTemplateService
+class UffizziCore::StarterTemplateService
   class << self
     def create(project, user)
       voting_app_config_file = create_config_file(project, user)
@@ -14,7 +14,7 @@ class StarterTemplateService
 
       starter_template_config_file_params = ActionController::Parameters.new(starter_template_config_file)
 
-      starter_template_config_file_form = UffizziCore::ConfigFile::CreateForm.new(starter_template_config_file_params)
+      starter_template_config_file_form = UffizziCore::Api::Cli::V1::ConfigFile::CreateForm.new(starter_template_config_file_params)
       starter_template_config_file_form.project = project
       starter_template_config_file_form.added_by = user
       starter_template_config_file_form.creation_source = UffizziCore::ConfigFile.creation_source.system
@@ -33,7 +33,7 @@ class StarterTemplateService
 
       starter_template = ActionController::Parameters.new(starter_template_containers)
 
-      starter_template_form = UffizziCore::Template::CreateForm.new(starter_template)
+      starter_template_form = UffizziCore::Api::Cli::V1::Template::CreateForm.new(starter_template)
       starter_template_form.creation_source = UffizziCore::Template.creation_source.system
       starter_template_form.added_by = user
       starter_template_form.project = project

@@ -25,6 +25,8 @@ class UffizziCore::Api::Cli::V1::ProjectsController < UffizziCore::Api::Cli::V1:
   # @response 404 Not Found
   # @response 401 Not authorized
   def show
+    project = current_user.projects.find_by!(slug: params[:slug])
+
     respond_with project
   end
 
@@ -38,7 +40,7 @@ class UffizziCore::Api::Cli::V1::ProjectsController < UffizziCore::Api::Cli::V1:
   # @response [object<errors: object<password: string >>] 422 Unprocessable entity
 
   def create
-    project_form = UffizziCore::Project::CreateForm.new(params[:project])
+    project_form = UffizziCore::Api::Cli::V1::Project::CreateForm.new(project_params)
     project_form.account = current_user.organizational_account
 
     if project_form.save
@@ -49,7 +51,7 @@ class UffizziCore::Api::Cli::V1::ProjectsController < UffizziCore::Api::Cli::V1:
         user_projects << { project: project_form, user: current_user, role: UffizziCore::UserProject.role.developer }
       end
 
-      current_user.organizational_account.memberships.where(role: Membership.role.admin).map do |membership|
+      current_user.organizational_account.memberships.where(role: UffizziCore::Membership.role.admin).map do |membership|
         user_projects << { project: project_form, user: membership.user, role: UffizziCore::UserProject.role.admin }
       end
 
@@ -70,7 +72,7 @@ class UffizziCore::Api::Cli::V1::ProjectsController < UffizziCore::Api::Cli::V1:
   # @response 401 Not authorized
 
   def destroy
-    project = current_user.organizational_account.active_projects.find(params[:id])
+    project = current_user.organizational_account.active_projects.find_by!(slug: params[:slug])
     project.disable!
 
     respond_with project
@@ -78,7 +80,7 @@ class UffizziCore::Api::Cli::V1::ProjectsController < UffizziCore::Api::Cli::V1:
 
   private
 
-  def project
-    @project ||= current_user.projects.find_by!(slug: params[:slug])
+  def project_params
+    params.require(:project)
   end
 end
