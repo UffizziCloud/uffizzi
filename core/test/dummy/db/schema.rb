@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2022_04_19_074956) do
+ActiveRecord::Schema.define(version: 2022_03_25_113342) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -151,7 +151,6 @@ ActiveRecord::Schema.define(version: 2022_04_19_074956) do
     t.string "entrypoint"
     t.string "command"
     t.string "name"
-    t.jsonb "healthcheck"
     t.index ["deployment_id"], name: "index_containers_on_deployment_id"
     t.index ["repo_id"], name: "index_containers_on_repo_id"
   end
@@ -275,6 +274,7 @@ ActiveRecord::Schema.define(version: 2022_04_19_074956) do
     t.string "state"
     t.string "slug"
     t.string "description"
+    t.jsonb "secrets"
     t.index ["account_id", "name"], name: "index_projects_on_account_id_and_name", unique: true
     t.index ["account_id"], name: "index_projects_on_account_id"
   end
@@ -321,16 +321,6 @@ ActiveRecord::Schema.define(version: 2022_04_19_074956) do
     t.datetime "updated_at", precision: 6, null: false
     t.index ["name", "resource_type", "resource_id"], name: "index_roles_on_name_and_resource_type_and_resource_id"
     t.index ["resource_type", "resource_id"], name: "index_roles_on_resource_type_and_resource_id"
-  end
-
-  create_table "uffizzi_core_secrets", force: :cascade do |t|
-    t.string "name"
-    t.string "value"
-    t.datetime "created_at", precision: 6, null: false
-    t.datetime "updated_at", precision: 6, null: false
-    t.string "resource_type"
-    t.bigint "resource_id"
-    t.index ["resource_type", "resource_id"], name: "index_uffizzi_core_secrets_on_resource"
   end
 
   create_table "uffizzi_core_templates", force: :cascade do |t|

@@ -3,23 +3,22 @@
 class UffizziCore::Api::Cli::V1::ProjectSerializer < UffizziCore::BaseSerializer
   type :project
   has_many :deployments
+  has_one :default_compose
 
   attributes :name,
              :slug,
              :description,
              :created_at,
              :secrets,
-             :default_compose
 
-  private
 
   def default_compose
-    compose_file = object.compose_files.main.first
-
-    UffizziCore::Api::Cli::V1::ProjectSerializer::ComposeFileSerializer.new(compose_file).as_json
+    object.compose_files.main.first
   end
 
   def secrets
+    return [] unless object.secrets
+  
     object.secrets.map(&:name)
   end
 end
