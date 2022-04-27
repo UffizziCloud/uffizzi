@@ -9,8 +9,7 @@ class UffizziCore::Api::Cli::V1::ProjectSerializer < UffizziCore::BaseSerializer
              :slug,
              :description,
              :created_at,
-             :secrets,
-
+             :secrets
 
   def default_compose
     object.compose_files.main.first
@@ -18,7 +17,7 @@ class UffizziCore::Api::Cli::V1::ProjectSerializer < UffizziCore::BaseSerializer
 
   def secrets
     return [] unless object.secrets
-  
+
     object.secrets.map(&:name)
   end
 end

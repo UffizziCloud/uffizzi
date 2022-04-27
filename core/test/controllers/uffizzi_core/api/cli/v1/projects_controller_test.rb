@@ -50,7 +50,7 @@ class UffizziCore::Api::Cli::V1::ProjectsControllerTest < ActionController::Test
     stubbed_requests = deployment_ids.map do |deployment_id|
       stub_request(:post, "#{Settings.controller.url}/clean")
         .with(body: { deployment_id: deployment_id })
-        .to_return(status: 200, body: "", headers: {})
+        .to_return(status: 200, body: '', headers: {})
     end
 
     differences = {
@@ -58,7 +58,7 @@ class UffizziCore::Api::Cli::V1::ProjectsControllerTest < ActionController::Test
     }
 
     assert_difference differences do
-      delete :destroy, params: {slug: @project.slug }, format: :json
+      delete :destroy, params: { slug: @project.slug }, format: :json
     end
 
     stubbed_requests.each(&method(:assert_requested))

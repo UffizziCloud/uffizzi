@@ -9,7 +9,7 @@ class UffizziCore::Rbac::UserAccessService
     true
   end
 
-  def admin_or_developer_access_to_account?(user, account)
+  def admin_or_developer_access_to_account?(_user, _account)
     true
   end
 
