@@ -25,10 +25,10 @@ class UffizziCore::StarterTemplateService
 
     def create_containers(project, user, voting_app_config_file)
       starter_template_containers = {
-        name: "Voting App (from base images)",
+        name: 'Voting App (from base images)',
         payload: {
           containers_attributes: containers_attributes(voting_app_config_file),
-        }
+        },
       }
 
       starter_template = ActionController::Parameters.new(starter_template_containers)
@@ -47,128 +47,128 @@ class UffizziCore::StarterTemplateService
         redis_container_attributes,
         example_worker_container_attributes,
         example_result_container_attributes,
-        example_vote_container_attributes
+        example_vote_container_attributes,
       ]
     end
 
     def postgres_container_attributes
       {
-        image: "library/postgres",
-        tag: "9.6",
+        image: 'library/postgres',
+        tag: '9.6',
         port: nil,
         public: false,
         memory_limit: 250,
         memory_request: 250,
         receive_incoming_requests: false,
-        continuously_deploy: "disabled",
+        continuously_deploy: 'disabled',
         secret_variables: nil,
         variables: [
           {
-            name: "POSTGRES_USER",
-            value: "postgres"
+            name: 'POSTGRES_USER',
+            value: 'postgres',
           },
           {
-            name: "POSTGRES_PASSWORD",
-            value: "postgres"
-          }
+            name: 'POSTGRES_PASSWORD',
+            value: 'postgres',
+          },
         ],
-        repo_attributes: repo_attributes("library/postgres"),
-        container_config_files_attributes: []
+        repo_attributes: repo_attributes('library/postgres'),
+        container_config_files_attributes: [],
       }
     end
 
     def nginx_container_attributes(voting_app_config_file)
       {
-        image: "library/nginx",
-        tag: "latest",
+        image: 'library/nginx',
+        tag: 'latest',
         port: 8080,
         public: true,
         memory_limit: 125,
         memory_request: 125,
         receive_incoming_requests: true,
-        continuously_deploy: "disabled",
+        continuously_deploy: 'disabled',
         secret_variables: nil,
         variables: nil,
-        repo_attributes: repo_attributes("library/nginx"),
+        repo_attributes: repo_attributes('library/nginx'),
         container_config_files_attributes: [{
           config_file_id: voting_app_config_file.id,
-          mount_path: "/etc/nginx/conf.d/"
-        }]
+          mount_path: '/etc/nginx/conf.d/',
+        }],
       }
     end
 
     def redis_container_attributes
       {
-        image: "library/redis",
-        tag: "latest",
+        image: 'library/redis',
+        tag: 'latest',
         port: nil,
         public: false,
         memory_limit: 125,
         memory_request: 125,
         receive_incoming_requests: false,
-        continuously_deploy: "disabled",
+        continuously_deploy: 'disabled',
         secret_variables: nil,
         variables: nil,
-        repo_attributes: repo_attributes("library/redis"),
-        container_config_files_attributes: []
+        repo_attributes: repo_attributes('library/redis'),
+        container_config_files_attributes: [],
       }
     end
 
     def example_worker_container_attributes
       {
-        image: "uffizzicloud/example-worker",
-        tag: "latest",
+        image: 'uffizzicloud/example-worker',
+        tag: 'latest',
         port: nil,
         public: false,
         memory_limit: 250,
         memory_request: 250,
         receive_incoming_requests: false,
-        continuously_deploy: "disabled",
+        continuously_deploy: 'disabled',
         secret_variables: nil,
         variables: nil,
-        repo_attributes: repo_attributes("uffizzicloud/example-worker"),
-        container_config_files_attributes: []
+        repo_attributes: repo_attributes('uffizzicloud/example-worker'),
+        container_config_files_attributes: [],
       }
     end
 
     def example_result_container_attributes
       {
-        image: "uffizzicloud/example-result",
-        tag: "latest",
+        image: 'uffizzicloud/example-result',
+        tag: 'latest',
         port: nil,
         public: false,
         memory_limit: 125,
         memory_request: 125,
         receive_incoming_requests: false,
-        continuously_deploy: "disabled",
+        continuously_deploy: 'disabled',
         secret_variables: nil,
         variables: nil,
-        repo_attributes: repo_attributes("uffizzicloud/example-result"),
-        container_config_files_attributes: []
+        repo_attributes: repo_attributes('uffizzicloud/example-result'),
+        container_config_files_attributes: [],
       }
     end
 
     def example_vote_container_attributes
       {
-        image: "uffizzicloud/example-vote",
-        tag: "latest",
+        image: 'uffizzicloud/example-vote',
+        tag: 'latest',
         port: nil,
         public: false,
         memory_limit: 250,
         memory_request: 250,
         receive_incoming_requests: false,
-        continuously_deploy: "disabled",
+        continuously_deploy: 'disabled',
         secret_variables: nil,
         variables: nil,
-        repo_attributes: repo_attributes( "uffizzicloud/example-vote"),
-        container_config_files_attributes: []
+        repo_attributes: repo_attributes('uffizzicloud/example-vote'),
+        container_config_files_attributes: [],
       }
     end
 
     def config_file_attributes
       {
-        filename: "vote.conf",
-        kind: "config_map",
+        filename: 'vote.conf',
+        kind: 'config_map',
         payload: "server {
                listen       8080;
                server_name  example.com;
@@ -178,7 +178,7 @@ class UffizziCore::StarterTemplateService
                location /vote/ {
                  proxy_pass      http://127.0.0.1:8888/;
                }
-            }"
+            }",
       }
     end
 
@@ -188,12 +188,12 @@ class UffizziCore::StarterTemplateService
         namespace: namespace,
         name: name,
         slug: name,
-        type: "UffizziCore::Repo::DockerHub",
-        description: "",
+        type: 'UffizziCore::Repo::DockerHub',
+        description: '',
         is_private: false,
         repository_id: nil,
-        branch: "",
-        kind: nil
+        branch: '',
+        kind: nil,
       }
     end
   end
