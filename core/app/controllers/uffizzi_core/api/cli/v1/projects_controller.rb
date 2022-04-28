@@ -56,8 +56,6 @@ class UffizziCore::Api::Cli::V1::ProjectsController < UffizziCore::Api::Cli::V1:
       end
 
       UffizziCore::UserProject.create!(user_projects)
-
-      UffizziCore::StarterTemplateService.create(project_form, current_user)
     end
 
     respond_with project_form
