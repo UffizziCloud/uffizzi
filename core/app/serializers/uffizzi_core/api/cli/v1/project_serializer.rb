@@ -3,13 +3,13 @@
 class UffizziCore::Api::Cli::V1::ProjectSerializer < UffizziCore::BaseSerializer
   type :project
   has_many :deployments
+  has_many :secrets
   has_one :default_compose
 
   attributes :name,
              :slug,
              :description,
-             :created_at,
-             :secrets
+             :created_at
 
   def default_compose
     object.compose_files.main.first

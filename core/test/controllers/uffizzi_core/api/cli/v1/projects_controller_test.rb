@@ -18,6 +18,7 @@ class UffizziCore::Api::Cli::V1::ProjectsControllerTest < ActionController::Test
 
   test '#show' do
     create(:compose_file, project: @project, added_by: @user)
+    create(:secret, resource: @project)
     create(:deployment, project: @project)
 
     get :show, params: { slug: @project.slug }, format: :json
@@ -33,8 +34,6 @@ class UffizziCore::Api::Cli::V1::ProjectsControllerTest < ActionController::Test
     differences = {
       -> { UffizziCore::Project.count } => 1,
       -> { UffizziCore::UserProject.count } => 1,
-      -> { UffizziCore::Template.count } => 1,
-      -> { UffizziCore::ConfigFile.count } => 1,
     }
 
     assert_difference differences do
