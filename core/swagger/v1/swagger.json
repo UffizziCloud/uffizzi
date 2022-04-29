@@ -1421,6 +1421,12 @@
         },
         "default_compose": {
           "$ref": "#/definitions/ComposeFile"
+        },
+        "deployments": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/Deployment"
+          }
         }
       }
     }

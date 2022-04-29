@@ -15,6 +15,10 @@ class UffizziCore::Api::Cli::V1::ProjectSerializer < UffizziCore::BaseSerializer
     object.compose_files.main.first
   end
 
+  def deployments
+    object.deployments.existed
+  end
+
   def secrets
     return [] unless object.secrets
 
