@@ -65,7 +65,7 @@ class UffizziCore::Api::Cli::V1::ProjectsController < UffizziCore::Api::Cli::V1:
   #
   # @path [DELETE] /api/cli/v1/projects/{slug}
   #
-  # @response <object< project: Project>> 200 OK
+  # @response 204 No content
   # @response 404 Not Found
   # @response 401 Not authorized
 
@@ -73,7 +73,7 @@ class UffizziCore::Api::Cli::V1::ProjectsController < UffizziCore::Api::Cli::V1:
     project = current_user.organizational_account.active_projects.find_by!(slug: params[:slug])
     project.disable!
 
-    respond_with project
+    head :no_content
   end
 
   private
