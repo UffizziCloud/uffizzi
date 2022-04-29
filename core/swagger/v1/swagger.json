@@ -78,7 +78,7 @@
         ],
         "responses": {
           "default": {
-            "description": "rubocop:disable Layout/LineLength\nCreate account credential",
+            "description": "Create account credential",
             "examples": {
               "application/json": "type can be one of UffizziCore::Credential::Amazon, UffizziCore::Credential::Azure, UffizziCore::Credential::DockerHub, UffizziCore::Credential::Google, UffizziCore::Credential::GithubContainerRegistry"
             }
@@ -116,8 +116,8 @@
             }
           }
         },
-        "description": "rubocop:disable Layout/LineLength\nCreate account credential\n\nrubocop:enable Layout/LineLength",
-        "summary": "rubocop:disable Layout/LineLength\nCreate account credential",
+        "description": "Create account credential",
+        "summary": "Create account credential",
         "x-controller": "uffizzi_core/api/cli/v1/account/credentials",
         "x-action": "create"
       }
@@ -1149,6 +1149,54 @@
         "summary": "Get projects of current user",
         "x-controller": "uffizzi_core/api/cli/v1/projects",
         "x-action": "index"
+      },
+      "post": {
+        "tags": [
+          "Project"
+        ],
+        "operationId": "Project-create",
+        "parameters": [
+
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "project": {
+                  "$ref": "#/definitions/Project"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Not Found"
+          },
+          "401": {
+            "description": "Not authorized"
+          },
+          "422": {
+            "description": "Unprocessable entity",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "errors": {
+                  "type": "object",
+                  "properties": {
+                    "password": {
+                      "type": "string"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "description": "Create a project",
+        "summary": "Create a project",
+        "x-controller": "uffizzi_core/api/cli/v1/projects",
+        "x-action": "create"
       }
     },
     "/api/cli/v1/projects/{slug}": {
@@ -1189,6 +1237,44 @@
         "summary": "Get a project by slug",
         "x-controller": "uffizzi_core/api/cli/v1/projects",
         "x-action": "show"
+      },
+      "delete": {
+        "tags": [
+          "Project"
+        ],
+        "operationId": "Project-destroy",
+        "parameters": [
+          {
+            "name": "slug",
+            "description": "Scope response to slug",
+            "required": true,
+            "in": "path",
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "project": {
+                  "$ref": "#/definitions/Project"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Not Found"
+          },
+          "401": {
+            "description": "Not authorized"
+          }
+        },
+        "description": "Delete a project",
+        "summary": "Delete a project",
+        "x-controller": "uffizzi_core/api/cli/v1/projects",
+        "x-action": "destroy"
       }
     },
     "/api/cli/v1/session": {
