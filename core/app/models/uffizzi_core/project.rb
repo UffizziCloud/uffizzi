@@ -31,7 +31,7 @@ class UffizziCore::Project < UffizziCore::ApplicationRecord
 
   validates :name, presence: true, uniqueness: { scope: :account, message: 'Name already exists' }
   validates :slug, presence: true, uniqueness: { message: 'Project slug already taken' }
-  
+
   aasm(:state) do
     state :active, initial: true
     state :disabled
