@@ -1215,16 +1215,8 @@
           }
         ],
         "responses": {
-          "200": {
-            "description": "OK",
-            "schema": {
-              "type": "object",
-              "properties": {
-                "project": {
-                  "$ref": "#/definitions/Project"
-                }
-              }
-            }
+          "204": {
+            "description": "No content"
           },
           "404": {
             "description": "Not Found"
