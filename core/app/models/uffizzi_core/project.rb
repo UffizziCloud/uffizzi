@@ -6,8 +6,8 @@
 # @property description [string]
 # @property created_at [date-time]
 # @property secrets [string]
-# @property default_compose [ComposeFile]
-# @property deployments [Array<Deployment>]
+# @property default_compose [object<source: string>]
+# @property deployments [object<id: integer, domain: string>]
 
 class UffizziCore::Project < UffizziCore::ApplicationRecord
   include AASM
