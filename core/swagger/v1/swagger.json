@@ -1134,6 +1134,9 @@
                     "properties": {
                       "slug": {
                         "type": "string"
+                      },
+                      "name": {
+                        "type": "string"
                       }
                     }
                   }
@@ -1156,7 +1159,26 @@
         ],
         "operationId": "Project-create",
         "parameters": [
-
+          {
+            "name": "params",
+            "description": "params",
+            "required": true,
+            "in": "body",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "name": {
+                  "type": "string"
+                },
+                "slug": {
+                  "type": "string"
+                },
+                "description": {
+                  "type": "string"
+                }
+              }
+            }
+          }
         ],
         "responses": {
           "200": {
@@ -1613,12 +1635,22 @@
           "type": "string"
         },
         "default_compose": {
-          "$ref": "#/definitions/ComposeFile"
+          "type": "object",
+          "properties": {
+            "source": {
+              "type": "string"
+            }
+          }
         },
         "deployments": {
-          "type": "array",
-          "items": {
-            "$ref": "#/definitions/Deployment"
+          "type": "object",
+          "properties": {
+            "id": {
+              "type": "integer"
+            },
+            "domain": {
+              "type": "string"
+            }
           }
         }
       }

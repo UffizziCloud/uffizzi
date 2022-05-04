@@ -9,12 +9,12 @@ class UffizziCore::Api::Cli::V1::ProjectsController < UffizziCore::Api::Cli::V1:
   #
   # @path [GET] /api/cli/v1/projects
   #
-  # @response [object<projects: Array<object<slug: string>> >] 200 OK
+  # @response [object<projects: Array<object<slug: string, name: string>> >] 200 OK
   # @response 401 Not authorized
   def index
     projects = current_user.projects.active.order(updated_at: :desc)
 
-    respond_with projects
+    respond_with projects, each_serializer: UffizziCore::Api::Cli::V1::ShortProjectSerializer
   end
 
   # Get a project by slug
@@ -33,6 +33,7 @@ class UffizziCore::Api::Cli::V1::ProjectsController < UffizziCore::Api::Cli::V1:
   # Create a project
   #
   # @path [POST] /api/cli/v1/projects
+  # @parameter params(required,body) [object<name: string, slug: string, description: string>]
   #
   # @response <object< project: Project>> 200 OK
   # @response 404 Not Found
