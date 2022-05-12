@@ -65,3 +65,21 @@ jobs:
           username: ${{ secrets.DOCKERHUB_USERNAME }}
           password: ${{ secrets.DOCKERHUB_PASSWORD }}
           repository: uffizzi/app
+  notify:
+    name: Send notification to Slack
+    needs:
+      - lint
+      - test
+      - build-and-push-some-branches
+    if: ${{ always() }}
+    runs-on: ubuntu-latest
+    steps:
+      - uses: technote-space/workflow-conclusion-action@v2
+      - uses: 8398a7/action-slack@v3
+        with:
+          status: ${{ env.WORKFLOW_CONCLUSION }}
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}
+        if: ${{ (github.ref_name == 'main' && env.WORKFLOW_CONCLUSION == 'success') || ((github.ref_name == 'main' || github.ref_name == 'qa' || github.ref_name == 'develop') && env.WORKFLOW_CONCLUSION == 'failure') }}
+
