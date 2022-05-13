@@ -87,6 +87,36 @@ class UffizziCore::Api::Cli::V1::Projects::ComposeFilesControllerTest < ActionCo
     assert_response :success
   end
 
+  test '#create - check amazon ecr creation' do
+    sign_in @admin
+
+    project = create(:project, :with_members, account: @account, members: [@admin])
+    create(:credential, :github, account: @account, provider_ref: generate(:number))
+    create(:credential, :amazon, account: @account)
+
+    base_attributes = attributes_for(:compose_file).slice(:source, :path)
+    file_content = File.read('test/fixtures/files/uffizzi-compose-amazon.yml')
+    encoded_content = Base64.encode64(file_content)
+    compose_file_attributes = base_attributes.merge(content: encoded_content, repository_id: nil)
+
+    differences = {
+      -> { UffizziCore::Template.count } => 1,
+      -> { UffizziCore::ComposeFile.count } => 1,
+    }
+
+    params = {
+      project_slug: project.slug,
+      compose_file: compose_file_attributes,
+      dependencies: [],
+    }
+
+    assert_difference differences do
+      post :create, params: params, format: :json
+    end
+
+    assert_response :success
+  end
+
   test '#create - check github registry creation' do
     sign_in @admin
 
