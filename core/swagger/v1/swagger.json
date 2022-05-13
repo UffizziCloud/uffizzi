@@ -693,6 +693,119 @@
         "x-action": "destroy"
       }
     },
+    "/api/cli/v1/projects/{project_slug}/deployments/{id}\"": {
+      "put": {
+        "tags": [
+          "Deployment"
+        ],
+        "operationId": "Deployment-update",
+        "parameters": [
+          {
+            "name": "id",
+            "description": "Scope response to id",
+            "required": true,
+            "in": "path",
+            "type": "string"
+          },
+          {
+            "name": "params",
+            "description": "params",
+            "required": true,
+            "in": "body",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "compose_file": {
+                  "type": "object",
+                  "properties": {
+                    "path": {
+                      "type": "string"
+                    },
+                    "source": {
+                      "type": "string"
+                    },
+                    "content": {
+                      "type": "string"
+                    }
+                  }
+                },
+                "dependencies": {
+                  "type": "array",
+                  "items": {
+                    "type": "object",
+                    "properties": {
+                      "path": {
+                        "type": "string"
+                      },
+                      "source": {
+                        "type": "string"
+                      },
+                      "content": {
+                        "type": "string"
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          {
+            "name": "project_slug",
+            "description": "The project slug",
+            "required": true,
+            "in": "path",
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "201": {
+            "description": "OK",
+            "schema": {
+              "$ref": "#/definitions/Deployment"
+            }
+          },
+          "422": {
+            "description": "Unprocessable Entity",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "errors": {
+                  "type": "object",
+                  "properties": {
+                    "state": {
+                      "type": "string"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Not found",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "errors": {
+                  "type": "object",
+                  "properties": {
+                    "title": {
+                      "type": "string"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Not authorized"
+          }
+        },
+        "description": "Update the deployment with new compose file",
+        "summary": "Update the deployment with new compose file",
+        "x-controller": "uffizzi_core/api/cli/v1/projects/deployments",
+        "x-action": "update"
+      }
+    },
     "/api/cli/v1/projects/{project_slug}/deployments/{id}/deploy_containers": {
       "post": {
         "tags": [

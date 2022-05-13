@@ -13,6 +13,10 @@ class UffizziCore::Api::Cli::V1::Projects::DeploymentsPolicy < UffizziCore::Appl
     context.user_access_module.admin_or_developer_access_to_project?(context.user, context.project)
   end
 
+  def update?
+    context.user_access_module.admin_or_developer_access_to_project?(context.user, context.project)
+  end
+
   def destroy?
     context.user_access_module.admin_or_developer_access_to_project?(context.user, context.project)
   end

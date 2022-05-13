@@ -56,6 +56,33 @@ class UffizziCore::Api::Cli::V1::Projects::DeploymentsController < UffizziCore::
     respond_with deployment
   end
 
+  # Update the deployment with new compose file
+  #
+  # @path [PUT] /api/cli/v1/projects/{project_slug}/deployments/{id}"
+  #
+  # @parameter project_slug(required,path) [string] The project slug
+  # @parameter params(required,body)   [object<
+  #    compose_file: object<path: string, source: string, content: string>,
+  #    dependencies: Array<object<path: string, source: string, content: string>>>]
+  #
+  # @response [Deployment] 201 OK
+  # @response [object<errors: object<state: string>>] 422 Unprocessable Entity
+  # @response [object<errors: object<title: string>>] 404 Not found
+  # @response 401 Not authorized
+  def update
+    compose_file, errors = create_temporary_compose_file
+    return render_invalid_file if compose_file.invalid_file?
+    return render_errors(errors) if errors.present?
+
+    errors = check_credentials(compose_file)
+    return render_errors(errors) if errors.present?
+
+    deployment_id = params[:id]
+    deployment = UffizziCore::DeploymentService.update_from_compose(compose_file, resource_project, current_user, deployment_id)
+
+    respond_with deployment
+  end
+
   # @path [POST] /api/cli/v1/projects/{project_slug}/deployments/{id}/deploy_containers
   #
   # @parameter project_slug(required,path) [string] The project slug
@@ -99,21 +126,25 @@ class UffizziCore::Api::Cli::V1::Projects::DeploymentsController < UffizziCore::
   def find_or_create_compose_file
     existing_compose_file = resource_project.compose_file
     if compose_file_params.present?
-      create_params = {
-        project: resource_project,
-        user: current_user,
-        compose_file_params: compose_file_params,
-        dependencies: dependencies_params[:dependencies] || [],
-      }
-
-      kind = UffizziCore::ComposeFile.kind.temporary
-      UffizziCore::ComposeFileService.create(create_params, kind)
+      create_temporary_compose_file
     else
       raise ActiveRecord::RecordNotFound if existing_compose_file.blank?
 
       errors = []
       [existing_compose_file, errors]
     end
+  end
+
+  def create_temporary_compose_file
+    create_params = {
+      project: resource_project,
+      user: current_user,
+      compose_file_params: compose_file_params,
+      dependencies: dependencies_params[:dependencies] || [],
+    }
+
+    kind = UffizziCore::ComposeFile.kind.temporary
+    UffizziCore::ComposeFileService.create(create_params, kind)
   end
 
   def check_credentials(compose_file)
