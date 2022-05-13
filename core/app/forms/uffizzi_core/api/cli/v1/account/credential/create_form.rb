@@ -21,6 +21,6 @@ class UffizziCore::Api::Cli::V1::Account::Credential::CreateForm < UffizziCore::
   end
 
   def credential_exists?
-    errors.add(:type, :exist) if account.credentials.where(type: type).exists?
+    errors.add(:type, :exist) if account.credentials.by_type(type).exists?
   end
 end

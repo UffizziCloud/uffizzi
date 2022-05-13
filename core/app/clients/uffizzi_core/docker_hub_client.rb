@@ -19,6 +19,8 @@ class UffizziCore::DockerHubClient
     response = connection.post(url, params)
     request_result = RequestResult.new(result: response.body)
     request_result.result.token
+  rescue NoMethodError
+    nil
   end
 
   def public_images(q:, page: 1, per_page: 25)

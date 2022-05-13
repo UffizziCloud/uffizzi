@@ -4,6 +4,18 @@
 class UffizziCore::Api::Cli::V1::Account::CredentialsController < UffizziCore::Api::Cli::V1::Account::ApplicationController
   before_action :authorize_uffizzi_core_api_cli_v1_account_credentials
 
+  # Get a list of accounts credential
+  #
+  # @path [GET] /api/cli/v1/account/credentials
+  #
+  # @parameter credential(required,body) [object<username:string, password: string, type:string>]
+  def index
+    credentials = resource_account.credentials.pluck(:type)
+
+    render json: { credentials: credentials }, status: :ok
+  end
+
+  # rubocop:disable Layout/LineLength
   # Create account credential
   #
   # @path [POST] /api/cli/v1/account/credentials
@@ -13,9 +25,8 @@ class UffizziCore::Api::Cli::V1::Account::CredentialsController < UffizziCore::A
   # @response [object<errors>] 422 Unprocessable entity
   #
   # @example
-  #    type can be one of UffizziCore::Credential::Amazon, UffizziCore::Credential::Azure,
-  #    UffizziCore::Credential::DockerHub, UffizziCore::Credential::Google
-
+  #    type can be one of UffizziCore::Credential::Amazon, UffizziCore::Credential::Azure, UffizziCore::Credential::DockerHub, UffizziCore::Credential::Google, UffizziCore::Credential::GithubContainerRegistry
+  # rubocop:enable Layout/LineLength
   def create
     credential_form = UffizziCore::Api::Cli::V1::Account::Credential::CreateForm.new
     credential_form.assign_attributes(credential_params)
@@ -27,6 +38,24 @@ class UffizziCore::Api::Cli::V1::Account::CredentialsController < UffizziCore::A
     UffizziCore::Account::CreateCredentialJob.perform_async(credential_form.id) if credential_form.save
 
     respond_with credential_form
+  end
+
+  # Check if credential of the type already exists in the account
+  #
+  # @path [GET] /api/cli/v1/account/credentials/{type}/check_credential
+  #
+  # @parameter credential(required,body) [object<type:string>]
+  # @response 422 Unprocessable entity
+  # @response 200 OK
+  def check_credential
+    credential_form = UffizziCore::Api::Cli::V1::Account::Credential::CheckCredentialForm.new
+    credential_form.type = params[:type]
+    credential_form.account = resource_account
+    if credential_form.valid?
+      respond_with credential_form
+    else
+      respond_with credential_form.errors, status: :unprocessable_entity
+    end
   end
 
   # Delete account credential

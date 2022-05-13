@@ -46,7 +46,11 @@ UffizziCore::Engine.routes.draw do
 
         resource :account, only: [] do
           scope module: :account do
-            resources :credentials, only: ['create', 'destroy'], param: :type
+            resources :credentials, only: ['index', 'create', 'destroy'], param: :type do
+              member do
+                get :check_credential
+              end
+            end
           end
         end
       end

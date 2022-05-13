@@ -19,6 +19,20 @@ class UffizziCore::Api::Cli::V1::Account::CredentialsControllerTest < ActionCont
     Sidekiq::Testing.inline!
   end
 
+  test '#index returns a list of credetials' do
+    create(:credential, :docker_hub, account: @account)
+    create(:credential, :amazon, account: @account)
+
+    params = { account_id: @account.id }
+
+    get :index, params: params, format: :json
+
+    assert_response :success
+
+    data = JSON.parse(response.body)
+    assert_equal(['UffizziCore::Credential::DockerHub', 'UffizziCore::Credential::Amazon'], data['credentials'])
+  end
+
   test '#create docker hub credential' do
     stubbed_dockerhub_login = stub_dockerhub_login
 
@@ -144,6 +158,31 @@ class UffizziCore::Api::Cli::V1::Account::CredentialsControllerTest < ActionCont
     end
     assert_response :unprocessable_entity
     assert_equal UffizziCore::Credential.last.id, credential.id
+  end
+
+  test '#check_credential valid credential' do
+    stub_dockerhub_login
+    stub_controller
+
+    attributes = attributes_for(:credential, :docker_hub, account: @account)
+    params = { type: attributes[:type] }
+
+    post :check_credential, params: params, format: :json
+
+    assert_response :success
+  end
+
+  test '#check_credential duplicate credential' do
+    stub_dockerhub_login
+    stub_controller
+
+    credential = create(:credential, :docker_hub, account: @account)
+
+    params = { type: credential.type }
+
+    post :check_credential, params: params, format: :json
+
+    assert_response :unprocessable_entity
   end
 
   test '#destroy docker hub credential' do
