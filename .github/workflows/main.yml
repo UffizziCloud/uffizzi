@@ -66,7 +66,6 @@ jobs:
           password: ${{ secrets.DOCKERHUB_PASSWORD }}
           repository: uffizzi/app
   notify:
-    name: Send notification to Slack
     needs:
       - lint
       - test
