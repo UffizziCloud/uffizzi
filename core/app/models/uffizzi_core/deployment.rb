@@ -55,19 +55,28 @@ class UffizziCore::Deployment < UffizziCore::ApplicationRecord
 
   aasm(:state) do
     state :active, initial: true
+    state :failed
     state :disabled
 
     event :activate do
       transitions from: [:disabled], to: :active
     end
 
+    event :fail, after: :after_fail do
+      transitions from: [:active], to: :failed
+    end
+
     event :disable, after: :after_disable do
-      transitions from: [:active], to: :disabled
+      transitions from: [:active, :failed], to: :disabled
     end
   end
 
   def after_disable
     clean
+  end
+
+  def after_fail
+    active_containers.each(&:disable!)
   end
 
   def clean
