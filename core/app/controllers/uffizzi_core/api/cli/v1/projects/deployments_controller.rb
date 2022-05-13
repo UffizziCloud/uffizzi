@@ -158,7 +158,7 @@ class UffizziCore::Api::Cli::V1::Projects::DeploymentsController < UffizziCore::
   end
 
   def deployments
-    @deployments ||= resource_project.deployments.active
+    @deployments ||= resource_project.deployments.existed
   end
 
   def deployment_params

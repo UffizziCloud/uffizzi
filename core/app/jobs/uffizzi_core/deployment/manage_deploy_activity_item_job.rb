@@ -18,7 +18,7 @@ class UffizziCore::Deployment::ManageDeployActivityItemJob < UffizziCore::Applic
 
       activity_item_id = msg['args'].first
       activity_item = UffizziCore::ActivityItem.find(activity_item_id)
-      UffizziCore::ActivityItemService.disable_deployment!(activity_item)
+      UffizziCore::ActivityItemService.fail_deployment!(activity_item)
     end
   end
 
