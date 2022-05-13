@@ -8,7 +8,7 @@ class UffizziCore::Api::Cli::V1::Projects::SecretsControllerTest < ActionControl
     @account = @admin.organizational_account
     @developer = create(:user, :developer_in_organization, organization: @account)
     @viewer = create(:user, :viewer_in_organization, organization: @account)
-    secrets = [{ name: generate(:string), value: generate(:string) }]
+    secrets = [build(:secret, name: generate(:string), value: generate(:string))]
     @project = create(:project, :with_members, account: @account, members: [@admin, @developer, @viewer], secrets: secrets)
 
     sign_in @admin
@@ -49,6 +49,25 @@ class UffizziCore::Api::Cli::V1::Projects::SecretsControllerTest < ActionControl
   test '#bulk_create check if a secret has already been added' do
     new_secrets = [
       { name: @project.secrets.first['name'], value: generate(:string) },
+    ]
+
+    params = {
+      project_slug: @project.slug,
+      secrets: new_secrets,
+    }
+
+    post :bulk_create, params: params, format: :json
+    assert_response :unprocessable_entity
+
+    response_body = JSON.parse(response.body)
+    assert { response_body['errors']['secrets'].present? }
+  end
+
+  test '#bulk_create check if a secret name too long' do
+    length = UffizziCore::Api::Cli::V1::Secret::BulkAssignForm::MAX_SECRET_KEY_LENGTH + 1
+    long_name = SecureRandom.alphanumeric(length)
+    new_secrets = [
+      { name: long_name, value: generate(:string) },
     ]
 
     params = {
@@ -139,7 +158,7 @@ class UffizziCore::Api::Cli::V1::Projects::SecretsControllerTest < ActionControl
   end
 
   test '#bulk_create check update secret in a compose if it has errors with secrets' do
-    @project.update(secrets: nil)
+    @project.secrets.destroy_all
 
     new_secrets = [
       { name: generate(:string), value: generate(:string) },
@@ -178,7 +197,7 @@ class UffizziCore::Api::Cli::V1::Projects::SecretsControllerTest < ActionControl
   end
 
   test '#bulk_create check update secret in a compose if it has errors not related to secrets' do
-    @project.update(secrets: nil)
+    @project.secrets.destroy_all
 
     new_secrets = [
       { name: generate(:string), value: generate(:string) },
@@ -284,9 +303,6 @@ class UffizziCore::Api::Cli::V1::Projects::SecretsControllerTest < ActionControl
       delete :destroy, params: params, format: :json
     end
 
-    assert_response :unprocessable_entity
-
-    response_body = JSON.parse(response.body)
-    refute_empty(response_body['errors']['secret'])
+    assert_response :not_found
   end
 end

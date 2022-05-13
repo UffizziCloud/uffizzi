@@ -38,6 +38,7 @@ module UffizziCore
       ratings: :uffizzi_core_ratings,
       repos: :uffizzi_core_repos,
       roles: :uffizzi_core_roles,
+      secrets: :uffizzi_core_secrets,
       templates: :uffizzi_core_templates,
       user_projects: :uffizzi_core_user_projects,
       users: :uffizzi_core_users,

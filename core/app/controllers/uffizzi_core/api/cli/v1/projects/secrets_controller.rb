@@ -8,13 +8,10 @@ class UffizziCore::Api::Cli::V1::Projects::SecretsController < UffizziCore::Api:
   #
   # @path [GET] /api/cli/v1/projects/{project_slug}/secrets
   # @parameter project_slug(required,path) [string]
-  # @response [object<secrets: Array<object<name: string>> >] 200 OK
+  # @response [object<secrets: Array<object<name: string, created_at: date, updated_at: date>>>] 200 OK
   # @response 401 Not authorized
   def index
-    project_secrets = resource_project.secrets.present? ? resource_project.secrets : []
-    secrets = project_secrets.map { |secret| { name: secret['name'] } }
-
-    render json: { secrets: secrets }, status: :ok
+    respond_with resource_project.secrets, root: :secrets
   end
 
   # Add secret to project
@@ -22,18 +19,20 @@ class UffizziCore::Api::Cli::V1::Projects::SecretsController < UffizziCore::Api:
   # @path [POST] /api/cli/v1/projects/{project_slug}/secrets/bulk_create
   # @parameter project_slug(required,path) [string]
   # @parameter secrets(required,body) [object<secrets: Array<object <name: string, value: string>>>]
-  # @response [object<secrets: Array<object<name: string>>>] 201 Created
+  # @response [object<secrets: Array<object<name: string, created_at: date, updated_at: date>>>] 201 Created
   # @response 422 A compose file already exists for this project
   # @response 401 Not authorized
   def bulk_create
-    project_form = resource_project.becomes(UffizziCore::Api::Cli::V1::Project::UpdateForm)
-    project_form.assign_secrets!(secrets_params)
-    return render json: { errors: project_form.errors }, status: :unprocessable_entity unless project_form.save
+    secrets_form = UffizziCore::Api::Cli::V1::Secret::BulkAssignForm.new
+    secrets_form.secrets = resource_project.secrets
+    secrets_form.assign_secrets(secrets_params)
+    return respond_with secrets_form unless secrets_form.valid?
 
-    UffizziCore::ProjectService.update_compose_secrets(project_form)
-    secrets = project_form.secrets.map { |secret| { name: secret['name'] } }
+    resource_project.secrets.replace(secrets_form.secrets)
 
-    render json: { secrets: secrets }, status: :created
+    UffizziCore::ProjectService.update_compose_secrets(resource_project)
+
+    respond_with resource_project.secrets, root: :secrets
   end
 
   # Delete a secret from project by secret name
@@ -41,24 +40,17 @@ class UffizziCore::Api::Cli::V1::Projects::SecretsController < UffizziCore::Api:
   # @path [DELETE] /api/cli/v1/projects/{project_slug}/secrets/{secret_name}
   # @parameter project_slug(required,path) [string]
   # @response [Project] 200 OK
-  # @response 422
+  # @response 404
   # @response 401 Not authorized
   def destroy
     secret_name = CGI.unescape(params[:id])
-    secret = OpenStruct.new(name: secret_name)
-    project_form = resource_project.becomes(UffizziCore::Api::Cli::V1::Project::DeleteSecretForm)
-    project_form.secret = secret
+    secret = resource_project.secrets.find_by!(name: secret_name)
 
-    if project_form.invalid?
-      return respond_with project_form
-    end
+    UffizziCore::ProjectService.update_compose_secret_errors(resource_project, secret)
 
-    project_form.delete_secret!
-    if project_form.save!(validate: false)
-      UffizziCore::ProjectService.update_compose_secret_errors(project_form, secret)
-    end
+    secret.destroy
 
-    respond_with project_form
+    head :no_content
   end
 
   private

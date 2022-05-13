@@ -43,7 +43,7 @@
           "default": {
             "description": "Create account credential",
             "examples": {
-              "application/json": "type can be one of UffizziCore::Credential::Amazon, UffizziCore::Credential::Azure, UffizziCore::Credential::DockerHub, UffizziCore::Credential::Google"
+              "application/json": "type can be one of UffizziCore::Credential::Amazon, UffizziCore::Credential::Azure,\nUffizziCore::Credential::DockerHub, UffizziCore::Credential::Google"
             }
           },
           "201": {
@@ -771,6 +771,14 @@
                     "properties": {
                       "name": {
                         "type": "string"
+                      },
+                      "created_at": {
+                        "type": "string",
+                        "format": "date"
+                      },
+                      "updated_at": {
+                        "type": "string",
+                        "format": "date"
                       }
                     }
                   }
@@ -841,6 +849,14 @@
                     "properties": {
                       "name": {
                         "type": "string"
+                      },
+                      "created_at": {
+                        "type": "string",
+                        "format": "date"
+                      },
+                      "updated_at": {
+                        "type": "string",
+                        "format": "date"
                       }
                     }
                   }
@@ -890,7 +906,7 @@
               "$ref": "#/definitions/Project"
             }
           },
-          "422": {
+          "404": {
             "description": "Delete a secret from project by secret name"
           },
           "401": {
