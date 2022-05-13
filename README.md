@@ -12,6 +12,12 @@ While Uffizzi depends on Kubernetes, it does not require end-users to interface 
 
 Uffizzi is designed to integrate with any CI/CD system.
 
+## Quick Start
+
+If you just want to evaluate Uffizzi, follow the [installation guide for our Helm chart](charts/uffizzi-app/README.md).
+
+In addition to the [Uffizzi CLI](https://github.com/UffizziCloud/uffizzi_cli), you can then continuously deploy previews using [our GitHub Action](https://github.com/UffizziCloud/preview-action).
+
 ## Uffizzi Architecture  
 <img src="docs/images/uffizzi-architecture.png" description="Uffizzi Architecture" width="320"/>  
 
