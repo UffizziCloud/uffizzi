@@ -45,18 +45,7 @@ class UffizziCore::Api::Cli::V1::ProjectsController < UffizziCore::Api::Cli::V1:
     project_form.account = current_user.organizational_account
 
     if project_form.save
-      current_membership = current_user.memberships.find_by(account: current_user.organizational_account)
-      user_projects = []
-
-      if current_membership.developer?
-        user_projects << { project: project_form, user: current_user, role: UffizziCore::UserProject.role.developer }
-      end
-
-      current_user.organizational_account.memberships.where(role: UffizziCore::Membership.role.admin).map do |membership|
-        user_projects << { project: project_form, user: membership.user, role: UffizziCore::UserProject.role.admin }
-      end
-
-      UffizziCore::UserProject.create!(user_projects)
+      UffizziCore::ProjectService.add_users_to_project!(project_form, current_user)
     end
 
     respond_with project_form
