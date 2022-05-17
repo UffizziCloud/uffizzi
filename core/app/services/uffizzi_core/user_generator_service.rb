@@ -37,18 +37,16 @@ class UffizziCore::UserGeneratorService
 
       if email.present?
         user_attributes[:email] = email
-      else
+      elsif IO::console.present?
         IO::console.write("Enter User Email (default: #{DEFAULT_USER_EMAIL}): ")
         user_attributes[:email] = IO::console.gets.strip.presence || DEFAULT_USER_EMAIL
       end
 
       user_attributes[:password] = if password.present?
         password
-      else
+      elsif IO::console.present?
         IO::console.getpass('Enter Password: ')
       end
-
-      abort('password can\'t be blank') if user_attributes[:password].blank?
 
       user_attributes
     end
@@ -59,9 +57,11 @@ class UffizziCore::UserGeneratorService
       }
       if project_name.present?
         project_attributes[:name] = project_name
-      else
+      elsif IO::console.present?
         IO::console.write("Enter Project Name (default: #{DEFAULT_PROJECT_NAME}): ")
         project_attributes[:name] = IO::console.gets.strip.presence || DEFAULT_PROJECT_NAME
+      else
+        project_attributes[:name] = DEFAULT_PROJECT_NAME
       end
 
       project_attributes[:slug] = prepare_project_slug(project_attributes[:name])
