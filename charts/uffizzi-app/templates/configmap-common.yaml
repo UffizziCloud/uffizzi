@@ -11,3 +11,6 @@ data:
   CONTROLLER_URL: {{ default (print "http://" .Release.Name "-controller:8080") .Values.controller_url }}
   EMAIL_DELIVERY_ENABLED: {{ .Values.feature_email_delivery | quote }}
   MANAGED_DNS_ZONE_DNS_NAME: {{ .Values.managed_dns_zone_dns_name | quote }}
+  UFFIZZI_USER_EMAIL: {{ .Values.uffizzi_user_email }}
+  UFFIZZI_USER_PASSWORD: {{ .Values.uffizzi_user_password | quote }}
+  UFFIZZI_PROJECT_NAME: {{ .Values.uffizzi_project_name }}

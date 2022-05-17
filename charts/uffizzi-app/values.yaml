@@ -42,6 +42,9 @@ feature_email_delivery: false
 feature_google_maps: false
 feature_sentry: false
 feature_stripe: false
+uffizzi_user_email: user@example.com
+uffizzi_user_password: ""
+uffizzi_project_name: default
 
 uffizzi-controller: #dependency
   clusterIssuer: "letsencrypt"
