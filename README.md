@@ -1,8 +1,8 @@
 # Uffizzi App
 
-**The primary REST API for creating and managing Previews**
+**The primary REST API for creating and managing previews**
 
-While it provides a documented REST API for anyone to use, it's most valuable when used with the open-source [`uffizzi_cli`](https://github.com/UffizziCloud/uffizzi_cli).
+While Uffizzi App provides a documented REST API for anyone to use, it's most valuable when used with the open-source [`uffizzi_cli`](https://github.com/UffizziCloud/uffizzi_cli) or [GitHub Action](https://github.com/UffizziCloud/preview-action).
 
 ## Uffizzi Overview
 
@@ -12,11 +12,11 @@ While Uffizzi depends on Kubernetes, it does not require end-users to interface 
 
 Uffizzi is designed to integrate with any CI/CD system.
 
-## Quick Start
+## Installation
 
-If you just want to evaluate Uffizzi, follow the [installation guide for our Helm chart](charts/uffizzi-app/README.md).
+See the [Helm chart and installation guide](charts/uffizzi-app/README.md) for installing Uffizzi on your own Kubernetes cluster.
 
-In addition to the [Uffizzi CLI](https://github.com/UffizziCloud/uffizzi_cli), you can then continuously deploy previews using [our GitHub Action](https://github.com/UffizziCloud/preview-action).
+Once Ufizzi is installed, you can use the [Uffizzi CLI](https://github.com/UffizziCloud/uffizzi_cli) to create and manage previews. Additionally, you can continuously deploy previews of your branches using [the GitHub Action](https://github.com/UffizziCloud/preview-action).
 
 ## Uffizzi Architecture
 <img src="docs/images/uffizzi-architecture.png" description="Uffizzi Architecture" width="320"/>
