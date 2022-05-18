@@ -16,7 +16,10 @@ class UffizziCore::Api::Cli::V1::ProjectSerializer < UffizziCore::BaseSerializer
   end
 
   def deployments
-    object.deployments.existed
+    object.deployments.active.map do |deployment|
+      deployment.state = UffizziCore::DeploymentService.failed?(deployment) ? 'failed' : 'active'
+      deployment
+    end
   end
 
   def secrets

@@ -4,5 +4,10 @@ class UffizziCore::Api::Cli::V1::ProjectSerializer::DeploymentSerializer < Uffiz
   type :deployment
 
   attributes :id,
-             :subdomain
+             :preview_url,
+             :state
+
+  def preview_url
+    UffizziCore::DeploymentService.build_preview_url(object)
+  end
 end
