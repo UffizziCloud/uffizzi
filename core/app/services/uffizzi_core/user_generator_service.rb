@@ -6,6 +6,12 @@ class UffizziCore::UserGeneratorService
   DEFAULT_ACCOUNT_NAME = 'default'
 
   class << self
+    def safe_generate(email, password, project_name)
+      generate(email, password, project_name)
+    rescue StandardError => e
+      puts e.message
+    end
+
     def generate(email, password, project_name)
       user_attributes = build_user_attributes(email, password)
       project_attributes = build_project_attributes(project_name)
