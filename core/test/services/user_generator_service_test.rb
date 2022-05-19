@@ -100,7 +100,7 @@ class UffizziCore::UserGeneratorServiceTest < ActiveSupport::TestCase
     console_mock.stubs(:getpass).returns('')
     IO.stubs(:console).returns(console_mock)
 
-    assert_raises SystemExit do
+    assert_raises StandardError do
       UffizziCore::UserGeneratorService.generate(email, password, project_name)
     end
   end
@@ -145,6 +145,97 @@ class UffizziCore::UserGeneratorServiceTest < ActiveSupport::TestCase
     console_mock.stubs(:write)
     console_mock.stubs(:gets).returns('')
     IO.stubs(:console).returns(console_mock)
+
+    assert_difference differences do
+      UffizziCore::UserGeneratorService.generate(email, password, project_name)
+    end
+  end
+
+  test '#generate if a user already exists' do
+    email = generate(:email)
+    password = generate(:password)
+    project_name = generate(:string)
+
+    create(:user, :with_organizational_account, email: email)
+
+    assert_raises StandardError do
+      UffizziCore::UserGeneratorService.generate(email, password, project_name)
+    end
+  end
+
+  test '#generate if a user already exists and email gets by user' do
+    email = generate(:email)
+    password = generate(:password)
+    project_name = generate(:string)
+
+    create(:user, :with_organizational_account, email: email)
+
+    console_mock = mock('console_mock')
+    console_mock.stubs(:write)
+    console_mock.stubs(:gets).returns(email)
+    IO.stubs(:console).returns(console_mock)
+
+    assert_raises StandardError do
+      UffizziCore::UserGeneratorService.generate(email, password, project_name)
+    end
+  end
+
+  test '#generate if have data but no console' do
+    email = generate(:email)
+    password = generate(:password)
+    project_name = generate(:string)
+
+    IO.stubs(:console).returns(nil)
+
+    differences = {
+      -> { UffizziCore::User.count } => 1,
+      -> { UffizziCore::Account.count } => 1,
+      -> { UffizziCore::Membership.count } => 1,
+      -> { UffizziCore::Project.count } => 1,
+    }
+
+    assert_difference differences do
+      UffizziCore::UserGeneratorService.generate(email, password, project_name)
+    end
+  end
+
+  test '#generate if no email and no console' do
+    email = nil
+    password = generate(:password)
+    project_name = generate(:string)
+
+    IO.stubs(:console).returns(nil)
+
+    assert_raises StandardError do
+      UffizziCore::UserGeneratorService.generate(email, password, project_name)
+    end
+  end
+
+  test '#generate if no password and no console' do
+    email = generate(:email)
+    password = nil
+    project_name = generate(:string)
+
+    IO.stubs(:console).returns(nil)
+
+    assert_raises StandardError do
+      UffizziCore::UserGeneratorService.generate(email, password, project_name)
+    end
+  end
+
+  test '#generate if no project_name and no console' do
+    email = generate(:email)
+    password = generate(:password)
+    project_name = nil
+
+    IO.stubs(:console).returns(nil)
+
+    differences = {
+      -> { UffizziCore::User.count } => 1,
+      -> { UffizziCore::Account.count } => 1,
+      -> { UffizziCore::Membership.count } => 1,
+      -> { UffizziCore::Project.count } => 1,
+    }
 
     assert_difference differences do
       UffizziCore::UserGeneratorService.generate(email, password, project_name)
