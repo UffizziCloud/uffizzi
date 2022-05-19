@@ -61,6 +61,8 @@ app_url: https://uffizzi.example.com
 webHostname: uffizzi.example.com
 allowed_hosts: uffizzi.example.com
 managed_dns_zone_dns_name: uffizzi.example.com
+uffizzi_user_email: user@example.com
+uffizzi_user_password: ChangeMeNow
 uffizzi-controller:
   ingress:
     hostname: controller.uffizzi.example.com
@@ -68,7 +70,8 @@ uffizzi-controller:
   certEmail: admin@example.com
 ```
 
-Edit these values and save them in a file named `myvals.yaml` or similar.
+Edit these values and save them in a file named `myvals.yaml` or similar. 
+The "uffizzi_user_email" and "uffizzi_user_password" are used for the default user creation, which is needed to access your Uffizzi installation.
 
 ## Installation
 
@@ -102,17 +105,6 @@ kubectl get ingress --namespace uffizzi
 ```
 
 Be sure to add a "wildcard" record for the domain specified in `managed_dns_zone_dns_name`. In the above example, that's `*.uffizzi.example.com`.
-
-### Creating the first user
-
-After installation, you'll need to create at least one User to access your Uffizzi installation. For now, the best way to do this is executing an interactive `rake` task within the application server container:
-
-```
-kubectl exec -it deploy/my-uffizzi-app-web --namespace uffizzi -- rake uffizzi_core:create_user
-Enter User Email (default: user@example.com): user@example.com
-Enter Password:
-Enter Project Name (default: default):
-```
 
 ## Usage
 
