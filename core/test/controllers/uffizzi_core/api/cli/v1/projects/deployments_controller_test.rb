@@ -49,6 +49,7 @@ class UffizziCore::Api::Cli::V1::Projects::DeploymentsControllerTest < ActionCon
     get :index, params: params, format: :json
 
     assert_response :success
+    raise
   end
 
   test '#show' do
