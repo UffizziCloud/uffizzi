@@ -241,4 +241,14 @@ class UffizziCore::UserGeneratorServiceTest < ActiveSupport::TestCase
       UffizziCore::UserGeneratorService.generate(email, password, project_name)
     end
   end
+
+  test '#safe_generate if exception' do
+    email = generate(:email)
+    password = generate(:password)
+    project_name = generate(:string)
+    UffizziCore::UserGeneratorService.stubs(:generate).raises(StandardError)
+    StandardError.any_instance.expects(:message).times(1)
+
+    UffizziCore::UserGeneratorService.safe_generate(email, password, project_name)
+  end
 end
