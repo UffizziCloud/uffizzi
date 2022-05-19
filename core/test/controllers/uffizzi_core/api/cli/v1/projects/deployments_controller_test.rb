@@ -49,7 +49,6 @@ class UffizziCore::Api::Cli::V1::Projects::DeploymentsControllerTest < ActionCon
     get :index, params: params, format: :json
 
     assert_response :success
-    raise
   end
 
   test '#show' do
@@ -189,6 +188,7 @@ class UffizziCore::Api::Cli::V1::Projects::DeploymentsControllerTest < ActionCon
     end
 
     assert_response :unprocessable_entity
+    raise
   end
 
   test '#create - when compose file does not exist and no params given' do
