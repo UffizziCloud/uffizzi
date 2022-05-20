@@ -8,6 +8,7 @@ module UffizziCore::DeploymentService
     building: :building,
     deploying: :deploying,
     failed: :failed,
+    queued: :queued,
   }.freeze
 
   class << self
@@ -238,10 +239,11 @@ module UffizziCore::DeploymentService
 
     def deployment_process_status(deployment)
       containers = deployment.active_containers
-      activity_items = containers.map { |container| container.activity_items.order_by_id.last }
+      activity_items = containers.map { |container| container.activity_items.order_by_id.last }.compact
       events = activity_items.map { |activity_item| activity_item.events.order_by_id.last&.state }
       events = events.flatten.uniq
 
+      return DEPLOYMENT_PROCESS_STATUSES[:queued] if containers.present? && events.empty?
       return DEPLOYMENT_PROCESS_STATUSES[:failed] if events.include?(UffizziCore::Event.state.failed)
       return DEPLOYMENT_PROCESS_STATUSES[:building] if events.include?(UffizziCore::Event.state.building)
 
