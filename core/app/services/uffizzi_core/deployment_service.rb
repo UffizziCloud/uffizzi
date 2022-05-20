@@ -29,20 +29,18 @@ class UffizziCore::DeploymentService
       deployment_form
     end
 
-    def update_from_compose(compose_file, project, user, deployment_id)
+    def update_from_compose(compose_file, project, user, deployment)
       deployment_attributes = ActionController::Parameters.new(compose_file.template.payload)
 
       deployment_form = UffizziCore::Api::Cli::V1::Deployment::UpdateForm.new(deployment_attributes)
       deployment_form.assign_dependences!(project, user)
       deployment_form.compose_file = compose_file
 
-      if deployment_form.valid?
-        deployment = UffizziCore::Deployment.find(deployment_id)
+      ActiveRecord::Base.transaction do
         deployment.containers.destroy_all
-        deployment.compose_file.destroy if deployment.compose_file.kind.temporary?
-        deployment.update!(containers: deployment_form.containers, compose_file_id: compose_file.id)
+        deployment.compose_file.destroy! if deployment.compose_file.kind.temporary?
 
-        return deployment
+        deployment.update!(containers: deployment_form.containers, compose_file_id: compose_file.id)
       end
 
       deployment_form
