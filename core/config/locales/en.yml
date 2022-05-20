@@ -59,6 +59,7 @@ en:
     invalid_healthcheck_command: "Service '%{name}' defines an invalid healthcheck: when 'test' is a list the first item must be either NONE, CMD or CMD-SHELL"
     string_or_array_error: "'%{option}' contains an invalid type, it should be a string, or an array"
     not_implemented: "'%{option}' option is not implemented"
+    infinite_recursion: "Found infinite recursion for key '%{key}'"
   secrets:
     duplicates_exists: Secret with key %{secrets} already exist.
     invalid_key_length: A secret key must be no longer than 256 characters.

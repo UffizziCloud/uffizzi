@@ -12,6 +12,10 @@ class UffizziCore::ComposeFile::ConfigOptionService
 
     def config_options(compose_data)
       compose_data.each_with_object([]) do |(key, value), keys|
+        if compose_data.equal?(value)
+          raise UffizziCore::ComposeFile::ParseError, I18n.t('compose.infinite_recursion', key: key)
+        end
+
         keys << key
         keys.concat(config_options(value)) if value.is_a?(Hash)
       end
