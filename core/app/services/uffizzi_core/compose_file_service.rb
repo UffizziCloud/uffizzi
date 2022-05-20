@@ -87,6 +87,17 @@ class UffizziCore::ComposeFileService
       end
     end
 
+    def create_temporary_compose(resource_project, current_user, compose_file_params, dependencies)
+      create_params = {
+        project: resource_project,
+        user: current_user,
+        compose_file_params: compose_file_params,
+        dependencies: dependencies || [],
+      }
+      kind = UffizziCore::ComposeFile.kind.temporary
+      UffizziCore::ComposeFileService.create(create_params, kind)
+    end
+
     private
 
     def process_compose_file(compose_file_form, params)
