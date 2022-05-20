@@ -147,4 +147,28 @@ class UffizziCore::DeploymentServiceTest < ActiveSupport::TestCase
     container.reload
     assert { container.disabled? }
   end
+
+  test '#failed? - container failed' do
+    container = create(:container, deployment: @deployment)
+    create(:activity_item, :with_failed_event, container: container, deployment: @deployment)
+
+    deployment_failed = UffizziCore::DeploymentService.failed?(@deployment)
+
+    assert(deployment_failed)
+  end
+
+  test '#failed? - container deployed' do
+    container = create(:container, deployment: @deployment)
+    create(:activity_item, :with_deployed_event, container: container, deployment: @deployment)
+
+    deployment_failed = UffizziCore::DeploymentService.failed?(@deployment)
+
+    refute(deployment_failed)
+  end
+
+  test '#failed? - no containers' do
+    deployment_failed = UffizziCore::DeploymentService.failed?(@deployment)
+
+    refute(deployment_failed)
+  end
 end
