@@ -16,16 +16,6 @@ class UffizziCore::DeploymentServiceTest < ActiveSupport::TestCase
     Sidekiq::Testing.inline!
   end
 
-  test '#deploy_containers - empty spec' do
-    stubbed_deploy_containers_request = stub_request(:post, "#{Settings.controller.url}/deployments/#{@deployment.id}/containers")
-
-    UffizziCore::DeploymentService.deploy_containers(@deployment)
-
-    assert_requested stubbed_deploy_containers_request
-    assert { UffizziCore::Deployment::DeployContainersJob.jobs.empty? }
-    assert { UffizziCore::Deployment::ManageDeployActivityItemJob.jobs.empty? }
-  end
-
   test '#deploy_containers - start to deploy dockerhub container' do
     repo = create(:repo, :docker_hub, project: @project)
     create(:container, :active, deployment: @deployment, repo: repo)
