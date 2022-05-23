@@ -1,0 +1,25 @@
+x-nginx-configs: &nginx-configs
+  - source: vote_conf
+    target: /etc/nginx/conf.d
+
+x-srv-nginx: &srv-nginx
+  nginx:
+    image: nginx:latest
+    configs: *nginx-configs
+    entrypoint: /usr/sbin/nginx-debug
+    command:
+      - "-g"
+      - "daemon off;"
+
+services:
+  <<: *srv-nginx
+
+x-uffizzi-ingress:
+  service: nginx
+  port: 8080
+
+configs:
+  vote_conf:
+    file: configs/vote.conf
+  defaulf_conf:
+    file: config_files/config_file.conf
