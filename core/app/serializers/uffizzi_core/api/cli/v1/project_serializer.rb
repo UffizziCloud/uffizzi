@@ -17,7 +17,11 @@ class UffizziCore::Api::Cli::V1::ProjectSerializer < UffizziCore::BaseSerializer
 
   def deployments
     object.deployments.active.map do |deployment|
-      deployment.state = UffizziCore::DeploymentService.failed?(deployment) ? 'failed' : 'active'
+      deployment.state = if UffizziCore::DeploymentService.failed?(deployment)
+        UffizziCore::Deployment::STATE_FAILED
+      else
+        UffizziCore::Deployment::STATE_ACTIVE
+      end
       deployment
     end
   end
