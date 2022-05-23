@@ -138,7 +138,7 @@ class UffizziCore::DeploymentServiceTest < ActiveSupport::TestCase
     assert { container.disabled? }
   end
 
-  test '#failed? - container failed' do
+  test '#failed - container failed' do
     container = create(:container, deployment: @deployment)
     create(:activity_item, :with_failed_event, container: container, deployment: @deployment)
 
@@ -147,7 +147,7 @@ class UffizziCore::DeploymentServiceTest < ActiveSupport::TestCase
     assert(deployment_failed)
   end
 
-  test '#failed? - container deployed' do
+  test '#failed - container deployed' do
     container = create(:container, deployment: @deployment)
     create(:activity_item, :with_deployed_event, container: container, deployment: @deployment)
 
@@ -156,7 +156,7 @@ class UffizziCore::DeploymentServiceTest < ActiveSupport::TestCase
     refute(deployment_failed)
   end
 
-  test '#failed? - no containers' do
+  test '#failed - no containers' do
     deployment_failed = UffizziCore::DeploymentService.failed?(@deployment)
 
     refute(deployment_failed)
