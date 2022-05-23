@@ -38,7 +38,7 @@ class UffizziCore::Controller::DeployContainers::ContainerSerializer < UffizziCo
 
   def tag
     case object.repo.type
-    when UffizziCore::Repo::Github.name, UffizziCore::Repo::GithubContainerRegistry.name
+    when UffizziCore::Repo::Github.name
       UffizziCore::RepoService.tag(object.repo)
     else
       object.tag
