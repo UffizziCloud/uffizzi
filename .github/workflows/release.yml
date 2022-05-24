@@ -14,14 +14,7 @@ jobs:
         with:
           ruby-version: 2.5.0
       - name: Release Gem
-        run: |
-          mkdir -p $HOME/.gem
-          touch $HOME/.gem/credentials
-          chmod 0600 $HOME/.gem/credentials
-          printf -- "---\n:rubygems_api_key: ${RUBYGEMS_API_KEY}\n" > $HOME/.gem/credentials
-          cd core
-          gem build *.gemspec
-          gem push *.gem
+        run: docker-compose run --rm core bash -c "make release_gem"
         env:
           RUBYGEMS_API_KEY: ${{secrets.RUBYGEMS_API_KEY}}
       - name: Set up Docker Buildx
