@@ -13,6 +13,8 @@ jobs:
         uses: ruby/setup-ruby@v1
         with:
           ruby-version: 2.5.0
+      - name: Create env file
+        uses: SpicyPizza/create-envfile@v1.3
       - name: Release Gem
         run: docker-compose run --rm core bash -c "make release_gem"
         env:
