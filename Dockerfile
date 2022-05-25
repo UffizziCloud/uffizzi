@@ -26,7 +26,7 @@ RUN gem install bundler:2.3.9
 COPY Gemfile Gemfile.lock $RAILS_ROOT/
 COPY core/lib/uffizzi_core/version.rb $RAILS_ROOT/core/lib/uffizzi_core/version.rb
 COPY core/uffizzi_core.gemspec $RAILS_ROOT/core/uffizzi_core.gemspec
-COPY core/Gemfile* $RAILS_ROOT/core
+COPY core/Gemfile* $RAILS_ROOT/core/
 
 RUN bundle install --jobs 5
 
