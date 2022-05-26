@@ -65,7 +65,7 @@ uffizzi-controller:
   ingress:
     hostname: controller.uffizzi.example.com
   clusterIssuer: "letsencrypt"
-  cert-email: admin@example.com
+  certEmail: admin@example.com
 ```
 
 Edit these values and save them in a file named `myvals.yaml` or similar.
