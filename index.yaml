@@ -5,6 +5,56 @@ entries:
       artifacthub.io/prerelease: "false"
     apiVersion: v2
     appVersion: 1.0.0
+    created: "2022-05-26T19:24:10.066002205Z"
+    dependencies:
+    - name: uffizzi-controller
+      repository: https://uffizzicloud.github.io/uffizzi_controller/
+      version: 1.0.0
+    - condition: postgresql.enabled
+      name: postgresql
+      repository: https://charts.bitnami.com/bitnami
+      version: ~11.1.29
+    - condition: redis.enabled
+      name: redis
+      repository: https://charts.bitnami.com/bitnami
+      version: ~16.8.10
+    description: Uffizzi is an open-source engine for creating lightweight, ephemeral
+      test environments for APIs and full-stack applications. Uffizzi enables teams
+      to preview new features before merging.
+    digest: f3850fb47dc68824adf2a33e546e287b237e6d5d928d8c356e8a77f9517bc44f
+    home: https://uffizzi.com/
+    icon: https://app.uffizzi.com/favicon.png
+    keywords:
+    - devops
+    - uffizzi
+    - continuous-previews
+    - ephemeral
+    - environments
+    - pull-request
+    - merge-request
+    - on-demand
+    - ci
+    - cd
+    - cp
+    kubeVersion: '>= 1.21.0-0'
+    maintainers:
+    - email: info@uffizzi.com
+      name: Uffizzi
+      url: https://uffizzi.com
+    - email: adam.vollrath@uffizzi.com
+      name: Adam Vollrath
+      url: https://github.com/axisofentropy
+    name: uffizzi-app
+    sources:
+    - https://github.com/UffizziCloud/uffizzi_app
+    type: application
+    urls:
+    - https://github.com/UffizziCloud/uffizzi_app/releases/download/uffizzi-app-1.1.3/uffizzi-app-1.1.3.tgz
+    version: 1.1.3
+  - annotations:
+      artifacthub.io/prerelease: "false"
+    apiVersion: v2
+    appVersion: 1.0.0
     created: "2022-05-15T18:55:19.361858946Z"
     dependencies:
     - name: uffizzi-controller
@@ -254,4 +304,4 @@ entries:
     urls:
     - https://github.com/UffizziCloud/uffizzi_app/releases/download/uffizzi-app-1.0.1/uffizzi-app-1.0.1.tgz
     version: 1.0.1
-generated: "2022-05-15T18:55:19.361903346Z"
+generated: "2022-05-26T19:24:10.066176407Z"
