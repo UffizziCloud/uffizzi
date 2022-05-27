@@ -33,7 +33,7 @@ class UffizziCore::Api::Cli::V1::Projects::Deployments::Containers::LogsControll
     params = {
       project_slug: @project.slug,
       deployment_id: @deployment.id,
-      container_name: @container.name,
+      container_name: @container.service_name,
       limit: 30,
     }
 
@@ -70,7 +70,7 @@ class UffizziCore::Api::Cli::V1::Projects::Deployments::Containers::LogsControll
     params = {
       project_slug: @project.slug,
       deployment_id: @deployment.id,
-      container_name: @container.name,
+      container_name: @container.service_name,
       limit: 30,
     }
 
@@ -95,7 +95,7 @@ class UffizziCore::Api::Cli::V1::Projects::Deployments::Containers::LogsControll
     params = {
       project_slug: @project.slug,
       deployment_id: @deployment.id,
-      container_name: @container.name,
+      container_name: @container.service_name,
       limit: 30,
     }
 
