@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2022_04_19_074956) do
+ActiveRecord::Schema.define(version: 2022_05_25_113412) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -150,7 +150,7 @@ ActiveRecord::Schema.define(version: 2022_04_19_074956) do
     t.jsonb "secret_variables"
     t.string "entrypoint"
     t.string "command"
-    t.string "name"
+    t.string "service_name"
     t.jsonb "healthcheck"
     t.index ["deployment_id"], name: "index_containers_on_deployment_id"
     t.index ["repo_id"], name: "index_containers_on_repo_id"

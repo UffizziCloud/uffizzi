@@ -35,7 +35,7 @@ FactoryBot.define do
     "slug_#{n}"
   end
 
-  sequence :name, aliases: [:first_name, :last_name, :username, :description] do |n|
+  sequence :name, aliases: [:first_name, :last_name, :username, :description, :service_name] do |n|
     "Name #{n}"
   end
 
