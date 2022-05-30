@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-class UffizziCore::ComposeFile::IngressOptionsService
+class UffizziCore::ComposeFile::Parsers::IngressParserService
   class << self
     def parse(ingress_data, services_data)
       raise UffizziCore::ComposeFile::ParseError, I18n.t('compose.no_ingress') if ingress_data.nil?

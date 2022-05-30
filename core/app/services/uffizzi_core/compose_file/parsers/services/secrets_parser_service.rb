@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-class UffizziCore::ComposeFile::ServicesOptions::SecretsService
+class UffizziCore::ComposeFile::Parsers::Services::SecretsParserService
   class << self
     def parse(secrets, global_secrets_data)
       return [] if secrets.nil?

@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-class UffizziCore::ComposeFile::ServicesOptions::EntrypointService
+class UffizziCore::ComposeFile::Parsers::Services::EntrypointParserService
   class << self
     def parse(entrypoint_data)
       return nil if entrypoint_data.blank?

@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-class UffizziCore::ComposeFile::ServicesOptions::EnvFileService
+class UffizziCore::ComposeFile::Parsers::Services::EnvFileParserService
   class << self
     def parse(env_file)
       env_files = case env_file
