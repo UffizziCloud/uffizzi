@@ -158,7 +158,7 @@ module UffizziCore::ComposeFileService
 
     def load_compose_data(compose_content)
       begin
-        compose_data = YAML.safe_load(compose_content)
+        compose_data = YAML.safe_load(compose_content, aliases: true)
       rescue Psych::SyntaxError
         raise UffizziCore::ComposeFile::ParseError, 'Invalid compose file'
       end
