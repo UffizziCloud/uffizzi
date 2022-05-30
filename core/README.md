@@ -44,9 +44,3 @@ Or install it yourself as:
 ```bash
 $ gem install uffizzi_core
 ```
-
-## Migrations
-After adding a new migration, ru the following command:
-```
-rake uffizzi_core:install
-```

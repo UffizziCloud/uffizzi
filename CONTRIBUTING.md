@@ -75,3 +75,16 @@ docker-compose run --rm web bundle exec rubocop -A
 docker-compose run --rm core bash
 bin/rails test
 ```
+
+# Migrations
+
+In order to add a new migration do the following steps:
+
+1. Add a new migration inside the core
+2. Run the command inside the `web` container
+
+```bash
+rake uffizzi_core:install
+```
+
+This command copies the new migration to the `db/migrate` folder
