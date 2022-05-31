@@ -34,5 +34,15 @@ module UffizziCore::ProjectService
 
       UffizziCore::ComposeFile::ErrorsService.update_compose_errors!(compose_file, new_errors, compose_file.content)
     end
+
+    def add_users_to_project!(project, current_user)
+      user_projects = []
+
+      current_user.organizational_account.memberships.where(role: UffizziCore::Membership.role.admin).map do |membership|
+        user_projects << { project: project, user: membership.user, role: UffizziCore::UserProject.role.admin }
+      end
+
+      UffizziCore::UserProject.create!(user_projects)
+    end
   end
 end

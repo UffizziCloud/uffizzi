@@ -1134,6 +1134,9 @@
                     "properties": {
                       "slug": {
                         "type": "string"
+                      },
+                      "name": {
+                        "type": "string"
                       }
                     }
                   }
@@ -1149,6 +1152,143 @@
         "summary": "Get projects of current user",
         "x-controller": "uffizzi_core/api/cli/v1/projects",
         "x-action": "index"
+      },
+      "post": {
+        "tags": [
+          "Project"
+        ],
+        "operationId": "Project-create",
+        "parameters": [
+          {
+            "name": "params",
+            "description": "params",
+            "required": true,
+            "in": "body",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "name": {
+                  "type": "string"
+                },
+                "slug": {
+                  "type": "string"
+                },
+                "description": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "project": {
+                  "$ref": "#/definitions/Project"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Not Found"
+          },
+          "401": {
+            "description": "Not authorized"
+          },
+          "422": {
+            "description": "Unprocessable entity",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "errors": {
+                  "type": "object",
+                  "properties": {
+                    "password": {
+                      "type": "string"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "description": "Create a project",
+        "summary": "Create a project",
+        "x-controller": "uffizzi_core/api/cli/v1/projects",
+        "x-action": "create"
+      }
+    },
+    "/api/cli/v1/projects/{slug}": {
+      "get": {
+        "tags": [
+          "Project"
+        ],
+        "operationId": "Project-show",
+        "parameters": [
+          {
+            "name": "slug",
+            "description": "Scope response to slug",
+            "required": true,
+            "in": "path",
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": "No content"
+          },
+          "404": {
+            "description": "Not Found"
+          },
+          "401": {
+            "description": "Not authorized"
+          }
+        },
+        "description": "Get a project by slug",
+        "summary": "Get a project by slug",
+        "x-controller": "uffizzi_core/api/cli/v1/projects",
+        "x-action": "show"
+      },
+      "delete": {
+        "tags": [
+          "Project"
+        ],
+        "operationId": "Project-destroy",
+        "parameters": [
+          {
+            "name": "slug",
+            "description": "Scope response to slug",
+            "required": true,
+            "in": "path",
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "project": {
+                  "$ref": "#/definitions/Project"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Not Found"
+          },
+          "401": {
+            "description": "Not authorized"
+          }
+        },
+        "description": "Delete a project",
+        "summary": "Delete a project",
+        "x-controller": "uffizzi_core/api/cli/v1/projects",
+        "x-action": "destroy"
       }
     },
     "/api/cli/v1/session": {
@@ -1475,11 +1615,43 @@
         }
       }
     },
-    "UffizziCore_Project": {
+    "Project": {
       "type": "object",
       "properties": {
         "slug": {
           "type": "string"
+        },
+        "name": {
+          "type": "string"
+        },
+        "description": {
+          "type": "string"
+        },
+        "created_at": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "secrets": {
+          "type": "string"
+        },
+        "default_compose": {
+          "type": "object",
+          "properties": {
+            "source": {
+              "type": "string"
+            }
+          }
+        },
+        "deployments": {
+          "type": "object",
+          "properties": {
+            "id": {
+              "type": "integer"
+            },
+            "domain": {
+              "type": "string"
+            }
+          }
         }
       }
     }
