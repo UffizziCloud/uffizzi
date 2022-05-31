@@ -3,7 +3,7 @@
 FactoryBot.define do
   factory :secret, class: UffizziCore::Secret do
     resource { nil }
-    name { generate(:string) }
-    value { generate(:string) }
+    name { nil }
+    value { nil }
   end
 end

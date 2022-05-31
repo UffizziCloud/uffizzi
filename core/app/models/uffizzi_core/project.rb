@@ -1,13 +1,7 @@
 # frozen_string_literal: true
 
-# @model Project
+# @model
 # @property slug [string]
-# @property name [string]
-# @property description [string]
-# @property created_at [date-time]
-# @property secrets [string]
-# @property default_compose [object<source: string>]
-# @property deployments [object<id: integer, domain: string>]
 
 class UffizziCore::Project < UffizziCore::ApplicationRecord
   include AASM
@@ -29,8 +23,7 @@ class UffizziCore::Project < UffizziCore::ApplicationRecord
   has_many :compose_files, dependent: :destroy
   has_many :secrets, dependent: :destroy, as: :resource
 
-  validates :name, presence: true, uniqueness: { scope: :account, message: 'Name already exists' }
-  validates :slug, presence: true, uniqueness: { message: 'Project slug already taken' }
+  validates :name, presence: true, uniqueness: { scope: :account }
 
   aasm(:state) do
     state :active, initial: true
