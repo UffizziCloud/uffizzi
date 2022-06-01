@@ -2,6 +2,9 @@
 
 class UffizziCore::Api::Cli::V1::ProjectSerializer < UffizziCore::BaseSerializer
   type :project
+  has_many :deployments
+  has_many :secrets
+  has_one :default_compose
 
   attributes :name,
              :slug,
