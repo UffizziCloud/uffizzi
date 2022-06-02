@@ -56,7 +56,7 @@ class UffizziCore::ComposeFile::ServicesOptionsService
 
     def check_and_parse_build_option(value, compose_payload)
       raise UffizziCore::ComposeFile::ParseError, I18n.t('compose.not_implemented', option: :build) unless build_parser_module
-  
+
       build_parser_module.parse(value, compose_payload)
     end
   end
