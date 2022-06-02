@@ -2,6 +2,8 @@
 
 class UffizziCore::ComposeFile::ServicesOptionsService
   class << self
+    include UffizziCore::DependencyInjectionConcern
+
     def parse(services, global_configs_data, global_secrets_data, compose_payload)
       raise UffizziCore::ComposeFile::ParseError, I18n.t('compose.no_services') if services.nil? || services.keys.empty?
 
@@ -18,7 +20,7 @@ class UffizziCore::ComposeFile::ServicesOptionsService
 
     private
 
-    def prepare_service_data(service_name, service_data, global_configs_data, global_secrets_data, _compose_payload)
+    def prepare_service_data(service_name, service_data, global_configs_data, global_secrets_data, compose_payload)
       options_data = {}
       service_data.each_pair do |key, value|
         service_key = key.to_sym
@@ -27,7 +29,7 @@ class UffizziCore::ComposeFile::ServicesOptionsService
                                     when :image
                                       UffizziCore::ComposeFile::ServicesOptions::ImageService.parse(value)
                                     when :build
-                                      raise UffizziCore::ComposeFile::ParseError, I18n.t('compose.not_implemented', option: :build)
+                                      check_and_parse_build_option(value, compose_payload)
                                     when :env_file
                                       UffizziCore::ComposeFile::ServicesOptions::EnvFileService.parse(value)
                                     when :environment
@@ -50,6 +52,12 @@ class UffizziCore::ComposeFile::ServicesOptionsService
       options_data[:container_name] = service_name
 
       options_data
+    end
+
+    def check_and_parse_build_option(value, compose_payload)
+      raise UffizziCore::ComposeFile::ParseError, I18n.t('compose.not_implemented', option: :build) unless build_parser_module
+  
+      build_parser_module.parse(value, compose_payload)
     end
   end
 end
