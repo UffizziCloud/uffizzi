@@ -26,7 +26,7 @@ class UffizziCore::ComposeFile < UffizziCore::ApplicationRecord
   enumerize :kind, in: [:main, :temporary], predicates: true, scope: :shallow, default: :main
 
   validates :source, presence: true
-  validate :main_compose_not_exists, on: :create, if: -> { kind.main? }
+  validate :main_compose_file_uniqueness, on: :create, if: -> { kind.main? }
 
   aasm(:auto_deploy) do
     state :disabled, initial: true
@@ -56,8 +56,8 @@ class UffizziCore::ComposeFile < UffizziCore::ApplicationRecord
 
   private
 
-  def main_compose_not_exists
-    return unless project.compose_files.any? { |compose_file| compose_file.kind.main? }
+  def main_compose_file_uniqueness
+    return unless project.compose_files.main.present?
 
     errors.add(:compose_file, 'Main compose file already exist for this project')
   end
