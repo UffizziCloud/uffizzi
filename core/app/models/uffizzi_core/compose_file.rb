@@ -59,6 +59,6 @@ class UffizziCore::ComposeFile < UffizziCore::ApplicationRecord
   def main_compose_file_uniqueness
     return unless project.compose_files.main.exists?
 
-    errors.add(:compose_file, 'Main compose file already exist for this project')
+    errors.add(:compose_file, 'A compose file already exist for this project')
   end
 end
