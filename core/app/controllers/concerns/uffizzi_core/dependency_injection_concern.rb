@@ -7,6 +7,12 @@ module UffizziCore::DependencyInjectionConcern
     module_class(:rbac).new
   end
 
+  def build_parser_module
+    return unless module_exists?(:github)
+
+    module_class(:github).new
+  end
+
   private
 
   def module_exists?(module_name)
