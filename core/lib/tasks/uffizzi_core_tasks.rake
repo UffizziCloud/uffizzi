@@ -14,6 +14,6 @@ namespace :uffizzi_core do
 
   desc 'Create a new user'
   task create_user: :environment do
-    UffizziCore::UserGeneratorService.generate(ENV['UFFIZZI_USER_EMAIL'], ENV['UFFIZZI_USER_PASSWORD'], ENV['UFFIZZI_PROJECT_NAME'])
+    UffizziCore::UserGeneratorService.safe_generate(ENV['UFFIZZI_USER_EMAIL'], ENV['UFFIZZI_USER_PASSWORD'], ENV['UFFIZZI_PROJECT_NAME'])
   end
 end

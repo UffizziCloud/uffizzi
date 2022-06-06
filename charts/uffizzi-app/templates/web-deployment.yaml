@@ -24,7 +24,7 @@ spec:
         - /bin/bash
         - -c
         args:
-        - bundle exec rails db:create db:migrate && bundle exec puma -C config/puma.rb
+        - bundle exec rails db:create db:migrate && bundle exec rake uffizzi_core:create_user && bundle exec puma -C config/puma.rb
         envFrom:
         - secretRef:
             name: uffizzi-web-secret-envs

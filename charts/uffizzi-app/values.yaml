@@ -11,6 +11,10 @@ global:
   redis:
     password: ChangeMeNow
   uffizzi:
+    firstUser:
+      email: ""
+      password: ""
+      projectName: default
     controller:
       username: username
       password: ChangeMeNow
