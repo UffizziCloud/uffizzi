@@ -55,6 +55,9 @@ global:
   redis:
     password: ChangeMeNow
   uffizzi:
+    firstUser:
+      email: user@example.com
+      password: ChangeMeNow
     controller:
       password: ChangeMeNow
 app_url: https://uffizzi.example.com
@@ -103,9 +106,11 @@ kubectl get ingress --namespace uffizzi
 
 Be sure to add a "wildcard" record for the domain specified in `managed_dns_zone_dns_name`. In the above example, that's `*.uffizzi.example.com`.
 
-### Creating the first user
+### Provisioning users
 
-After installation, you'll need to create at least one User to access your Uffizzi installation. For now, the best way to do this is executing an interactive `rake` task within the application server container:
+You'll need to create at least one User Account to access your Uffizzi installation. The easiest way to do this is specify values for `global.uffizzi.firstUser` as shown in the example values file above. Uffizzi will attempt to provision this User each time it starts.
+
+If you did not specify a `firstUser`, or if you want to provision additional Users, you may execute an interactive `rake` task within the application server container:
 
 ```
 kubectl exec -it deploy/my-uffizzi-app-web --namespace uffizzi -- rake uffizzi_core:create_user
