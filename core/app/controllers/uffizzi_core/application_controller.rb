@@ -11,10 +11,12 @@ class UffizziCore::ApplicationController < ActionController::Base
   DEFAULT_PER_PAGE = 20
 
   protect_from_forgery with: :exception
-  rescue_from ActiveRecord::RecordNotFound, with: :render_not_found
   RESCUABLE_EXCEPTIONS = [RuntimeError, TypeError, NameError, ArgumentError, SyntaxError].freeze
   rescue_from *RESCUABLE_EXCEPTIONS do |exception|
     render_server_error(exception)
+  end
+  rescue_from ActiveRecord::RecordNotFound do |exception|
+    render_not_found(exception)
   end
 
   before_action :authenticate_request!
@@ -29,8 +31,9 @@ class UffizziCore::ApplicationController < ActionController::Base
     UffizziCore::JsonResponder
   end
 
-  def render_not_found
-    render json: { errors: { title: ['Resource Not Found'] } }, status: :not_found
+  def render_not_found(exception)
+    resource = exception.model || 'Resource'
+    render json: { errors: { title: ["#{resource} Not Found"] } }, status: :not_found
   end
 
   def render_server_error(error)
