@@ -3,7 +3,7 @@
 class UffizziCore::Comment < UffizziCore::ApplicationRecord
   include UffizziCore::CommentRepo
 
-  self.table_name = Rails.application.config.uffizzi_core[:table_names][:comments]
+  self.table_name = UffizziCore.table_names[:comments]
 
   has_ancestry(cache_depth: true)
   MAX_DEPTH_LEVEL = 1

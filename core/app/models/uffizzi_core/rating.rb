@@ -3,7 +3,7 @@
 class UffizziCore::Rating < UffizziCore::ApplicationRecord
   include AASM
 
-  self.table_name = Rails.application.config.uffizzi_core[:table_names][:ratings]
+  self.table_name = UffizziCore.table_names[:ratings]
 
   aasm(:state) do
     state :active, initial: true

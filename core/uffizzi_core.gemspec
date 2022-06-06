@@ -8,15 +8,15 @@ Gem::Specification.new do |spec|
   spec.authors     = ['Josh Thurman', 'Grayson Adkins']
   spec.email       = ['info@uffizzi.com']
 
-  spec.summary = 'uffizzi-core'
-  spec.description = 'uffizzi-core'
+  spec.summary = 'uffizzi_core'
+  spec.description = 'uffizzi_core'
   spec.homepage = 'https://uffizzi.com'
   spec.license = 'Apache-2.0'
   spec.required_ruby_version = '>= 2.5.0'
 
   spec.metadata['homepage_uri'] = spec.homepage
-  spec.metadata['source_code_uri'] = 'https://github.com/UffizziCloud/uffizzi_core'
-  spec.metadata['changelog_uri'] = 'https://github.com/UffizziCloud/uffizzi_core/blob/master/CHANGELOG.md'
+  spec.metadata['source_code_uri'] = 'https://github.com/UffizziCloud/uffizzi_app/tree/main/core'
+  spec.metadata['changelog_uri'] = 'https://github.com/UffizziCloud/uffizzi_app/blob/main/core/CHANGELOG.md'
 
   spec.files = Dir['{app,config,db,lib,swagger}/**/*', 'LICENSE', 'Rakefile', 'README.md']
 

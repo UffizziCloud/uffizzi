@@ -17,7 +17,7 @@ class UffizziCore::Container < UffizziCore::ApplicationRecord
   include UffizziCore::StateMachineConcern
   extend Enumerize
 
-  self.table_name = Rails.application.config.uffizzi_core[:table_names][:containers]
+  self.table_name = UffizziCore.table_names[:containers]
 
   enumerize :kind, in: [:internal, :user], predicates: true
 

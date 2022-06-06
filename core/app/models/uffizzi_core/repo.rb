@@ -4,7 +4,7 @@ class UffizziCore::Repo < UffizziCore::ApplicationRecord
   extend Enumerize
   include UffizziCore::RepoRepo
 
-  self.table_name = Rails.application.config.uffizzi_core[:table_names][:repos]
+  self.table_name = UffizziCore.table_names[:repos]
 
   enumerize :kind, in: [:buildpacks18, :dockerfile, :dotnet, :gatsby, :barestatic], predicates: true
 
