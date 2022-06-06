@@ -158,7 +158,7 @@ class UffizziCore::UserGeneratorServiceTest < ActiveSupport::TestCase
 
     create(:user, :with_organizational_account, email: email)
 
-    assert_raises StandardError do
+    assert_raises ActiveRecord::RecordInvalid do
       UffizziCore::UserGeneratorService.generate(email, password, project_name)
     end
   end
@@ -175,7 +175,7 @@ class UffizziCore::UserGeneratorServiceTest < ActiveSupport::TestCase
     console_mock.stubs(:gets).returns(email)
     IO.stubs(:console).returns(console_mock)
 
-    assert_raises StandardError do
+    assert_raises ActiveRecord::RecordInvalid do
       UffizziCore::UserGeneratorService.generate(email, password, project_name)
     end
   end
@@ -206,7 +206,7 @@ class UffizziCore::UserGeneratorServiceTest < ActiveSupport::TestCase
 
     IO.stubs(:console).returns(nil)
 
-    assert_raises StandardError do
+    assert_raises ActiveRecord::RecordInvalid do
       UffizziCore::UserGeneratorService.generate(email, password, project_name)
     end
   end
@@ -218,7 +218,7 @@ class UffizziCore::UserGeneratorServiceTest < ActiveSupport::TestCase
 
     IO.stubs(:console).returns(nil)
 
-    assert_raises StandardError do
+    assert_raises ActiveRecord::RecordInvalid do
       UffizziCore::UserGeneratorService.generate(email, password, project_name)
     end
   end
@@ -240,15 +240,5 @@ class UffizziCore::UserGeneratorServiceTest < ActiveSupport::TestCase
     assert_difference differences do
       UffizziCore::UserGeneratorService.generate(email, password, project_name)
     end
-  end
-
-  test '#safe_generate if exception' do
-    email = generate(:email)
-    password = generate(:password)
-    project_name = generate(:string)
-    UffizziCore::UserGeneratorService.stubs(:generate).raises(StandardError)
-    StandardError.any_instance.expects(:message).times(1)
-
-    UffizziCore::UserGeneratorService.safe_generate(email, password, project_name)
   end
 end

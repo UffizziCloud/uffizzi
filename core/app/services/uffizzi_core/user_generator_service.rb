@@ -8,7 +8,7 @@ class UffizziCore::UserGeneratorService
   class << self
     def safe_generate(email, password, project_name)
       generate(email, password, project_name)
-    rescue StandardError => e
+    rescue ActiveRecord::RecordInvalid => e
       puts e.message
     end
 
