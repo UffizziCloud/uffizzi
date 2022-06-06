@@ -5,7 +5,7 @@ class UffizziCore::Api::Cli::V1::Deployment::UpdateForm < UffizziCore::Deploymen
 
   permit containers_attributes: [
     :image,
-    :name,
+    :service_name,
     :tag,
     :port,
     :public,

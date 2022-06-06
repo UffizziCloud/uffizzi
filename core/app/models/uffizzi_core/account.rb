@@ -5,7 +5,7 @@ class UffizziCore::Account < UffizziCore::ApplicationRecord
   include UffizziCore::StateMachineConcern
   extend Enumerize
 
-  self.table_name = Rails.application.config.uffizzi_core[:table_names][:accounts]
+  self.table_name = UffizziCore.table_names[:accounts]
 
   enumerize :kind, in: [:personal, :organizational], scope: true, predicates: true
   validates :kind, presence: true

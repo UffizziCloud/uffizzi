@@ -5,7 +5,7 @@ class UffizziCore::Invitation < UffizziCore::ApplicationRecord
   include UffizziCore::StateMachineConcern
   extend Enumerize
 
-  self.table_name = Rails.application.config.uffizzi_core[:table_names][:invitations]
+  self.table_name = UffizziCore.table_names[:invitations]
 
   enumerize :role, in: [:admin, :developer, :viewer], predicates: true
 

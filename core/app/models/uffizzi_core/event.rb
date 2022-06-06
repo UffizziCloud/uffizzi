@@ -4,7 +4,7 @@ class UffizziCore::Event < UffizziCore::ApplicationRecord
   include UffizziCore::EventRepo
   extend Enumerize
 
-  self.table_name = Rails.application.config.uffizzi_core[:table_names][:events]
+  self.table_name = UffizziCore.table_names[:events]
 
   enumerize :state, in: [:queued, :successful, :deployed, :failed, :building, :timeout, :cancelled, :deploying], predicates: true,
                     scope: true

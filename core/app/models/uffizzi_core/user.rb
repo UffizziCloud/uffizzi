@@ -8,7 +8,7 @@ class UffizziCore::User < ActiveRecord::Base
   include UffizziCore::UserRepo
   extend Enumerize
 
-  self.table_name = Rails.application.config.uffizzi_core[:table_names][:users]
+  self.table_name = UffizziCore.table_names[:users]
 
   rolify
 

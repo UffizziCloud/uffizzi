@@ -4,7 +4,7 @@ class UffizziCore::Template < UffizziCore::ApplicationRecord
   include UffizziCore::TemplateRepo
   extend Enumerize
 
-  self.table_name = Rails.application.config.uffizzi_core[:table_names][:templates]
+  self.table_name = UffizziCore.table_names[:templates]
 
   belongs_to :added_by, class_name: UffizziCore::User.name, foreign_key: :added_by_id
   belongs_to :project, touch: true

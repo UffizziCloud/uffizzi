@@ -14,7 +14,7 @@ class UffizziCore::ComposeFile < UffizziCore::ApplicationRecord
   include AASM
   extend Enumerize
 
-  self.table_name = Rails.application.config.uffizzi_core[:table_names][:compose_files]
+  self.table_name = UffizziCore.table_names[:compose_files]
 
   belongs_to :project
   belongs_to :added_by, class_name: UffizziCore::User.name, foreign_key: :added_by_id, optional: true

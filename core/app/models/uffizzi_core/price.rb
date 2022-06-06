@@ -3,7 +3,7 @@
 class UffizziCore::Price < UffizziCore::ApplicationRecord
   include UffizziCore::PriceRepo
 
-  self.table_name = Rails.application.config.uffizzi_core[:table_names][:prices]
+  self.table_name = UffizziCore.table_names[:prices]
 
   belongs_to :product
 end

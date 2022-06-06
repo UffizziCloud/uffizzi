@@ -25,7 +25,7 @@ class UffizziCore::Deployment < UffizziCore::ApplicationRecord
   include UffizziCore::DeploymentRepo
   extend Enumerize
 
-  self.table_name = Rails.application.config.uffizzi_core[:table_names][:deployments]
+  self.table_name = UffizziCore.table_names[:deployments]
 
   enumerize :kind, in: [:standard, :performance, :enterprise, :free], predicates: true, default: :standard
 

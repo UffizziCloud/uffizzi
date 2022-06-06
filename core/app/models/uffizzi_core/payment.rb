@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 class UffizziCore::Payment < UffizziCore::ApplicationRecord
-  self.table_name = Rails.application.config.uffizzi_core[:table_names][:payments]
+  self.table_name = UffizziCore.table_names[:payments]
 
   belongs_to :account
 
