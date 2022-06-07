@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-class UffizziCore::ComposeFile::ServicesOptions::CommandService
+class UffizziCore::ComposeFile::Parsers::Services::CommandParserService
   class << self
     def parse(command_data)
       return nil if command_data.blank?

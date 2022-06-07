@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-class UffizziCore::ComposeFile::ServicesOptions::ConfigsService
+class UffizziCore::ComposeFile::Parsers::Services::ConfigsParserService
   class << self
     def parse(configs, global_configs_data)
       return [] if configs.nil?

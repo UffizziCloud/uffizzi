@@ -17,16 +17,20 @@ module UffizziCore::ComposeFileService
     def parse(compose_content, compose_payload = {})
       compose_data = load_compose_data(compose_content)
       check_config_options_format(compose_data)
-      configs_data = UffizziCore::ComposeFile::ConfigsOptionsService.parse(compose_data['configs'])
-      secrets_data = UffizziCore::ComposeFile::SecretsOptionsService.parse(compose_data['secrets'])
-      containers_data = UffizziCore::ComposeFile::ServicesOptionsService.parse(compose_data['services'], configs_data, secrets_data,
-                                                                               compose_payload)
+      configs_data = UffizziCore::ComposeFile::Parsers::ConfigsParserService.parse(compose_data['configs'])
+      secrets_data = UffizziCore::ComposeFile::Parsers::SecretsParserService.parse(compose_data['secrets'])
+      containers_data = UffizziCore::ComposeFile::Parsers::ServicesParserService.parse(
+        compose_data['services'],
+        configs_data,
+        secrets_data,
+        compose_payload,
+      )
 
       continuous_preview_option = UffizziCore::ComposeFile::ConfigOptionService.continuous_preview_option(compose_data)
-      continuous_preview_data = UffizziCore::ComposeFile::ContinuousPreviewOptionsService.parse(continuous_preview_option)
+      continuous_preview_data = UffizziCore::ComposeFile::Parsers::ContinuousPreviewParserService.parse(continuous_preview_option)
 
       ingress_option = UffizziCore::ComposeFile::ConfigOptionService.ingress_option(compose_data)
-      ingress_data = UffizziCore::ComposeFile::IngressOptionsService.parse(ingress_option, compose_data['services'])
+      ingress_data = UffizziCore::ComposeFile::Parsers::IngressParserService.parse(ingress_option, compose_data['services'])
 
       {
         containers: containers_data,

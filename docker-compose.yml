@@ -34,7 +34,6 @@ services:
     depends_on:
       - db
     command: bash -c "bundle install && bundle exec rails db:create db:migrate && bundle exec puma -C config/puma.rb"
-
   core:
     build: core
     environment: *web-environment

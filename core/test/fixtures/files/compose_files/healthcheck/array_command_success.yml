@@ -1,0 +1,20 @@
+services:
+  redis:
+    image: redis:latest
+
+  hello-world:
+    image: nginx
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost"]
+      interval: 1m30s
+      timeout: 10s
+      retries: 3
+      start_period: 40s
+
+x-uffizzi:
+  continuous_preview:
+    delete_preview_after: 10h
+
+x-uffizzi-ingress:
+  service: hello-world
+  port: 80

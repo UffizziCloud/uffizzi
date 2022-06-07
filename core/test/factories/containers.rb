@@ -13,6 +13,7 @@ FactoryBot.define do
     entrypoint { nil }
     command { nil }
     continuously_deploy { UffizziCore::Container::STATE_DISABLED }
+    healthcheck { nil }
 
     trait :continuously_deploy_enabled do
       continuously_deploy { UffizziCore::Container::STATE_ENABLED }

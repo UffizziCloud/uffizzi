@@ -17,18 +17,14 @@ class UffizziCore::ComposeFile::Builders::ContainerBuilderService
     configs_data = container_data[:configs] || []
     secrets = container_data[:secrets] || []
     container_name = container_data[:container_name]
-    continuous_preview_container_data = container_data[:'x-uffizzi-continuous-preview'] || container_data[:'x-uffizzi-continuous-previews']
+    healthcheck_data = container_data[:healthcheck] || {}
 
     env_file_dependencies = UffizziCore::ComposeFile::GithubDependenciesService.env_file_dependencies_for_container(compose_dependencies,
                                                                                                                     container_name)
     configs_dependencies = UffizziCore::ComposeFile::GithubDependenciesService.configs_dependencies_for_container(compose_dependencies,
                                                                                                                   container_name)
-
     is_ingress = ingress_container?(container_name, ingress_data)
-    repo_attributes = build_repo_attributes(container_data, image_data, build_data, credentials)
-
-    repo_attributes = set_continuous_preview_attributes_to_repo(repo_attributes, continuous_preview_global_data.to_h,
-                                                                continuous_preview_container_data.to_h)
+    repo_attributes = repo_attributes(container_data, continuous_preview_global_data)
 
     {
       tag: tag(image_data, repo_attributes),
@@ -46,10 +42,19 @@ class UffizziCore::ComposeFile::Builders::ContainerBuilderService
       receive_incoming_requests: is_ingress,
       container_config_files_attributes: config_files(configs_data, configs_dependencies),
       service_name: container_name,
+      name: container_name,
+      healthcheck: healthcheck_data,
     }
   end
 
   private
+
+  def repo_attributes(container_data, continuous_preview_global_data)
+    repo_attributes = build_repo_attributes(container_data)
+    continuous_preview_container_data = container_data[:'x-uffizzi-continuous-preview'] || container_data[:'x-uffizzi-continuous-previews']
+
+    set_continuous_preview_attributes_to_repo(repo_attributes, continuous_preview_global_data.to_h, continuous_preview_container_data.to_h)
+  end
 
   def set_continuous_preview_attributes_to_repo(repo_attributes, global_data, container_data)
     condition_attributes = [
@@ -148,8 +153,9 @@ class UffizziCore::ComposeFile::Builders::ContainerBuilderService
     memory_value
   end
 
-  def build_repo_attributes(container_data, image_data, _build_data, credentials)
+  def build_repo_attributes(container_data)
     repo_type = repo_type(container_data)
+    image_data = container_data[:image]
 
     case repo_type
     when UffizziCore::Repo::DockerHub.name
