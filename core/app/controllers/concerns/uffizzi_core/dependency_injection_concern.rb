@@ -10,7 +10,7 @@ module UffizziCore::DependencyInjectionConcern
   def build_parser_module
     return unless module_exists?(:github)
 
-    module_class(:github).new
+    module_class(:github)
   end
 
   private
