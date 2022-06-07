@@ -151,6 +151,7 @@ ActiveRecord::Schema.define(version: 2022_05_25_113412) do
     t.string "entrypoint"
     t.string "command"
     t.string "service_name"
+    t.jsonb "healthcheck"
     t.index ["deployment_id"], name: "index_containers_on_deployment_id"
     t.index ["repo_id"], name: "index_containers_on_repo_id"
   end
