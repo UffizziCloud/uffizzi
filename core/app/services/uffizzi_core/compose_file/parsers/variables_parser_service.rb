@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-module UffizziCore::ComposeFile::VariablesService
+module UffizziCore::ComposeFile::Parsers::VariablesParserService
   def parse_variable_from_string(str)
     variable_parts = str.split('=', 2)
 

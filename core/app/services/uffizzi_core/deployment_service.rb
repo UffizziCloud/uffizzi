@@ -14,7 +14,6 @@ module UffizziCore::DeploymentService
   class << self
     def create_from_compose(compose_file, project, user)
       deployment_attributes = ActionController::Parameters.new(compose_file.template.payload)
-
       deployment_form = UffizziCore::Api::Cli::V1::Deployment::CreateForm.new(deployment_attributes)
       deployment_form.assign_dependences!(project, user)
       deployment_form.compose_file = compose_file
@@ -104,8 +103,9 @@ module UffizziCore::DeploymentService
       pull_request_payload = continuous_preview_payload['pull_request']
       repo_name = pull_request_payload['repository_full_name'].split('/').last
       deployment_name = name(deployment)
+      subdomain = "pr#{pull_request_payload['id']}-#{deployment_name}-#{repo_name}-#{project.slug}"
 
-      "pr#{pull_request_payload['id']}-#{deployment_name}.#{repo_name}.#{project.slug}"
+      format_subdomain(subdomain)
     end
 
     def build_docker_continuous_preview_subdomain(deployment)
@@ -115,14 +115,17 @@ module UffizziCore::DeploymentService
       repo_name = docker_payload['image'].split('/').last.gsub('_', '-')
       image_tag = docker_payload['tag'].gsub('_', '-')
       deployment_name = name(deployment)
+      subdomain = "#{image_tag}-#{deployment_name}-#{repo_name}-#{project.slug}"
 
-      "#{image_tag}-#{deployment_name}.#{repo_name}.#{project.slug}"
+      format_subdomain(subdomain)
     end
 
     def build_default_subdomain(deployment)
       deployment_name = name(deployment)
       slug = deployment.project.slug.to_s
-      "#{deployment_name}.#{slug}"
+      subdomain = "#{deployment_name}-#{slug}"
+
+      format_subdomain(subdomain)
     end
 
     def build_preview_url(deployment)
@@ -292,6 +295,13 @@ module UffizziCore::DeploymentService
 
         container.variables.push(*envs)
       end
+    end
+
+    def format_subdomain(full_subdomain_name)
+      subdomain_length_limit = Settings.deployment.subdomain.length_limit
+      return full_subdomain_name if full_subdomain_name.length <= subdomain_length_limit
+
+      full_subdomain_name.slice(0, subdomain_length_limit)
     end
   end
 end

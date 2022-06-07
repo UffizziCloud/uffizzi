@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-class UffizziCore::ComposeFile::ContinuousPreviewOptionsService
+class UffizziCore::ComposeFile::Parsers::ContinuousPreviewParserService
   class << self
     def parse(continuous_preview_data)
       return {} if continuous_preview_data.nil?

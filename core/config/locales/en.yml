@@ -57,6 +57,7 @@ en:
     continuous_preview_in_service_level: The option '%{option}' is not supported for service-level. Use 'x-uffizzi-continuous-preview' instead
     file_already_exists: A compose file already exists for this project. Run 'uffizzi compose update' to update this file or 'uffizzi compose rm' to remove it. For more options, see 'uffizzi compose --help'
     invalid_healthcheck_command: "Service '%{name}' defines an invalid healthcheck: when 'test' is a list the first item must be either NONE, CMD or CMD-SHELL"
+    invalid_time_interval: The time interval should be in the following format '{hours}h{minutes}m{seconds}s'. At least one value must be present.
     string_or_array_error: "'%{option}' contains an invalid type, it should be a string, or an array"
     not_implemented: "'%{option}' option is not implemented"
     infinite_recursion: "Found infinite recursion for key '%{key}'"

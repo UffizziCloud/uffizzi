@@ -63,3 +63,6 @@ compose:
   default_branch: 'master'
 continuous_preview:
   default_delete_preview_after: 72
+deployment:
+  subdomain:
+    length_limit: 63

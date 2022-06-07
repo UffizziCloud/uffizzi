@@ -82,6 +82,7 @@ class UffizziCore::Api::Cli::V1::Projects::DeploymentsControllerTest < ActionCon
       :with_public_port,
       image: image,
       tag: target_branch,
+      healthcheck: { test: ['CMD', 'curl', '-f', 'https://localhost'] },
       receive_incoming_requests: true,
       repo_attributes: repo_attributes,
     )

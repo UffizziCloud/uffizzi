@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-class UffizziCore::ComposeFile::ServicesOptions::DeployService
+class UffizziCore::ComposeFile::Parsers::Services::DeployParserService
   class << self
     def parse(deploy_data)
       return {} if deploy_data.blank?

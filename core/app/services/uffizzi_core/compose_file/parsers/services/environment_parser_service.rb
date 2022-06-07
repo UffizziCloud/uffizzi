@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
-class UffizziCore::ComposeFile::ServicesOptions::EnvironmentService
-  extend UffizziCore::ComposeFile::VariablesService
+class UffizziCore::ComposeFile::Parsers::Services::EnvironmentParserService
+  extend UffizziCore::ComposeFile::Parsers::VariablesParserService
 
   class << self
     def parse(environment)

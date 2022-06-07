@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-class UffizziCore::ComposeFile::ServicesOptions::ImageService
+class UffizziCore::ComposeFile::Parsers::Services::ImageParserService
   class << self
     def parse(image)
       return {} if image.blank?

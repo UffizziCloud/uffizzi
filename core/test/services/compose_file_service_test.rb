@@ -369,6 +369,67 @@ class UffizziCore::ComposeFileServiceTest < ActiveSupport::TestCase
     assert_match("'build' option is not implemented", e.message)
   end
 
+  test '#parse - parses compose file with healthcheck and converts time to seconds when the test command is array' do
+    content = file_fixture('files/compose_files/healthcheck/array_command_success.yml').read
+
+    result = UffizziCore::ComposeFileService.parse(content)
+    container_with_healthcheck = result[:containers].select { |container| container[:container_name] == 'hello-world' }.first
+
+    assert_equal(90, container_with_healthcheck[:healthcheck][:interval])
+    refute(container_with_healthcheck[:healthcheck][:disable])
+  end
+
+  test '#parse - parses compose file with healthcheck and converts time to seconds when the test command is string' do
+    content = file_fixture('files/compose_files/healthcheck/string_command_success.yml').read
+
+    result = UffizziCore::ComposeFileService.parse(content)
+    container_with_healthcheck = result[:containers].select { |container| container[:container_name] == 'hello-world' }.first
+
+    assert_equal(90, container_with_healthcheck[:healthcheck][:interval])
+    refute(container_with_healthcheck[:healthcheck][:disable])
+  end
+
+  test "#parse - parses compose file with healthcheck and sets disabled to false if the command is 'NONE'" do
+    content = file_fixture('files/compose_files/healthcheck/disabled_healthcheck.yml').read
+
+    result = UffizziCore::ComposeFileService.parse(content)
+    container_with_healthcheck = result[:containers].select { |container| container[:container_name] == 'hello-world' }.first
+
+    assert(container_with_healthcheck[:healthcheck][:disable])
+  end
+
+  test '#parse - raises error if the healthcheck command has invalid type' do
+    content = file_fixture('files/compose_files/healthcheck/invalid_command.yml').read
+
+    e = assert_raise(UffizziCore::ComposeFile::ParseError) do
+      UffizziCore::ComposeFileService.parse(content)
+    end
+
+    assert_match("Unsupported type of 'test' option", e.message)
+  end
+
+  test '#parse - raises error if the retries field has invalid type' do
+    content = file_fixture('files/compose_files/healthcheck/invalid_retries.yml').read
+
+    e = assert_raise(UffizziCore::ComposeFile::ParseError) do
+      UffizziCore::ComposeFileService.parse(content)
+    end
+
+    assert_match('The specified value for retries should be an Integer type', e.message)
+  end
+
+  test '#parse - raises error if healthcheck has invalid interval' do
+    content = file_fixture('files/compose_files/healthcheck/invalid_interval.yml').read
+
+    e = assert_raise(UffizziCore::ComposeFile::ParseError) do
+      UffizziCore::ComposeFileService.parse(content)
+    end
+
+    error_message = "The time interval should be in the following format '{hours}h{minutes}m{seconds}s'. " \
+                    'At least one value must be present.'
+    assert_match(error_message, e.message)
+  end
+
   test '#build_template_attributes - check if x-uffizzi ingress is specified' do
     create(:credential, :docker_hub, account: @account)
     content = file_fixture('files/compose_files/dockerhub_services/nginx_uffizzi_ingress.yml').read

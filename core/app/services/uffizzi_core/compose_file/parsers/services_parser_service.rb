@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-class UffizziCore::ComposeFile::ServicesOptionsService
+class UffizziCore::ComposeFile::Parsers::ServicesParserService
   class << self
     include UffizziCore::DependencyInjectionConcern
 
@@ -27,25 +27,27 @@ class UffizziCore::ComposeFile::ServicesOptionsService
 
         options_data[service_key] = case service_key
                                     when :image
-                                      UffizziCore::ComposeFile::ServicesOptions::ImageService.parse(value)
+                                      UffizziCore::ComposeFile::Parsers::Services::ImageParserService.parse(value)
                                     when :build
                                       check_and_parse_build_option(value, compose_payload)
                                     when :env_file
-                                      UffizziCore::ComposeFile::ServicesOptions::EnvFileService.parse(value)
+                                      UffizziCore::ComposeFile::Parsers::Services::EnvFileParserService.parse(value)
                                     when :environment
-                                      UffizziCore::ComposeFile::ServicesOptions::EnvironmentService.parse(value)
+                                      UffizziCore::ComposeFile::Parsers::Services::EnvironmentParserService.parse(value)
                                     when :configs
-                                      UffizziCore::ComposeFile::ServicesOptions::ConfigsService.parse(value, global_configs_data)
+                                      UffizziCore::ComposeFile::Parsers::Services::ConfigsParserService.parse(value, global_configs_data)
                                     when :secrets
-                                      UffizziCore::ComposeFile::ServicesOptions::SecretsService.parse(value, global_secrets_data)
+                                      UffizziCore::ComposeFile::Parsers::Services::SecretsParserService.parse(value, global_secrets_data)
                                     when :deploy
-                                      UffizziCore::ComposeFile::ServicesOptions::DeployService.parse(value)
+                                      UffizziCore::ComposeFile::Parsers::Services::DeployParserService.parse(value)
                                     when :entrypoint
-                                      UffizziCore::ComposeFile::ServicesOptions::EntrypointService.parse(value)
+                                      UffizziCore::ComposeFile::Parsers::Services::EntrypointParserService.parse(value)
                                     when :command
-                                      UffizziCore::ComposeFile::ServicesOptions::CommandService.parse(value)
+                                      UffizziCore::ComposeFile::Parsers::Services::CommandParserService.parse(value)
+                                    when :healthcheck
+                                      UffizziCore::ComposeFile::Parsers::Services::HealthcheckParserService.parse(value)
                                     when :'x-uffizzi-continuous-preview', :'x-uffizzi-continuous-previews'
-                                      UffizziCore::ComposeFile::ContinuousPreviewOptionsService.parse(value)
+                                      UffizziCore::ComposeFile::Parsers::ContinuousPreviewParserService.parse(value)
         end
       end
 
