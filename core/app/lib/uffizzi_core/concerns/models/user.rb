@@ -13,7 +13,7 @@ module UffizziCore::Concerns::Models::User
 
     self.table_name = UffizziCore.table_names[:users]
 
-    rolify
+    rolify({ role_cname: UffizziCore::Role.name, role_join_table_name: UffizziCore.table_names[:users_roles] })
 
     has_secure_password
 
