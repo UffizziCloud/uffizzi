@@ -22,7 +22,7 @@ module UffizziCore::Concerns::Models::User
 
     has_many :memberships, dependent: :destroy
     has_many :accounts, through: :memberships
-    has_many :user_projects
+    has_many :user_projects, dependent: :destroy
     has_many :projects, through: :user_projects
 
     has_one_attached :avatar
