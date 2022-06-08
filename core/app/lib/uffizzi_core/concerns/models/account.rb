@@ -3,6 +3,7 @@
 module UffizziCore::Concerns::Models::Account
   extend ActiveSupport::Concern
 
+  # rubocop:disable Metrics/BlockLength
   included do
     include AASM
     include UffizziCore::StateMachineConcern
@@ -84,4 +85,5 @@ module UffizziCore::Concerns::Models::Account
       users.find_by(memberships: { role: UffizziCore::Membership.role.admin })
     end
   end
+  # rubocop:enable Metrics/BlockLength
 end

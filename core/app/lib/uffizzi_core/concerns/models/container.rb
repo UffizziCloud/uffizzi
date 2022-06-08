@@ -3,6 +3,7 @@
 module UffizziCore::Concerns::Models::Container
   extend ActiveSupport::Concern
 
+  # rubocop:disable Metrics/BlockLength
   included do
     include UffizziCore::ContainerRepo
     include AASM
@@ -90,4 +91,5 @@ module UffizziCore::Concerns::Models::Container
       end
     end
   end
+  # rubocop:enable Metrics/BlockLength
 end
