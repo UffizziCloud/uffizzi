@@ -39,5 +39,9 @@ module UffizziCore::Concerns::Models::Build
     def cancelled?
       status == self.class::CANCELLED
     end
+
+    def ended?
+      [self.class::SUCCESS, self.class::FAILED, self.class::TIMEOUT, self.class::CANCELLED].include?(status)
+    end
   end
 end
