@@ -27,7 +27,7 @@ module UffizziCore::Concerns::Models::User
 
     has_one_attached :avatar
 
-    enumerize :creation_source, in: [:system, :online_registration, :google, :sso], predicates: true
+    enumerize :creation_source, in: UffizziCore.user_creation_sources, predicates: true
 
     def organizational_account
       accounts.find_by(kind: UffizziCore::Account.kind.organizational)
