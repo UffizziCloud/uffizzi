@@ -17,27 +17,27 @@ module UffizziCore::Concerns::Models::Build
     belongs_to :repo
 
     def successful?
-      status == SUCCESS
+      status == self.class::SUCCESS
     end
 
     def unsuccessful?
-      [FAILED, TIMEOUT, CANCELLED].include?(status)
+      [self.class::FAILED, self.class::TIMEOUT, self.class::CANCELLED].include?(status)
     end
 
     def failed?
-      status == FAILED
+      status == self.class::FAILED
     end
 
     def building?
-      status == BUILDING
+      status == self.class::BUILDING
     end
 
     def timed_out?
-      status == TIMEOUT
+      status == self.class::TIMEOUT
     end
 
     def cancelled?
-      status == CANCELLED
+      status == self.class::CANCELLED
     end
   end
 end
