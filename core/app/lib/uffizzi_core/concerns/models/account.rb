@@ -32,21 +32,16 @@ module UffizziCore::Concerns::Models::Account
       state :disabled
       state :draft
 
-      # next states should be removed after migration
-      state :trial
-      state :trial_expired
-      state :past_due
-
       event :activate do
-        transitions from: [:payment_issue, :disabled, :trial, :trial_expired, :past_due, :draft], to: :active
+        transitions from: [:payment_issue, :disabled, :draft], to: :active
       end
 
       event :raise_payment_issue, before_success: :update_payment_issue_date do
-        transitions from: [:active, :trial, :trial_expired, :past_due, :disabled], to: :payment_issue
+        transitions from: [:active, :disabled], to: :payment_issue
       end
 
       event :disable, after: :disable_projects do
-        transitions from: [:active, :trial, :trial_expired, :past_due, :payment_issue], to: :disabled
+        transitions from: [:active, :payment_issue], to: :disabled
       end
     end
 
