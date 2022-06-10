@@ -30,7 +30,7 @@ module UffizziCore::TemplateRepo
         ],
       }
 
-      where('payload @> ?', general_query.to_json).where.not('payload @> ?', excluding_query.to_json)
+      where('templates.payload @> ?', general_query.to_json).where.not('templates.payload @> ?', excluding_query.to_json)
     }
 
     scope :by_docker_containers_with_delete_preview_when_image_tag_is_updated, ->(source, image, tag) {
@@ -47,7 +47,7 @@ module UffizziCore::TemplateRepo
         ],
       }
 
-      where('payload @> ?', general_query.to_json)
+      where('templates.payload @> ?', general_query.to_json)
     }
 
     scope :by_github_containers_with_deploy_preview_when_pull_request_is_opened, ->(repository_id, branch) {
@@ -55,7 +55,7 @@ module UffizziCore::TemplateRepo
         containers_attributes: [
           {
             repo_attributes: {
-              type: Repo::Github.name,
+              type: UffizziCore::Repo::Github.name,
               repository_id: repository_id,
               branch: branch,
               deploy_preview_when_pull_request_is_opened: true,
@@ -64,7 +64,7 @@ module UffizziCore::TemplateRepo
         ],
       }
 
-      where('payload @> ?', query.to_json)
+      where('templates.payload @> ?', query.to_json)
     }
 
     scope :by_github_containers_with_delete_preview_when_pull_request_is_closed, ->(repository_id, branch) {
@@ -72,7 +72,7 @@ module UffizziCore::TemplateRepo
         containers_attributes: [
           {
             repo_attributes: {
-              type: Repo::Github.name,
+              type: UffizziCore::Repo::Github.name,
               repository_id: repository_id,
               branch: branch,
               delete_preview_when_pull_request_is_closed: true,
@@ -81,7 +81,15 @@ module UffizziCore::TemplateRepo
         ],
       }
 
-      where('payload @> ?', query.to_json)
+      where('templates.payload @> ?', query.to_json)
+    }
+
+    scope :by_compose_file_kind, ->(kind) {
+      left_joins(:compose_file).where(compose_files: { kind: kind })
+    }
+
+    scope :without_compose, -> {
+      left_joins(:compose_file).where(compose_files: { id: nil })
     }
   end
 end
