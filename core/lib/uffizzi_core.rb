@@ -58,4 +58,6 @@ module UffizziCore
     users: :uffizzi_core_users,
     users_roles: :uffizzi_core_users_roles,
   }
+  mattr_accessor :user_creation_sources, default: [:system, :online_registration, :google, :sso]
+  mattr_accessor :user_project_roles, default: [:admin, :developer, :viewer]
 end
