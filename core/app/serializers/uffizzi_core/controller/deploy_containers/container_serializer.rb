@@ -16,7 +16,8 @@ class UffizziCore::Controller::DeployContainers::ContainerSerializer < UffizziCo
              :public,
              :controller_name,
              :receive_incoming_requests,
-             :healthcheck
+             :healthcheck,
+             :restart
 
   has_many :container_config_files
 
@@ -66,5 +67,19 @@ class UffizziCore::Controller::DeployContainers::ContainerSerializer < UffizziCo
     end
 
     object.healthcheck.merge(test: new_command)
+  end
+
+  def restart
+    # throw error if restart policy is not string
+    return nil if object.restart.nil?
+
+    restart_policy = object.restart.to_s
+    # case for value of restart_policy is "no", "always", "on-failure", "unless-stopped"
+    case restart_policy
+    when 'no', 'always', 'on-failure'
+      restart_policy
+    when 'unless-stopped'
+      raise UffizziCore::ComposeFile::ParseError, I18n.t('compose.invalid_restart_policy')
+    end
   end
 end

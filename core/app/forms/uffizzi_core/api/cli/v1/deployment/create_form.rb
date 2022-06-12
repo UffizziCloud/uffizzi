@@ -13,6 +13,7 @@ class UffizziCore::Api::Cli::V1::Deployment::CreateForm < UffizziCore::Deploymen
            :memory_limit,
            :memory_request,
            :entrypoint,
+           :restart,
            :command,
            :receive_incoming_requests,
            :continuously_deploy,

@@ -46,6 +46,8 @@ class UffizziCore::ComposeFile::Parsers::ServicesParserService
                                       UffizziCore::ComposeFile::Parsers::Services::CommandParserService.parse(value)
                                     when :healthcheck
                                       UffizziCore::ComposeFile::Parsers::Services::HealthcheckParserService.parse(value)
+                                    when :restart
+                                      UffizziCore::ComposeFile::Parsers::Services::RestartParserService.parse(value)
                                     when :'x-uffizzi-continuous-preview', :'x-uffizzi-continuous-previews'
                                       UffizziCore::ComposeFile::Parsers::ContinuousPreviewParserService.parse(value)
         end

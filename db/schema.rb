@@ -152,6 +152,7 @@ ActiveRecord::Schema.define(version: 2022_05_27_135654) do
     t.string "command"
     t.string "service_name"
     t.jsonb "healthcheck"
+    t.jsonb "restart"
     t.index ["deployment_id"], name: "index_containers_on_deployment_id"
     t.index ["repo_id"], name: "index_containers_on_repo_id"
   end
