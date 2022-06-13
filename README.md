@@ -1,8 +1,14 @@
-# Uffizzi App
+![banner](docs/images/banner.png)
 
-**The primary REST API for creating and managing previews**
+# [Uffizzi](https://uffizzi.com)
 
-While Uffizzi App provides a documented REST API for anyone to use, it's most valuable when used with the open-source [`uffizzi_cli`](https://github.com/UffizziCloud/uffizzi_cli) or [GitHub Action](https://github.com/UffizziCloud/preview-action).
+Uffizzi is a cloud-native REST API for managing lightweight, event-driven, and ephemeral test environments on Kubernetes. Uffizzi provides test environments as a service to Development teams while reducing management and resource overhead for Operations teams.
+
+Uffizzi allows you to define your application in Docker Compose and is designed to integrate with any CI/CD system.
+
+Uffizzi uses namespaces to isolate containerized, production-like replicas of your application within a single cluster. These environments are designed to host any number of containerized services and can be used for PR/MR environments, preview environments, release environments, demo environments, and staging environments. They require minimal compute resources and can be quickly created, updated, and deleted in response to CI/CD events.
+
+While Uffizzi depends on Kubernetes, it does not require end-users to interface with Kubernetes directly. Developers can define their application in docker-compose and Uffizzi translates this into Kubernetes API calls that create an environment within a namespace. Uffizzi coordinates a dynamic DNS and TLS certificate for a secure, shareable URL endpoint. New commits automatically update the environment, and the environment with all associated elements can be deleted in response to CI/CD events.
 
 ## Uffizzi Overview
 
