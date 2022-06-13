@@ -35,3 +35,6 @@
 
 /credentials/*.json
 .env
+
+# Ignore Idea Jetbrains config when using RubyMine
+.idea
