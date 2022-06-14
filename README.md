@@ -10,7 +10,7 @@ Uffizzi is designed to be...
 
 - **Lightweight** - Uffizzi test environments are isolated namespaces within a single cluster. This level of abstraction helps improve performance and control cost.
 
-- **Event-driven** - Designed to integrate with any CI/CD system, Uffizzi is triggered by events, such as a pull requests or new relase tags. Uffizzi generates a secure URL for each environment, which is continually updated in response to new events. Environments are destroyed via terminating events or scheduled timeouts.
+- **Event-driven** - Designed to integrate with any CI/CD system, Uffizzi environments are created, updated, or destroyed via triggering events, such as a pull requests or new relase tags. Uffizzi generates a secure HTTPS URL for each environment, which is continually updated in response to new events.
 
 - **Clean** - The ephermeral nature of Uffizzi test environments menas your team can test new features or release candidates in clean, parallel environments before merging or promoting to production.
 
