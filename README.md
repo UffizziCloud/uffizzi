@@ -10,7 +10,7 @@ Uffizzi is designed to be...
 
 - **Developer-friendly** - The Uffizzi API provides a simplified interface to Kubernetes, allowing you to define your application with Docker Comopose.
 
-- **Lightweight** - Uffizzi test environments are isolated namespaces within a single cluster. This level of abstraction helps improve performance and control cost.
+- **Lightweight** - Uffizzi test environments are isolated namespaces within a single cluster. This level of abstraction helps improve performance and use compute resources more efficiently.
 
 - **Event-driven** - Designed to integrate with any CI/CD system, Uffizzi environments are created, updated, or deleted via triggering events, such as pull requests or new release tags. Uffizzi generates a secure HTTPS URL for each environment, which is continually updated in response to new events.
 
