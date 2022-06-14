@@ -2,6 +2,8 @@
 
 # [Uffizzi](https://uffizzi.com)
 
+[![License](https://img.shields.io/badge/License-Apache%202.0-blue.svg)](https://opensource.org/licenses/Apache-2.0)
+
 Uffizzi is a cloud-native REST API for managing lightweight, event-driven test environments on Kubernetes. It provides Development teams with an environments-as-a-service capability, while eliminating the need for Operations teams to configure and manage test infrastructure and tooling. Example use cases include: PR/MR environments, preview environments, release environments, demo environments, and staging environments. 
 
 Uffizzi is designed to be...
