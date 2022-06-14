@@ -12,7 +12,7 @@ Uffizzi is designed to be...
 
 - **Event-driven** - Designed to integrate with any CI/CD system, Uffizzi environments are created, updated, or destroyed via triggering events, such as pull requests or new release tags. Uffizzi generates a secure HTTPS URL for each environment, which is continually updated in response to new events.
 
-- **Clean** - The ephermeral nature of Uffizzi test environments menas your team can test new features or release candidates in clean, parallel environments before merging or promoting to production.
+- **Clean** - The ephermeral nature of Uffizzi test environments means your team can test new features or release candidates in clean, parallel environments before merging or promoting to production.
 
 
 ## Installation
