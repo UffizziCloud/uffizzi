@@ -112,8 +112,8 @@ module UffizziCore::DeploymentService
       project = deployment.project
       continuous_preview_payload = deployment.continuous_preview_payload
       docker_payload = continuous_preview_payload['docker']
-      repo_name = docker_payload['image'].split('/').last.gsub('_', '-')
-      image_tag = docker_payload['tag'].gsub('_', '-')
+      repo_name = docker_payload['image'].split('/').last
+      image_tag = docker_payload['tag']
       deployment_name = name(deployment)
       subdomain = "#{image_tag}-#{deployment_name}-#{repo_name}-#{project.slug}"
 
@@ -298,10 +298,13 @@ module UffizziCore::DeploymentService
     end
 
     def format_subdomain(full_subdomain_name)
+      # Replace _ to - because RFC 1123 subdomain must consist of lower case alphanumeric characters,
+      # '-' or '.', and must start and end with an alphanumeric character
+      rfc_subdomain = full_subdomain_name.gsub('_', '-')
       subdomain_length_limit = Settings.deployment.subdomain.length_limit
-      return full_subdomain_name if full_subdomain_name.length <= subdomain_length_limit
+      return rfc_subdomain if rfc_subdomain.length <= subdomain_length_limit
 
-      full_subdomain_name.slice(0, subdomain_length_limit)
+      rfc_subdomain.slice(0, subdomain_length_limit)
     end
   end
 end
