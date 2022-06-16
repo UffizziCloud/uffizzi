@@ -8,7 +8,7 @@
 Uffizzi is a cloud-native REST API for managing lightweight, event-driven test environments on Kubernetes. It provides Development teams with an environments-as-a-service capability, while eliminating the need for Operations teams to configure and manage test infrastructure and tooling. 
 
 ## Use cases
-Example use cases include rapidly creating PR environments, preview environments, release environments, demo environments, and staging environments. 
+Uffizzi is designed to integrate with any CI/CD platform as a step in your pipeline. Example use cases include rapidly creating PR environments, preview environments, release environments, demo environments, and staging environments. 
 
 ## Why Uffizzi?
 
