@@ -49,7 +49,7 @@ The quickest and easiest way to get started with Uffizzi is by using the managed
 - [FAQ](https://uffizzi.com/#faqs) - Frequently Asked Questions
 - [Code of Conduct](CODE_OF_CONDUCT.md) - Let's keep it professional
 - [Engineering Blog](https://docs.uffizzi.com/engineeringblog/ci-cd-registry/) - Lessons learned and best practices from Uffizzi maintainers
-- Give us a star ⭐️ - If you are using Uffizzi or think it's an interesting project, star this repo! This helps others find out about our project.
+- Give us a star ⭐️ - If you are using Uffizzi or just think it's an interesting project, star this repo! This helps others find out about our project.
 
 ## License
 
