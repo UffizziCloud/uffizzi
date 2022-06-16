@@ -31,7 +31,7 @@ See our high-level project roadmap, including already delivered milestones.
 
 The quickest and easiest way to get started with Uffizzi is by using the managed API service. Alternatively, you can install Uffizzi on your own cluster.
 
-- [API service guide]() (recommended to start here) - TODO 
+- [Managed service guide]() (recommended to start here) - TODO 
 - [Self-hosted installation guide]() - TODO  
 
 
