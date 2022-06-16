@@ -16,7 +16,7 @@ Example use cases include rapidly creating PR environments, preview environments
 
 - **🪶 Lightweight** - Uffizzi test environments are isolated namespaces within a single cluster. This level of abstraction helps improve performance and use compute resources more efficiently.
 
-- **🔁 Event-driven** - Designed to integrate with any CI/CD system, Uffizzi environments are created, updated, or deleted via triggering events, such as pull requests or new release tags. Uffizzi generates a secure HTTPS URL for each environment, which is continually updated in response to new events.
+- **🔁 Event-driven** - Designed to integrate with any CI/CD system, Uffizzi environments are created, updated, or deleted via triggering events, such as pull requests or new release tags. Uffizzi generates a secure HTTPS URL for each environment, which is continually refreshed in response to new events.
 
 - **🧼 Clean** - The ephermeral nature of Uffizzi test environments means your team can test new features or release candidates in clean, parallel environments before merging or promoting to production.
 
@@ -31,8 +31,9 @@ See our high-level project roadmap, including already delivered milestones.
 
 The quickest and easiest way to get started with Uffizzi is by using the managed API service. Alternatively, you can install Uffizzi on your own cluster.
 
-- [API service guide]() - TODO
-- [Installation guide]() - TODO
+- [API service guide]() (recommended to start here) - TODO 
+- [Self-hosted installation guide]() - TODO  
+
 
 ## Documentation
 - [Main documentation]() -  TODO
@@ -47,7 +48,7 @@ The quickest and easiest way to get started with Uffizzi is by using the managed
 - [Contributing to Uffizzi](https://github.com/UffizziCloud/uffizzi_app/blob/feature/update-readme/CONTRIBUTING.md) - Start here if you want to contribute
 - [FAQ](https://uffizzi.com/#faqs) - Frequently Asked Questions
 - [Code of Conduct](CODE_OF_CONDUCT.md) - Let's keep it professional
-- [Engineering Blog](https://docs.uffizzi.com/engineeringblog/ci-cd-registry/) - Lessons learned and best practices
+- [Engineering Blog](https://docs.uffizzi.com/engineeringblog/ci-cd-registry/) - Lessons learned and best practices from Uffizzi maintainers
 - Give us a star ⭐️ - If you are using Uffizzi or think it's an interesting project, star this repo! This helps others find out about our project.
 
 ## License
