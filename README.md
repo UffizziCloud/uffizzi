@@ -25,25 +25,25 @@ Example use cases include rapidly creating PR environments, preview environments
 
 See our high-level project roadmap, including already delivered milestones.
 
-- [See the roadmap >>](https://github.com/orgs/UffizziCloud/projects/2/views/1?layout=board)
+- [See the roadmap](https://github.com/orgs/UffizziCloud/projects/2/views/1?layout=board)
 
 ## Getting started
 
-The quickest and easiest way to get started with Uffizzi is by using the managed API service provided by uffizzi.com. Alternatively, you can install Uffizzi on your own cluster.
+The quickest and easiest way to get started with Uffizzi is by using the managed API service. Alternatively, you can install Uffizzi on your own cluster.
 
-- [API service guide >>]() - TODO
-- [Installation guide >>]() - TODO
+- [API service guide]() - TODO
+- [Installation guide]() - TODO
 
 ## Documentation
 - [Main documentation]() -  TODO
 - [Swagger API documentation]() - TODO
 - [Architecture]() - TODO
-- [CI/CD integration guide]() - TODO
-[Docker Compose for Uffizzi ]() - TODO
+- [CI/CD integration guide]() - TODO 
+- [Docker Compose for Uffizzi ]() - TODO
 
 ## Community
 
-- [Slach channel](https://join.slack.com/t/uffizzi/shared_invite/zt-ffr4o3x0-J~0yVT6qgFV~wmGm19Ux9A) - Get support or discuss the project  
+- [Slack channel](https://join.slack.com/t/uffizzi/shared_invite/zt-ffr4o3x0-J~0yVT6qgFV~wmGm19Ux9A) - Get support or discuss the project  
 - [Contributing to Uffizzi](https://github.com/UffizziCloud/uffizzi_app/blob/feature/update-readme/CONTRIBUTING.md) - Start here if you want to contribute
 - [FAQ](https://uffizzi.com/#faqs) - Frequently Asked Questions
 - [Code of Conduct](CODE_OF_CONDUCT.md) - Let's keep it professional
