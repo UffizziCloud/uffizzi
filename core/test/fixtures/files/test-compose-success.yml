@@ -7,12 +7,19 @@ services:
     configs:
       - source: vote_conf
         target: /etc/nginxz
+    volumes:
+      - share_data:/var/cache
+      - share_data_2:/var/cache_2:ro
 
 configs:
   vote_conf:
     file: ./vote.conf
   defaulf_conf:
     file: config_files/config_file.conf
+
+volumes:
+  share_data:
+  share_data_2:
 
 x-uffizzi-ingress:
   service: hello-world
