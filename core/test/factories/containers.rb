@@ -14,6 +14,7 @@ FactoryBot.define do
     command { nil }
     continuously_deploy { UffizziCore::Container::STATE_DISABLED }
     healthcheck { nil }
+    volumes { nil }
 
     trait :continuously_deploy_enabled do
       continuously_deploy { UffizziCore::Container::STATE_ENABLED }
@@ -37,6 +38,18 @@ FactoryBot.define do
 
     trait :active do
       state { UffizziCore::Container::STATE_ACTIVE }
+    end
+
+    trait :with_named_volume do
+      volumes do
+        [
+          {
+            source: generate(:string),
+            target: generate(:path),
+            type: UffizziCore::ComposeFile::Parsers::Services::VolumesService::NAMED_VOLUME_TYPE,
+          },
+        ]
+      end
     end
   end
 end

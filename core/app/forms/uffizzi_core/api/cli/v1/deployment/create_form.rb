@@ -19,6 +19,7 @@ class UffizziCore::Api::Cli::V1::Deployment::CreateForm < UffizziCore::Deploymen
            { healthcheck: {} },
            { variables: [:name, :value],
              secret_variables: [:name, :value],
+             volumes: [:source, :target, :type, :source_container_name],
              repo_attributes: [
                :namespace,
                :name,

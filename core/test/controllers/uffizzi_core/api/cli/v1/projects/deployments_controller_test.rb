@@ -80,6 +80,7 @@ class UffizziCore::Api::Cli::V1::Projects::DeploymentsControllerTest < ActionCon
     container_attributes = attributes_for(
       :container,
       :with_public_port,
+      :with_named_volume,
       image: image,
       tag: target_branch,
       healthcheck: { test: ['CMD', 'curl', '-f', 'https://localhost'] },
@@ -484,6 +485,7 @@ class UffizziCore::Api::Cli::V1::Projects::DeploymentsControllerTest < ActionCon
     container = create(
       :container,
       :continuously_deploy_enabled,
+      :with_named_volume,
       deployment: @deployment,
       repo: repo,
       image: webhooks_data[:repository][:repo_name],

@@ -4,11 +4,12 @@ class UffizziCore::ComposeFile::Parsers::ServicesParserService
   class << self
     include UffizziCore::DependencyInjectionConcern
 
-    def parse(services, global_configs_data, global_secrets_data, compose_payload)
+    def parse(services, global_configs_data, global_secrets_data, compose_payload, global_named_volume_names)
       raise UffizziCore::ComposeFile::ParseError, I18n.t('compose.no_services') if services.nil? || services.keys.empty?
 
       services.keys.map do |service|
-        service_data = prepare_service_data(service, services.fetch(service), global_configs_data, global_secrets_data, compose_payload)
+        service_data = prepare_service_data(service, services.fetch(service), global_configs_data,
+                                            global_secrets_data, compose_payload, global_named_volume_names)
 
         if service_data[:image].blank? && service_data[:build].blank?
           raise UffizziCore::ComposeFile::ParseError, I18n.t('compose.image_build_no_specified', value: service)
@@ -20,7 +21,8 @@ class UffizziCore::ComposeFile::Parsers::ServicesParserService
 
     private
 
-    def prepare_service_data(service_name, service_data, global_configs_data, global_secrets_data, compose_payload)
+    def prepare_service_data(service_name, service_data, global_configs_data,
+                             global_secrets_data, compose_payload, global_named_volume_names)
       options_data = {}
       service_data.each_pair do |key, value|
         service_key = key.to_sym
@@ -48,6 +50,10 @@ class UffizziCore::ComposeFile::Parsers::ServicesParserService
                                       UffizziCore::ComposeFile::Parsers::Services::HealthcheckParserService.parse(value)
                                     when :'x-uffizzi-continuous-preview', :'x-uffizzi-continuous-previews'
                                       UffizziCore::ComposeFile::Parsers::ContinuousPreviewParserService.parse(value)
+                                    when :volumes
+                                      UffizziCore::ComposeFile::Parsers::Services::VolumesService.parse(value,
+                                                                                                        global_named_volume_names,
+                                                                                                        service_name)
         end
       end
 
