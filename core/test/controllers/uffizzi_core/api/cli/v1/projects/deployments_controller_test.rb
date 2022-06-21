@@ -104,6 +104,9 @@ class UffizziCore::Api::Cli::V1::Projects::DeploymentsControllerTest < ActionCon
 
     assert_response :success
 
+    subdomains = UffizziCore::Deployment.active.map(&:subdomain)
+    assert_nil(subdomains.detect { |s| s.include?('_') })
+
     Sidekiq::Worker.clear_all
     Sidekiq::Testing.inline!
   end
