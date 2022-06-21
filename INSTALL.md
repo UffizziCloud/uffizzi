@@ -1,4 +1,4 @@
-# Self-hosted installation guide
+# Installation overview
 
 See the [Helm chart guide](https://github.com/UffizziCloud/uffizzi_app/blob/main/charts/uffizzi-app/README.md) for installing Uffizzi on your own Kubernetes cluster.
 
