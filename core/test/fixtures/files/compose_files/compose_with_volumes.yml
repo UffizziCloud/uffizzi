@@ -4,7 +4,6 @@ services:
     volumes:
       - share_data:/var/web/logs
       - share_data_2:/var/web/logs:ro
-      - /var/web/root
 
   nginx:
     image: nginx:latest
@@ -18,7 +17,6 @@ services:
 
       - source: share_data_2
         target: /some_share_data_22
-        read_only: true
 
 volumes:
   share_data:
