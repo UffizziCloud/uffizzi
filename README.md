@@ -1,117 +1,50 @@
-# Uffizzi App
 
-**The primary REST API for creating and managing previews**
+![banner](docs/images/banner.png)
 
-While Uffizzi App provides a documented REST API for anyone to use, it's most valuable when used with the open-source [`uffizzi_cli`](https://github.com/UffizziCloud/uffizzi_cli) or [GitHub Action](https://github.com/UffizziCloud/preview-action).
+[![License](https://img.shields.io/badge/License-Apache%202.0-blue.svg)](https://opensource.org/licenses/Apache-2.0)
 
-## Uffizzi Overview
+## What is Uffizzi?
 
-Uffizzi is an open-source engine for creating lightweight, ephemeral preview environments for APIs and full-stack applications. Uffizzi enables teams to preview new features before merging and to mitigate the risk of introducing regressions into a codebase. Each preview gets a shareable URL that's updated when you push new commits or image tags, so teams can provide continual feedback during the iterative development process. Previews can be configured to expire at a set time or be destroyed when a pull request is closed, so environments exist only as long as they are needed. Uffizzi helps to parallelize new feature efforts by overcoming the bottleneck of shared development environments.
+Uffizzi is a cloud-native REST API for managing lightweight, event-driven test environments on Kubernetes. It provides Development teams with an environments-as-a-service capability, while eliminating the need for Operations teams to configure and manage test infrastructure and tooling. 
 
-While Uffizzi depends on Kubernetes, it does not require end-users to interface with Kubernetes directly. Uffizzi leverages Docker Compose as its configuration file format, so developers need not write Kubernetes manifests nor even know about Kubernetes.
+## Use cases
+Uffizzi is designed to integrate with any CI/CD platform as a step in your pipeline. Example use cases include rapidly creating PR environments, preview environments, release environments, demo environments, and staging environments. 
 
-Uffizzi is designed to integrate with any CI/CD system.
+## Why Uffizzi?
 
-## Installation
+- **👩‍💻 Developer-friendly** - The Uffizzi API provides a simplified interface to Kubernetes, allowing you to define your application with Docker Compose.
 
-See the [Helm chart and installation guide](charts/uffizzi-app/README.md) for installing Uffizzi on your own Kubernetes cluster.
+- **🪶 Lightweight** - Uffizzi test environments are isolated namespaces within a single cluster. This level of abstraction helps reduce a team's infrastructure footprint and associated overhead.
 
-Once Ufizzi is installed, you can use the [Uffizzi CLI](https://github.com/UffizziCloud/uffizzi_cli) to create and manage previews. Additionally, you can continuously deploy previews of your branches using [the GitHub Action](https://github.com/UffizziCloud/preview-action).
+- **🔁 Event-driven** - Designed to integrate with any CI/CD system, Uffizzi environments are created, updated, or deleted via triggering events, such as pull requests or new release tags. Uffizzi generates a secure HTTPS URL for each environment, which is continually refreshed in response to new events.
 
-## Uffizzi Architecture
-<img src="docs/images/uffizzi-architecture.png" description="Uffizzi Architecture" width="320"/>
+- **🧼 Clean** - The ephemeral nature of Uffizzi test environments means your team can test new features or release candidates in clean, parallel environments before merging or promoting to production.
 
-Uffizzi consists of the following components:
+## Project roadmap
 
-* Uffizzi App (this repository) - The primary REST API for creating and managing Previews
-* [Uffizzi Controller](https://github.com/UffizziCloud/uffizzi_controller) - A smart proxy service that handles requests from Uffizzi App to the Kubernetes API
-* [Uffizzi CLI](https://github.com/UffizziCloud/uffizzi_cli) - A command-line interface for Uffizzi App
+See our high-level [project roadmap](https://github.com/orgs/UffizziCloud/projects/2/views/1?layout=board), including already delivered milestones.
 
-Uffizzi App requires the following external dependencies:
+## Getting started
 
- * Kubernetes (k8s) cluster
- * PostgreSQL database
- * Redis cache
+The easiest way to get started with Uffizzi is via the managed API service provided by Uffizzi Cloud, as describe in the [quickstart guide](docs/quickstart-guide.md). This option is free for small teams and is recommended for those who are new to Uffizzi. Alternatively, you can get started creating on-demand test environments on your own cluster by following the [self-hosted installation guide](INSTALL.md).
 
-## Controller Design
+## Documentation
+- [Main documentation](https://docs.uffizzi.com)
+- [Docker Compose for Uffizzi ](https://docs.uffizzi.com/references/compose-spec/)
 
-This `uffizzi_app` acts as a REST API for [`uffizzi_cli`](https://github.com/UffizziCloud/uffizzi_app) interface. It requires [`uffizzi_controller`](https://github.com/UffizziCloud/uffizzi_controller) as a supporting service.
+## Community
 
-## Uffizzi App Environment Variables
+- [Slack channel](https://join.slack.com/t/uffizzi/shared_invite/zt-ffr4o3x0-J~0yVT6qgFV~wmGm19Ux9A) - Get support or discuss the project  
+- [Contributing to Uffizzi](CONTRIBUTING.md) - Start here if you want to contribute
+- [FAQ](https://uffizzi.com/#faqs) - Frequently Asked Questions
+- [Code of Conduct](CODE_OF_CONDUCT.md) - Let's keep it professional
+- [Engineering Blog](https://docs.uffizzi.com/engineeringblog/ci-cd-registry/) - Lessons learned and best practices from Uffizzi maintainers
+- Give us a star ⭐️ - If you are using Uffizzi or just think it's an interesting project, star this repo! This helps others find out about our project.
 
-- `RAILS_SECRET_KEY_BASE` - secret_key_base of Rails::Application
-- `DATABASE_HOST` - the database hostname (default: 127.0.0.1)
-- `DATABASE_USER` - the database username (default: postgres)
-- `DATABASE_PASSWORD` - the database password
-- `DATABASE_PORT` - the database port (default: 5432)
-- `BUNDLE_PATH` - the location of gems for `bundle install` command (not required)
-- `GEM_PATH` - the location where gems can be found (not required)
-- `GEM_HOME` - where gems will be installed (not required)
-- `RAILS_WORKERS_COUNT` - the number of `puma` workers (default: 18)
-- `RAILS_THREADS_COUNT` - the number of `puma` threads (default: 5)
-- `RAILS_PORT` - the `puma` port (default: 7000)
-- `RAILS_ENV` - the rails environment (default: development)
-- `SIDEKIQ_CONCURRENCY` - sidekiq concurrency (default: 5)
-- `ALLOWED_HOSTS` - allowed hosts for rails app used for Rack::Cors (default: [])
-- `APP_URL` - URL of the application
-- `REDIS_URL` - URL of a Redis server
-- `CONTROLLER_URL` - URL of the controller application (default: http://controller:8080)
-- `CONTROLLER_LOGIN` - the login of the controller application (default: '')
-- `CONTROLLER_PASSWORD` - the password of the controller application (default: '')
+## License
 
-# Test Uffizzi App Locally
+This library is licensed under the Apache License, Version 2.0: http://www.apache.org/licenses/LICENSE-2.0
 
-If you want to run Uffizzi on your workstation instead of using [the Helm chart](charts/uffizzi-app/README.md), then you can run it using Docker Compose.
+## Security
 
-## Prepare
-
-```bash
-docker-compose run --rm web bash -c "bundle install && bundle exec rails db:setup"
-docker-compose up
-```
-
-## Create a new user
-
-Run the following command and follow instructions:
-
-```bash
-docker-compose run --rm web bash -c "rake uffizzi_core:create_user"
-```
-
-or run the command with environment variables:
-
-- `UFFIZZI_USER_EMAIL` - user's email
-- `UFFIZZI_USER_PASSWORD` - user's password
-- `UFFIZZI_PROJECT_NAME` - user's project name
-
-```bash
-docker-compose run --rm -e UFFIZZI_USER_EMAIL=user@uffizzi.com -e UFFIZZI_USER_PASSWORD=password -e UFFIZZI_PROJECT_NAME=project web bash -c "rake uffizzi_core:create_user"
-```
-
-## Connect from uffizzi-cli to the app
-
-```bash
-docker-compose run --rm gem bash
-bundle exec uffizzi login --hostname http://web:7000 -u admin@uffizzi.com
-```
-
-## API Documentation
-
-* [Development](http://lvh.me:7000/api-docs/index.html)
-
-Rebuild documentation locally:
-
-```bash
-docker-compose run --rm core bash
-bundle exec rake core:generate_docs
-```
-
-# Health checks
-
-The default health check uri is `health_check`. To use a custom uri please add the `HEALTH_CHECK_URI` environment variable to the docker-compose.yml
-
-# Contributing
-
-Please see [`CONTRIBUTING.md`](CONTRIBUTING.md) within this repository.
-
-Bug reports and pull requests are welcome on GitHub at https://github.com/UffizziCloud/uffizzi_app.
+If you discover a security related issues, please do **not** create a public github issue. Notify the Uffizzi team privately by sending an email to security@uffizzi.com.
