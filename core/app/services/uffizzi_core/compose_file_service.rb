@@ -27,7 +27,6 @@ class UffizziCore::ComposeFileService
         compose_payload,
         named_volume_names,
       )
-      check_read_only_volumes(containers_data, named_volume_names)
       continuous_preview_option = UffizziCore::ComposeFile::ConfigOptionService.continuous_preview_option(compose_data)
       continuous_preview_data = UffizziCore::ComposeFile::Parsers::ContinuousPreviewParserService.parse(continuous_preview_option)
 
@@ -182,24 +181,6 @@ class UffizziCore::ComposeFileService
 
         raise UffizziCore::ComposeFile::ParseError, I18n.t('compose.invalid_config_option', value: option)
       end
-    end
-
-    def check_read_only_volumes(containers_data, named_volume_names)
-      return if named_volume_names.empty?
-
-      containers_data
-        .pluck(:volumes)
-        .flatten
-        .select { |v| v[:type] == UffizziCore::ComposeFile::Parsers::Services::VolumesService::NAMED_VOLUME_TYPE }
-        .group_by { |v| v[:source] }
-        .each_pair do |named_volume_name, volumes|
-          next if volumes.count < 2
-
-          count_read_write_volumes = volumes.reject { |v| v[:read_only] }.count
-          next if count_read_write_volumes < 2
-
-          raise UffizziCore::ComposeFile::ParseError, I18n.t('compose.named_volume_rw_count_exceeded', volume: named_volume_name)
-        end
     end
   end
 end

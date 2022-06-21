@@ -16,8 +16,9 @@ class UffizziCore::Controller::DeployContainers::ContainerSerializer < UffizziCo
              :public,
              :controller_name,
              :receive_incoming_requests,
-             :healthcheck
-  :volumes
+             :healthcheck,
+             :volumes,
+             :service_name
 
   has_many :container_config_files
 

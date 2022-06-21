@@ -66,7 +66,6 @@ en:
     volume_invalid_name: "Volumes value '%{name}' does not match any of the regexes: '^[a-zA-Z0-9._-]+$'"
     volume_type_not_supported: Volumes with type '%{type}' does not supported
     named_volume_not_exists: Named volume '%{source_path}:%{target_path}' is used in service '%{service_name}' but no declaration was found in the volumes section.
-    named_volume_rw_count_exceeded: Only one container should have Read + Write permissions for named volume '%{volume}'
   secrets:
     duplicates_exists: Secret with key %{secrets} already exist.
     invalid_key_length: A secret key must be no longer than 256 characters.
