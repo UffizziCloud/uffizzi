@@ -7,7 +7,7 @@ class UffizziCore::ComposeFile::ConfigOptionService
         raise UffizziCore::ComposeFile::ParseError, I18n.t('compose.boolean_option', value: option)
       end
 
-      option.match(/^[a-zA-Z_][a-zA-Z0-9._\-]+$/).present?
+      option.match(/^[\w.-]+$/).present?
     end
 
     def config_options(compose_data)
