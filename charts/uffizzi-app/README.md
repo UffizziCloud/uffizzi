@@ -1,6 +1,6 @@
-# Uffizzi App Helm Chart
+# Helm chart guide
 
-This chart installs [Uffizzi](https://uffizzi.com), the continuous previews application. This is just a standard open-source Uffizzi setup.
+This chart installs Uffizzi.
 
 ## Requirements
 
@@ -8,7 +8,7 @@ This chart requires a Kubernetes Cluster. While it will likely function on k8s >
 
 The Cluster must be capable of provisioning `Ingress` resources that obtain public IP addresses and/or hostnames.
 
-We've briefly tested Uffizzi on:
+We've tested Uffizzi on:
 
 - Google Kubernetes Engine (GKE)
 - Azure Kubernetes Service (AKS)
