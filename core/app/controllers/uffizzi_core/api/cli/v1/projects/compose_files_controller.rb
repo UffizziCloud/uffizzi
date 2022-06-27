@@ -62,7 +62,7 @@ class UffizziCore::Api::Cli::V1::Projects::ComposeFilesController < UffizziCore:
 
   def compose_file
     compose_file = resource_project.compose_file
-    raise ActiveRecord::RecordNotFound if compose_file.blank?
+    raise ActiveRecord::RecordNotFound.new("Couldn't find UffizziCore::ComposeFile", UffizziCore::ComposeFile) if compose_file.blank?
 
     compose_file
   end

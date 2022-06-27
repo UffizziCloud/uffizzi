@@ -30,7 +30,7 @@ en:
     invalid_memory_type: Memory '%{value}' contains an invalid type, it should be a string
     invalid_memory_value: Invalid memory value '%{value}'
     invalid_memory: The memory should be one of the `125m` `250m` `500m` `1000m` `2000m` `4000m` values
-    image_build_no_specified: Service %{value} has neither an image nor a build context specified. At least one must be provided.
+    image_build_no_specified: Service '%{value}' has neither an image nor a build context specified. At least one must be provided.
     build_context_no_specified: The context option should be specified
     config_file_not_found: Config file not found '%{name}'
     invalid_context: Invalid context value '%{value}'

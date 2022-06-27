@@ -51,7 +51,10 @@ class UffizziCore::Api::Cli::V1::Projects::ComposeFilesControllerTest < ActionCo
 
     get :show, params: params, format: :json
 
+    error_message = JSON.parse(response.body, symbolize_names: true)[:errors][:title].first
+
     assert_response :not_found
+    assert_equal('UffizziCore::ComposeFile Not Found', error_message)
   end
 
   test '#create - docker compose file' do
@@ -200,7 +203,10 @@ class UffizziCore::Api::Cli::V1::Projects::ComposeFilesControllerTest < ActionCo
 
     delete :destroy, params: params, format: :json
 
+    error_message = JSON.parse(response.body, symbolize_names: true)[:errors][:title].first
+
     assert_response :not_found
+    assert_equal('UffizziCore::ComposeFile Not Found', error_message)
   end
 
   test '#create - with yaml aliases' do
