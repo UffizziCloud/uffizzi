@@ -19,7 +19,6 @@ module UffizziCore::Concerns::Models::ComposeFile
 
     enumerize :kind, in: [:main, :temporary], predicates: true, scope: :shallow, default: :main
 
-    validates :project, uniqueness: { scope: :project }, if: -> { kind.main? }
     validates :source, presence: true
     validate :main_compose_file_uniqueness, on: :create, if: -> { kind.main? }
 
