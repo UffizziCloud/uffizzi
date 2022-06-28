@@ -101,7 +101,9 @@ class UffizziCore::ComposeFile::Builders::ContainerBuilderService
   end
 
   def image_name(container_data, image_data)
-    if image_data[:registry_url].present? && !UffizziCore::ComposeFile::ContainerService.google?(container_data)
+    if image_data[:registry_url].present? &&
+        !UffizziCore::ComposeFile::ContainerService.google?(container_data) &&
+        !UffizziCore::ComposeFile::ContainerService.github_container_registry?(container_data)
       image_data[:name]
     else
       "#{image_data[:namespace]}/#{image_data[:name]}"
