@@ -19,7 +19,7 @@ class UffizziCore::ComposeFile::Builders::ContainerBuilderService
     secrets = container_data[:secrets] || []
     container_name = container_data[:container_name]
     healthcheck_data = container_data[:healthcheck] || {}
-    volumes = container_data[:volumes] || []
+    volumes_data = container_data[:volumes] || []
 
     env_file_dependencies = UffizziCore::ComposeFile::GithubDependenciesService.env_file_dependencies_for_container(compose_dependencies,
                                                                                                                     container_name)
@@ -46,7 +46,7 @@ class UffizziCore::ComposeFile::Builders::ContainerBuilderService
       service_name: container_name,
       name: container_name,
       healthcheck: healthcheck_data,
-      volumes: volumes,
+      volumes: volumes_data,
     }
   end
   # rubocop:enable Metrics/PerceivedComplexity
