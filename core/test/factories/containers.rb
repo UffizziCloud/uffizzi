@@ -46,7 +46,7 @@ FactoryBot.define do
           {
             source: generate(:string),
             target: generate(:path),
-            type: UffizziCore::ComposeFile::Parsers::Services::VolumesService::NAMED_VOLUME_TYPE,
+            type: UffizziCore::ComposeFile::Parsers::Services::VolumesParserService::NAMED_VOLUME_TYPE,
           },
         ]
       end

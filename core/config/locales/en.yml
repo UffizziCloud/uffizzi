@@ -66,6 +66,7 @@ en:
     volume_invalid_name: "Volumes value '%{name}' does not match any of the regexes: '^[a-zA-Z0-9._-]+$'"
     volume_type_not_supported: Volumes with type '%{type}' does not supported
     named_volume_not_exists: Named volume '%{source_path}:%{target_path}' is used in service '%{service_name}' but no declaration was found in the volumes section.
+    invalid_volume_destination: Invalid volume specification '%{spec}' destination can't be '/'
   secrets:
     duplicates_exists: Secret with key %{secrets} already exist.
     invalid_key_length: A secret key must be no longer than 256 characters.

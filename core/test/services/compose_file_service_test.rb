@@ -679,7 +679,7 @@ class UffizziCore::ComposeFileServiceTest < ActiveSupport::TestCase
     first_volume = nginx_container[:volumes].first
 
     assert(nginx_container[:volumes])
-    assert_equal(UffizziCore::ComposeFile::Parsers::Services::VolumesService::NAMED_VOLUME_TYPE, first_volume[:type])
+    assert_equal(UffizziCore::ComposeFile::Parsers::Services::VolumesParserService::NAMED_VOLUME_TYPE, first_volume[:type])
     assert_equal(content_data.dig('services', 'nginx', 'volumes').first.split(':').first, first_volume[:source])
     assert_equal(content_data.dig('services', 'nginx', 'volumes').first.split(':').second, first_volume[:target])
   end
