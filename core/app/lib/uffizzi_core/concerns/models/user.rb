@@ -15,11 +15,6 @@ module UffizziCore::Concerns::Models::User
 
     rolify({ role_cname: UffizziCore::Role.name, role_join_table_name: UffizziCore.table_names[:users_roles] })
 
-    has_secure_password
-
-    validates :email, presence: true, 'uffizzi_core/email': true, uniqueness: { case_sensitive: false }
-    validates :password, allow_nil: true, length: { minimum: 8 }, on: :update
-
     has_many :memberships, dependent: :destroy
     has_many :accounts, through: :memberships
     has_many :user_projects, dependent: :destroy
