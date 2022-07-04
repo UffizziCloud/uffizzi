@@ -56,8 +56,11 @@ module UffizziCore::Concerns::Models::Deployment
     end
 
     def after_disable
+      10.times { Rails.logger.info('STARTED AFTER DISABLING INSTRUCTIONS') }
       clean
-      set_disabling_time
+      10.times { Rails.logger.info('FINISHED AFTER DISABLING CLEAN') }
+      10.times { Rails.logger.info('STARTED UPDATING DISABLING TIME') }
+      update!(disabled_at: Time.now)
     end
 
     def after_fail
@@ -67,10 +70,6 @@ module UffizziCore::Concerns::Models::Deployment
     def clean
       active_containers.each(&:disable!)
       UffizziCore::Deployment::DeleteJob.perform_async(id)
-    end
-
-    def set_disabling_time
-      update!(disabled_at: Time.now)
     end
   end
 end
