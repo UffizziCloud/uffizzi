@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-module UffizziCore::ProjectService
+class UffizziCore::ProjectService
   class << self
     def update_compose_secrets(project)
       compose_file = project.compose_file

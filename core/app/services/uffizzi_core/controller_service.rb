@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-module UffizziCore::ControllerService
+class UffizziCore::ControllerService
   class << self
     def apply_config_file(deployment, config_file)
       body = {

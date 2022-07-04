@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-module UffizziCore::ComposeFileService
+class UffizziCore::ComposeFileService
   class << self
     def create(params, kind)
       compose_file_form = create_compose_form(params, kind)

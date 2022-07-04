@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-module UffizziCore::CredentialService
+class UffizziCore::CredentialService
   class << self
     def correct_credentials?(credential)
       status = case credential.type
