@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2022_06_17_184754) do
+ActiveRecord::Schema.define(version: 2022_07_04_135751) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -198,6 +198,7 @@ ActiveRecord::Schema.define(version: 2022_06_17_184754) do
     t.string "creation_source"
     t.bigint "compose_file_id"
     t.bigint "template_id"
+    t.datetime "disabled_at"
     t.index ["compose_file_id"], name: "index_deployments_on_compose_file_id"
     t.index ["project_id"], name: "index_deployments_on_project_id"
     t.index ["template_id"], name: "index_deployments_on_template_id"
