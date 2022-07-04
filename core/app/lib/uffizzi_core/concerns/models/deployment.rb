@@ -57,6 +57,7 @@ module UffizziCore::Concerns::Models::Deployment
 
     def after_disable
       clean
+      set_disabling_time
     end
 
     def after_fail
@@ -66,6 +67,10 @@ module UffizziCore::Concerns::Models::Deployment
     def clean
       active_containers.each(&:disable!)
       UffizziCore::Deployment::DeleteJob.perform_async(id)
+    end
+
+    def set_disabling_time
+      update!(disabled_at: Time.now)
     end
   end
 end
