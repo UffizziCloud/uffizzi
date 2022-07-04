@@ -56,10 +56,7 @@ module UffizziCore::Concerns::Models::Deployment
     end
 
     def after_disable
-      10.times { Rails.logger.info('STARTED AFTER DISABLING INSTRUCTIONS') }
       clean
-      10.times { Rails.logger.info('FINISHED AFTER DISABLING CLEAN') }
-      10.times { Rails.logger.info('STARTED UPDATING DISABLING TIME') }
       update!(disabled_at: Time.now)
     end
 
