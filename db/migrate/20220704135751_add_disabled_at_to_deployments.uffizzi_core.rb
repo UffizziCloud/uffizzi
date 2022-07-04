@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 # This migration comes from uffizzi_core (originally 20220704135629)
 class AddDisabledAtToDeployments < ActiveRecord::Migration[6.1]
   def up

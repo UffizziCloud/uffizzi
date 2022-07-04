@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class AddDisabledAtToDeployments < ActiveRecord::Migration[6.1]
   def up
     change_table :uffizzi_core_deployments do |t|
