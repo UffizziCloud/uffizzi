@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-module UffizziCore::RepoService
+class UffizziCore::RepoService
   class << self
     def needs_target_port?(repo)
       return false if repo.nil?

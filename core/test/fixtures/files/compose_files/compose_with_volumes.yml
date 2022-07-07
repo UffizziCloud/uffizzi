@@ -1,0 +1,27 @@
+services:
+  web:
+    image: web_service:latest
+    volumes:
+      - share_data:/var/web/logs
+      - share_data_2:/var/web/logs:ro
+
+  nginx:
+    image: nginx:latest
+    volumes:
+      - source: share_data
+        target: /some_share_data
+        read_only: true
+
+      - source: share_data_2
+        target: /some_share_data_2
+
+      - source: share_data_2
+        target: /some_share_data_22
+
+volumes:
+  share_data:
+  share_data_2:
+
+x-uffizzi-ingress:
+  service: nginx
+  port: 80

@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-module UffizziCore::DeploymentService
+class UffizziCore::DeploymentService
   MIN_TARGET_PORT_RANGE = 37_000
   MAX_TARGET_PORT_RANGE = 39_999
 

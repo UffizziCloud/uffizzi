@@ -1,0 +1,12 @@
+services:
+  nginx:
+    image: nginx:latest
+    volumes:
+      - share_data:/var/web/logs_1
+
+volumes:
+  share_data:
+
+x-uffizzi-ingress:
+  service: nginx
+  port: 80

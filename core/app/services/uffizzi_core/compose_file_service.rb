@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-module UffizziCore::ComposeFileService
+class UffizziCore::ComposeFileService
   class << self
     def create(params, kind)
       compose_file_form = create_compose_form(params, kind)
@@ -19,13 +19,14 @@ module UffizziCore::ComposeFileService
       check_config_options_format(compose_data)
       configs_data = UffizziCore::ComposeFile::Parsers::ConfigsParserService.parse(compose_data['configs'])
       secrets_data = UffizziCore::ComposeFile::Parsers::SecretsParserService.parse(compose_data['secrets'])
+      named_volume_names = UffizziCore::ComposeFile::Parsers::VolumesParserService.parse(compose_data['volumes'])
       containers_data = UffizziCore::ComposeFile::Parsers::ServicesParserService.parse(
         compose_data['services'],
         configs_data,
         secrets_data,
         compose_payload,
+        named_volume_names,
       )
-
       continuous_preview_option = UffizziCore::ComposeFile::ConfigOptionService.continuous_preview_option(compose_data)
       continuous_preview_data = UffizziCore::ComposeFile::Parsers::ContinuousPreviewParserService.parse(continuous_preview_option)
 

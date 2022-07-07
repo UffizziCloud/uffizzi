@@ -667,4 +667,20 @@ class UffizziCore::ComposeFileServiceTest < ActiveSupport::TestCase
     assert { nginx_repo_attributes[:delete_preview_after] == 12 }
     assert { redis_repo_attributes[:delete_preview_after] == 10 }
   end
+
+  test '#build_template_attributes - check named volumes' do
+    create(:credential, :docker_hub, account: @account)
+    content = file_fixture('files/compose_files/dockerhub_services/volumes_named.yml').read
+    parsed_data = UffizziCore::ComposeFileService.parse(content)
+    attributes = UffizziCore::ComposeFileService.build_template_attributes(parsed_data, 'compose.yml', @account.credentials, @project)
+
+    content_data = YAML.safe_load(content)
+    nginx_container = attributes[:payload][:containers_attributes].detect { |container| container[:image].match(/nginx/) }
+    first_volume = nginx_container[:volumes].first
+
+    assert(nginx_container[:volumes])
+    assert_equal(UffizziCore::ComposeFile::Parsers::Services::VolumesService::NAMED_VOLUME_TYPE, first_volume[:type])
+    assert_equal(content_data.dig('services', 'nginx', 'volumes').first.split(':').first, first_volume[:source])
+    assert_equal(content_data.dig('services', 'nginx', 'volumes').first.split(':').second, first_volume[:target])
+  end
 end

@@ -1,4 +1,4 @@
-.PHONY: release release_patch release_minor release_major
+.PHONY: release release_patch release_minor release_major test
 
 NEXT_PATCH=$(shell docker-compose run --rm core bash -c "bundle exec bump show-next patch")
 NEXT_MINOR=$(shell docker-compose run --rm core bash -c "bundle exec bump show-next minor")
@@ -32,3 +32,9 @@ release:
 	@echo 'Create a new tag'
 	git tag core_v${VERSION}
 	git push origin core_v${VERSION}
+
+test:
+	docker-compose run --rm core bash -c "bundle exec rails test"
+
+lint:
+	docker-compose run --rm web bash -c "bundle exec rubocop --auto-correct"
