@@ -5,9 +5,7 @@ class AddDisabledAtToDeployments < ActiveRecord::Migration[6.1]
     change_table :uffizzi_core_deployments do |t|
       t.datetime :disabled_at
     end
-    UffizziCore::Deployment.disabled.find_each do |deployment|
-      deployment.update_attribute(:disabled_at, deployment.updated_at)
-    end
+    UffizziCore::Deployment.disabled.update_all('disabled_at = updated_at')
   end
 
   def down
