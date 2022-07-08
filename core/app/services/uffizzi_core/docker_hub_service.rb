@@ -49,13 +49,13 @@ class UffizziCore::DockerHubService
     end
 
     def user_client(credential)
-      if @client.nil?
-        @client = UffizziCore::DockerHubClient.new(credential)
+      return @client if @client&.credential&.username == credential.username
 
-        unless @client.authentificated?
-          Rails.logger.warn("broken credentials, DockerHubService credential_id=#{credential.id}")
-          credential.unauthorize! unless credential.unauthorized?
-        end
+      @client = UffizziCore::DockerHubClient.new(credential)
+
+      unless @client.authentificated?
+        Rails.logger.warn("broken credentials, DockerHubService credential_id=#{credential.id}")
+        credential.unauthorize! unless credential.unauthorized?
       end
 
       @client
