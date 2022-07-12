@@ -14,14 +14,6 @@ module UffizziCore::Concerns::Models::ActivityItem
 
     has_many :events, dependent: :destroy
 
-    scope :docker, -> {
-      where(type: UffizziCore::ActivityItem::Docker.name)
-    }
-
-    scope :github, -> {
-      where(type: UffizziCore::ActivityItem::Github.name)
-    }
-
     def docker?
       type == UffizziCore::ActivityItem::Docker.name
     end
