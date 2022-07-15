@@ -13,6 +13,12 @@ module UffizziCore::DependencyInjectionConcern
     module_class(:github)
   end
 
+  def password_protection_module
+    return unless module_exists?(:password_protection)
+
+    module_class(:password_protection)
+  end
+
   private
 
   def module_exists?(module_name)
