@@ -68,5 +68,9 @@ module UffizziCore::Concerns::Models::Deployment
       active_containers.each(&:disable!)
       UffizziCore::Deployment::DeleteJob.perform_async(id)
     end
+
+    def preview_url
+      "#{self.subdomain}.#{Settings.app.managed_dns_zone}"
+    end
   end
 end
