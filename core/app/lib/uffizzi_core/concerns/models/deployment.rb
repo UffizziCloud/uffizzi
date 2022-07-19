@@ -70,7 +70,7 @@ module UffizziCore::Concerns::Models::Deployment
     end
 
     def preview_url
-      "#{self.subdomain}.#{Settings.app.managed_dns_zone}"
+      "#{subdomain}.#{Settings.app.managed_dns_zone}"
     end
   end
 end
