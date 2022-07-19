@@ -57,6 +57,7 @@ module UffizziCore::Concerns::Models::Deployment
 
     def after_disable
       clean
+      update!(disabled_at: Time.now)
     end
 
     def after_fail
