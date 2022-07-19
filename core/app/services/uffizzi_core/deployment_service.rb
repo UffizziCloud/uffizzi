@@ -62,7 +62,7 @@ class UffizziCore::DeploymentService
         Rails.logger.info("DEPLOYMENT_PROCESS deployment_id=#{deployment.id} start deploying into controller")
 
         containers = deployment.active_containers
-        containers = add_default_deployment_variables!(containers)
+        containers = add_default_deployment_variables!(containers, deployment)
 
         UffizziCore::ControllerService.deploy_containers(deployment, containers)
       else
@@ -126,10 +126,6 @@ class UffizziCore::DeploymentService
       subdomain = "#{deployment_name}-#{slug}"
 
       format_subdomain(subdomain)
-    end
-
-    def build_preview_url(deployment)
-      "#{deployment.subdomain}.#{Settings.app.managed_dns_zone}"
     end
 
     def build_deployment_url(deployment)
@@ -284,12 +280,14 @@ class UffizziCore::DeploymentService
       Digest::SHA256.hexdigest("#{container.id}:#{container.image}")[0, 10]
     end
 
-    def add_default_deployment_variables!(containers)
+    def add_default_deployment_variables!(containers, deployment)
       containers.each do |container|
         envs = []
         if container.port.present? && !UffizziCore::ContainerService.defines_env?(container, 'PORT')
           envs.push('name' => 'PORT', 'value' => container.target_port.to_s)
         end
+
+        envs.push("name" => "UFFIZZI_URL", "value" => "https://#{deployment.preview_url}")
 
         container.variables = [] if container.variables.nil?
 
