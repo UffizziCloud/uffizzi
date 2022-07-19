@@ -128,6 +128,10 @@ class UffizziCore::DeploymentService
       format_subdomain(subdomain)
     end
 
+    def build_preview_url(deployment)
+      "#{deployment.subdomain}.#{Settings.app.managed_dns_zone}"
+    end
+
     def build_deployment_url(deployment)
       "#{Settings.app.managed_dns_zone}/projects/#{deployment.project_id}/deployments"
     end
