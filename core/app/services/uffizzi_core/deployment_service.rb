@@ -43,7 +43,7 @@ class UffizziCore::DeploymentService
         deployment.update!(containers: deployment_form.containers, compose_file_id: compose_file.id)
       end
 
-      deployment_form
+      deployment
     end
 
     def deploy_containers(deployment, repeated = false)
