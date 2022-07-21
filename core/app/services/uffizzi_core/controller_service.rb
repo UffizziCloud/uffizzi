@@ -52,7 +52,7 @@ class UffizziCore::ControllerService
       body = {
         containers: containers,
         credentials: credentials,
-        deployment_url: UffizziCore::DeploymentService.build_preview_url(deployment),
+        deployment_url: deployment.preview_url,
       }
 
       if password_protection_module.present?
