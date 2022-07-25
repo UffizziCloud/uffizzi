@@ -143,6 +143,20 @@ class UffizziCore::Api::Cli::V1::Account::CredentialsControllerTest < ActionCont
     assert_response :success
   end
 
+  test '#update' do
+    stub_dockerhub_login
+
+    credentials = create(:credential, :docker_hub, account: @account)
+    credentials_attributes = attributes_for(:credential, :docker_hub, account: @account)
+
+    params = { credential: credentials_attributes, type: credentials_attributes[:type] }
+
+    put :update, params: params, format: :json
+    assert_response :success
+    assert { UffizziCore::Credential.one? }
+    assert { UffizziCore::Credential.first.username == credentials_attributes[:username] }
+  end
+
   test '#create duplicate credential' do
     stub_dockerhub_login
     stub_controller
