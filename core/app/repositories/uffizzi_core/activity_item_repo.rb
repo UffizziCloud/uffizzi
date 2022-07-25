@@ -5,5 +5,9 @@ module UffizziCore::ActivityItemRepo
 
   included do
     include UffizziCore::BasicOrderRepo
+
+    scope :docker, -> {
+      where(type: UffizziCore::ActivityItem::Docker.name)
+    }
   end
 end

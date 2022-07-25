@@ -612,7 +612,7 @@ Lint/DuplicateBranch:
 Lint/DuplicateRegexpCharacterClassElement:
   Enabled: true
 Lint/EmptyBlock:
-  Enabled: true
+  Enabled: false
 Lint/EmptyClass:
   Enabled: true
 Lint/EmptyInPattern:

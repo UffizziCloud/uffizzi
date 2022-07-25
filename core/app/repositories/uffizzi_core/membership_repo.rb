@@ -4,7 +4,6 @@ module UffizziCore::MembershipRepo
   extend ActiveSupport::Concern
 
   included do
-    scope :by_role, ->(role) { where(role: role) }
     scope :by_role_admin, -> { by_role(UffizziCore::Membership.role.admin) }
   end
 end
