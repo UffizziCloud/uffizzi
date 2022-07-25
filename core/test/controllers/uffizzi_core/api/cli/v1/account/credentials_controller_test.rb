@@ -146,7 +146,7 @@ class UffizziCore::Api::Cli::V1::Account::CredentialsControllerTest < ActionCont
   test '#update' do
     stub_dockerhub_login
 
-    credentials = create(:credential, :docker_hub, account: @account)
+    create(:credential, :docker_hub, account: @account)
     credentials_attributes = attributes_for(:credential, :docker_hub, account: @account)
 
     params = { credential: credentials_attributes, type: credentials_attributes[:type] }
