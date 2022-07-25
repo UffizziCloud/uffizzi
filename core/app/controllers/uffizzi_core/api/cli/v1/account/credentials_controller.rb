@@ -40,6 +40,26 @@ class UffizziCore::Api::Cli::V1::Account::CredentialsController < UffizziCore::A
     respond_with credential_form
   end
 
+  # Update existing credentials of the given type
+  #
+  # @path [PUT] /api/cli/v1/account/credentials/{type}
+  #
+  # @parameter type(required,path) [string] Credentials type
+  # @parameter credential(required,body) [object<type:string>]
+  # @response 422 Unprocessable entity
+  # @response 200 OK
+  def update
+    credentials = resource_account.credentials.find_by!(type: params[:type])
+    credentials_form = credentials.becomes(UffizziCore::Api::Cli::V1::Account::Credential::UpdateForm)
+    credentials_form.assign_attributes(credential_params)
+
+    if credentials_form.save
+      respond_with credentials_form
+    else
+      respond_with credentials_form.errors, status: :unprocessable_entity
+    end
+  end
+
   # Check if credential of the type already exists in the account
   #
   # @path [GET] /api/cli/v1/account/credentials/{type}/check_credential
