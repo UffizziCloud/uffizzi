@@ -11,6 +11,6 @@ class UffizziCore::Api::Cli::V1::Account::Credential::CheckCredentialForm
   private
 
   def credential_exists?
-    errors.add(:type, 'Credential of that type already exist.') if account.credentials.by_type(type).exists?
+    errors.add(:type, :exist) if account.credentials.by_type(type).exists?
   end
 end
