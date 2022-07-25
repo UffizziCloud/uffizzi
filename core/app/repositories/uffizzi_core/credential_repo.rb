@@ -14,6 +14,7 @@ module UffizziCore::CredentialRepo
     scope :deployable, -> {
       by_type([
                 UffizziCore::Credential::DockerHub.name,
+                UffizziCore::Credential::DockerRegistry.name,
                 UffizziCore::Credential::Azure.name,
                 UffizziCore::Credential::Google.name,
                 UffizziCore::Credential::Amazon.name,

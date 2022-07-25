@@ -14,8 +14,7 @@ class UffizziCore::DockerRegistryClient
   private
 
   def build_connection(registry_url, username, password)
-    #TODO: enable ssl verification after tests
-    Faraday.new(registry_url, ssl: {verify: false}) do |conn|
+    Faraday.new(registry_url) do |conn|
       conn.request(:basic_auth, username, password)
       conn.request(:json)
       conn.response(:json)
