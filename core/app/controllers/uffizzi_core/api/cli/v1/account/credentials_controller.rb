@@ -56,7 +56,7 @@ class UffizziCore::Api::Cli::V1::Account::CredentialsController < UffizziCore::A
     if credentials_form.save
       respond_with credentials_form
     else
-      respond_with credentials_form.errors, status: :unprocessable_entity
+      respond_with credentials_form, status: :unprocessable_entity
     end
   end
 
