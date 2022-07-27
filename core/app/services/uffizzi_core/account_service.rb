@@ -10,6 +10,14 @@ class UffizziCore::AccountService
       end
     end
 
+    def update_credentials(credentials)
+      credentials.account.projects.active.each do |project|
+        project.deployments.active.each do |deployment|
+          UffizziCore::Deployment::UpdateCredentialsJob.perform_async(deployment.id, credentials.id)
+        end
+      end
+    end
+
     def delete_credential(credential)
       credential.account.projects.active.each do |project|
         project.deployments.active.each do |deployment|
