@@ -46,7 +46,7 @@ class UffizziCore::Api::Cli::V1::Account::CredentialsController < UffizziCore::A
   #
   # @parameter type(required,path) [string] Credentials type
   # @parameter credential(required,body) [object<type:string>]
-  # @response [object<id:integer, username:string, password:string, type:string, state:string>] 200 OK
+  # @response [object<id:integer, registry_url:string, username:string, password:string>] 200 OK
   # @response [object<errors>] 422 Unprocessable entity
   def update
     credentials = resource_account.credentials.find_by!(type: params[:type])
