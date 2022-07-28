@@ -145,7 +145,7 @@
           },
           {
             "name": "type",
-            "description": "Credentials type",
+            "description": "Credential type",
             "required": true,
             "in": "path",
             "type": "string"
@@ -182,8 +182,8 @@
             }
           }
         },
-        "description": "Update existing credentials of the given type",
-        "summary": "Update existing credentials of the given type",
+        "description": "Update existing credential of the given type",
+        "summary": "Update existing credential of the given type",
         "x-controller": "uffizzi_core/api/cli/v1/account/credentials",
         "x-action": "update"
       },
