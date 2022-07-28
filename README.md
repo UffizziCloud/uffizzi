@@ -35,6 +35,7 @@ The easiest way to get started with Uffizzi is via the managed API service provi
 ## Community
 
 - [Slack channel](https://join.slack.com/t/uffizzi/shared_invite/zt-ffr4o3x0-J~0yVT6qgFV~wmGm19Ux9A) - Get support or discuss the project  
+- [Subscribe to our newsletter](http://eepurl.com/hsws0b) - Receive monthly updates about new features and special events  
 - [Contributing to Uffizzi](CONTRIBUTING.md) - Start here if you want to contribute
 - [FAQ](https://uffizzi.com/#faqs) - Frequently Asked Questions
 - [Code of Conduct](CODE_OF_CONDUCT.md) - Let's keep it professional
