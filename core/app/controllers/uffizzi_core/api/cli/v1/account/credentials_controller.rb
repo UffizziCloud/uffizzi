@@ -40,24 +40,24 @@ class UffizziCore::Api::Cli::V1::Account::CredentialsController < UffizziCore::A
     respond_with credential_form
   end
 
-  # Update existing credentials of the given type
+  # Update existing credential of the given type
   #
   # @path [PUT] /api/cli/v1/account/credentials/{type}
   #
-  # @parameter type(required,path) [string] Credentials type
+  # @parameter type(required,path) [string] Credential type
   # @parameter credential(required,body) [object<type:string>]
   # @response [object<id:integer, registry_url:string, username:string, password:string>] 200 OK
   # @response [object<errors>] 422 Unprocessable entity
   def update
-    credentials = resource_account.credentials.find_by!(type: params[:type])
-    credentials_form = credentials.becomes(UffizziCore::Api::Cli::V1::Account::Credential::UpdateForm)
-    credentials_form.assign_attributes(credential_params)
+    credential = resource_account.credentials.find_by!(type: params[:type])
+    credential_form = credential.becomes(UffizziCore::Api::Cli::V1::Account::Credential::UpdateForm)
+    credential_form.assign_attributes(credential_params)
 
-    if credentials_form.save
-      UffizziCore::Account::UpdateCredentialsJob.perform_async(credentials_form.id)
-      respond_with credentials_form
+    if credential_form.save
+      UffizziCore::Account::UpdateCredentialJob.perform_async(credential_form.id)
+      respond_with credential_form
     else
-      respond_with credentials_form, status: :unprocessable_entity
+      respond_with credential_form, status: :unprocessable_entity
     end
   end
 
