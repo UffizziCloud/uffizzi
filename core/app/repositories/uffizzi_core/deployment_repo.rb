@@ -9,5 +9,8 @@ module UffizziCore::DeploymentRepo
     }
     scope :with_amazon_repos, -> { includes(containers: [:repo]).where(containers: { repos: { type: UffizziCore::Repo::Amazon.name } }) }
     scope :existed, -> { where(state: [:active, :failed]) }
+    scope :active_for_credentials_id, ->(credentials_id) {
+      active.joins(project: :credentials).merge(UffizziCore::Project.active).where(credentials: { id: credentials_id })
+    }
   end
 end
