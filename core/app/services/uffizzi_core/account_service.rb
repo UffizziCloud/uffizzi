@@ -2,27 +2,21 @@
 
 class UffizziCore::AccountService
   class << self
-    def create_credential(credential)
-      credential.account.projects.active.each do |project|
-        project.deployments.active.each do |deployment|
-          UffizziCore::Deployment::CreateCredentialJob.perform_async(deployment.id, credential.id)
-        end
+    def create_credential(credentials)
+      UffizziCore::Deployment.active_for_credentials_id(credentials.id).pluck(:id).each do |deployment_id|
+        UffizziCore::Deployment::CreateCredentialJob.perform_async(deployment_id, credentials.id)
       end
     end
 
     def update_credentials(credentials)
-      credentials.account.projects.active.each do |project|
-        project.deployments.active.each do |deployment|
-          UffizziCore::Deployment::UpdateCredentialsJob.perform_async(deployment.id, credentials.id)
-        end
+      UffizziCore::Deployment.active_for_credentials_id(credentials.id).pluck(:id).each do |deployment_id|
+        UffizziCore::Deployment::UpdateCredentialsJob.perform_async(deployment_id, credentials.id)
       end
     end
 
-    def delete_credential(credential)
-      credential.account.projects.active.each do |project|
-        project.deployments.active.each do |deployment|
-          UffizziCore::Deployment::DeleteCredentialJob.perform_async(deployment.id, credential.id)
-        end
+    def delete_credential(credentials)
+      UffizziCore::Deployment.active_for_credentials_id(credentials.id).pluck(:id).each do |deployment_id|
+        UffizziCore::Deployment::DeleteCredentialJob.perform_async(deployment_id, credentials.id)
       end
     end
   end
