@@ -23,7 +23,6 @@ class UffizziCore::DeploymentService
         update_subdomain!(deployment_form)
 
         UffizziCore::Deployment::CreateJob.perform_async(deployment_form.id)
-        UffizziCore::Deployment::CreateWebhooksJob.perform_async(deployment_form.id)
       end
 
       deployment_form
@@ -202,26 +201,6 @@ class UffizziCore::DeploymentService
       deployment.subdomain = build_subdomain(deployment)
 
       deployment.save!
-    end
-
-    def create_webhooks(deployment)
-      credential = deployment.project.account.credentials.docker_hub.active.first
-
-      if !deployment.containers.with_docker_hub_repo.exists? || !credential.present?
-        Rails.logger.info("DEPLOYMENT_PROCESS deployment_id=#{deployment.id} create_webhooks no dockerhub containers or credential")
-        return
-      end
-
-      accounts = UffizziCore::DockerHubService.accounts(credential)
-
-      deployment.containers.with_docker_hub_repo.find_each do |container|
-        if !accounts.include?(container.repo.namespace)
-          logger_message = "DEPLOYMENT_PROCESS deployment_id=#{deployment.id} no namespace(#{container.repo.namespace})
-          in accounts(#{accounts.inspect})"
-          Rails.logger.info(logger_message)
-          next
-        end
-      end
     end
 
     def pull_request_payload_present?(deployment)
