@@ -43,34 +43,6 @@ class UffizziCore::DockerHubClient
     RequestResult.new(result: response.body)
   end
 
-  def get_webhooks(slug:, registry:)
-    url = BASE_URL + "/v2/repositories/#{slug}/webhook_pipeline/"
-
-    response = connection.get(url, { registry: registry, page_size: 100 }) do |request|
-      request.headers['Authorization'] = "JWT #{jwt}"
-    end
-
-    RequestResult.new(status: response.status, result: response.body)
-  end
-
-  def create_webhook(slug:, name:, expect_final_callback:, webhooks:)
-    raise NotAuthorizedError if !authentificated?
-
-    url = BASE_URL + "/v2/repositories/#{slug}/webhook_pipeline/"
-
-    params = {
-      name: name,
-      expect_final_callback: expect_final_callback,
-      webhooks: webhooks,
-    }
-
-    response = connection.post(url, params) do |request|
-      request.headers['Authorization'] = "JWT #{jwt}"
-    end
-
-    RequestResult.new(status: response.status, result: response.body)
-  end
-
   def accounts
     raise NotAuthorizedError if !authentificated?
 
