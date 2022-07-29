@@ -225,8 +225,6 @@ class UffizziCore::DeploymentService
           Rails.logger.info(logger_message)
           next
         end
-
-        UffizziCore::Credential::DockerHub::CreateWebhookJob.perform_async(credential.id, container.image, deployment.id)
       end
     end
 

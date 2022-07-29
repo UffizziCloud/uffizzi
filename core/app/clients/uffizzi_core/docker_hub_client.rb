@@ -115,16 +115,6 @@ class UffizziCore::DockerHubClient
     RequestResult.new(result: response.body)
   end
 
-  def send_webhook_answer(url, params)
-    conn = Faraday.new do |c|
-      c.request(:json)
-      c.adapter(Faraday.default_adapter)
-    end
-    response = conn.post(url, params)
-
-    RequestResult.quiet.new(result: response.body)
-  end
-
   def authentificated?
     jwt.present?
   end
