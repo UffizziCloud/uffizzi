@@ -7,14 +7,6 @@ UffizziCore::Engine.routes.draw do
   namespace :api, defaults: { format: :json } do
     namespace :cli do
       namespace :v1 do
-        resource :webhooks, only: [] do
-          post :docker_hub
-          post :github
-          post :azure
-          post :amazon
-          post :google
-        end
-
         resources :projects, only: ['index', 'show', 'create', 'destroy'], param: :slug do
           scope module: :projects do
             resource :compose_file, only: ['show', 'create', 'destroy']
