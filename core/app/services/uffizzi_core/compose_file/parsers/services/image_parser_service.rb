@@ -6,28 +6,10 @@ class UffizziCore::ComposeFile::Parsers::Services::ImageParserService
       return {} if value.blank?
 
       parse_error = UffizziCore::ComposeFile::ParseError, I18n.t('compose.invalid_image_value', value: value)
-      image_path_parts = value.downcase.split(':')
-      image_path, tag = case image_path_parts.size
-                        when 1
-                          image_path_parts[0]
-                        when 2
-                          uri_pattern = /\A\w[\w.-]+:\d+/
-                          tag_pattern = /:\w[\w.-]*\z/
-                          if uri_pattern.match?(value)
-                            "#{image_path_parts[0]}:#{image_path_parts[1]}"
-                          elsif tag_pattern.match?(value)
-                            [image_path_parts[0], image_path_parts[1]]
-                          else
-                            raise parse_error
-                          end
-                        when 3
-                          ["#{image_path_parts[0]}:#{image_path_parts[1]}", image_path_parts[2]]
-                        else
-                          raise parse_error
-      end
+      image_path, tag = get_image_path_and_tag(value, parse_error)
+      raise parse_error if image_path.blank?
 
       tag = Settings.compose.default_tag if tag.blank?
-      raise parse_error if image_path.blank?
 
       if url?(image_path)
         host, namespace, name = parse_image_url(image_path)
@@ -45,8 +27,26 @@ class UffizziCore::ComposeFile::Parsers::Services::ImageParserService
 
     private
 
-    def get_image_path_and_tag(path)
-      # TODO: move code above
+    def get_image_path_and_tag(value, parse_error)
+      image_path_parts = value.downcase.split(':')
+      case image_path_parts.size
+      when 1
+        image_path_parts[0]
+      when 2
+        uri_pattern = /\A\w[\w.-]+:\d+/
+        tag_pattern = /:\w[\w.-]*\z/
+        if uri_pattern.match?(value)
+          "#{image_path_parts[0]}:#{image_path_parts[1]}"
+        elsif tag_pattern.match?(value)
+          [image_path_parts[0], image_path_parts[1]]
+        else
+          raise parse_error
+        end
+      when 3
+        ["#{image_path_parts[0]}:#{image_path_parts[1]}", image_path_parts[2]]
+      else
+        raise parse_error
+      end
     end
 
     def url?(image_path)

@@ -2,14 +2,14 @@
 
 class UffizziCore::DockerRegistry::CredentialService
   class << self
-    def credentials_correct?(credentials)
-      client(credentials).authenticated?
+    def credential_correct?(credential)
+      client(credential).authenticated?
     end
 
     private
 
-    def client(credentials)
-      UffizziCore::DockerRegistryClient.new(credentials)
+    def client(credential)
+      UffizziCore::DockerRegistryClient.new(credential)
     end
   end
 end
