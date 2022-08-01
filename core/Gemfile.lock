@@ -1,7 +1,7 @@
 PATH
   remote: .
   specs:
-    uffizzi_core (0.3.5)
+    uffizzi_core (0.3.6)
       aasm
       actionpack (~> 6.1.0)
       active_model_serializers
@@ -107,8 +107,8 @@ GEM
       activerecord (>= 5.2.6)
     awesome_print (1.9.2)
     aws-eventstream (1.2.0)
-    aws-partitions (1.610.0)
-    aws-sdk-core (3.131.3)
+    aws-partitions (1.613.0)
+    aws-sdk-core (3.131.5)
       aws-eventstream (~> 1, >= 1.0.2)
       aws-partitions (~> 1, >= 1.525.0)
       aws-sigv4 (~> 1.1)
@@ -148,7 +148,7 @@ GEM
     deep_merge (1.2.2)
     descendants_tracker (0.0.4)
       thread_safe (~> 0.3, >= 0.3.1)
-    dotenv (2.7.6)
+    dotenv (2.8.1)
     dry-configurable (0.14.0)
       concurrent-ruby (~> 1.0)
       dry-core (~> 0.6)
@@ -260,7 +260,7 @@ GEM
       faraday (>= 1, < 3)
       sawyer (~> 0.9)
     parslet (2.0.0)
-    pg (1.4.1)
+    pg (1.4.2)
     power_assert (2.0.1)
     pry (0.13.1)
       coderay (~> 1.1)

@@ -19,8 +19,7 @@ class UffizziCore::CredentialService
       end
 
       if credential.persisted? && credential.active? && !status
-        Rails.logger.warn("broken credentials, credential_correct? credential_id=#{credential.id}")
-        credential.unauthorize!
+        Rails.logger.warn("Wrong credential: credential_correct? credential_id=#{credential.id}")
       end
 
       status

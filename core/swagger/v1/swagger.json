@@ -122,12 +122,12 @@
         "x-action": "create"
       }
     },
-    "/api/cli/v1/account/credentials/{type}/check_credential": {
-      "get": {
+    "/api/cli/v1/account/credentials/{type}": {
+      "put": {
         "tags": [
           "Account/Credential"
         ],
-        "operationId": "Account/Credential-check_credential",
+        "operationId": "Account/Credential-update",
         "parameters": [
           {
             "name": "credential",
@@ -145,27 +145,48 @@
           },
           {
             "name": "type",
-            "description": "Scope response to type",
+            "description": "Credential type",
             "required": true,
             "in": "path",
             "type": "string"
           }
         ],
         "responses": {
-          "422": {
-            "description": "Unprocessable entity"
-          },
           "200": {
-            "description": "OK"
+            "description": "OK",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "id": {
+                  "type": "integer"
+                },
+                "registry_url": {
+                  "type": "string"
+                },
+                "username": {
+                  "type": "string"
+                },
+                "password": {
+                  "type": "string"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Unprocessable entity",
+            "schema": {
+              "type": "object",
+              "additionalProperties": {
+                "type": "errors"
+              }
+            }
           }
         },
-        "description": "Check if credential of the type already exists in the account",
-        "summary": "Check if credential of the type already exists in the account",
+        "description": "Update existing credential of the given type",
+        "summary": "Update existing credential of the given type",
         "x-controller": "uffizzi_core/api/cli/v1/account/credentials",
-        "x-action": "check_credential"
-      }
-    },
-    "/api/cli/v1/account/credentials/{type}": {
+        "x-action": "update"
+      },
       "delete": {
         "tags": [
           "Account/Credential"
@@ -208,6 +229,49 @@
         "summary": "Delete account credential",
         "x-controller": "uffizzi_core/api/cli/v1/account/credentials",
         "x-action": "destroy"
+      }
+    },
+    "/api/cli/v1/account/credentials/{type}/check_credential": {
+      "get": {
+        "tags": [
+          "Account/Credential"
+        ],
+        "operationId": "Account/Credential-check_credential",
+        "parameters": [
+          {
+            "name": "credential",
+            "description": "credential",
+            "required": true,
+            "in": "body",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "type": {
+                  "type": "string"
+                }
+              }
+            }
+          },
+          {
+            "name": "type",
+            "description": "Scope response to type",
+            "required": true,
+            "in": "path",
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "422": {
+            "description": "Unprocessable entity"
+          },
+          "200": {
+            "description": "OK"
+          }
+        },
+        "description": "Check if credential of the type already exists in the account",
+        "summary": "Check if credential of the type already exists in the account",
+        "x-controller": "uffizzi_core/api/cli/v1/account/credentials",
+        "x-action": "check_credential"
       }
     },
     "/api/cli/v1/projects/{project_slug}/compose_file": {
@@ -1237,8 +1301,16 @@
           }
         ],
         "responses": {
-          "204": {
-            "description": "No content"
+          "200": {
+            "description": "OK",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "project": {
+                  "$ref": "#/definitions/Project"
+                }
+              }
+            }
           },
           "404": {
             "description": "Not Found"
@@ -1267,16 +1339,8 @@
           }
         ],
         "responses": {
-          "200": {
-            "description": "OK",
-            "schema": {
-              "type": "object",
-              "properties": {
-                "project": {
-                  "$ref": "#/definitions/Project"
-                }
-              }
-            }
+          "204": {
+            "description": "No content"
           },
           "404": {
             "description": "Not Found"

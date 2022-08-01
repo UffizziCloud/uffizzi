@@ -9,6 +9,10 @@ class UffizziCore::Api::Cli::V1::Account::CredentialsPolicy < UffizziCore::Appli
     context.user_access_module.admin_access_to_account?(context.user, context.account)
   end
 
+  def update?
+    context.user_access_module.admin_access_to_account?(context.user, context.account)
+  end
+
   def check_credential?
     context.user_access_module.admin_access_to_account?(context.user, context.account)
   end
