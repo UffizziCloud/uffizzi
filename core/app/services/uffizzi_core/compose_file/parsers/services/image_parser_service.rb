@@ -51,6 +51,9 @@ class UffizziCore::ComposeFile::Parsers::Services::ImageParserService
 
     def url?(image_path)
       uri = URI(add_https_if_needed(image_path))
+    rescue URI::InvalidURIError
+      false
+    else
       uri.host.present? && uri.host =~ /\w+\.(\w+\.)*\w+/ && uri.path.present?
     end
 

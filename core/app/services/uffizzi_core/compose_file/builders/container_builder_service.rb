@@ -111,7 +111,6 @@ class UffizziCore::ComposeFile::Builders::ContainerBuilderService
         !UffizziCore::ComposeFile::ContainerService.docker_registry?(container_data)
       image_data[:name]
     else
-      Rails.logger.debug("!!! IMAGE DATA !!!#{image_data}")
       "#{image_data[:namespace]}/#{image_data[:name]}"
     end
   end
