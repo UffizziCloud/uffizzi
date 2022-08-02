@@ -66,12 +66,28 @@ class UffizziCore::ComposeFileService
     end
 
     def update_secret!(compose_file, secret)
-      compose_file.template.payload['containers_attributes'].map do |container|
-        if UffizziCore::ComposeFile::ContainerService.has_secret?(container, secret)
-          container = UffizziCore::ComposeFile::ContainerService.update_secret(container, secret)
+      compose_file.template.payload['containers_attributes'].each do |container|
+        next unless UffizziCore::ComposeFile::ContainerService.has_secret?(container, secret)
+
+        UffizziCore::ComposeFile::ContainerService.update_secret(container, secret)
+        next if compose_file.payload['errors'].blank?
+
+        compose_file_errors = compose_file.payload['errors'].presence
+        secrets_errors = compose_file_errors[UffizziCore::ComposeFile::ErrorsService::SECRETS_ERROR_KEY].presence
+        new_secrets_errors = secrets_errors.reject { |secret_errors| secret_errors.include?(secret.name) }
+
+        if new_secrets_errors.present?
+          new_errors = { UffizziCore::ComposeFile::ErrorsService::SECRETS_ERROR_KEY => new_secrets_errors }
+          UffizziCore::ComposeFile::ErrorsService.update_compose_errors!(compose_file,
+                                                                         compose_file_errors.merge(new_errors),
+                                                                         compose_file.content)
+          next
         end
 
-        container
+        compose_file_errors.delete(['secret_variables'])
+        next UffizziCore::ComposeFile::ErrorsService.reset_compose_errors!(compose_file) if compose_file_errors.empty?
+
+        UffizziCore::ComposeFile::ErrorsService.update_compose_errors!(compose_file, compose_file_errors, compose_file.content)
       end
 
       compose_file.template.save!
