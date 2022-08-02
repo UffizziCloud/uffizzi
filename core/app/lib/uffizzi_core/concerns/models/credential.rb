@@ -27,6 +27,10 @@ module UffizziCore::Concerns::Models::Credential
       event :unauthorize do
         transitions from: [:not_connected, :active], to: :unauthorized
       end
+
+      event :disconnect do
+        transitions from: [:active, :unauthorized], to: :not_connected
+      end
     end
 
     def github_container_registry?
@@ -55,7 +59,7 @@ module UffizziCore::Concerns::Models::Credential
       account.projects.find_each do |project|
         project.deployments.find_each do |deployment|
           containers = deployment.containers
-          attributes = { continuously_deploy: UffizziCore::Container::STATE_DISABLED }
+          attributes = { continuously_deploy: UffizziCore::Container::STATE_CD_DISABLED }
 
           containers.with_docker_hub_repo.update_all(attributes) if docker_hub?
         end

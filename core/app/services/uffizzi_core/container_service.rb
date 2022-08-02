@@ -20,7 +20,7 @@ class UffizziCore::ContainerService
     end
 
     def continuously_deploy_enabled?(container)
-      container.aasm(:continuously_deploy).current_state == UffizziCore::Container::STATE_ENABLED
+      container.aasm(:continuously_deploy).current_state == UffizziCore::Container::STATE_CD_ENABLED
     end
 
     def valid_memory_limit?(container)

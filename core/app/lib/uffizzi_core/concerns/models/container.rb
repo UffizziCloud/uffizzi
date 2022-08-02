@@ -45,7 +45,7 @@ module UffizziCore::Concerns::Models::Container
     validates :command, 'uffizzi_core/image_command_args': true, allow_nil: true
     validates :tag, presence: true
 
-    aasm :continuously_deploy, column: :continuously_deploy do
+    aasm :continuously_deploy, column: :continuously_deploy, namespace: :cd do
       state :disabled, initial: true
       state :enabled
     end

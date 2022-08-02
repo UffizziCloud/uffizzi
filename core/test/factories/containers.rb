@@ -12,12 +12,12 @@ FactoryBot.define do
     receive_incoming_requests { false }
     entrypoint { nil }
     command { nil }
-    continuously_deploy { UffizziCore::Container::STATE_DISABLED }
+    continuously_deploy { UffizziCore::Container::STATE_CD_DISABLED }
     healthcheck { nil }
     volumes { nil }
 
     trait :continuously_deploy_enabled do
-      continuously_deploy { UffizziCore::Container::STATE_ENABLED }
+      continuously_deploy { UffizziCore::Container::STATE_CD_ENABLED }
     end
 
     trait :with_public_port do
@@ -27,11 +27,11 @@ FactoryBot.define do
     end
 
     trait :continuously_deploy_enabled do
-      continuously_deploy { UffizziCore::Container::STATE_ENABLED }
+      continuously_deploy { UffizziCore::Container::STATE_CD_ENABLED }
     end
 
     trait :continuously_deploy_disabled do
-      continuously_deploy { UffizziCore::Container::STATE_DISABLED }
+      continuously_deploy { UffizziCore::Container::STATE_CD_DISABLED }
     end
 
     initialize_with { new }
