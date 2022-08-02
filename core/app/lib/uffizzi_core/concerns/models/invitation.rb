@@ -16,8 +16,8 @@ module UffizziCore::Concerns::Models::Invitation
     belongs_to :invited_by, class_name: UffizziCore::User.name, foreign_key: :invited_by_id
     belongs_to :invitee, class_name: UffizziCore::User.name, foreign_key: :invitee_id, optional: true
 
-    validates :email, presence: true, 'uffizzi_core/email': true
     validates :token, presence: true, uniqueness: true
+    validates :email, presence: true, 'uffizzi_core/email': true
 
     aasm(:status) do
       state :pending, initial: true

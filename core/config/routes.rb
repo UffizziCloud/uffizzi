@@ -36,6 +36,10 @@ UffizziCore::Engine.routes.draw do
         end
         resource :session, only: ['create', 'destroy']
 
+        namespace :ci do
+          resource :session, only: ['create']
+        end
+
         resource :account, only: [] do
           scope module: :account do
             resources :credentials, only: ['index', 'create', 'update', 'destroy'], param: :type do

@@ -15,6 +15,12 @@ module UffizziCore::DependencyInjectionConcern
     module_class(:volume_parser)
   end
 
+  def ci_session
+    return unless module_exists?(:ci_session)
+
+    module_class(:ci_session)
+  end
+
   def password_protection_module
     return unless module_exists?(:password_protection)
 
