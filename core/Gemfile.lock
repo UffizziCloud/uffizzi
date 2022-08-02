@@ -1,7 +1,7 @@
 PATH
   remote: .
   specs:
-    uffizzi_core (0.3.6)
+    uffizzi_core (0.3.7)
       aasm
       actionpack (~> 6.1.0)
       active_model_serializers
@@ -256,7 +256,7 @@ GEM
     nio4r (2.5.8)
     nokogiri (1.13.8-x86_64-linux)
       racc (~> 1.4)
-    octokit (5.1.0)
+    octokit (5.2.0)
       faraday (>= 1, < 3)
       sawyer (~> 0.9)
     parslet (2.0.0)
