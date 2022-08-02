@@ -27,10 +27,11 @@ class UffizziCore::ProjectService
       return unless UffizziCore::ComposeFileService.has_secret?(compose_file, secret)
 
       error_message = I18n.t('compose.project_secret_not_found', secret: secret['name'])
-      error = { UffizziCore::ComposeFile::ErrorsService::SECRETS_ERROR_KEY => [error_message] }
-
-      existing_errors = compose_file.payload['errors'].presence || {}
-      new_errors = existing_errors.merge(error)
+      compose_file_errors = compose_file.payload['errors'] || {}
+      secrets_errors = compose_file_errors[UffizziCore::ComposeFile::ErrorsService::SECRETS_ERROR_KEY].presence || []
+      new_secrets_errors = secrets_errors.append(error_message).uniq
+      error = { UffizziCore::ComposeFile::ErrorsService::SECRETS_ERROR_KEY => new_secrets_errors }
+      new_errors = compose_file_errors.merge(error)
 
       UffizziCore::ComposeFile::ErrorsService.update_compose_errors!(compose_file, new_errors, compose_file.content)
     end
