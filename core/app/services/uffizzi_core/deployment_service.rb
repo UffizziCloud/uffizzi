@@ -308,7 +308,10 @@ class UffizziCore::DeploymentService
       subdomain_length_limit = Settings.deployment.subdomain.length_limit
       return rfc_subdomain if rfc_subdomain.length <= subdomain_length_limit
 
-      rfc_subdomain.slice(0, subdomain_length_limit)
+      sliced_subdomain = rfc_subdomain.slice(0, subdomain_length_limit)
+      return sliced_subdomain.chop if sliced_subdomain.end_with?('-')
+
+      sliced_subdomain
     end
   end
 end
