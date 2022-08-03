@@ -35,3 +35,6 @@
 
 /credentials/*.json
 .env
+
+# Ignore (intellij) idea config directory
+/.idea
