@@ -1,7 +1,7 @@
 PATH
   remote: .
   specs:
-    uffizzi_core (0.3.7)
+    uffizzi_core (0.3.8)
       aasm
       actionpack (~> 6.1.0)
       active_model_serializers
@@ -107,8 +107,8 @@ GEM
       activerecord (>= 5.2.6)
     awesome_print (1.9.2)
     aws-eventstream (1.2.0)
-    aws-partitions (1.613.0)
-    aws-sdk-core (3.131.5)
+    aws-partitions (1.614.0)
+    aws-sdk-core (3.131.6)
       aws-eventstream (~> 1, >= 1.0.2)
       aws-partitions (~> 1, >= 1.525.0)
       aws-sigv4 (~> 1.1)
@@ -183,7 +183,7 @@ GEM
       dry-schema (~> 1.9, >= 1.9.1)
     enumerize (2.5.0)
       activesupport (>= 3.2)
-    erubi (1.10.0)
+    erubi (1.11.0)
     factory_bot (6.2.0)
       activesupport (>= 5.0.0)
     faker (2.19.0)
