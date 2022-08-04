@@ -38,9 +38,13 @@ class UffizziCore::DeploymentService
 
       ActiveRecord::Base.transaction do
         deployment.containers.destroy_all
-        deployment.compose_file.destroy! if deployment.compose_file.kind.temporary?
+        deployment.compose_file.destroy! if deployment.compose_file&.kind&.temporary?
 
-        deployment.update!(containers: deployment_form.containers, compose_file_id: compose_file.id)
+        deployment.update!(
+          containers: deployment_form.containers,
+          compose_file_id: compose_file.id,
+          creation_source: UffizziCore::Deployment.creation_source.compose_file_manual
+        )
       end
 
       deployment
