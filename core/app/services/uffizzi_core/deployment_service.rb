@@ -43,7 +43,7 @@ class UffizziCore::DeploymentService
         deployment.update!(
           containers: deployment_form.containers,
           compose_file_id: compose_file.id,
-          creation_source: UffizziCore::Deployment.creation_source.compose_file_manual
+          creation_source: UffizziCore::Deployment.creation_source.compose_file_manual,
         )
       end
 
