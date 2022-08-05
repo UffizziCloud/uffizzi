@@ -272,6 +272,41 @@ class UffizziCore::Api::Cli::V1::Projects::DeploymentsControllerTest < ActionCon
     assert_response :success
   end
 
+  test '#update - update deployment created without compose file' do
+    file_content = File.read('test/fixtures/files/test-compose-success-without-dependencies.yml')
+    compose_file = create(:compose_file, :temporary, project: @project, added_by: @admin)
+    create(:template, :compose_file_source, compose_file: compose_file, project: @project, added_by: @admin, payload: @template.payload)
+    encoded_content = Base64.encode64(file_content)
+    compose_file_attributes = attributes_for(:compose_file, :temporary, project: @project, added_by: @admin, content: encoded_content)
+    create(:credential, :docker_hub, account: @admin.organizational_account)
+
+    params = {
+      project_slug: @project.slug,
+      compose_file: compose_file_attributes,
+      dependencies: [],
+      id: @deployment[:id],
+    }
+
+    refute(@deployment.compose_file)
+    assert_equal(UffizziCore::Deployment.creation_source.manual, @deployment.creation_source)
+
+    differences = {
+      -> { UffizziCore::ComposeFile.temporary.count } => 1,
+      -> { UffizziCore::Template.with_creation_source(UffizziCore::Template.creation_source.compose_file).count } => 1,
+      -> { @deployment.containers.count } => 1,
+    }
+
+    assert_difference differences do
+      put :update, params: params, format: :json
+    end
+
+    @deployment.reload
+
+    assert_response :success
+    assert_equal(UffizziCore::ComposeFile.last.id, @deployment.compose_file_id)
+    assert_equal(UffizziCore::Deployment.creation_source.compose_file_manual, @deployment.creation_source)
+  end
+
   test '#deploy_containers' do
     Sidekiq::Worker.clear_all
     Sidekiq::Testing.fake!
