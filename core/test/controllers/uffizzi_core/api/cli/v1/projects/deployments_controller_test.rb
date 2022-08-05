@@ -8,6 +8,16 @@ class UffizziCore::Api::Cli::V1::Projects::DeploymentsControllerTest < ActionCon
     @account = @admin.organizational_account
     @project = create(:project, :with_members, account: @admin.organizational_account, members: [@admin])
     @deployment = create(:deployment, project: @project, state: UffizziCore::Deployment::STATE_ACTIVE)
+    @metadata = {
+      'labels' => {
+        'github' => {
+          'repository' => 'feature/#24_my_awesome_feature',
+          'pull_request' => {
+            'number' => '24',
+          },
+        },
+      },
+    }
 
     @deployment.update!(subdomain: UffizziCore::DeploymentService.build_subdomain(@deployment))
     @credential = create(:credential, :github, :active, account: @account, provider_ref: generate(:number))
@@ -92,7 +102,7 @@ class UffizziCore::Api::Cli::V1::Projects::DeploymentsControllerTest < ActionCon
     }
     create(:template, :compose_file_source, compose_file: compose_file, project: @project, added_by: @admin, payload: template_payload)
 
-    params = { project_slug: @project.slug, compose_file: {}, dependencies: [] }
+    params = { project_slug: @project.slug, compose_file: {}, dependencies: [], metadata: {} }
 
     differences = {
       -> { UffizziCore::Deployment.active.count } => 1,
@@ -107,6 +117,50 @@ class UffizziCore::Api::Cli::V1::Projects::DeploymentsControllerTest < ActionCon
 
     subdomains = UffizziCore::Deployment.active.map(&:subdomain)
     assert_nil(subdomains.detect { |s| s.include?('_') })
+
+    Sidekiq::Worker.clear_all
+    Sidekiq::Testing.inline!
+  end
+
+  test '#create - from the existing compose file with metadata' do
+    Sidekiq::Worker.clear_all
+    Sidekiq::Testing.fake!
+
+    create(:credential, :docker_hub, account: @admin.organizational_account)
+    file_content = File.read('test/fixtures/files/test-compose-success.yml')
+    encoded_content = Base64.encode64(file_content)
+    compose_file = create(:compose_file, project: @project, added_by: @admin, content: encoded_content)
+    image = generate(:image)
+    image_namespace, image_name = image.split('/')
+    target_branch = generate(:branch)
+    repo_attributes = attributes_for(
+      :repo,
+      :github,
+      namespace: image_namespace,
+      name: image_name,
+      branch: target_branch,
+    )
+    container_attributes = attributes_for(
+      :container,
+      :with_public_port,
+      :with_named_volume,
+      image: image,
+      tag: target_branch,
+      healthcheck: { test: ['CMD', 'curl', '-f', 'https://localhost'] },
+      receive_incoming_requests: true,
+      repo_attributes: repo_attributes,
+    )
+    template_payload = {
+      containers_attributes: [container_attributes],
+    }
+    create(:template, :compose_file_source, compose_file: compose_file, project: @project, added_by: @admin, payload: template_payload)
+
+    params = { project_slug: @project.slug, compose_file: {}, dependencies: [], metadata: @metadata }
+
+    post :create, params: params, format: :json
+
+    assert_response :success
+    assert_equal(@metadata, compose_file.deployments.first.metadata)
 
     Sidekiq::Worker.clear_all
     Sidekiq::Testing.inline!
@@ -140,7 +194,7 @@ class UffizziCore::Api::Cli::V1::Projects::DeploymentsControllerTest < ActionCon
     }
     create(:template, :compose_file_source, compose_file: compose_file, project: @project, added_by: @admin, payload: template_payload)
 
-    params = { project_slug: @project.slug, compose_file: {}, dependencies: [] }
+    params = { project_slug: @project.slug, compose_file: {}, dependencies: [], metadata: {} }
 
     differences = {
       -> { UffizziCore::Deployment.active.count } => 0,
@@ -181,7 +235,7 @@ class UffizziCore::Api::Cli::V1::Projects::DeploymentsControllerTest < ActionCon
     }
     create(:template, :compose_file_source, compose_file: compose_file, project: @project, added_by: @admin, payload: template_payload)
 
-    params = { project_slug: @project.slug, compose_file: {}, dependencies: [] }
+    params = { project_slug: @project.slug, compose_file: {}, dependencies: [], metadata: {} }
 
     differences = {
       -> { UffizziCore::Deployment.active.count } => 0,
@@ -200,6 +254,7 @@ class UffizziCore::Api::Cli::V1::Projects::DeploymentsControllerTest < ActionCon
       project_slug: @project.slug,
       compose_file: {},
       dependencies: [],
+      metadata: {},
     }
 
     differences = {
@@ -228,6 +283,7 @@ class UffizziCore::Api::Cli::V1::Projects::DeploymentsControllerTest < ActionCon
       compose_file: compose_file_attributes,
       dependencies: [],
       id: @deployment[:id],
+      metadata: {},
     }
 
     differences = {
@@ -241,6 +297,29 @@ class UffizziCore::Api::Cli::V1::Projects::DeploymentsControllerTest < ActionCon
     end
 
     assert_response :success
+  end
+
+  test '#update - update deployment with metadata' do
+    file_content = File.read('test/fixtures/files/test-compose-success-without-dependencies.yml')
+    compose_file = create(:compose_file, project: @project, added_by: @admin)
+    create(:template, :compose_file_source, compose_file: compose_file, project: @project, added_by: @admin, payload: @template.payload)
+    @deployment.update!(compose_file: compose_file)
+    encoded_content = Base64.encode64(file_content)
+    compose_file_attributes = attributes_for(:compose_file, :temporary, project: @project, added_by: @admin, content: encoded_content)
+    create(:credential, :docker_hub, account: @admin.organizational_account)
+
+    params = {
+      project_slug: @project.slug,
+      compose_file: compose_file_attributes,
+      dependencies: [],
+      id: @deployment[:id],
+      metadata: @metadata,
+    }
+
+    put :update, params: params, format: :json
+
+    assert_response :success
+    assert_equal(@metadata, @deployment.reload.metadata)
   end
 
   test '#update - update deployment created from temporary compose file' do
@@ -257,6 +336,7 @@ class UffizziCore::Api::Cli::V1::Projects::DeploymentsControllerTest < ActionCon
       compose_file: compose_file_attributes,
       dependencies: [],
       id: @deployment[:id],
+      metadata: {},
     }
 
     differences = {
