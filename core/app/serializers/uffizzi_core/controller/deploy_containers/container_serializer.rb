@@ -24,13 +24,16 @@ class UffizziCore::Controller::DeployContainers::ContainerSerializer < UffizziCo
 
   def image
     repo = object.repo
-    credential = UffizziCore::RepoService.credential(repo)
-
     case repo.type
-    when UffizziCore::Repo::Google.name, UffizziCore::Repo::Amazon.name, UffizziCore::Repo::Azure.name,
-        UffizziCore::Repo::GithubContainerRegistry.name
-      registry_host = URI.parse(credential.registry_url).host
+    when
+      UffizziCore::Repo::Google.name,
+      UffizziCore::Repo::Amazon.name,
+      UffizziCore::Repo::Azure.name,
+      UffizziCore::Repo::GithubContainerRegistry.name,
+      UffizziCore::Repo::DockerRegistry.name
 
+      credential = UffizziCore::RepoService.credential(repo)
+      registry_host = URI.parse(credential.registry_url).host
       "#{registry_host}/#{object.image}"
     else
       object.image

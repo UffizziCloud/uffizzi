@@ -27,6 +27,15 @@ class UffizziCore::ComposeFile::ContainerService
       registry_url.nil? && repository_url.nil?
     end
 
+    def docker_registry?(container)
+      registry_url = container.dig(:image, :registry_url)
+      registry_domain_regexp = /(\w+\.\w{2,})(?::\d+)?\z/
+      registry_domain = registry_url.match(registry_domain_regexp)&.to_a&.last
+      return false if registry_url.nil? || registry_domain.nil?
+
+      ['amazonaws.com', 'azurecr.io', 'gcr.io', 'ghcr.io'].exclude?(registry_domain)
+    end
+
     def github_container_registry?(container)
       registry_url = container.dig(:image, :registry_url)
 

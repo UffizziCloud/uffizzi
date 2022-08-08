@@ -15,7 +15,6 @@ class UffizziCore::Api::Cli::V1::Account::CredentialsController < UffizziCore::A
     render json: { credentials: credentials }, status: :ok
   end
 
-  # rubocop:disable Layout/LineLength
   # Create account credential
   #
   # @path [POST] /api/cli/v1/account/credentials
@@ -25,8 +24,9 @@ class UffizziCore::Api::Cli::V1::Account::CredentialsController < UffizziCore::A
   # @response [object<errors>] 422 Unprocessable entity
   #
   # @example
-  #    type can be one of UffizziCore::Credential::Amazon, UffizziCore::Credential::Azure, UffizziCore::Credential::DockerHub, UffizziCore::Credential::Google, UffizziCore::Credential::GithubContainerRegistry
-  # rubocop:enable Layout/LineLength
+  #    Possible types:
+  #    UffizziCore::Credential::Amazon, UffizziCore::Credential::Azure, UffizziCore::Credential::DockerHub,
+  #    UffizziCore::Credential::DockerRegistry, UffizziCore::Credential::Google, UffizziCore::Credential::GithubContainerRegistry
   def create
     credential_form = UffizziCore::Api::Cli::V1::Account::Credential::CreateForm.new
     credential_form.assign_attributes(credential_params)

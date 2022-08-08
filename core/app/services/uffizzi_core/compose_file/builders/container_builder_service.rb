@@ -107,7 +107,8 @@ class UffizziCore::ComposeFile::Builders::ContainerBuilderService
   def image_name(container_data, image_data)
     if image_data[:registry_url].present? &&
         !UffizziCore::ComposeFile::ContainerService.google?(container_data) &&
-        !UffizziCore::ComposeFile::ContainerService.github_container_registry?(container_data)
+        !UffizziCore::ComposeFile::ContainerService.github_container_registry?(container_data) &&
+        !UffizziCore::ComposeFile::ContainerService.docker_registry?(container_data)
       image_data[:name]
     else
       "#{image_data[:namespace]}/#{image_data[:name]}"
@@ -166,6 +167,8 @@ class UffizziCore::ComposeFile::Builders::ContainerBuilderService
     case repo_type
     when UffizziCore::Repo::DockerHub.name
       build_docker_repo_attributes(image_data, credentials, :docker_hub, UffizziCore::Repo::DockerHub.name)
+    when UffizziCore::Repo::DockerRegistry.name
+      build_docker_repo_attributes(image_data, credentials, :docker_registry, UffizziCore::Repo::DockerRegistry.name)
     when UffizziCore::Repo::Azure.name
       build_docker_repo_attributes(image_data, credentials, :azure, UffizziCore::Repo::Azure.name)
     when UffizziCore::Repo::Google.name
@@ -184,6 +187,8 @@ class UffizziCore::ComposeFile::Builders::ContainerBuilderService
       UffizziCore::Repo::Azure.name
     elsif UffizziCore::ComposeFile::ContainerService.docker_hub?(container_data)
       UffizziCore::Repo::DockerHub.name
+    elsif UffizziCore::ComposeFile::ContainerService.docker_registry?(container_data)
+      UffizziCore::Repo::DockerRegistry.name
     elsif UffizziCore::ComposeFile::ContainerService.google?(container_data)
       UffizziCore::Repo::Google.name
     elsif UffizziCore::ComposeFile::ContainerService.github_container_registry?(container_data)
