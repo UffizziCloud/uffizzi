@@ -37,6 +37,10 @@ module UffizziCore::Concerns::Models::Credential
       type == UffizziCore::Credential::DockerHub.name
     end
 
+    def docker_registry?
+      type == UffizziCore::Credential::DockerRegistry.name
+    end
+
     def azure?
       type == UffizziCore::Credential::Azure.name
     end
