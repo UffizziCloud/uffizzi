@@ -33,7 +33,7 @@ class UffizziCore::ComposeFile::Parsers::Services::ImageParserService
       when 1
         image_path_parts[0]
       when 2
-        uri_pattern = /\A\w[\w.-]+:\d+/
+        uri_pattern = /\A\w[\w.-]+:\d+\//
         tag_pattern = /:\w[\w.-]*\z/
         if uri_pattern.match?(value)
           "#{image_path_parts[0]}:#{image_path_parts[1]}"
