@@ -1,7 +1,7 @@
 PATH
   remote: .
   specs:
-    uffizzi_core (0.4.1)
+    uffizzi_core (0.4.2)
       aasm
       actionpack (~> 6.1.0)
       active_model_serializers
@@ -260,7 +260,7 @@ GEM
       faraday (>= 1, < 3)
       sawyer (~> 0.9)
     parslet (2.0.0)
-    pg (1.4.2)
+    pg (1.4.3)
     power_assert (2.0.1)
     pry (0.13.1)
       coderay (~> 1.1)
