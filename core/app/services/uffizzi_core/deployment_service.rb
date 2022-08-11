@@ -90,30 +90,16 @@ class UffizziCore::DeploymentService
     end
 
     def build_subdomain(deployment)
-      if deployment.continuous_preview_payload.present?
-        continuous_preview_payload = deployment.continuous_preview_payload
-
-        return build_pull_request_subdomain(deployment) if continuous_preview_payload['pull_request'].present?
-        return build_docker_continuous_preview_subdomain(deployment) if continuous_preview_payload['docker'].present?
-      end
-      if deployment.metadata.dig(:labels, :github).present?
-        return build_pull_request_subdomain(deployment)
-      end
+      return build_docker_continuous_preview_subdomain(deployment) if deployment.dig(:continuous_preview_payload, :docker).present?
+      return build_pull_request_subdomain(deployment) if deployment.metadata.dig(:labels, :github).present?
 
       build_default_subdomain(deployment)
     end
 
     def build_pull_request_subdomain(deployment)
       github_payload = deployment.metadata.dig(:labels, :github)
-      if github_payload.present?
-        repo_name = github_payload[:repository].split('/').last
-        pull_request_number = github_payload[:pull_request][:number]
-      else
-        pull_request_payload = deployment.continuous_preview_payload['pull_request']
-        repo_name = pull_request_payload['repository_full_name'].split('/').last
-        pull_request_number = pull_request_payload['id']
-      end
-
+      repo_name = github_payload[:repository].split('/').last
+      pull_request_number = github_payload[:pull_request][:number]
       subdomain = "pr#{pull_request_number}-#{name(deployment)}-#{repo_name}-#{deployment.project.slug}"
       format_subdomain(subdomain)
     end
