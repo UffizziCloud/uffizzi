@@ -12,7 +12,7 @@ class UffizziCore::DeploymentService
   }.freeze
 
   class << self
-    def create_from_compose(compose_file, project, user, metadata)
+    def create_from_compose(compose_file, project, user, metadata = {})
       deployment_attributes = ActionController::Parameters.new(compose_file.template.payload)
       deployment_form = UffizziCore::Api::Cli::V1::Deployment::CreateForm.new(deployment_attributes)
       deployment_form.assign_dependences!(project, user)
@@ -22,8 +22,7 @@ class UffizziCore::DeploymentService
 
       if deployment_form.save
         update_subdomain!(deployment_form)
-
-        UffizziCore::Deployment::CreateJob.perform_async(deployment_form.id)
+        run_deployment_post_save_jobs(deployment_form.id)
       end
 
       deployment_form
@@ -228,6 +227,11 @@ class UffizziCore::DeploymentService
     end
 
     private
+
+    def run_deployment_post_save_jobs(deployment_id)
+      UffizziCore::Deployment::CreateJob.perform_async(deployment_id)
+      UffizziCore::Deployment::CreateWebhooksJob.perform_async(deployment_id)
+    end
 
     def deployment_process_status(deployment)
       containers = deployment.active_containers
