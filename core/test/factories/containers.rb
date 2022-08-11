@@ -5,8 +5,8 @@ FactoryBot.define do
     image
     tag
     service_name
-    variables { nil }
-    secret_variables { nil }
+    variables { [] }
+    secret_variables { [] }
     deployment
     repo { nil }
     receive_incoming_requests { false }
