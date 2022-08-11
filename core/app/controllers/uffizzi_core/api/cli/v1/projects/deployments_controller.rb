@@ -82,7 +82,7 @@ class UffizziCore::Api::Cli::V1::Projects::DeploymentsController < UffizziCore::
     errors = check_credentials(compose_file)
     return render_errors(errors) if errors.present?
 
-    deployment = UffizziCore::Deployment.find(params[:id])
+    deployment = deployments.find(params[:id])
     updated_deployment = UffizziCore::DeploymentService.update_from_compose(compose_file, resource_project, current_user, deployment,
                                                                             metadata_params)
 
