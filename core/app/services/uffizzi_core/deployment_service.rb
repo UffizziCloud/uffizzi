@@ -90,7 +90,7 @@ class UffizziCore::DeploymentService
     end
 
     def build_subdomain(deployment)
-      return build_docker_continuous_preview_subdomain(deployment) if deployment.dig(:continuous_preview_payload, :docker).present?
+      return build_docker_continuous_preview_subdomain(deployment) if deployment&.continuous_preview_payload&.fetch(:docker, nil).present?
       return build_pull_request_subdomain(deployment) if deployment.metadata.dig(:labels, :github).present?
 
       build_default_subdomain(deployment)
