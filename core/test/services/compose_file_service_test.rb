@@ -415,7 +415,7 @@ class UffizziCore::ComposeFileServiceTest < ActiveSupport::TestCase
       UffizziCore::ComposeFileService.parse(content)
     end
 
-    assert_match('The specified value for retries should be an Integer type', e.message)
+    assert_match('Invalid retries value', e.message)
   end
 
   test '#parse - raises error if healthcheck has invalid interval' do
