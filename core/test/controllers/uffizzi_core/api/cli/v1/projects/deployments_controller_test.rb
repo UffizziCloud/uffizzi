@@ -27,7 +27,7 @@ class UffizziCore::Api::Cli::V1::Projects::DeploymentsControllerTest < ActionCon
     target_branch = generate(:branch)
     repo_attributes = attributes_for(
       :repo,
-      :github,
+      :docker_hub,
       namespace: image_namespace,
       name: image_name,
       branch: target_branch,
@@ -105,7 +105,7 @@ class UffizziCore::Api::Cli::V1::Projects::DeploymentsControllerTest < ActionCon
     target_branch = generate(:branch)
     repo_attributes = attributes_for(
       :repo,
-      :github,
+      :docker_hub,
       namespace: image_namespace,
       name: image_name,
       branch: target_branch,
@@ -129,7 +129,7 @@ class UffizziCore::Api::Cli::V1::Projects::DeploymentsControllerTest < ActionCon
 
     differences = {
       -> { UffizziCore::Deployment.active.count } => 1,
-      -> { UffizziCore::Repo::Github.count } => 1,
+      -> { UffizziCore::Repo::DockerHub.count } => 1,
     }
 
     assert_difference differences do
@@ -158,7 +158,7 @@ class UffizziCore::Api::Cli::V1::Projects::DeploymentsControllerTest < ActionCon
     target_branch = generate(:branch)
     repo_attributes = attributes_for(
       :repo,
-      :github,
+      :docker_hub,
       namespace: image_namespace,
       name: image_name,
       branch: target_branch,
@@ -199,7 +199,7 @@ class UffizziCore::Api::Cli::V1::Projects::DeploymentsControllerTest < ActionCon
     target_branch = generate(:branch)
     repo_attributes = attributes_for(
       :repo,
-      :github,
+      :docker_hub,
       namespace: image_namespace,
       name: image_name,
       branch: target_branch,
@@ -221,7 +221,7 @@ class UffizziCore::Api::Cli::V1::Projects::DeploymentsControllerTest < ActionCon
 
     differences = {
       -> { UffizziCore::Deployment.active.count } => 0,
-      -> { UffizziCore::Repo::Github.count } => 0,
+      -> { UffizziCore::Repo::DockerHub.count } => 0,
     }
 
     assert_difference differences do
@@ -240,7 +240,7 @@ class UffizziCore::Api::Cli::V1::Projects::DeploymentsControllerTest < ActionCon
     target_branch = generate(:branch)
     repo_attributes = attributes_for(
       :repo,
-      :github,
+      :docker_hub,
       namespace: image_namespace,
       name: image_name,
       branch: target_branch,
@@ -262,7 +262,7 @@ class UffizziCore::Api::Cli::V1::Projects::DeploymentsControllerTest < ActionCon
 
     differences = {
       -> { UffizziCore::Deployment.active.count } => 0,
-      -> { UffizziCore::Repo::Github.count } => 0,
+      -> { UffizziCore::Repo::DockerHub.count } => 0,
     }
 
     assert_difference differences do

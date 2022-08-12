@@ -13,7 +13,7 @@ class UffizziCore::Api::Cli::V1::Projects::ComposeFilesControllerTest < ActionCo
     target_branch = generate(:branch)
     repo_attributes = attributes_for(
       :repo,
-      :github,
+      :docker_hub,
       namespace: image_namespace,
       name: image_name,
       branch: target_branch,
