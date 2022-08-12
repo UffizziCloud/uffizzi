@@ -100,7 +100,7 @@ class UffizziCore::DeploymentService
       github_payload = deployment.metadata.dig(:labels, :github)
       repo_name = github_payload[:repository].split('/').last
       pull_request_number = github_payload[:pull_request][:number]
-      subdomain = "pr#{pull_request_number}-#{name(deployment)}-#{repo_name}-#{deployment.project.slug}"
+      subdomain = "pr-#{pull_request_number}-#{name(deployment)}-#{repo_name}-#{deployment.project.slug}"
       format_subdomain(subdomain)
     end
 
