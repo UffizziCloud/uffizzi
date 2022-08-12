@@ -60,7 +60,7 @@ class UffizziCore::DeploymentServiceTest < ActiveSupport::TestCase
     target_branch = generate(:branch)
     repo_attributes = attributes_for(
       :repo,
-      :github,
+      :docker_hub,
       namespace: image_namespace,
       name: image_name,
       branch: target_branch,
@@ -103,7 +103,7 @@ class UffizziCore::DeploymentServiceTest < ActiveSupport::TestCase
     target_branch = generate(:branch)
     repo_attributes = attributes_for(
       :repo,
-      :github,
+      :docker_hub,
       namespace: image_namespace,
       name: image_name,
       branch: target_branch,
