@@ -69,8 +69,8 @@ class UffizziCore::Api::Cli::V1::Projects::DeploymentsControllerTest < ActionCon
       'labels' => {
         'github' => {
           'repository' => 'feature/#24_my_awesome_feature',
-        }
-      }
+        },
+      },
     }
 
     params = { project_slug: @project.slug, q: filter.to_json }
