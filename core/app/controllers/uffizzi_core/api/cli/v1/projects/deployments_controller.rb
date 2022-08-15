@@ -14,7 +14,10 @@ class UffizziCore::Api::Cli::V1::Projects::DeploymentsController < UffizziCore::
   # @response [Array<Deployment>] 200 OK
   # @response 401 Not authorized
   def index
-    respond_with deployments
+    search_labels = JSON.parse(q_param)
+    filtered_deployments = deployments.with_labels(search_labels)
+
+    respond_with filtered_deployments
   end
 
   # Get deployment information by id

@@ -18,7 +18,7 @@ class UffizziCore::DeploymentService
       deployment_form.assign_dependences!(project, user)
       deployment_form.compose_file = compose_file
       deployment_form.creation_source = UffizziCore::Deployment.creation_source.compose_file_manual
-      deployment_form.metadata = metadata
+      deployment_form.metadata = metadata || {}
 
       if deployment_form.save
         update_subdomain!(deployment_form)
@@ -35,7 +35,7 @@ class UffizziCore::DeploymentService
       deployment_form = UffizziCore::Api::Cli::V1::Deployment::UpdateForm.new(deployment_attributes)
       deployment_form.assign_dependences!(project, user)
       deployment_form.compose_file = compose_file
-      deployment_form.metadata = metadata
+      deployment_form.metadata = metadata || {}
 
       ActiveRecord::Base.transaction do
         deployment.containers.destroy_all

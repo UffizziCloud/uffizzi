@@ -12,5 +12,9 @@ module UffizziCore::DeploymentRepo
     scope :active_for_credential_id, ->(credential_id) {
       active.joins(project: :credentials).merge(UffizziCore::Project.active).where(credentials: { id: credential_id })
     }
+
+    scope :with_labels, ->(labels) {
+      where('uffizzi_core_deployments.metadata @> ?', labels.to_json)
+    }
   end
 end
