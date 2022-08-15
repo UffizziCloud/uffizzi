@@ -51,9 +51,9 @@ class UffizziCore::ComposeFile::Parsers::ServicesParserService
                                     when :'x-uffizzi-continuous-preview', :'x-uffizzi-continuous-previews'
                                       UffizziCore::ComposeFile::Parsers::ContinuousPreviewParserService.parse(value)
                                     when :volumes
-                                      UffizziCore::ComposeFile::Parsers::Services::VolumesService.parse(value,
-                                                                                                        global_named_volume_names,
-                                                                                                        service_name)
+                                      parse_volumes(value, named_volumes_names: global_named_volume_names,
+                                                           service_name: service_name,
+                                                           compose_payload: compose_payload)
         end
       end
 
@@ -63,9 +63,19 @@ class UffizziCore::ComposeFile::Parsers::ServicesParserService
     end
 
     def check_and_parse_build_option(value, compose_payload)
+      build_parser_module = find_build_parser_module
+
       raise UffizziCore::ComposeFile::ParseError, I18n.t('compose.not_implemented', option: :build) unless build_parser_module
 
       build_parser_module.parse(value, compose_payload)
+    end
+
+    def parse_volumes(value, volumes_payload)
+      volume_parser_module = find_volume_parser_module
+
+      return UffizziCore::ComposeFile::Parsers::Services::VolumesParserService.parse(value, volumes_payload) unless volume_parser_module
+
+      volume_parser_module.parse(value, volumes_payload)
     end
   end
 end
