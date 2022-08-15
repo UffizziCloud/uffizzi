@@ -54,11 +54,34 @@ class UffizziCore::Api::Cli::V1::Projects::DeploymentsControllerTest < ActionCon
     create(:deployment, project: @project, state: UffizziCore::Deployment::STATE_ACTIVE,
                         creation_source: UffizziCore::Deployment.creation_source.continuous_preview)
 
-    params = { project_slug: @project.slug }
+    params = { project_slug: @project.slug, q: {}.to_json }
 
     get :index, params: params, format: :json
 
     assert_response :success
+  end
+
+  test '#index - with query params' do
+    create(:deployment, project: @project, state: UffizziCore::Deployment::STATE_ACTIVE,
+                        creation_source: UffizziCore::Deployment.creation_source.continuous_preview, metadata: @metadata)
+
+    filter = {
+      'labels' => {
+        'github' => {
+          'repository' => 'feature/#24_my_awesome_feature',
+        }
+      }
+    }
+
+    params = { project_slug: @project.slug, q: filter.to_json }
+
+    get :index, params: params, format: :json
+
+    deployments = JSON.parse(response.body, symbolize_names: true)[:deployments]
+
+    assert_response :success
+    assert_equal(2, UffizziCore::Deployment.count)
+    assert_equal(1, deployments.count)
   end
 
   test '#show' do

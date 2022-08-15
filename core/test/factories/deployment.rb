@@ -8,6 +8,7 @@ FactoryBot.define do
     memory_limit { 1 }
     continuous_preview_payload { nil }
     creation_source { nil }
+    metadata { {} }
 
     trait :active do
       state { :active }
