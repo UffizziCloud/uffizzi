@@ -11,8 +11,4 @@ class UffizziCore::Api::Cli::V1::Projects::DeploymentsSerializer < UffizziCore::
              :metadata
 
   belongs_to :deployed_by
-
-  def deployed_by
-    object.deployed_by
-  end
 end
