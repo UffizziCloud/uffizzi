@@ -53,7 +53,7 @@ class UffizziCore::Controller::DeployContainers::ContainerSerializer < UffizziCo
   end
 
   def healthcheck
-    return {} if object.healthcheck.nil?
+    return {} if object.healthcheck.blank?
 
     command = object.healthcheck['test']
     new_command = if command.is_a?(Array)
@@ -63,6 +63,6 @@ class UffizziCore::Controller::DeployContainers::ContainerSerializer < UffizziCo
       command.split
     end
 
-    object.healthcheck.merge(test: new_command)
+    object.healthcheck.merge('test' => new_command)
   end
 end
