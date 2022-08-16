@@ -17,7 +17,7 @@ class UffizziCore::Api::Cli::V1::Projects::DeploymentsController < UffizziCore::
     search_labels = JSON.parse(q_param)
     filtered_deployments = deployments.with_labels(search_labels)
 
-    respond_with filtered_deployments
+    respond_with filtered_deployments, each_serializer: UffizziCore::Api::Cli::V1::Projects::DeploymentsSerializer
   end
 
   # Get deployment information by id
