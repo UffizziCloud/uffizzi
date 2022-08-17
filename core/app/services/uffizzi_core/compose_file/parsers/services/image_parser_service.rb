@@ -5,9 +5,8 @@ class UffizziCore::ComposeFile::Parsers::Services::ImageParserService
     def parse(value)
       return {} if value.blank?
 
-      parse_error = UffizziCore::ComposeFile::ParseError, I18n.t('compose.invalid_image_value', value: value)
-      image_path, tag = get_image_path_and_tag(value, parse_error)
-      raise parse_error if image_path.blank?
+      image_path, tag = get_image_path_and_tag(value)
+      raise_parse_error(value) if image_path.blank?
 
       tag = Settings.compose.default_tag if tag.blank?
 
@@ -27,7 +26,11 @@ class UffizziCore::ComposeFile::Parsers::Services::ImageParserService
 
     private
 
-    def get_image_path_and_tag(value, parse_error)
+    def raise_parse_error(value)
+      raise UffizziCore::ComposeFile::ParseError, I18n.t('compose.invalid_image_value', value: value)
+    end
+
+    def get_image_path_and_tag(value)
       image_path_parts = value.downcase.split(':')
       case image_path_parts.size
       when 1
@@ -40,18 +43,18 @@ class UffizziCore::ComposeFile::Parsers::Services::ImageParserService
         elsif tag_pattern.match?(value)
           [image_path_parts[0], image_path_parts[1]]
         else
-          raise parse_error
+          raise_parse_error(value)
         end
       when 3
         ["#{image_path_parts[0]}:#{image_path_parts[1]}", image_path_parts[2]]
       else
-        raise parse_error
+        raise_parse_error(value)
       end
     end
 
     def url?(image_path)
       uri = URI(add_https_if_needed(image_path))
-      uri.host.present? && uri.host =~ /\w+\.(\w+\.)*\w+/ && uri.path.present?
+      uri.host.present? && uri.host =~ /(localhost(:\d+)?|\w+\.(\w+\.)*\w+)/ && uri.path.present?
     rescue URI::InvalidURIError
       false
     end
