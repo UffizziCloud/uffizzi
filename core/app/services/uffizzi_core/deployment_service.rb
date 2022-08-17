@@ -12,7 +12,7 @@ class UffizziCore::DeploymentService
   }.freeze
 
   class << self
-    def create_from_compose(compose_file, project, user, metadata = {})
+    def create_from_compose(compose_file, project, user, metadata)
       deployment_attributes = ActionController::Parameters.new(compose_file.template.payload)
       deployment_form = UffizziCore::Api::Cli::V1::Deployment::CreateForm.new(deployment_attributes)
       deployment_form.assign_dependences!(project, user)
@@ -29,7 +29,7 @@ class UffizziCore::DeploymentService
       deployment_form
     end
 
-    def update_from_compose(compose_file, project, user, deployment, metadata = {})
+    def update_from_compose(compose_file, project, user, deployment, metadata)
       deployment_attributes = ActionController::Parameters.new(compose_file.template.payload)
 
       deployment_form = UffizziCore::Api::Cli::V1::Deployment::UpdateForm.new(deployment_attributes)
