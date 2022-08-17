@@ -14,7 +14,7 @@ module UffizziCore::DeploymentRepo
     }
 
     scope :with_labels, ->(labels) {
-      where('uffizzi_core_deployments.metadata @> ?', labels.to_json)
+      where("#{UffizziCore::Deployment.table_name}.metadata @> ?", labels.to_json)
     }
   end
 end
