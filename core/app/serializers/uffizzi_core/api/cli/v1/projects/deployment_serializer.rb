@@ -23,10 +23,6 @@ class UffizziCore::Api::Cli::V1::Projects::DeploymentSerializer < UffizziCore::B
 
   belongs_to :deployed_by
 
-  def deployed_by
-    object.deployed_by
-  end
-
   def containers
     object.containers.active
   end
