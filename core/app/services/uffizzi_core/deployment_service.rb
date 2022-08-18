@@ -12,7 +12,7 @@ class UffizziCore::DeploymentService
   }.freeze
 
   class << self
-    def create_from_compose(compose_file, project, user, metadata = {})
+    def create_from_compose(compose_file, project, user, metadata)
       deployment_attributes = ActionController::Parameters.new(compose_file.template.payload)
       deployment_form = UffizziCore::Api::Cli::V1::Deployment::CreateForm.new(deployment_attributes)
       deployment_form.assign_dependences!(project, user)
@@ -20,10 +20,7 @@ class UffizziCore::DeploymentService
       deployment_form.creation_source = UffizziCore::Deployment.creation_source.compose_file_manual
       deployment_form.metadata = metadata || {}
 
-      if deployment_form.save
-        update_subdomain!(deployment_form)
-        run_deployment_post_save_jobs(deployment_form.id)
-      end
+      run_deployment_creation_tasks(deployment_form) if deployment_form.save
 
       deployment_form
     end
@@ -90,18 +87,23 @@ class UffizziCore::DeploymentService
     end
 
     def build_subdomain(deployment)
-      return build_docker_continuous_preview_subdomain(deployment) if deployment&.continuous_preview_payload&.fetch(:docker, nil).present?
-      return build_pull_request_subdomain(deployment) if deployment.metadata.dig(:labels, :github).present?
+      return build_docker_continuous_preview_subdomain(deployment) if deployment&.continuous_preview_payload&.fetch('docker', nil).present?
+      return build_pull_request_subdomain(deployment) if deployment.metadata.dig('labels', 'github').present?
 
       build_default_subdomain(deployment)
     end
 
     def build_pull_request_subdomain(deployment)
-      github_payload = deployment.metadata.dig(:labels, :github)
-      repo_name = github_payload[:repository].split('/').last
-      pull_request_number = github_payload[:pull_request][:number]
+      github_payload = deployment.metadata.dig('labels', 'github')
+      repo_name = github_payload['repository'].split('/').last
+      pull_request_number = github_payload['pull_request']['number']
       subdomain = "pr-#{pull_request_number}-#{name(deployment)}-#{repo_name}-#{deployment.project.slug}"
       format_subdomain(subdomain)
+    end
+
+    def update_subdomain!(deployment)
+      deployment.subdomain = build_subdomain(deployment)
+      deployment.save!
     end
 
     def build_docker_continuous_preview_subdomain(deployment)
@@ -196,12 +198,6 @@ class UffizziCore::DeploymentService
       "deployment-#{deployment.id}"
     end
 
-    def update_subdomain!(deployment)
-      deployment.subdomain = build_subdomain(deployment)
-
-      deployment.save!
-    end
-
     def pull_request_payload_present?(deployment)
       deployment.continuous_preview_payload.present? && deployment.continuous_preview_payload['pull_request'].present?
     end
@@ -214,9 +210,10 @@ class UffizziCore::DeploymentService
 
     private
 
-    def run_deployment_post_save_jobs(deployment_id)
-      UffizziCore::Deployment::CreateJob.perform_async(deployment_id)
-      UffizziCore::Deployment::CreateWebhooksJob.perform_async(deployment_id)
+    def run_deployment_creation_tasks(deployment)
+      update_subdomain!(deployment)
+
+      UffizziCore::Deployment::CreateJob.perform_async(deployment.id)
     end
 
     def deployment_process_status(deployment)
