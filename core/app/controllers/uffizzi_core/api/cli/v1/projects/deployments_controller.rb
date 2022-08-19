@@ -97,7 +97,9 @@ class UffizziCore::Api::Cli::V1::Projects::DeploymentsController < UffizziCore::
   # @response [object<errors: object<title: string>>] 404 Not found
   # @response 401 Not authorized
   def deploy_containers
-    deployment = resource_project.deployments.active.find(params[:id])
+    deployment = resource_project.deployments.find(params[:id])
+
+    return render_invalid_deployment_status(deployment.state) if deployment.state != "active"
 
     deployment.update(deployed_by: current_user)
 
@@ -173,5 +175,9 @@ class UffizziCore::Api::Cli::V1::Projects::DeploymentsController < UffizziCore::
 
   def render_invalid_file
     render json: { errors: { state: ['Invalid compose file'] } }, status: :unprocessable_entity
+  end
+
+  def render_invalid_deployment_status(state)
+    render json: { errors: { title: ["Deployment #{state}"] } }, status: :not_found
   end
 end
