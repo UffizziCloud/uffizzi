@@ -99,7 +99,7 @@ class UffizziCore::Api::Cli::V1::Projects::DeploymentsController < UffizziCore::
   def deploy_containers
     deployment = resource_project.deployments.find(params[:id])
 
-    return render_invalid_deployment_status(deployment.state) if deployment.state != "active"
+    return render_invalid_deployment_status(deployment.state) if deployment.state != 'active'
 
     deployment.update(deployed_by: current_user)
 
