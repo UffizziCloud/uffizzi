@@ -1,8 +1,8 @@
 # frozen_string_literal: true
 
 # @resource Account/Credential
-class UffizziCore::Api::Cli::V1::Account::CredentialsController < UffizziCore::Api::Cli::V1::Account::ApplicationController
-  before_action :authorize_uffizzi_core_api_cli_v1_account_credentials
+class UffizziCore::Api::Cli::V1::Accounts::CredentialsController < UffizziCore::Api::Cli::V1::Accounts::ApplicationController
+  before_action :authorize_uffizzi_core_api_cli_v1_accounts_credentials
 
   # Get a list of accounts credential
   #
