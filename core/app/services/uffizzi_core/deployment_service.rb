@@ -12,12 +12,13 @@ class UffizziCore::DeploymentService
   }.freeze
 
   class << self
-    def create_from_compose(compose_file, project, user)
+    def create_from_compose(compose_file, project, user, metadata)
       deployment_attributes = ActionController::Parameters.new(compose_file.template.payload)
       deployment_form = UffizziCore::Api::Cli::V1::Deployment::CreateForm.new(deployment_attributes)
       deployment_form.assign_dependences!(project, user)
       deployment_form.compose_file = compose_file
       deployment_form.creation_source = UffizziCore::Deployment.creation_source.compose_file_manual
+      deployment_form.metadata = metadata || {}
 
       if deployment_form.save
         update_subdomain!(deployment_form)
@@ -28,22 +29,24 @@ class UffizziCore::DeploymentService
       deployment_form
     end
 
-    def update_from_compose(compose_file, project, user, deployment)
+    def update_from_compose(compose_file, project, user, deployment, metadata)
       deployment_attributes = ActionController::Parameters.new(compose_file.template.payload)
 
       deployment_form = UffizziCore::Api::Cli::V1::Deployment::UpdateForm.new(deployment_attributes)
       deployment_form.assign_dependences!(project, user)
       deployment_form.compose_file = compose_file
+      deployment_form.metadata = metadata || {}
 
       ActiveRecord::Base.transaction do
         deployment.containers.destroy_all
         deployment.compose_file.destroy! if deployment.compose_file&.kind&.temporary?
-
-        deployment.update!(
+        params = {
           containers: deployment_form.containers,
           compose_file_id: compose_file.id,
           creation_source: UffizziCore::Deployment.creation_source.compose_file_manual,
-        )
+          metadata: deployment_form.metadata,
+        }
+        deployment.update!(params)
       end
 
       deployment

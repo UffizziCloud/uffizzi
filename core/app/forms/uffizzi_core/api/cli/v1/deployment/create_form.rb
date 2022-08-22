@@ -4,6 +4,7 @@ class UffizziCore::Api::Cli::V1::Deployment::CreateForm < UffizziCore::Deploymen
   include UffizziCore::ApplicationForm
 
   permit :creation_source,
+         :metadata,
          containers_attributes: [
            :image,
            :service_name,
