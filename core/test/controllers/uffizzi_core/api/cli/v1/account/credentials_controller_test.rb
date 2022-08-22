@@ -2,7 +2,7 @@
 
 require 'test_helper'
 
-class UffizziCore::Api::Cli::V1::Account::CredentialsControllerTest < ActionController::TestCase
+class UffizziCore::Api::Cli::V1::Accounts::CredentialsControllerTest < ActionController::TestCase
   setup do
     @user = create(:user, :with_organizational_account)
     @account = @user.organizational_account
@@ -19,7 +19,7 @@ class UffizziCore::Api::Cli::V1::Account::CredentialsControllerTest < ActionCont
     Sidekiq::Testing.inline!
   end
 
-  test '#index returns a list of credetials' do
+  test '#index returns a list of credentials' do
     create(:credential, :docker_hub, account: @account)
     create(:credential, :amazon, account: @account)
 
@@ -149,7 +149,7 @@ class UffizziCore::Api::Cli::V1::Account::CredentialsControllerTest < ActionCont
     create(:credential, :docker_hub, account: @account)
     credential_attributes = attributes_for(:credential, :docker_hub, account: @account)
 
-    params = { credential: credential_attributes, type: credential_attributes[:type] }
+    params = { account_id: @account.id, credential: credential_attributes, type: credential_attributes[:type] }
 
     put :update, params: params, format: :json
     assert_response :success
@@ -179,7 +179,7 @@ class UffizziCore::Api::Cli::V1::Account::CredentialsControllerTest < ActionCont
     stub_controller
 
     attributes = attributes_for(:credential, :docker_hub, account: @account)
-    params = { type: attributes[:type] }
+    params = { account_id: @account.id, type: attributes[:type] }
 
     post :check_credential, params: params, format: :json
 
@@ -192,7 +192,7 @@ class UffizziCore::Api::Cli::V1::Account::CredentialsControllerTest < ActionCont
 
     credential = create(:credential, :docker_hub, account: @account)
 
-    params = { type: credential.type }
+    params = { account_id: @account.id, type: credential.type }
 
     post :check_credential, params: params, format: :json
 
@@ -202,7 +202,7 @@ class UffizziCore::Api::Cli::V1::Account::CredentialsControllerTest < ActionCont
   test '#destroy docker hub credential' do
     credential = create(:credential, :docker_hub, account: @account)
 
-    params = { type: credential.type }
+    params = { account_id: @account.id, type: credential.type }
 
     differences = {
       -> { UffizziCore::Credential.count } => -1,
@@ -218,7 +218,7 @@ class UffizziCore::Api::Cli::V1::Account::CredentialsControllerTest < ActionCont
   test '#destroy azure credential' do
     credential = create(:credential, :azure, account: @account)
 
-    params = { type: credential.type }
+    params = { account_id: @account.id, type: credential.type }
 
     differences = {
       -> { UffizziCore::Credential.count } => -1,
@@ -234,7 +234,7 @@ class UffizziCore::Api::Cli::V1::Account::CredentialsControllerTest < ActionCont
   test '#destroy google credential' do
     credential = create(:credential, :google, account: @account)
 
-    params = { type: credential.type }
+    params = { account_id: @account.id, type: credential.type }
 
     differences = {
       -> { UffizziCore::Credential.count } => -1,
@@ -250,7 +250,7 @@ class UffizziCore::Api::Cli::V1::Account::CredentialsControllerTest < ActionCont
   test '#destroy amazon credential' do
     credential = create(:credential, :amazon, account: @account)
 
-    params = { type: credential.type }
+    params = { account_id: @account.id, type: credential.type }
 
     differences = {
       -> { UffizziCore::Credential.count } => -1,
@@ -266,7 +266,7 @@ class UffizziCore::Api::Cli::V1::Account::CredentialsControllerTest < ActionCont
   test '#destroy github_container_registry credential' do
     credential = create(:credential, :github_container_registry, account: @account)
 
-    params = { type: credential.type }
+    params = { account_id: @account.id, type: credential.type }
 
     differences = {
       -> { UffizziCore::Credential.count } => -1,
@@ -280,7 +280,7 @@ class UffizziCore::Api::Cli::V1::Account::CredentialsControllerTest < ActionCont
   end
 
   test '#destroy unexisted credential' do
-    params = { type: UffizziCore::Credential::DockerHub.name }
+    params = { account_id: @account.id, type: UffizziCore::Credential::DockerHub.name }
 
     differences = {
       -> { UffizziCore::Credential.count } => 0,
