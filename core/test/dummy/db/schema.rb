@@ -199,7 +199,7 @@ ActiveRecord::Schema.define(version: 2022_08_05_164628) do
     t.bigint "compose_file_id"
     t.bigint "template_id"
     t.datetime "disabled_at"
-    t.jsonb "metadata", default: {}
+    t.jsonb "metadata"
     t.index ["compose_file_id"], name: "index_deployments_on_compose_file_id"
     t.index ["project_id"], name: "index_deployments_on_project_id"
     t.index ["template_id"], name: "index_deployments_on_template_id"
