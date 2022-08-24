@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 class UffizziCore::ApplicationController < ActionController::Base
-  include Pundit::Authorization
+  include Pundit
   include UffizziCore::ResponseService
   include UffizziCore::AuthManagement
   include UffizziCore::AuthorizationConcern
