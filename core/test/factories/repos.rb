@@ -20,10 +20,6 @@ FactoryBot.define do
       type { UffizziCore::Repo::DockerHub.name }
     end
 
-    trait :github do
-      type { UffizziCore::Repo::Github.name }
-    end
-
     trait :azure do
       type { UffizziCore::Repo::Azure.name }
     end

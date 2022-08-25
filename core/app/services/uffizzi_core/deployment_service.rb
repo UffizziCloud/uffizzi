@@ -20,11 +20,7 @@ class UffizziCore::DeploymentService
       deployment_form.creation_source = UffizziCore::Deployment.creation_source.compose_file_manual
       deployment_form.metadata = metadata || {}
 
-      if deployment_form.save
-        update_subdomain!(deployment_form)
-
-        UffizziCore::Deployment::CreateJob.perform_async(deployment_form.id)
-      end
+      run_deployment_creation_tasks(deployment_form) if deployment_form.save
 
       deployment_form
     end
@@ -91,25 +87,26 @@ class UffizziCore::DeploymentService
     end
 
     def build_subdomain(deployment)
-      if deployment.continuous_preview_payload.present?
-        continuous_preview_payload = deployment.continuous_preview_payload
+      return build_docker_continuous_preview_subdomain(deployment) if deployment&.continuous_preview_payload&.fetch('docker', nil).present?
 
-        return build_pull_request_subdomain(deployment) if continuous_preview_payload['pull_request'].present?
-        return build_docker_continuous_preview_subdomain(deployment) if continuous_preview_payload['docker'].present?
-      end
+      github_metadata = deployment.metadata.dig('labels', 'github')
+      return build_pull_request_subdomain(deployment) if
+        github_metadata&.dig('pull_request', 'number').present? && github_metadata&.dig('repository').present?
 
       build_default_subdomain(deployment)
     end
 
     def build_pull_request_subdomain(deployment)
-      project = deployment.project
-      continuous_preview_payload = deployment.continuous_preview_payload
-      pull_request_payload = continuous_preview_payload['pull_request']
-      repo_name = pull_request_payload['repository_full_name'].split('/').last
-      deployment_name = name(deployment)
-      subdomain = "pr#{pull_request_payload['id']}-#{deployment_name}-#{repo_name}-#{project.slug}"
-
+      github_payload = deployment.metadata.dig('labels', 'github')
+      repo_name = github_payload['repository'].split('/').last
+      pull_request_number = github_payload['pull_request']['number']
+      subdomain = "pr-#{pull_request_number}-#{name(deployment)}-#{repo_name}-#{deployment.project.slug}"
       format_subdomain(subdomain)
+    end
+
+    def update_subdomain!(deployment)
+      deployment.subdomain = build_subdomain(deployment)
+      deployment.save!
     end
 
     def build_docker_continuous_preview_subdomain(deployment)
@@ -204,12 +201,6 @@ class UffizziCore::DeploymentService
       "deployment-#{deployment.id}"
     end
 
-    def update_subdomain!(deployment)
-      deployment.subdomain = build_subdomain(deployment)
-
-      deployment.save!
-    end
-
     def pull_request_payload_present?(deployment)
       deployment.continuous_preview_payload.present? && deployment.continuous_preview_payload['pull_request'].present?
     end
@@ -221,6 +212,12 @@ class UffizziCore::DeploymentService
     end
 
     private
+
+    def run_deployment_creation_tasks(deployment)
+      update_subdomain!(deployment)
+
+      UffizziCore::Deployment::CreateJob.perform_async(deployment.id)
+    end
 
     def deployment_process_status(deployment)
       containers = deployment.active_containers

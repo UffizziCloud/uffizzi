@@ -41,12 +41,7 @@ class UffizziCore::Controller::DeployContainers::ContainerSerializer < UffizziCo
   end
 
   def tag
-    case object.repo.type
-    when UffizziCore::Repo::Github.name
-      UffizziCore::RepoService.tag(object.repo)
-    else
-      object.tag
-    end
+    object.tag
   end
 
   def entrypoint
