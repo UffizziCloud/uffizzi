@@ -8,7 +8,7 @@ module UffizziCore::Concerns::Models::UserProject
 
     self.table_name = UffizziCore.table_names[:user_projects]
 
-    enumerize :role, in: UffizziCore.user_project_roles, predicates: true
+    enumerize :role, in: UffizziCore.user_project_roles, predicates: true, scope: true
     validates :role, presence: true
 
     belongs_to :user
