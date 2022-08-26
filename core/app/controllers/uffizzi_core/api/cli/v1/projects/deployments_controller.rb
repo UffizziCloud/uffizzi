@@ -97,11 +97,7 @@ class UffizziCore::Api::Cli::V1::Projects::DeploymentsController < UffizziCore::
   # @response [object<errors: object<title: string>>] 404 Not found
   # @response 401 Not authorized
   def deploy_containers
-    deployment = resource_project.deployments.existed.find(params[:id])
-
-    unless deployment.active?
-      render json: { errors: { title: ["Deployment #{deployment.state}"] } }, status: :unprocessable_entity
-    end
+    deployment = resource_project.deployments.active.find(params[:id])
 
     deployment.update(deployed_by: current_user)
 

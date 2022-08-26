@@ -4,6 +4,8 @@ class UffizziCore::Api::Cli::V1::Projects::Deployments::ActivityItemsController 
   UffizziCore::Api::Cli::V1::Projects::Deployments::ApplicationController
   before_action :authorize_uffizzi_core_api_cli_v1_projects_deployments_activity_items
 
+  rescue_from UffizziCore::DeploymentStateError, with: :render_deployment_state_exception
+
   # Get activity items for a deployment
   #
   # @path [GET] /api/cli/v1/projects/{project_slug}/deployment/{deployment_id}/actiivity_items
@@ -24,6 +26,7 @@ class UffizziCore::Api::Cli::V1::Projects::Deployments::ActivityItemsController 
       .result
 
     meta = meta(activity_items)
+
     activity_items = activity_items.map do |activity_item|
       UffizziCore::Api::Cli::V1::Projects::Deployments::ActivityItemSerializer.new(activity_item).as_json
     end
@@ -32,5 +35,11 @@ class UffizziCore::Api::Cli::V1::Projects::Deployments::ActivityItemsController 
       activity_items: activity_items,
       meta: meta,
     }
+  end
+
+  protected
+
+  def render_deployment_state_exception(exception)
+    render json: { errors: { title: ["Deployment #{exception.state}"] } }, status: :unprocessable_entity
   end
 end
