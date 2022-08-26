@@ -25,30 +25,7 @@ class UffizziCore::Api::Cli::V1::ProjectsController < UffizziCore::Api::Cli::V1:
   # @response 404 Not Found
   # @response 401 Not authorized
   def show
-    project = current_user.projects.find_by!(slug: params[:slug])
-
-    respond_with project
-  end
-
-  # Create a project
-  #
-  # @path [POST] /api/cli/v1/projects
-  # @parameter params(required,body) [object<name: string, slug: string, description: string>]
-  #
-  # @response <object< project: Project>> 200 OK
-  # @response 404 Not Found
-  # @response 401 Not authorized
-  # @response [object<errors: object<password: string >>] 422 Unprocessable entity
-
-  def create
-    project_form = UffizziCore::Api::Cli::V1::Project::CreateForm.new(project_params)
-    project_form.account = current_user.organizational_account
-
-    if project_form.save
-      UffizziCore::ProjectService.add_users_to_project!(project_form, current_user)
-    end
-
-    respond_with project_form
+    respond_with resource_project
   end
 
   # Delete a project
@@ -60,8 +37,7 @@ class UffizziCore::Api::Cli::V1::ProjectsController < UffizziCore::Api::Cli::V1:
   # @response 401 Not authorized
 
   def destroy
-    project = current_user.organizational_account.active_projects.find_by!(slug: params[:slug])
-    project.disable!
+    resource_project.disable!
 
     head :no_content
   end
@@ -70,5 +46,15 @@ class UffizziCore::Api::Cli::V1::ProjectsController < UffizziCore::Api::Cli::V1:
 
   def project_params
     params.require(:project)
+  end
+
+  def resource_project
+    @resource_project ||= current_user.projects.find_by(slug: params[:slug])
+  end
+
+  def policy_context
+    account = resource_project&.account || current_user.organizational_account
+
+    UffizziCore::AccountContext.new(current_user, user_access_module, account, params)
   end
 end

@@ -3,5 +3,5 @@
 class UffizziCore::Api::Cli::V1::ShortProjectSerializer < UffizziCore::BaseSerializer
   type :project
 
-  attributes :name, :slug
+  attributes :name, :slug, :account_id
 end
