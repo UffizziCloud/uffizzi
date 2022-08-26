@@ -24,7 +24,6 @@ module UffizziCore::Concerns::Models::Account
     has_many :projects, dependent: :destroy
     has_many :deployments, through: :projects
     has_many :payments, dependent: :destroy
-    has_many :invitations, as: :entityable
 
     aasm(:state) do
       state :active, initial: true

@@ -15,12 +15,12 @@ FactoryBot.define do
       after(:create) do |project, evaluator|
         evaluator.members.each do |member|
           account = project.account
-          invitation = account.invitations.accepted.find_by(invitee: member)
+          role = account.memberships.find_by(user_id: member.id).role
 
           project.user_projects.create(
             user: member,
             invited_by: account.owner,
-            role: invitation.role,
+            role: role,
           )
         end
       end
