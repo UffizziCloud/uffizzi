@@ -17,11 +17,6 @@ class UffizziCore::Api::Cli::V1::Projects::Deployments::ContainersController <
   # @response 401 Not authorized
   # @response 404 Not found
   def index
-    unless resource_deployment.active?
-      render json: { errors: { title: [I18n.t('deployment.invalid_state', state: resource_deployment.state)] } },
-             status: :unprocessable_entity
-    end
-
     containers = resource_deployment.containers.active
 
     respond_with containers

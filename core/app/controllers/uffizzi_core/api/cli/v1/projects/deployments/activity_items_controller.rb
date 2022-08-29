@@ -15,12 +15,14 @@ class UffizziCore::Api::Cli::V1::Projects::Deployments::ActivityItemsController 
   # @response 401 Not authorized
   # @response 404 Not found
   def index
-    unless resource_deployment.active?
-      return render json: { errors: { title: [I18n.t('deployment.invalid_state', state: resource_deployment.state)] } },
+    deployment = resource_project.deployments.existed.find(params[:deployment_id])
+
+    unless deployment.active?
+      return render json: { errors: { title: [I18n.t('deployment.invalid_state', state: deployment.state)] } },
                     status: :unprocessable_entity
     end
 
-    activity_items = resource_deployment
+    activity_items = deployment
       .activity_items
       .page(page)
       .per(per_page)
@@ -29,7 +31,6 @@ class UffizziCore::Api::Cli::V1::Projects::Deployments::ActivityItemsController 
       .result
 
     meta = meta(activity_items)
-
     activity_items = activity_items.map do |activity_item|
       UffizziCore::Api::Cli::V1::Projects::Deployments::ActivityItemSerializer.new(activity_item).as_json
     end
