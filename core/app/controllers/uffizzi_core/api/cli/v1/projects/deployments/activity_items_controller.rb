@@ -4,8 +4,6 @@ class UffizziCore::Api::Cli::V1::Projects::Deployments::ActivityItemsController 
   UffizziCore::Api::Cli::V1::Projects::Deployments::ApplicationController
   before_action :authorize_uffizzi_core_api_cli_v1_projects_deployments_activity_items
 
-  rescue_from UffizziCore::DeploymentStateError, with: :render_deployment_state_exception
-
   # Get activity items for a deployment
   #
   # @path [GET] /api/cli/v1/projects/{project_slug}/deployment/{deployment_id}/actiivity_items
@@ -17,6 +15,11 @@ class UffizziCore::Api::Cli::V1::Projects::Deployments::ActivityItemsController 
   # @response 401 Not authorized
   # @response 404 Not found
   def index
+    unless resource_deployment.active?
+      return render json: { errors: { title: [I18n.t('deployment.invalid_state', state: resource_deployment.state)] } },
+                    status: :unprocessable_entity
+    end
+
     activity_items = resource_deployment
       .activity_items
       .page(page)
@@ -35,11 +38,5 @@ class UffizziCore::Api::Cli::V1::Projects::Deployments::ActivityItemsController 
       activity_items: activity_items,
       meta: meta,
     }
-  end
-
-  protected
-
-  def render_deployment_state_exception(exception)
-    render json: { errors: { title: ["Deployment #{exception.state}"] } }, status: :unprocessable_entity
   end
 end

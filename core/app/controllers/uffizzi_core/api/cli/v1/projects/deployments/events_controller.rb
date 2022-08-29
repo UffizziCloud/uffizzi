@@ -20,6 +20,11 @@ class UffizziCore::Api::Cli::V1::Projects::Deployments::EventsController <
   # @response 401 Not authorized
   # @response 404 Not found
   def index
+    unless resource_deployment.active?
+      render json: { errors: { title: [I18n.t('deployment.invalid_state', state: resource_deployment.state)] } },
+             status: :unprocessable_entity
+    end
+
     response = UffizziCore::ControllerService.fetch_deployment_events(resource_deployment)
 
     events = { events: response }
