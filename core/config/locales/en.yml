@@ -72,3 +72,6 @@ en:
     invalid_key_length: A secret key must be no longer than 256 characters.
   deployment:
     invalid_state: Deployment %{state}
+  session:
+    unsupported_login_type: This type of login is not supported
+    unauthorized: Unauthorized
