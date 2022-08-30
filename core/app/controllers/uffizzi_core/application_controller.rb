@@ -26,7 +26,7 @@ class UffizziCore::ApplicationController < ActionController::Base
   respond_to :json
 
   def render_not_authorized
-    render json: { errors: { title: ['Unauthorized'] } }, status: :forbidden
+    render json: { errors: { title: [I18n.t('session.unauthorized')] } }, status: :forbidden
   end
 
   def policy_context
