@@ -19,9 +19,15 @@ class UffizziCore::ApplicationController < ActionController::Base
     render_not_found(exception)
   end
 
+  rescue_from Pundit::NotAuthorizedError, with: :render_not_authorized
+
   before_action :authenticate_request!
   skip_before_action :verify_authenticity_token
   respond_to :json
+
+  def render_not_authorized
+    render json: { errors: { title: [I18n.t('session.unauthorized')] } }, status: :forbidden
+  end
 
   def policy_context
     UffizziCore::BaseContext.new(current_user, user_access_module, params)

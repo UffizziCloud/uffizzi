@@ -7,7 +7,7 @@ UffizziCore::Engine.routes.draw do
   namespace :api, defaults: { format: :json } do
     namespace :cli do
       namespace :v1 do
-        resources :projects, only: ['index', 'show', 'create', 'destroy'], param: :slug do
+        resources :projects, only: ['index', 'show', 'destroy'], param: :slug do
           scope module: :projects do
             resource :compose_file, only: ['show', 'create', 'destroy']
             resources :deployments, only: ['index', 'show', 'create', 'destroy', 'update'] do
@@ -36,8 +36,13 @@ UffizziCore::Engine.routes.draw do
         end
         resource :session, only: ['create', 'destroy']
 
-        resource :account, only: [] do
-          scope module: :account do
+        namespace :ci do
+          resource :session, only: ['create']
+        end
+
+        resources :accounts, only: [] do
+          scope module: :accounts do
+            resources :projects, only: ['create']
             resources :credentials, only: ['index', 'create', 'update', 'destroy'], param: :type do
               member do
                 get :check_credential

@@ -68,7 +68,6 @@ FactoryBot.define do
       end
 
       after(:create) do |user, evaluator|
-        create(:invitation, :accepted, :admin, invitee: user, invited_by: evaluator.organization.owner, entityable: evaluator.organization)
         create(:membership, :admin, user: user, account: evaluator.organization)
       end
     end
@@ -79,8 +78,6 @@ FactoryBot.define do
       end
 
       after(:create) do |user, evaluator|
-        create(:invitation, :accepted, :developer, invitee: user, invited_by: evaluator.organization.owner,
-                                                   entityable: evaluator.organization)
         create(:membership, :developer, user: user, account: evaluator.organization)
       end
     end
@@ -91,7 +88,6 @@ FactoryBot.define do
       end
 
       after(:create) do |user, evaluator|
-        create(:invitation, :accepted, :viewer, invitee: user, invited_by: evaluator.organization.owner, entityable: evaluator.organization)
         create(:membership, :viewer, user: user, account: evaluator.organization)
       end
     end
