@@ -466,6 +466,27 @@ class UffizziCore::ComposeFileServiceTest < ActiveSupport::TestCase
     assert_equal(Settings.compose.default_memory, memory_limit)
   end
 
+  test '#build_template_attributes - public image' do
+    content = file_fixture('files/compose_files/dockerhub_services/nginx.yml').read
+    parsed_data = UffizziCore::ComposeFileService.parse(content)
+
+    dockerhub_repositories_data = json_fixture('files/dockerhub/repository.json')
+    stubbed_dockerhub_repository = stub_dockerhub_repository('library', 'nginx', dockerhub_repositories_data)
+    UffizziCore::ComposeFileService.build_template_attributes(parsed_data, 'compose.yml', @account.credentials, @project)
+    assert_requested(stubbed_dockerhub_repository)
+  end
+
+  test '#build_template_attributes - private image' do
+    content = file_fixture('files/compose_files/dockerhub_services/nginx.yml').read
+    parsed_data = UffizziCore::ComposeFileService.parse(content)
+
+    stubbed_dockerhub_repository = stub_dockerhub_private_repository('library', 'nginx')
+    assert_raise(UffizziCore::ComposeFile::BuildError) do
+      UffizziCore::ComposeFileService.build_template_attributes(parsed_data, 'compose.yml', @account.credentials, @project)
+    end
+    assert_requested(stubbed_dockerhub_repository)
+  end
+
   test '#build_template_attributes - check if a memory is not in list of available values' do
     create(:credential, :docker_hub, account: @account)
     content = file_fixture('files/compose_files/dockerhub_services/nginx_invalid_memory.yml').read
