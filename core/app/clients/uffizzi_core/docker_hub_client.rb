@@ -26,7 +26,9 @@ class UffizziCore::DockerHubClient
   def repository(namespace:, image:)
     url = "#{BASE_URL}/v2/repositories/#{namespace}/#{image}"
 
-    response = connection.get(url)
+    response = connection.get(url) do |request|
+      request.headers['Authorization'] = "JWT #{jwt}"
+    end
     RequestResult.new(status: response.status, result: response.body)
   end
 
