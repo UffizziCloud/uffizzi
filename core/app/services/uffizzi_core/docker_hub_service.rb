@@ -11,6 +11,13 @@ class UffizziCore::DockerHubService
       accounts_response.nil? ? [] : accounts_response.namespaces
     end
 
+    def public_image?(namespace, repo_name)
+      response = public_docker_hub_client.repository(namespace: namespace, image: repo_name)
+      return false if not_found?(response)
+
+      true
+    end
+
     def user_client(credential)
       return @client if @client&.credential&.username == credential.username
 
@@ -35,6 +42,10 @@ class UffizziCore::DockerHubService
 
     def public_docker_hub_client
       @public_docker_hub_client ||= UffizziCore::DockerHubClient.new
+    end
+
+    def not_found?(response)
+      response.status == 404
     end
   end
 end
