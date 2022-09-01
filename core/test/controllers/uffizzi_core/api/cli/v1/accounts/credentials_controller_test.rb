@@ -4,8 +4,8 @@ require 'test_helper'
 
 class UffizziCore::Api::Cli::V1::Accounts::CredentialsControllerTest < ActionController::TestCase
   setup do
-    @user = create(:user, :with_organizational_account)
-    @account = @user.organizational_account
+    @user = create(:user, :with_personal_account)
+    @account = @user.personal_account
     @project = create(:project, :with_members, account: @account, members: [@user])
 
     sign_in @user

@@ -6,8 +6,8 @@ class UffizziCore::GoogleServiceTest < ActiveSupport::TestCase
   test '#digest' do
     image = generate(:image)
     tag = generate(:tag)
-    user = create(:user, :with_organizational_account)
-    credential = create(:credential, :google, :active, account: user.organizational_account)
+    user = create(:user, :with_personal_account)
+    credential = create(:credential, :google, :active, account: user.personal_account)
 
     headers_response = { 'docker-content-digest': generate(:string) }
     token_response = { token: generate(:string) }

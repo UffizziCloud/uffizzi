@@ -4,8 +4,8 @@ require 'test_helper'
 
 class UffizziCore::Api::Cli::V1::Projects::SecretsControllerTest < ActionController::TestCase
   setup do
-    @admin = create(:user, :with_organizational_account)
-    @account = @admin.organizational_account
+    @admin = create(:user, :with_personal_account)
+    @account = @admin.personal_account
     @developer = create(:user, :developer_in_organization, organization: @account)
     @viewer = create(:user, :viewer_in_organization, organization: @account)
     secrets = [build(:secret, name: generate(:string), value: generate(:string))]

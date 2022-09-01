@@ -5,7 +5,7 @@ require 'test_helper'
 class UffizziCore::Api::Cli::V1::SessionsControllerTest < ActionController::TestCase
   test '#create - successful' do
     password = generate(:password)
-    user = create(:user, :with_organizational_account, :active, password: password)
+    user = create(:user, :with_personal_account, :active, password: password)
     params = { email: user.email, password: password }
 
     post :create, params: { user: params }, format: :json
