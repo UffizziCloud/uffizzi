@@ -3,7 +3,7 @@
 FactoryBot.define do
   factory :account, class: UffizziCore::Account do
     name
-    kind { UffizziCore::Account.kind.organizational }
+    kind { UffizziCore::Account.kind.personal }
     customer_token { nil }
     subscription_token { nil }
     state { nil }
@@ -33,8 +33,8 @@ FactoryBot.define do
       end
     end
 
-    trait :organizational_account do
-      kind { UffizziCore::Account.kind.organizational }
+    trait :personal_account do
+      kind { UffizziCore::Account.kind.personal }
     end
 
     trait :with_stripe_enitities do

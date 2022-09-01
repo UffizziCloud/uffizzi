@@ -4,8 +4,8 @@ require 'test_helper'
 
 class UffizziCore::Api::Cli::V1::Projects::ComposeFilesControllerTest < ActionController::TestCase
   setup do
-    @admin = create(:user, :with_organizational_account)
-    @account = @admin.organizational_account
+    @admin = create(:user, :with_personal_account)
+    @account = @admin.personal_account
     @project = create(:project, :with_members, account: @account, members: [@admin])
     @compose_file = create(:compose_file, project: @project, added_by: @admin)
     image = generate(:image)

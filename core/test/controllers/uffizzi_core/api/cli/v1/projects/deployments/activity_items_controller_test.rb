@@ -4,8 +4,8 @@ require 'test_helper'
 
 class UffizziCore::Api::Cli::V1::Projects::Deployments::ActivityItemsControllerTest < ActionController::TestCase
   setup do
-    @user = create(:user, :with_organizational_account)
-    @project = create(:project, :with_members, account: @user.organizational_account, members: [@user])
+    @user = create(:user, :with_personal_account)
+    @project = create(:project, :with_members, account: @user.personal_account, members: [@user])
     @deployment = create(:deployment, project: @project)
 
     sign_in @user

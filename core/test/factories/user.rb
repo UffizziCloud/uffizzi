@@ -27,16 +27,9 @@ FactoryBot.define do
     work
     primary_location
 
-    trait :with_organizational_account do
+    trait :with_personal_account do
       after(:create) do |user, _evaluator|
-        create(:account, :with_admin, kind: UffizziCore::Account.kind.organizational, admin: user, created_at: user.created_at)
-      end
-    end
-
-    trait :with_organizational_account_and_stripe_enitities do
-      after(:create) do |user, _evaluator|
-        create(:account, :with_admin, :with_stripe_enitities, kind: UffizziCore::Account.kind.organizational, admin: user,
-                                                              created_at: user.created_at)
+        create(:account, :with_admin, kind: UffizziCore::Account.kind.personal, admin: user, created_at: user.created_at)
       end
     end
 

@@ -4,8 +4,8 @@ require 'test_helper'
 
 class UffizziCore::ComposeFileServiceTest < ActiveSupport::TestCase
   setup do
-    @user = create(:user, :with_organizational_account)
-    @account = @user.organizational_account
+    @user = create(:user, :with_personal_account)
+    @account = @user.personal_account
     @project = create(:project, account: @account)
   end
 
