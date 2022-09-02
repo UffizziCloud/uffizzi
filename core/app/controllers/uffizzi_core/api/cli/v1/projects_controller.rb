@@ -53,7 +53,7 @@ class UffizziCore::Api::Cli::V1::ProjectsController < UffizziCore::Api::Cli::V1:
   end
 
   def policy_context
-    account = resource_project&.account || current_user.personal_account
+    account = resource_project&.account || current_user.default_account
 
     UffizziCore::AccountContext.new(current_user, user_access_module, account, params)
   end

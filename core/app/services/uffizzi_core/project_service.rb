@@ -39,7 +39,7 @@ class UffizziCore::ProjectService
     def add_users_to_project!(project, current_user)
       user_projects = []
 
-      current_user.personal_account.memberships.where(role: UffizziCore::Membership.role.admin).map do |membership|
+      current_user.default_account.memberships.where(role: UffizziCore::Membership.role.admin).map do |membership|
         user_projects << { project: project, user: membership.user, role: UffizziCore::UserProject.role.admin }
       end
 
