@@ -11,8 +11,11 @@ class UffizziCore::DockerHubService
       accounts_response.nil? ? [] : accounts_response.namespaces
     end
 
-    def public_image?(namespace, repo_name)
-      response = public_docker_hub_client.repository(namespace: namespace, image: repo_name)
+    def image_available?(credential, image_data)
+      namespace = image_data[:namespace]
+      repo_name = image_data[:name]
+      client = UffizziCore::DockerHubClient.new(credential)
+      response = client.repository(namespace: namespace, image: repo_name)
       return false if not_found?(response)
 
       true
