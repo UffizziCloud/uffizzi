@@ -17,7 +17,7 @@ class UffizziCore::Api::Cli::V1::Accounts::ProjectsController < UffizziCore::Api
 
   def create
     project_form = UffizziCore::Api::Cli::V1::Project::CreateForm.new(project_params)
-    project_form.account = current_user.personal_account
+    project_form.account = current_user.default_account
 
     if project_form.save
       UffizziCore::ProjectService.add_users_to_project!(project_form, current_user)

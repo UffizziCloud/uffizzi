@@ -24,6 +24,11 @@ module UffizziCore::Concerns::Models::User
 
     enumerize :creation_source, in: UffizziCore.user_creation_sources, predicates: true
 
+    def default_account
+      accounts = self.accounts.personal
+      accounts.active.first || accounts.first
+    end
+
     def personal_account
       accounts.find_by(kind: UffizziCore::Account.kind.personal)
     end
