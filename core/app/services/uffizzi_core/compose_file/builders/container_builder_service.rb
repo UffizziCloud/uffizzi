@@ -207,7 +207,7 @@ class UffizziCore::ComposeFile::Builders::ContainerBuilderService
   def build_docker_repo_attributes(image_data, credentials, scope, repo_type)
     credential = credentials.send(scope).first
 
-    return docker_builder(repo_type).build_attributes(image_data) if credential.present? || public_image?(image_data, scope)
+    return docker_builder(repo_type).build_attributes(image_data) if credential.present? || image_available?(credential, image_data, scope)
 
     raise UffizziCore::ComposeFile::BuildError, I18n.t('compose.invalid_credential', value: scope)
   end
@@ -234,13 +234,10 @@ class UffizziCore::ComposeFile::Builders::ContainerBuilderService
     @variables_builder ||= UffizziCore::ComposeFile::Builders::VariablesBuilderService.new(project)
   end
 
-  def public_image?(image_data, type)
-    namespace = image_data[:namespace]
-    name = image_data[:name]
-
+  def image_available?(credential, image_data, type)
     case type
     when :docker_hub
-      UffizziCore::DockerHubService.public_image?(namespace, name)
+      UffizziCore::DockerHubService.image_available?(credential, image_data)
     else
       # TODO handle other registry types
       false
