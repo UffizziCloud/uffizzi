@@ -96,7 +96,6 @@ class UffizziCore::Api::Cli::V1::Projects::DeploymentsControllerTest < ActionCon
     Sidekiq::Worker.clear_all
     Sidekiq::Testing.fake!
 
-    create(:credential, :docker_hub, account: @admin.organizational_account)
     file_content = File.read('test/fixtures/files/test-compose-success.yml')
     encoded_content = Base64.encode64(file_content)
     compose_file = create(:compose_file, project: @project, added_by: @admin, content: encoded_content)
@@ -124,6 +123,7 @@ class UffizziCore::Api::Cli::V1::Projects::DeploymentsControllerTest < ActionCon
       containers_attributes: [container_attributes],
     }
     create(:template, :compose_file_source, compose_file: compose_file, project: @project, added_by: @admin, payload: template_payload)
+    stub_dockerhub_repository('library', 'redis')
 
     params = { project_slug: @project.slug, compose_file: {}, dependencies: [], metadata: {} }
 
@@ -149,7 +149,6 @@ class UffizziCore::Api::Cli::V1::Projects::DeploymentsControllerTest < ActionCon
     Sidekiq::Worker.clear_all
     Sidekiq::Testing.fake!
 
-    create(:credential, :docker_hub, account: @admin.organizational_account)
     file_content = File.read('test/fixtures/files/test-compose-success.yml')
     encoded_content = Base64.encode64(file_content)
     compose_file = create(:compose_file, project: @project, added_by: @admin, content: encoded_content)
@@ -177,7 +176,7 @@ class UffizziCore::Api::Cli::V1::Projects::DeploymentsControllerTest < ActionCon
       containers_attributes: [container_attributes],
     }
     create(:template, :compose_file_source, compose_file: compose_file, project: @project, added_by: @admin, payload: template_payload)
-
+    stub_dockerhub_repository('library', 'redis')
     params = { project_slug: @project.slug, compose_file: {}, dependencies: [], metadata: @metadata }
 
     post :create, params: params, format: :json
@@ -216,6 +215,7 @@ class UffizziCore::Api::Cli::V1::Projects::DeploymentsControllerTest < ActionCon
       containers_attributes: [container_attributes],
     }
     create(:template, :compose_file_source, compose_file: compose_file, project: @project, added_by: @admin, payload: template_payload)
+    stub_dockerhub_private_repository('library', 'redis')
 
     params = { project_slug: @project.slug, compose_file: {}, dependencies: [], metadata: {} }
 
@@ -299,7 +299,7 @@ class UffizziCore::Api::Cli::V1::Projects::DeploymentsControllerTest < ActionCon
     @deployment.update!(compose_file: compose_file)
     encoded_content = Base64.encode64(file_content)
     compose_file_attributes = attributes_for(:compose_file, :temporary, project: @project, added_by: @admin, content: encoded_content)
-    create(:credential, :docker_hub, account: @admin.organizational_account)
+    stub_dockerhub_repository('library', 'redis')
 
     params = {
       project_slug: @project.slug,
@@ -329,7 +329,7 @@ class UffizziCore::Api::Cli::V1::Projects::DeploymentsControllerTest < ActionCon
     @deployment.update!(compose_file: compose_file)
     encoded_content = Base64.encode64(file_content)
     compose_file_attributes = attributes_for(:compose_file, :temporary, project: @project, added_by: @admin, content: encoded_content)
-    create(:credential, :docker_hub, account: @admin.organizational_account)
+    2.times { stub_dockerhub_repository('library', 'redis') }
 
     params = {
       project_slug: @project.slug,
@@ -352,7 +352,7 @@ class UffizziCore::Api::Cli::V1::Projects::DeploymentsControllerTest < ActionCon
     @deployment.update!(compose_file: compose_file)
     encoded_content = Base64.encode64(file_content)
     compose_file_attributes = attributes_for(:compose_file, :temporary, project: @project, added_by: @admin, content: encoded_content)
-    create(:credential, :docker_hub, account: @admin.organizational_account)
+    stub_dockerhub_repository('library', 'redis')
 
     params = {
       project_slug: @project.slug,
@@ -381,7 +381,7 @@ class UffizziCore::Api::Cli::V1::Projects::DeploymentsControllerTest < ActionCon
     create(:template, :compose_file_source, compose_file: compose_file, project: @project, added_by: @admin, payload: @template.payload)
     encoded_content = Base64.encode64(file_content)
     compose_file_attributes = attributes_for(:compose_file, :temporary, project: @project, added_by: @admin, content: encoded_content)
-    create(:credential, :docker_hub, account: @admin.organizational_account)
+    stub_dockerhub_repository('library', 'redis')
 
     params = {
       project_slug: @project.slug,
