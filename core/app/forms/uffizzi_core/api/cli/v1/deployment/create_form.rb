@@ -17,10 +17,10 @@ class UffizziCore::Api::Cli::V1::Deployment::CreateForm < UffizziCore::Deploymen
            :command,
            :receive_incoming_requests,
            :continuously_deploy,
-           { healthcheck: {} },
            { variables: [:name, :value],
              secret_variables: [:name, :value],
              volumes: [:source, :target, :type, :read_only],
+             healthcheck: [:test, :interval, :timeout, :retries, :start_period, :disable, { test: [] }],
              repo_attributes: [
                :namespace,
                :name,
