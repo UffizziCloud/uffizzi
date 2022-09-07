@@ -548,7 +548,7 @@ class UffizziCore::ComposeFileServiceTest < ActiveSupport::TestCase
       UffizziCore::ComposeFileService.build_template_attributes(parsed_data, 'compose.yml', @account.credentials, @project)
     end
 
-    assert_match(I18n.t('compose.invalid_credential', value: 'azure'), e.message)
+    assert_match(I18n.t('compose.unprocessable_image', value: 'azure'), e.message)
   end
 
   test '#build_template_attributes - check google image build' do

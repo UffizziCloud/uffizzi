@@ -70,7 +70,7 @@ class UffizziCore::ComposeFile::ContainerService
 
       return credential if image_available?(credential, container[:image], type)
 
-      raise UffizziCore::ComposeFile::CredentialError.new(I18n.t('compose.invalid_credential', value: type))
+      raise UffizziCore::ComposeFile::CredentialError.new(I18n.t('compose.unprocessable_image', value: type))
     end
 
     def image_available?(credential, image_data, type)

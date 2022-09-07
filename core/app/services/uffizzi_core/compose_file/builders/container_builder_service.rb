@@ -210,7 +210,7 @@ class UffizziCore::ComposeFile::Builders::ContainerBuilderService
       return docker_builder(repo_type).build_attributes(image_data)
     end
 
-    raise UffizziCore::ComposeFile::BuildError, I18n.t('compose.invalid_credential', value: scope)
+    raise UffizziCore::ComposeFile::BuildError, I18n.t('compose.unprocessable_image', value: scope)
   end
 
   def variables(variables_data, dependencies)
