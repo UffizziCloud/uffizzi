@@ -10,8 +10,9 @@ class UffizziCore::ComposeFile::Builders::ContainerHostVolumeFilesBuilderService
         .by_source(host_volumes_dependencies.pluck(:source))
 
       container_host_volumes_data.map do |container_host_volume_data|
-        detected_dependency = host_volumes_dependencies.detect { |dependency| dependency[:raw_source] == container_host_volume_data[:source]
-}
+        detected_dependency = host_volumes_dependencies.detect do |dependency|
+          dependency[:raw_source] == container_host_volume_data[:source]
+        end
         detected_host_volume_file = host_volume_files.detect { |host_volume_file| host_volume_file.source == detected_dependency[:source] }
 
         if detected_host_volume_file.nil?
