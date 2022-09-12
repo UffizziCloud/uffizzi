@@ -21,6 +21,7 @@ module UffizziCore::Concerns::Models::Project
     has_many :credentials, through: :account
     has_many :compose_files, dependent: :destroy
     has_many :secrets, dependent: :destroy, as: :resource
+    has_many :host_volume_files, dependent: :destroy
 
     validates :name, presence: true, uniqueness: { scope: :account, message: 'Name already exists' }
     validates :slug, presence: true, uniqueness: { message: 'Project slug already taken' }

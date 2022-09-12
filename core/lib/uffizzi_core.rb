@@ -57,6 +57,8 @@ module UffizziCore
     user_projects: :uffizzi_core_user_projects,
     users: :uffizzi_core_users,
     users_roles: :uffizzi_core_users_roles,
+    host_volume_files: :uffizzi_core_host_volume_files,
+    container_host_volume_files: :uffizzi_core_container_host_volume_files,
   }
   mattr_accessor :user_creation_sources, default: [:system, :online_registration, :google, :sso]
   mattr_accessor :user_project_roles, default: [:admin, :developer, :viewer]

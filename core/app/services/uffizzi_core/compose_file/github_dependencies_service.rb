@@ -3,6 +3,7 @@
 class UffizziCore::ComposeFile::GithubDependenciesService
   ENV_FILE_TYPE = 'env_file'
   CONFIG_TYPE = 'config'
+  VOLUME_TYPE = 'volume'
 
   class << self
     def filename(dependency)
@@ -23,8 +24,16 @@ class UffizziCore::ComposeFile::GithubDependenciesService
       configs_dependencies(dependencies).select { |dependency| dependency[:container_name] == container_name }
     end
 
+    def host_volumes_dependencies_for_container(dependencies, container_name)
+      dependencies.select { |dependency| dependency[:type] == VOLUME_TYPE && dependency[:container_name] == container_name }
+    end
+
     def configs_dependencies(dependencies)
       dependencies.select { |dependency| dependency[:type] == CONFIG_TYPE }
+    end
+
+    def select_dependencies_by_type(dependencies, type)
+      dependencies.select { |dependency| dependency[:type].to_s == type.to_s }
     end
 
     def build_source_path(compose_path, dependency_path, repository_id, branch)

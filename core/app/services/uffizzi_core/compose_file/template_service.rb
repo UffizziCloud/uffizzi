@@ -42,7 +42,7 @@ class UffizziCore::ComposeFile::TemplateService
     attributes = compose_file_template_form.template_attributes
     source = compose_file_template_form.source
     template = compose_file_form.template
-    template = @project.templates.find_or_initialize_by(name: source) if !template.present?
+    template = @project.templates.find_or_initialize_by(name: source) unless template.present?
     template.assign_attributes(attributes)
     template_form = template.becomes(UffizziCore::Api::Cli::V1::Template::CreateForm)
     template_form.project = @project

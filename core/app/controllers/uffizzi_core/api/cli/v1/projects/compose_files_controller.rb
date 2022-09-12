@@ -72,7 +72,7 @@ class UffizziCore::Api::Cli::V1::Projects::ComposeFilesController < UffizziCore:
   end
 
   def dependencies_params
-    params.permit(dependencies: [:name, :path, :source, :content])
+    params.permit(dependencies: [:path, :source, :content, :use_kind, :is_file])
   end
 
   def create_or_update_compose_file(params)

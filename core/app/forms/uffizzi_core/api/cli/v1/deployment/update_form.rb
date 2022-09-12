@@ -43,6 +43,10 @@ class UffizziCore::Api::Cli::V1::Deployment::UpdateForm < UffizziCore::Deploymen
              container_config_files_attributes: [
                :config_file_id,
                :mount_path,
+             ],
+             container_host_volume_files_attributes: [
+               :host_volume_file_id,
+               :source_path,
              ] },
          ]
 

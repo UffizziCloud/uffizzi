@@ -11,6 +11,10 @@ class UffizziCore::ComposeFile::Parsers::Services::VolumesParserService
     def parse(volumes, volumes_payload)
       return [] if volumes.blank?
 
+      if volumes.is_a?(String)
+        raise UffizziCore::ComposeFile::ParseError, I18n.t('compose.volumes_should_be_array', volumes: volumes)
+      end
+
       volumes.map do |volume|
         volume_data = case volume
                       when String
@@ -70,10 +74,7 @@ class UffizziCore::ComposeFile::Parsers::Services::VolumesParserService
     end
 
     def build_volume_type(source_path, target_path)
-      if path?(source_path) && path?(target_path)
-        raise UffizziCore::ComposeFile::ParseError, I18n.t('compose.volume_type_not_supported', type: HOST_VOLUME_TYPE)
-      end
-
+      return HOST_VOLUME_TYPE if path?(source_path) && path?(target_path)
       return ANONYMOUS_VOLUME_TYPE if path?(source_path) && target_path.blank?
       return NAMED_VOLUME_TYPE if source_path.present? && !path?(source_path) && path?(target_path)
 
@@ -81,7 +82,7 @@ class UffizziCore::ComposeFile::Parsers::Services::VolumesParserService
     end
 
     def path?(path)
-      /^(\/|\.\/|~\/)/.match?(path)
+      /^(\/|\.\/|\.\.\/)/.match?(path) # volume path should start with / or ./ or ../
     end
 
     def validate_named_volume(source_path, target_path, named_volumes_names, service_name)
