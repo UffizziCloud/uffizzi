@@ -172,7 +172,7 @@ class UffizziCore::Api::Cli::V1::Projects::DeploymentsController < UffizziCore::
   end
 
   def dependencies_params
-    params.permit(dependencies: [:name, :path, :source, :content])
+    params.permit(dependencies: [:path, :source, :content, :use_kind, :is_file])
   end
 
   def metadata_params
