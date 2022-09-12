@@ -51,7 +51,9 @@ class UffizziCore::ControllerService
       host_volume_files = host_volume_files.map do |host_volume_file|
         UffizziCore::Controller::DeployContainers::HostVolumeFileSerializer.new(host_volume_file).as_json
       end
-      compose_file = UffizziCore::Controller::DeployContainers::ComposeFileSerializer.new(deployment.compose_file).as_json
+      compose_file = if deployment.compose_file.present?
+        UffizziCore::Controller::DeployContainers::ComposeFileSerializer.new(deployment.compose_file).as_json
+      end
 
       body = {
         containers: containers,

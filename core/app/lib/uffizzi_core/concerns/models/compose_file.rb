@@ -3,7 +3,7 @@
 module UffizziCore::Concerns::Models::ComposeFile
   extend ActiveSupport::Concern
 
-  LOCAL_SOURCE = :local.freeze
+  LOCAL_SOURCE = :local
 
   included do
     include UffizziCore::ComposeFileRepo

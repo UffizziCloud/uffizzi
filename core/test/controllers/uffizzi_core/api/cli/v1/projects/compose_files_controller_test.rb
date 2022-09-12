@@ -69,6 +69,7 @@ class UffizziCore::Api::Cli::V1::Projects::ComposeFilesControllerTest < ActionCo
       path: 'configs/vote.conf',
       source: 'vote.conf',
       content: json_fixture('files/compose_dependencies/configs/vote_conf.json')[:content],
+      use_kind: UffizziCore::ComposeFile::DependenciesService::DEPENDENCY_CONFIG_USE_KIND,
     }
 
     stub_dockerhub_repository_any
@@ -249,6 +250,7 @@ class UffizziCore::Api::Cli::V1::Projects::ComposeFilesControllerTest < ActionCo
       path: 'configs/vote.conf',
       source: 'vote.conf',
       content: json_fixture('files/compose_dependencies/configs/vote_conf.json')[:content],
+      use_kind: UffizziCore::ComposeFile::DependenciesService::DEPENDENCY_CONFIG_USE_KIND,
     }
 
     params = {

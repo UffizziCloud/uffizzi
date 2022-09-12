@@ -3,8 +3,8 @@
 class UffizziCore::ComposeFile::HostVolumeFilesService
   class << self
     def bulk_create(compose_file_form, compose_dependencies)
-      volumes_dependencies = UffizziCore::ComposeFile::GithubDependenciesService.
-        select_dependencies_by_type(compose_dependencies, UffizziCore::ComposeFile::DependenciesService::VOLUME_TYPE)
+      volumes_dependencies = UffizziCore::ComposeFile::GithubDependenciesService
+        .select_dependencies_by_type(compose_dependencies, UffizziCore::ComposeFile::DependenciesService::VOLUME_TYPE)
 
       errors = []
       volumes_dependencies.each do |volume_dependency|
