@@ -25,7 +25,9 @@ class UffizziCore::ComposeFile::Builders::ContainerBuilderService
                                                                                                                     container_name)
     configs_dependencies = UffizziCore::ComposeFile::GithubDependenciesService.configs_dependencies_for_container(compose_dependencies,
                                                                                                                   container_name)
-    host_volumes_dependencies = UffizziCore::ComposeFile::GithubDependenciesService.host_volumes_dependencies_for_container(compose_dependencies, container_name)
+    host_volumes_dependencies = UffizziCore::ComposeFile::GithubDependenciesService.host_volumes_dependencies_for_container(
+      compose_dependencies, container_name
+    )
     is_ingress = ingress_container?(container_name, ingress_data)
     repo_attributes = repo_attributes(container_data, continuous_preview_global_data)
 
@@ -226,11 +228,13 @@ class UffizziCore::ComposeFile::Builders::ContainerBuilderService
   end
 
   def container_host_volume_files_attributes(volumes_data, host_volumes_dependencies)
-    host_volumes_data = volumes_data.select { |v| v[:type] == UffizziCore::ComposeFile::Parsers::Services::VolumesParserService::HOST_VOLUME_TYPE }
+    host_volumes_data = volumes_data.select do |v|
+      v[:type] == UffizziCore::ComposeFile::Parsers::Services::VolumesParserService::HOST_VOLUME_TYPE
+    end
 
     UffizziCore::ComposeFile::Builders::ContainerHostVolumeFilesBuilderService
       .build_attributes(host_volumes_data, host_volumes_dependencies, project)
-   end
+  end
 
   def docker_builder(type)
     @docker_builder ||= UffizziCore::ComposeFile::Builders::DockerRepoBuilderService.new(type)
