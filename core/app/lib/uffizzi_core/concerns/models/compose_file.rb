@@ -3,6 +3,8 @@
 module UffizziCore::Concerns::Models::ComposeFile
   extend ActiveSupport::Concern
 
+  LOCAL_SOURCE = :local.freeze
+
   included do
     include UffizziCore::ComposeFileRepo
     include AASM
@@ -46,6 +48,14 @@ module UffizziCore::Concerns::Models::ComposeFile
       event :set_invalid do
         transitions from: [:valid_file], to: :invalid_file
       end
+    end
+
+    def local_source?
+      repository_id.nil? && branch.nil?
+    end
+
+    def source_kind
+      return LOCAL_SOURCE if local_source?
     end
 
     private

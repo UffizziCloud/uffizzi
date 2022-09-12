@@ -22,6 +22,7 @@ class UffizziCore::Controller::DeployContainers::ContainerSerializer < UffizziCo
              :additional_subdomains
 
   has_many :container_config_files
+  has_many :container_host_volume_files
 
   def image
     repo = object.repo

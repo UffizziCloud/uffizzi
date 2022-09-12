@@ -33,13 +33,9 @@ class UffizziCore::ComposeFile::Builders::TemplateBuilderService
 
   def build_containers_attributes(containers_data, ingress_data, continuous_preview_global_data, compose_dependencies)
     containers_data.map do |container_data|
-      container_attributes(container_data, ingress_data, continuous_preview_global_data, compose_dependencies)
+      builder = UffizziCore::ComposeFile::Builders::ContainerBuilderService.new(credentials, project, repositories)
+
+      builder.build_attributes(container_data, ingress_data, continuous_preview_global_data, compose_dependencies)
     end
-  end
-
-  def container_attributes(containers_data, ingress_data, continuous_preview_global_data, compose_dependencies)
-    builder = UffizziCore::ComposeFile::Builders::ContainerBuilderService.new(credentials, project, repositories)
-
-    builder.build_attributes(containers_data, ingress_data, continuous_preview_global_data, compose_dependencies)
   end
 end

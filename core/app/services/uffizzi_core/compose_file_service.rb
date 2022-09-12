@@ -132,6 +132,7 @@ class UffizziCore::ComposeFileService
     def process_compose_file(compose_file_form, params)
       cli_form = UffizziCore::Api::Cli::V1::ComposeFile::CliForm.new
       cli_form.content = compose_file_form.content
+      cli_form.compose_file = compose_file_form.becomes(UffizziCore::ComposeFile)
       return [compose_file_form, cli_form.errors] if cli_form.invalid?
 
       dependencies = params[:dependencies].to_a
@@ -188,8 +189,10 @@ class UffizziCore::ComposeFileService
         end
 
         config_files_service = UffizziCore::ComposeFile::ConfigFilesService.new(compose_file_form)
-        errors = config_files_service.create_config_files(cli_form.compose_dependencies)
-        raise ActiveRecord::Rollback if errors.present?
+        config_file_errors = config_files_service.create_config_files(cli_form.compose_dependencies)
+        host_volume_file_errors = UffizziCore::ComposeFile::HostVolumeFilesService
+          .bulk_create(compose_file_form, cli_form.compose_dependencies)
+        raise ActiveRecord::Rollback if config_file_errors.present? || host_volume_file_errors.present?
 
         project = compose_file_form.project
         user = compose_file_form.added_by
