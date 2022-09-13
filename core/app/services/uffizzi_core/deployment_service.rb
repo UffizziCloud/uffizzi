@@ -41,6 +41,7 @@ class UffizziCore::DeploymentService
           compose_file_id: compose_file.id,
           creation_source: UffizziCore::Deployment.creation_source.compose_file_manual,
           metadata: deployment_form.metadata,
+          state: :active,
         }
         deployment.update!(params)
       end
