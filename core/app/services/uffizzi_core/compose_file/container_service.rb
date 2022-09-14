@@ -59,7 +59,7 @@ class UffizziCore::ComposeFile::ContainerService
       elsif UffizziCore::ComposeFile::ContainerService.docker_hub?(container)
         detect_credential(container, credentials, :docker_hub)
       elsif UffizziCore::ComposeFile::ContainerService.google?(container)
-        detect_credential(container, ecredentials, :google)
+        detect_credential(container, credentials, :google)
       end
     end
 
