@@ -20,8 +20,8 @@ release:
 	git checkout develop
 	@echo 'Set a new version'
 	docker-compose run --rm core bash -c "bundle exec bump set ${VERSION}"
-	docker-compose run --rm core bash -c "bundle update --conservative uffizzi_core"
-	docker-compose run --rm web bash -c "bundle update --conservative uffizzi_core"
+	docker-compose run --rm core bash -c "bundle update uffizzi_core --conservative "
+	docker-compose run --rm web bash -c "bundle update uffizzi_core --conservative "
 	git commit -am "Change version to ${VERSION}"
 	@echo 'Update remote origin'
 	git push origin develop
