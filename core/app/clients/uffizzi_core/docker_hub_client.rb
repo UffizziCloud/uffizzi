@@ -23,6 +23,15 @@ class UffizziCore::DockerHubClient
     nil
   end
 
+  def repository(namespace:, image:)
+    url = "#{BASE_URL}/v2/repositories/#{namespace}/#{image}"
+
+    response = connection.get(url) do |request|
+      request.headers['Authorization'] = "JWT #{jwt}"
+    end
+    RequestResult.new(status: response.status, result: response.body)
+  end
+
   def public_images(q:, page: 1, per_page: 25)
     url = "#{BASE_URL}/api/content/v1/products/search"
     params = { page_size: per_page, q: q, type: :image, page: page }

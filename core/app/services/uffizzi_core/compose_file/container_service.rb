@@ -55,23 +55,32 @@ class UffizziCore::ComposeFile::ContainerService
 
     def credential_for_container(container, credentials)
       if UffizziCore::ComposeFile::ContainerService.azure?(container)
-        detect_credential(credentials, :azure)
+        detect_credential(container, credentials, :azure)
       elsif UffizziCore::ComposeFile::ContainerService.docker_hub?(container)
-        detect_credential(credentials, :docker_hub)
+        detect_credential(container, credentials, :docker_hub)
       elsif UffizziCore::ComposeFile::ContainerService.google?(container)
-        detect_credential(credentials, :google)
+        detect_credential(container, ecredentials, :google)
       end
     end
 
-    def detect_credential(credentials, type)
+    def detect_credential(container, credentials, type)
       credential = credentials.detect do |item|
         item.send("#{type}?")
       end
 
-      error_message = "Invalid credential: #{type}"
-      raise UffizziCore::ComposeFile::CredentialError.new(error_message) if credential.nil?
+      return credential if image_available?(credential, container[:image], type)
 
-      credential
+      raise UffizziCore::ComposeFile::CredentialError.new(I18n.t('compose.unprocessable_image', value: type))
+    end
+
+    def image_available?(credential, image_data, type)
+      case type
+      when :docker_hub
+        UffizziCore::DockerHubService.image_available?(credential, image_data)
+      else
+        # TODO check image availability in other registry types
+        credential.present?
+      end
     end
   end
 end

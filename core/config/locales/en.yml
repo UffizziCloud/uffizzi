@@ -17,7 +17,7 @@ en:
     no_services: Service services has neither an image nor a build context specified. At least one must be provided.
     no_ingress: Service ingress has not been defined.
     invalid_image_value: Invalid image value '%{value}'
-    invalid_credential: Invalid credential '%{value}'
+    unprocessable_image: Invalid credential '%{value} or image does not exist'
     invalid_repo_type: Unsupported repo type
     repo_not_found: The specified repository doesn't exist '%{name}'
     ingress_port_not_specified: Ingress port not specified

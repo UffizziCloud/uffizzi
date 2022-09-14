@@ -33,4 +33,16 @@ module UffizziCore::DockerHubStubSupport
 
     stub_request(:post, uri).to_return(status: 201, body: data.to_json)
   end
+
+  def stub_dockerhub_repository(namespace, repo_name)
+    url = "#{API_URL}/repositories/#{namespace}/#{repo_name}"
+
+    stub_request(:get, url).to_return(status: 200)
+  end
+
+  def stub_dockerhub_private_repository(namespace, repo_name)
+    url = "#{API_URL}/repositories/#{namespace}/#{repo_name}"
+
+    stub_request(:get, url).to_return(status: 404)
+  end
 end
