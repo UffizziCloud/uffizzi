@@ -32,16 +32,11 @@ class UffizziCore::Api::Cli::V1::Projects::Deployments::ActivityItemsController 
 
     meta = meta(activity_items)
     activity_items = activity_items.map do |activity_item|
-      UffizziCore::Api::Cli::V1::Projects::Deployments::ActivityItemSerializer.new(activity_item)
-    end
-
-    if activity_items.any? { |item| item.state == UffizziCore::Event.state.failed }
-      return render json: { errors: { title: [I18n.t('deployment.invalid_state', state: deployment.state)] } },
-                    status: :unprocessable_entity
+      UffizziCore::Api::Cli::V1::Projects::Deployments::ActivityItemSerializer.new(activity_item).as_json
     end
 
     render json: {
-      activity_items: activity_items.map(&:as_json),
+      activity_items: activity_items,
       meta: meta,
     }
   end
