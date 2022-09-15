@@ -1,0 +1,9 @@
+services:
+  web:
+    image: nginx
+    volumes:
+      - ./share_dir:/var/share_dir
+
+x-uffizzi-ingress:
+  service: web
+  port: 80

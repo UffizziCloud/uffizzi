@@ -114,4 +114,58 @@ class UffizziCore::Api::Cli::V1::Projects::DeploymentsControllerTest < ActionCon
 
     assert_response :success
   end
+
+  test '#create - file with local host volume when compose file does not exist' do
+    Sidekiq::Worker.clear_all
+    Sidekiq::Testing.fake!
+
+    stub_dockerhub_login
+    stub_dockerhub_repository('library', 'nginx')
+    create(:credential, :docker_hub, account: @admin.organizational_account)
+    compose_file_content = File.read('test/fixtures/files/uffizzi-compose-with-host-volumes.yml')
+    encoded_compose_file_content = Base64.encode64(compose_file_content)
+    host_volume_content = Base64.encode64(File.binread('test/fixtures/files/file.tar.gz'))
+
+    compose_file = {
+      source: '/gem/tmp/dc.uffizzi-nginx.yaml',
+      path: '/gem/tmp/dc.uffizzi-nginx.yaml',
+      content: encoded_compose_file_content,
+    }
+
+    dependency = {
+      path: '/gem/tmp/share_dir',
+      source: './share_dir',
+      content: host_volume_content,
+      use_kind: UffizziCore::ComposeFile::DependenciesService::DEPENDENCY_VOLUME_USE_KIND,
+      is_file: false,
+    }
+
+    params = { project_slug: @project.slug, compose_file: compose_file, dependencies: [dependency] }
+
+    differences = {
+      -> { UffizziCore::Container.count } => 1,
+      -> { UffizziCore::ContainerHostVolumeFile.count } => 1,
+      -> { UffizziCore::HostVolumeFile.count } => 1,
+    }
+
+    assert_difference differences do
+      post :create, params: params, format: :json
+    end
+
+    assert_response :success
+
+    container = UffizziCore::Container.last
+    volume = container.volumes.last
+    container_host_volume_files = container.container_host_volume_files
+    host_volume_file = container_host_volume_files.last.host_volume_file
+
+    assert_equal container_host_volume_files.last.source_path, dependency[:source]
+    assert_equal host_volume_file.path, dependency[:path]
+    assert_equal host_volume_file.is_file, dependency[:is_file]
+    assert_equal host_volume_file.payload, Base64.decode64(dependency[:content])
+    assert_equal volume['source'], dependency[:source]
+
+    Sidekiq::Worker.clear_all
+    Sidekiq::Testing.inline!
+  end
 end
