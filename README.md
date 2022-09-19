@@ -21,7 +21,7 @@ Uffizzi is designed for full-stack web applications and containerized services, 
 
 - **👩‍💻 Developer-friendly** - Uffizzi is configured via Docker Compose, the same tool many teams use for local development.
 
-- **🪶 Lightweight** - Uffizzi test environments are isolated namespaces within a single cluster. This level of abstraction helps reduce a team's infrastructure footprint and associated overhead.
+- **🪶 Lightweight** - Uffizzi Preview Environments are isolated Pods/Namespaces deployed to a Kubernetes cluster. This level of abstraction helps reduce a team's infrastructure footprint and associated overhead.
 
 - **🔁 Event-driven** - Designed to integrate with any CI system, Uffizzi environments are created, updated, or deleted via triggering events, such as pull requests or new release tags. Uffizzi generates a secure HTTPS URL for each environment, which is continually refreshed in response to new events.
 
