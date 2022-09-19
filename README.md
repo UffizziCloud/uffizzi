@@ -1,18 +1,25 @@
 
-![banner](docs/images/banner.png)
+![github-banner](https://user-images.githubusercontent.com/7218230/191119628-4d39c65d-465f-4011-9370-d53d7b54d8cc.png)
+
 
 [![License](https://img.shields.io/badge/License-Apache%202.0-blue.svg)](https://opensource.org/licenses/Apache-2.0)
 
 ## What is Uffizzi?
 
-Uffizzi is a cloud-native REST API for managing lightweight, event-driven test environments on Kubernetes. It provides Development teams with an environments-as-a-service capability, while eliminating the need for Operations teams to configure and manage test infrastructure and tooling. 
+Uffizzi is a tool that improves development velocity by removing the bottleneck of a shared test environment, where buggy or conflicting commits from multiple developers often cause an environment to break. Uffizzi solves this problem by replacing your shared QA or Staging environment with on-demand Preview Environments for every pull request. These ephemeral environments enable teams to test the functionality of each branch in clean, production-like environments before merging. Uffizzi also facilitates test parallelization and helps shift testing to the left, where it's easier to catch and fix bugs. 
+
+Uffizzi provides an off-the-shelf, cross-platform solution that works with any git provider, CI platform, or container registry.
 
 ## Use cases
-Uffizzi is designed to integrate with any CI/CD platform as a step in your pipeline. Example use cases include rapidly creating PR environments, preview environments, release environments, demo environments, and staging environments. 
+Uffizzi is designed to integrate with any CI platform as a step in your pipeline. Example use cases include rapidly creating PR environments, preview environments, release environments, demo environments, debugging environments, and staging environments. 
+
+## What types of apps does Uffizzi support?
+
+Uffizzi is designed for full-stack web applications and containerized services, including APIs, backends, frontends, databases, and microservices. Currently, application configurations must be defined via Docker Compose. Support for Helm and other configuration formats are on our [public roadmap](https://github.com/orgs/UffizziCloud/projects/2/views/1?layout=board). See [Docker Compose for Uffizzi ](https://docs.uffizzi.com/references/compose-spec/) to learn more about supported syntax.
 
 ## Why Uffizzi?
 
-- **👩‍💻 Developer-friendly** - The Uffizzi API provides a simplified interface to Kubernetes, allowing you to define your application with Docker Compose.
+- **👩‍💻 Developer-friendly** - Uffizzi is configured via Docker Compose, the same tool many teams use for local development.
 
 - **🪶 Lightweight** - Uffizzi test environments are isolated namespaces within a single cluster. This level of abstraction helps reduce a team's infrastructure footprint and associated overhead.
 
