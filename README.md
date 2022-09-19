@@ -13,7 +13,7 @@ Uffizzi provides an off-the-shelf, cross-platform solution that works with any g
 ## Use cases
 Uffizzi is designed to integrate with any CI platform as a step in your pipeline. Example use cases include rapidly creating PR environments, preview environments, release environments, demo environments, debugging environments, and staging environments. 
 
-## What types of apps does Uffizzi support?
+## What types of apps are supported by Uffizzi?
 
 Uffizzi is designed for full-stack web applications and containerized services, including APIs, backends, frontends, databases, and microservices. Currently, application configurations must be defined via Docker Compose. Support for Helm and other configuration formats are on our [public roadmap](https://github.com/orgs/UffizziCloud/projects/2/views/1?layout=board). See [Docker Compose for Uffizzi ](https://docs.uffizzi.com/references/compose-spec/) to learn more about supported syntax.
 
@@ -23,7 +23,7 @@ Uffizzi is designed for full-stack web applications and containerized services, 
 
 - **🪶 Lightweight** - Uffizzi test environments are isolated namespaces within a single cluster. This level of abstraction helps reduce a team's infrastructure footprint and associated overhead.
 
-- **🔁 Event-driven** - Designed to integrate with any CI/CD system, Uffizzi environments are created, updated, or deleted via triggering events, such as pull requests or new release tags. Uffizzi generates a secure HTTPS URL for each environment, which is continually refreshed in response to new events.
+- **🔁 Event-driven** - Designed to integrate with any CI system, Uffizzi environments are created, updated, or deleted via triggering events, such as pull requests or new release tags. Uffizzi generates a secure HTTPS URL for each environment, which is continually refreshed in response to new events.
 
 - **🧼 Clean** - The ephemeral nature of Uffizzi test environments means your team can test new features or release candidates in clean, parallel environments before merging or promoting to production.
 
