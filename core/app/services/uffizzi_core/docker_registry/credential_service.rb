@@ -11,8 +11,8 @@ class UffizziCore::DockerRegistry::CredentialService
     def client(credential)
       params = {
         registry_url: credential.registry_url,
-        username: credentials.username,
-        password: credentials.password,
+        username: credential.username,
+        password: credential.password,
       }
 
       UffizziCore::DockerRegistryClient.new(params)
