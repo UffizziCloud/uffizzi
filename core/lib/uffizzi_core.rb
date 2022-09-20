@@ -25,6 +25,7 @@ require 'rswag/api'
 require 'rswag/ui'
 require 'sidekiq'
 require 'virtus'
+require 'faraday/follow_redirects'
 
 module UffizziCore
   mattr_accessor :dependencies, default: {

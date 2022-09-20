@@ -680,4 +680,39 @@ class UffizziCore::Api::Cli::V1::Projects::DeploymentsControllerTest < ActionCon
 
     assert_response :success
   end
+
+  test '#create - when compose file does not exist and use docker registry without auth' do
+    Sidekiq::Worker.clear_all
+    Sidekiq::Testing.fake!
+    stub_docker_registry_manifests('https://ttl.sh', 'abc', '1h')
+
+    compose_file_content = File.read('test/fixtures/files/uffizzi-compose-docker-registry-anonymous.yml')
+    encoded_compose_file_content = Base64.encode64(compose_file_content)
+
+    compose_file = {
+      source: '/gem/tmp/docker-compose.uffizzi.yaml',
+      path: '/gem/tmp/docker-compose.uffizzi.yaml',
+      content: encoded_compose_file_content,
+    }
+
+    params = {
+      project_slug: @project.slug,
+      compose_file: compose_file,
+      dependencies: [],
+      metadata: {},
+    }
+
+    differences = {
+      -> { UffizziCore::ComposeFile.temporary.count } => 1,
+      -> { UffizziCore::Template.with_creation_source(UffizziCore::Template.creation_source.compose_file).count } => 1,
+      -> { UffizziCore::Container.count } => 1,
+    }
+
+    assert_difference differences do
+      post :create, params: params, format: :json
+    end
+
+    Sidekiq::Worker.clear_all
+    Sidekiq::Testing.inline!
+  end
 end

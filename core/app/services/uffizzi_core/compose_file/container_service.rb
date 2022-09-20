@@ -29,9 +29,11 @@ class UffizziCore::ComposeFile::ContainerService
 
     def docker_registry?(container)
       registry_url = container.dig(:image, :registry_url)
+      return false if registry_url.nil?
+
       registry_domain_regexp = /(\w+\.\w{2,})(?::\d+)?\z/
       registry_domain = registry_url.match(registry_domain_regexp)&.to_a&.last
-      return false if registry_url.nil? || registry_domain.nil?
+      return false if registry_domain.nil?
 
       ['amazonaws.com', 'azurecr.io', 'gcr.io', 'ghcr.io'].exclude?(registry_domain)
     end
@@ -60,13 +62,13 @@ class UffizziCore::ComposeFile::ContainerService
         detect_credential(container, credentials, :docker_hub)
       elsif UffizziCore::ComposeFile::ContainerService.google?(container)
         detect_credential(container, credentials, :google)
+      else
+        detect_credential(container, credentials, :docker_registry)
       end
     end
 
     def detect_credential(container, credentials, type)
-      credential = credentials.detect do |item|
-        item.send("#{type}?")
-      end
+      credential = credentials.detect { |item| item.send("#{type}?") }
 
       return credential if image_available?(credential, container[:image], type)
 
@@ -77,6 +79,8 @@ class UffizziCore::ComposeFile::ContainerService
       case type
       when :docker_hub
         UffizziCore::DockerHubService.image_available?(credential, image_data)
+      when :docker_registry
+        UffizziCore::DockerRegistryService.image_available?(credential, image_data)
       else
         # TODO check image availability in other registry types
         credential.present?
