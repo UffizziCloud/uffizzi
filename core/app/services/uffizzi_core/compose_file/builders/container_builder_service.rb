@@ -31,7 +31,7 @@ class UffizziCore::ComposeFile::Builders::ContainerBuilderService
     {
       tag: tag(image_data, repo_attributes),
       port: port(container_name, ingress_data),
-      image: image(container_data, image_data, build_data),
+      image: image(container_data, image_data, build_data, credentials),
       public: is_ingress,
       entrypoint: entrypoint(container_data),
       command: command(container_data),
@@ -96,20 +96,23 @@ class UffizziCore::ComposeFile::Builders::ContainerBuilderService
     ingress[:port]
   end
 
-  def image(container_data, image_data, build_data)
+  def image(container_data, image_data, build_data, credentials)
     if image_data.present?
-      image_name(container_data, image_data)
+      image_name(container_data, image_data, credentials)
     else
       "#{build_data[:account_name]}/#{build_data[:repository_name]}"
     end
   end
 
-  def image_name(container_data, image_data)
+  def image_name(container_data, image_data, credentials)
     if image_data[:registry_url].present? &&
         !UffizziCore::ComposeFile::ContainerService.google?(container_data) &&
         !UffizziCore::ComposeFile::ContainerService.github_container_registry?(container_data) &&
         !UffizziCore::ComposeFile::ContainerService.docker_registry?(container_data)
       image_data[:name]
+    elsif UffizziCore::ComposeFile::ContainerService.docker_registry?(container_data) &&
+        credential_by_scope(credentials, :docker_registry).nil?
+      [image_data[:registry_url], image_data[:namespace], image_data[:name]].compact.join('/')
     else
       "#{image_data[:namespace]}/#{image_data[:name]}"
     end
@@ -205,7 +208,7 @@ class UffizziCore::ComposeFile::Builders::ContainerBuilderService
   end
 
   def build_docker_repo_attributes(image_data, credentials, scope, repo_type)
-    credential = credentials.send(scope).first
+    credential = credential_by_scope(credentials, scope)
     if UffizziCore::ComposeFile::ContainerService.image_available?(credential, image_data, scope)
       return docker_builder(repo_type).build_attributes(image_data)
     end
@@ -233,5 +236,9 @@ class UffizziCore::ComposeFile::Builders::ContainerBuilderService
 
   def variables_builder
     @variables_builder ||= UffizziCore::ComposeFile::Builders::VariablesBuilderService.new(project)
+  end
+
+  def credential_by_scope(credentials, scope)
+    credentials.send(scope).first
   end
 end

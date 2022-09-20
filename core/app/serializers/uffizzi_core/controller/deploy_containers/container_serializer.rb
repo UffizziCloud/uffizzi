@@ -32,9 +32,7 @@ class UffizziCore::Controller::DeployContainers::ContainerSerializer < UffizziCo
       UffizziCore::Repo::GithubContainerRegistry.name,
       UffizziCore::Repo::DockerRegistry.name
 
-      credential = UffizziCore::RepoService.credential(repo)
-      registry_host = URI.parse(credential.registry_url).host
-      "#{registry_host}/#{object.image}"
+      build_registry_image(repo)
     else
       object.image
     end
@@ -64,5 +62,16 @@ class UffizziCore::Controller::DeployContainers::ContainerSerializer < UffizziCo
     end
 
     object.healthcheck.merge('test' => new_command)
+  end
+
+  private
+
+  def build_registry_image(repo)
+    credential = UffizziCore::RepoService.credential(repo)
+    return object.image if credential.blank?
+
+    registry_host = URI.parse(credential.registry_url).host
+
+    "#{registry_host}/#{object.image}"
   end
 end
