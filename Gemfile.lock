@@ -1,7 +1,7 @@
 PATH
   remote: core
   specs:
-    uffizzi_core (1.0.3)
+    uffizzi_core (1.1.0)
       aasm
       actionpack (~> 6.1.0)
       active_model_serializers
