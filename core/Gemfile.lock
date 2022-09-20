@@ -14,6 +14,7 @@ PATH
       dotenv
       enumerize
       faraday
+      faraday-follow_redirects
       faraday_curl
       faraday_middleware
       hashie
@@ -203,6 +204,8 @@ GEM
     faraday-em_http (1.0.0)
     faraday-em_synchrony (1.0.0)
     faraday-excon (1.1.0)
+    faraday-follow_redirects (0.3.0)
+      faraday (>= 1, < 3)
     faraday-httpclient (1.0.1)
     faraday-multipart (1.0.4)
       multipart-post (~> 2)
