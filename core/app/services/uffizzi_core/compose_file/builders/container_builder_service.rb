@@ -111,7 +111,7 @@ class UffizziCore::ComposeFile::Builders::ContainerBuilderService
         !UffizziCore::ComposeFile::ContainerService.docker_registry?(container_data)
       image_data[:name]
     elsif UffizziCore::ComposeFile::ContainerService.docker_registry?(container_data) &&
-        credential_by_scope(credentials, :docker_registry).blank?
+        credential_by_scope(credentials, :docker_registry).nil?
       [image_data[:registry_url], image_data[:namespace], image_data[:name]].compact.join('/')
     else
       "#{image_data[:namespace]}/#{image_data[:name]}"

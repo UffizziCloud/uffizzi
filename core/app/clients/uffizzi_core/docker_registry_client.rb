@@ -11,8 +11,9 @@ class UffizziCore::DockerRegistryClient
     response.status == 200
   end
 
-  def manifests(image:, tag:)
-    url = "/v2/#{image}/manifests/#{tag}"
+  def manifests(image:, tag:, namespace: nil)
+    full_image = [namespace, image].compact.join('/')
+    url = "/v2/#{full_image}/manifests/#{tag}"
     response = @connection.get(url)
 
     RequestResult.new(status: response.status, result: response.body)
