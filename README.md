@@ -6,12 +6,15 @@
 
 ## What is Uffizzi?
 
-Uffizzi is a tool that improves development velocity by removing the bottleneck of a shared test environment, where buggy or conflicting commits from multiple developers often cause an environment to break. Uffizzi solves this problem by replacing your shared QA or Staging environment with on-demand Preview Environments for every pull request. These ephemeral environments enable teams to test the functionality of each branch in clean, production-like environments before merging. Uffizzi also facilitates test parallelization and helps shift testing to the left, where it's easier to catch and fix bugs. 
+Uffizzi is a platform that let's you preview pull requests before merging. Create on-demand Preview Environments for APIs, frontends, backends, databases, and microservices. Each Preview Environment gets a secure HTTPS URL that is continually refreshed when you push new commits. Uffizzi also handles clean up, so your environments last only as long as you need them.  
 
-Uffizzi provides an off-the-shelf, cross-platform solution that works with any git provider, CI platform, or container registry.
+Uffizzi is an open-source, off-the-shelf, cross-platform solution that works with any version control system, container registry, or CI platform.
 
 ## Use cases
+
 Uffizzi is designed to integrate with any CI platform as a step in your pipeline. Example use cases include rapidly creating PR environments, preview environments, release environments, demo environments, debugging environments, and staging environments. 
+
+Uffizzi is a tool that improves development velocity by removing the bottleneck of a shared test environment, where buggy or conflicting commits from multiple developers often cause an environment to break. Uffizzi Preview Environments enable teams to test the functionality of each branch in clean, production-like environments before merging. Uffizzi also facilitates test parallelization and helps shift testing to the left, where it's easier to catch and fix bugs. 
 
 ## What types of apps are supported by Uffizzi?
 
