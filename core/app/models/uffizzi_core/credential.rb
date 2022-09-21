@@ -6,11 +6,12 @@ class UffizziCore::Credential < UffizziCore::ApplicationRecord
 
   enumerize :type,
             in: [
-              UffizziCore::Credential::GithubContainerRegistry.name,
+              UffizziCore::Credential::Amazon.name,
+              UffizziCore::Credential::Azure.name,
               UffizziCore::Credential::DockerHub.name,
               UffizziCore::Credential::DockerRegistry.name,
-              UffizziCore::Credential::Azure.name,
+              UffizziCore::Credential::Github.name,
+              UffizziCore::Credential::GithubContainerRegistry.name,
               UffizziCore::Credential::Google.name,
-              UffizziCore::Credential::Amazon.name,
             ], i18n_scope: ['enumerize.credential.type']
 end
