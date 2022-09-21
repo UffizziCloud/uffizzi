@@ -9,22 +9,9 @@ class UffizziCore::RepoService
     end
 
     def credential(repo)
+      container_registry_service = UffizziCore::ContainerRegistryService.init_by_subclass(repo.type)
       credentials = repo.project.account.credentials
-
-      case repo.type
-      when UffizziCore::Repo::GithubContainerRegistry.name
-        credentials.github_container_registry.first
-      when UffizziCore::Repo::DockerHub.name
-        credentials.docker_hub.first
-      when UffizziCore::Repo::DockerRegistry.name
-        credentials.docker_registry.first
-      when UffizziCore::Repo::Azure.name
-        credentials.azure.first
-      when UffizziCore::Repo::Google.name
-        credentials.google.first
-      when UffizziCore::Repo::Amazon.name
-        credentials.amazon.first
-      end
+      container_registry_service.credential(credentials)
     end
 
     def image_name(repo)

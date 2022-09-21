@@ -112,7 +112,7 @@ class UffizziCore::Api::Cli::V1::Accounts::CredentialsControllerTest < ActionCon
     attributes = attributes_for(:credential, :amazon)
     params = { account_id: @account.id, credential: attributes }
 
-    UffizziCore::Amazon::CredentialService.expects(:credential_correct?).at_least(1).returns(true)
+    UffizziCore::ContainerRegistry::AmazonService.expects(:credential_correct?).at_least(1).returns(true)
 
     differences = {
       -> { UffizziCore::Credential.count } => 1,

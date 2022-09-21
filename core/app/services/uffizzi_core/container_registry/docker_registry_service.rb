@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-class UffizziCore::DockerRegistryService
+class UffizziCore::ContainerRegistry::DockerRegistryService
   class << self
     def image_available?(credential, image_data)
       client_params = build_client_params(credential, image_data)
@@ -10,7 +10,21 @@ class UffizziCore::DockerRegistryService
       response.status < 400
     end
 
+    def credential_correct?(credential)
+      client(credential).authenticated?
+    end
+
     private
+
+    def client(credential)
+      params = {
+        registry_url: credential.registry_url,
+        username: credential.username,
+        password: credential.password,
+      }
+
+      UffizziCore::DockerRegistryClient.new(params)
+    end
 
     def build_client_params(credential, image_data)
       registry_url = credential&.registry_url || image_data[:registry_url]

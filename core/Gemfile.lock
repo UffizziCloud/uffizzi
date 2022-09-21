@@ -227,6 +227,7 @@ GEM
     i18n (1.10.0)
       concurrent-ruby (~> 1.0)
     ice_nine (0.11.2)
+    iri (0.5.1)
     jmespath (1.6.1)
     jsonapi-renderer (0.2.2)
     jwt (2.5.0)
@@ -382,6 +383,7 @@ DEPENDENCIES
   factory_bot
   faker
   hash_diff (~> 1.1)
+  iri
   minitest
   minitest-hooks
   minitest-power_assert

@@ -19,5 +19,21 @@ module UffizziCore::Concerns::Models::Template
 
     validates :name, presence: true
     validates :name, uniqueness: { scope: :project }, if: -> { compose_file.blank? || compose_file.kind.main? }
+
+    def valid_containers_memory_limit?
+      containers_attributes = payload['containers_attributes']
+      container_memory_limit = project.account.container_memory_limit
+      return true if container_memory_limit.nil?
+
+      containers_attributes.all? { |container| container['memory_limit'].to_i <= container_memory_limit }
+    end
+
+    def valid_containers_memory_request?
+      containers_attributes = payload['containers_attributes']
+      container_memory_limit = project.account.container_memory_limit
+      return true if container_memory_limit.nil?
+
+      containers_attributes.all? { |container| container['memory_request'].to_i <= container_memory_limit }
+    end
   end
 end
