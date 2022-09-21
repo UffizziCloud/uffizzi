@@ -213,7 +213,6 @@ GEM
       faraday (>= 0.9.0)
     faraday_middleware (1.2.0)
       faraday (~> 1.0)
-    ffi (1.15.5)
     globalid (1.0.0)
       activesupport (>= 5.0)
     hashie (5.0.0)
@@ -237,9 +236,6 @@ GEM
       activerecord
       kaminari-core (= 1.2.2)
     kaminari-core (1.2.2)
-    listen (3.7.1)
-      rb-fsevent (~> 0.10, >= 0.10.3)
-      rb-inotify (~> 0.9, >= 0.9.10)
     loofah (2.15.0)
       crass (~> 1.0.2)
       nokogiri (>= 1.5.9)
@@ -307,9 +303,6 @@ GEM
       activerecord (>= 6.1.5)
       activesupport (>= 6.1.5)
       i18n
-    rb-fsevent (0.11.1)
-    rb-inotify (0.10.1)
-      ffi (~> 1.0)
     redis (4.6.0)
     regexp_parser (2.2.1)
     responders (3.0.1)
@@ -383,7 +376,6 @@ DEPENDENCIES
   byebug
   config
   health_check
-  listen (~> 3.2)
   pg (>= 0.18, < 2.0)
   puma (~> 4.1)
   rack-cors

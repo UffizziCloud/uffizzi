@@ -32,7 +32,7 @@ RUN bundle install --jobs 5
 
 COPY . $RAILS_ROOT
 
-ENV PATH=$RAILS_ROOT/bin:${PATH}
+ENV PATH $RAILS_ROOT/bin:$PATH
 
 EXPOSE 7000
 

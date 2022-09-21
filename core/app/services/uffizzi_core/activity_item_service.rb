@@ -37,17 +37,8 @@ class UffizziCore::ActivityItemService
       container = activity_item.container
       repo = container.repo
       credential = UffizziCore::RepoService.credential(repo)
-
-      digest = case repo.type
-               when UffizziCore::Repo::DockerHub.name
-                 UffizziCore::DockerHubService.digest(credential, activity_item.image, activity_item.tag)
-               when UffizziCore::Repo::Azure.name
-                 UffizziCore::AzureService.digest(credential, activity_item.image, activity_item.tag)
-               when UffizziCore::Repo::Google.name
-                 UffizziCore::GoogleService.digest(credential, activity_item.image, activity_item.tag)
-               when UffizziCore::Repo::Amazon.name
-                 UffizziCore::AmazonService.digest(credential, activity_item.image, activity_item.tag)
-      end
+      container_registry_service = UffizziCore::ContainerRegistryService.init_by_subclass(repo.type)
+      digest = container_registry_service.digest(credential, activity_item.image, activity_item.tag)
 
       activity_item.update!(digest: digest)
 

@@ -29,6 +29,7 @@ class UffizziCore::Api::Cli::V1::ComposeFile::TemplateForm
     )
   rescue StandardError => e
     self.template_build_error = e
+    raise e
   end
 
   private
