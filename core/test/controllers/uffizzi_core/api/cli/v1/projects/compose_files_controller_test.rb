@@ -127,7 +127,6 @@ class UffizziCore::Api::Cli::V1::Projects::ComposeFilesControllerTest < ActionCo
     sign_in @admin
 
     project = create(:project, :with_members, account: @account, members: [@admin])
-    create(:credential, :github, account: @account, provider_ref: generate(:number))
     create(:credential, :amazon, account: @account)
 
     base_attributes = attributes_for(:compose_file).slice(:source, :path)
@@ -157,7 +156,6 @@ class UffizziCore::Api::Cli::V1::Projects::ComposeFilesControllerTest < ActionCo
     sign_in @admin
 
     project = create(:project, :with_members, account: @account, members: [@admin])
-    create(:credential, :github, account: @account, provider_ref: generate(:number))
     create(:credential, :github_container_registry, account: @account)
     create(:credential, :docker_hub, account: @account)
 

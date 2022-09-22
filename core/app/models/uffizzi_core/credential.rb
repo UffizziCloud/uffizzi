@@ -10,7 +10,6 @@ class UffizziCore::Credential < UffizziCore::ApplicationRecord
               UffizziCore::Credential::Azure.name,
               UffizziCore::Credential::DockerHub.name,
               UffizziCore::Credential::DockerRegistry.name,
-              UffizziCore::Credential::Github.name,
               UffizziCore::Credential::GithubContainerRegistry.name,
               UffizziCore::Credential::Google.name,
             ], i18n_scope: ['enumerize.credential.type']
