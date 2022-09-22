@@ -11,10 +11,6 @@ FactoryBot.define do
       type { UffizziCore::Credential::DockerHub.name }
     end
 
-    trait :github do
-      type { UffizziCore::Credential::Github.name }
-    end
-
     trait :azure do
       type { UffizziCore::Credential::Azure.name }
     end
