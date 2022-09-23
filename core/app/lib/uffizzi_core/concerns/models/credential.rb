@@ -3,11 +3,23 @@
 module UffizziCore::Concerns::Models::Credential
   extend ActiveSupport::Concern
 
+  # rubocop:disable Metrics/BlockLength
   included do
     include AASM
     include UffizziCore::CredentialRepo
+    extend Enumerize
 
     self.table_name = UffizziCore.table_names[:credentials]
+
+    enumerize :type,
+              in: [
+                UffizziCore::Credential::Amazon.name,
+                UffizziCore::Credential::Azure.name,
+                UffizziCore::Credential::DockerHub.name,
+                UffizziCore::Credential::DockerRegistry.name,
+                UffizziCore::Credential::GithubContainerRegistry.name,
+                UffizziCore::Credential::Google.name,
+              ], i18n_scope: ['enumerize.credential.type']
 
     belongs_to :account
 
@@ -70,4 +82,5 @@ module UffizziCore::Concerns::Models::Credential
       end
     end
   end
+  # rubocop:enable Metrics/BlockLength
 end
