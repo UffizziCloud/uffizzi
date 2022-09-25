@@ -11,15 +11,17 @@ module UffizziCore::Concerns::Models::Credential
 
     self.table_name = UffizziCore.table_names[:credentials]
 
-    enumerize :type,
-              in: [
+    const_set(:CREDENTIAL_TYPES, [
                 UffizziCore::Credential::Amazon.name,
                 UffizziCore::Credential::Azure.name,
                 UffizziCore::Credential::DockerHub.name,
                 UffizziCore::Credential::DockerRegistry.name,
                 UffizziCore::Credential::GithubContainerRegistry.name,
                 UffizziCore::Credential::Google.name,
-              ], i18n_scope: ['enumerize.credential.type']
+              ])
+
+    enumerize :type,
+              in: self::CREDENTIAL_TYPES, i18n_scope: ['enumerize.credential.type']
 
     belongs_to :account
 
