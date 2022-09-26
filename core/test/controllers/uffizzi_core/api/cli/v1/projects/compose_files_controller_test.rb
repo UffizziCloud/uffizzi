@@ -71,12 +71,7 @@ class UffizziCore::Api::Cli::V1::Projects::ComposeFilesControllerTest < ActionCo
       content: json_fixture('files/compose_dependencies/configs/vote_conf.json')[:content],
     }
 
-    stub_dockerhub_repository('library', 'redis')
-    stub_dockerhub_repository('library', 'postgres')
-    stub_dockerhub_repository('library', 'nginx')
-    stub_dockerhub_repository('uffizzicloud', 'example-vote')
-    stub_dockerhub_repository('uffizzicloud', 'example-worker')
-    stub_dockerhub_repository('uffizzicloud', 'example-result')
+    stub_dockerhub_repository_any
 
     params = {
       project_slug: @project.slug,
@@ -102,7 +97,7 @@ class UffizziCore::Api::Cli::V1::Projects::ComposeFilesControllerTest < ActionCo
     base_attributes = attributes_for(:compose_file).slice(:source, :path)
     file_content = File.read('test/fixtures/files/test-compose-success-without-dependencies.yml')
     encoded_content = Base64.encode64(file_content)
-    stub_dockerhub_repository('library', 'redis')
+    stub_dockerhub_repository_any
     compose_file_attributes = base_attributes.merge(content: encoded_content, repository_id: nil)
 
     params = {
@@ -188,8 +183,7 @@ class UffizziCore::Api::Cli::V1::Projects::ComposeFilesControllerTest < ActionCo
     @compose_file.destroy!
     base_attributes = attributes_for(:compose_file).slice(:source, :path)
     file_content = File.read('test/fixtures/files/compose_files/compose_with_volumes.yml')
-    stub_dockerhub_repository('library', 'nginx')
-    stub_dockerhub_repository('library', 'web_service')
+    stub_dockerhub_repository_any
     encoded_content = Base64.encode64(file_content)
     compose_file_attributes = base_attributes.merge(content: encoded_content, repository_id: nil)
 
@@ -273,5 +267,63 @@ class UffizziCore::Api::Cli::V1::Projects::ComposeFilesControllerTest < ActionCo
     end
 
     assert_response :success
+  end
+
+  test '#create - compose file with additional subdomains' do
+    sign_in @admin
+
+    @compose_file.destroy!
+    base_attributes = attributes_for(:compose_file).slice(:source, :path)
+    file_content = File.read('test/fixtures/files/compose_files/compose_with_additional_subdomains.yml')
+    stub_dockerhub_repository_any
+    encoded_content = Base64.encode64(file_content)
+    compose_file_attributes = base_attributes.merge(content: encoded_content, repository_id: nil)
+
+    params = {
+      project_slug: @project.slug,
+      compose_file: compose_file_attributes,
+      dependencies: [],
+    }
+
+    differences = {
+      -> { UffizziCore::ComposeFile.main.count } => 1,
+      -> { UffizziCore::Template.with_creation_source(UffizziCore::Template.creation_source.compose_file).count } => 1,
+    }
+
+    assert_difference differences do
+      post :create, params: params, format: :json
+    end
+
+    assert_response :success
+
+    container_keys = [:image, :tag, :service_name, :port, :additional_subdomains, :public]
+    actual_template_containers_attributes = UffizziCore::Template.last
+      .payload
+      .deep_symbolize_keys[:containers_attributes]
+      .map { |c| c.slice(*container_keys) }
+
+    expected_app_container_attributes = {
+      image: 'uffizzicloud/app',
+      tag: 'latest',
+      service_name: 'app',
+      port: nil,
+      additional_subdomains: [],
+      public: false,
+    }
+
+    expected_nginx_container_attributes = {
+      image: 'library/nginx',
+      tag: '1.32',
+      service_name: 'nginx',
+      port: 80,
+      additional_subdomains: ['example', 'example-hostname'],
+      public: true,
+    }
+
+    actual_template_app_container_attributes = actual_template_containers_attributes.detect { |c| c[:service_name] == 'app' }
+    actual_template_nginx_container_attributes = actual_template_containers_attributes.detect { |c| c[:service_name] == 'nginx' }
+
+    assert_equal expected_app_container_attributes, actual_template_app_container_attributes
+    assert_equal expected_nginx_container_attributes, actual_template_nginx_container_attributes
   end
 end

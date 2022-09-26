@@ -142,6 +142,6 @@ class UffizziCore::ManageActivityItemsService
   end
 
   def deployment_network_connectivity
-    namespace_data&.metadata&.annotations&.network_connectivity || '{}'
+    namespace_data&.metadata&.annotations&.network_connectivity.presence || '{}'
   end
 end

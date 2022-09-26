@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2022_08_05_164628) do
+ActiveRecord::Schema.define(version: 2022_09_27_113647) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -129,6 +129,16 @@ ActiveRecord::Schema.define(version: 2022_08_05_164628) do
     t.index ["container_id"], name: "index_container_config_files_on_container_id"
   end
 
+  create_table "uffizzi_core_container_host_volume_files", force: :cascade do |t|
+    t.string "source_path"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.bigint "container_id", null: false
+    t.bigint "host_volume_file_id", null: false
+    t.index ["container_id"], name: "uf_core_cont_h_v_on_cont"
+    t.index ["host_volume_file_id"], name: "uf_core_cont_h_v_on_h_v_file"
+  end
+
   create_table "uffizzi_core_containers", force: :cascade do |t|
     t.string "image"
     t.string "tag"
@@ -153,6 +163,7 @@ ActiveRecord::Schema.define(version: 2022_08_05_164628) do
     t.string "service_name"
     t.jsonb "healthcheck"
     t.jsonb "volumes"
+    t.string "additional_subdomains", default: [], array: true
     t.index ["deployment_id"], name: "index_containers_on_deployment_id"
     t.index ["repo_id"], name: "index_containers_on_repo_id"
   end
@@ -211,6 +222,20 @@ ActiveRecord::Schema.define(version: 2022_08_05_164628) do
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
     t.index ["activity_item_id"], name: "index_events_on_activity_item_id"
+  end
+
+  create_table "uffizzi_core_host_volume_files", force: :cascade do |t|
+    t.string "source"
+    t.string "path"
+    t.boolean "is_file"
+    t.binary "payload"
+    t.bigint "added_by_id"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.bigint "project_id", null: false
+    t.bigint "compose_file_id", null: false
+    t.index ["compose_file_id"], name: "index_host_volume_file_on_compose_file_id"
+    t.index ["project_id"], name: "index_host_volume_file_on_project_id"
   end
 
   create_table "uffizzi_core_invitations", force: :cascade do |t|
@@ -399,4 +424,8 @@ ActiveRecord::Schema.define(version: 2022_08_05_164628) do
     t.index ["user_id"], name: "index_users_roles_on_user_id"
   end
 
+  add_foreign_key "uffizzi_core_container_host_volume_files", "uffizzi_core_containers", column: "container_id"
+  add_foreign_key "uffizzi_core_container_host_volume_files", "uffizzi_core_host_volume_files", column: "host_volume_file_id"
+  add_foreign_key "uffizzi_core_host_volume_files", "uffizzi_core_compose_files", column: "compose_file_id"
+  add_foreign_key "uffizzi_core_host_volume_files", "uffizzi_core_projects", column: "project_id"
 end

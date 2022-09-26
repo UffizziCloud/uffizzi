@@ -10,6 +10,7 @@ services:
     volumes:
       - share_data:/var/cache
       - share_data_2:/var/cache_2:ro
+      - /var/some_dir
 
 configs:
   vote_conf:
@@ -21,6 +22,10 @@ volumes:
   share_data:
   share_data_2:
 
-x-uffizzi-ingress:
-  service: hello-world
-  port: 80
+x-uffizzi:
+  ingress:
+    service: hello-world
+    port: 80
+    additional_subdomains:
+      - "example"
+      - "example-hostname"

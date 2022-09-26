@@ -1,0 +1,13 @@
+services:
+  app:
+    image: uffizzicloud/app
+
+  nginx:
+    image: nginx:1.32
+
+x-uffizzi-ingress:
+  service: nginx
+  port: 80
+  additional_subdomains:
+    - 'example'
+    - 'example-hostname'

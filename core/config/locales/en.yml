@@ -68,6 +68,8 @@ en:
     named_volume_not_exists: Named volume '%{source_path}:%{target_path}' is used in service '%{service_name}' but no declaration was found in the volumes section.
     invalid_volume_destination: Invalid volume specification '%{spec}' destination can't be '/'
     required_start_commands: "When 'test' is a list the first item must be one of: '%{available_commands}'"
+    invalid_additional_subdomain: Invalid additional subdomain '%{subdomain}'. Subdomain can contain only letters, digits, -
+    subdomain_length_limit_exceed: Subdomain '%{subdomain}' exceeds the maximum length of '%{max_length}'
   secrets:
     duplicates_exists: Secret with key %{secrets} already exist.
     invalid_key_length: A secret key must be no longer than 256 characters.
