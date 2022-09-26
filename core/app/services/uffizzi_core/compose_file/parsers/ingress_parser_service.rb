@@ -7,10 +7,12 @@ class UffizziCore::ComposeFile::Parsers::IngressParserService
 
       container_name = container_name(ingress_data, services_data)
       port = port(ingress_data)
+      additional_subdomains = additional_subdomains(ingress_data)
 
       {
         container_name: container_name,
         port: port,
+        additional_subdomains: additional_subdomains,
       }
     end
 
@@ -46,6 +48,28 @@ class UffizziCore::ComposeFile::Parsers::IngressParserService
       end
 
       port
+    end
+
+    def additional_subdomains(ingress_data)
+      return [] if ingress_data['additional_subdomains'].blank?
+
+      ingress_data['additional_subdomains'].each do |subdomain|
+        unless valid_subdomain?(subdomain)
+          raise UffizziCore::ComposeFile::ParseError, I18n.t('compose.invalid_additional_subdomain', subdomain: subdomain)
+        end
+
+        subdomain_max_length = Settings.deployment.subdomain.length_limit
+
+        if subdomain.length > subdomain_max_length
+          raise UffizziCore::ComposeFile::ParseError,
+                I18n.t('compose.subdomain_length_limit_exceed', max_length: subdomain_max_length,
+                                                                subdomain: subdomain)
+        end
+      end
+    end
+
+    def valid_subdomain?(subdomain)
+      !!subdomain.match(/^[a-zA-Z0-9\-]*$/) # subdomain should contain only letters, digits, -
     end
   end
 end

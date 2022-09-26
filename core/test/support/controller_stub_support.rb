@@ -66,4 +66,15 @@ module UffizziCore::ControllerStubSupport
 
     stub_request(:get, uri).to_return(status: 200, body: data.to_json, headers: { 'Content-Type' => 'application/json' })
   end
+
+  def stub_deploy_containers_request_with_body(deployment, body)
+    uri = "#{Settings.controller.url}/deployments/#{deployment.id}/containers"
+
+    stub_request(:post, uri).with do |req|
+      actual_body = JSON.parse(req.body).deep_symbolize_keys.deep_sort
+      expected_body = body.deep_symbolize_keys.deep_sort
+
+      actual_body == expected_body
+    end
+  end
 end
