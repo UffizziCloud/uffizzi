@@ -19,6 +19,7 @@ class UffizziCore::Api::Cli::V1::Template::CreateForm < UffizziCore::Template
              :service_name,
              :name,
              { variables: [:name, :value],
+               additional_subdomains: [],
                secret_variables: [:name, :value],
                volumes: [:source, :target, :type, :read_only],
                healthcheck: [:test, :interval, :timeout, :retries, :start_period, :disable, { test: [] }],

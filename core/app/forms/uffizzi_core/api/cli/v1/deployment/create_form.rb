@@ -18,6 +18,7 @@ class UffizziCore::Api::Cli::V1::Deployment::CreateForm < UffizziCore::Deploymen
            :receive_incoming_requests,
            :continuously_deploy,
            { variables: [:name, :value],
+             additional_subdomains: [],
              secret_variables: [:name, :value],
              volumes: [:source, :target, :type, :read_only],
              healthcheck: [:test, :interval, :timeout, :retries, :start_period, :disable, { test: [] }],

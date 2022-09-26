@@ -299,7 +299,7 @@ class UffizziCore::Api::Cli::V1::Projects::DeploymentsControllerTest < ActionCon
     @deployment.update!(compose_file: compose_file)
     encoded_content = Base64.encode64(file_content)
     compose_file_attributes = attributes_for(:compose_file, :temporary, project: @project, added_by: @admin, content: encoded_content)
-    stub_dockerhub_repository('library', 'redis')
+    stub_dockerhub_repository_any
 
     params = {
       project_slug: @project.slug,
@@ -312,7 +312,7 @@ class UffizziCore::Api::Cli::V1::Projects::DeploymentsControllerTest < ActionCon
     differences = {
       -> { UffizziCore::ComposeFile.temporary.count } => 1,
       -> { UffizziCore::Template.with_creation_source(UffizziCore::Template.creation_source.compose_file).count } => 1,
-      -> { @deployment.containers.count } => 1,
+      -> { @deployment.containers.count } => 3,
     }
 
     assert_difference differences do
@@ -320,6 +320,55 @@ class UffizziCore::Api::Cli::V1::Projects::DeploymentsControllerTest < ActionCon
     end
 
     assert_response :success
+
+    container_keys = [:image, :tag, :service_name, :port, :additional_subdomains, :public]
+    actual_containers_attributes = UffizziCore::Container.all.map { |c| c.attributes.deep_symbolize_keys.slice(*container_keys) }
+    actual_template_containers_attributes = UffizziCore::Template.last
+      .payload
+      .deep_symbolize_keys[:containers_attributes]
+      .map { |c| c.slice(*container_keys) }
+
+    actual_app_container_attributes = actual_containers_attributes.detect { |c| c[:service_name] == 'app' }
+    actual_db_container_attributes = actual_containers_attributes.detect { |c| c[:service_name] == 'db' }
+    actual_nginx_container_attributes = actual_containers_attributes.detect { |c| c[:service_name] == 'nginx' }
+
+    actual_template_app_container_attributes = actual_template_containers_attributes.detect { |c| c[:service_name] == 'app' }
+    actual_template_db_container_attributes = actual_template_containers_attributes.detect { |c| c[:service_name] == 'db' }
+    actual_template_nginx_container_attributes = actual_template_containers_attributes.detect { |c| c[:service_name] == 'nginx' }
+
+    expected_app_container_attributes = {
+      image: 'uffizzicloud/app',
+      tag: 'latest',
+      service_name: 'app',
+      port: nil,
+      additional_subdomains: [],
+      public: false,
+    }
+    expected_db_container_attributes = {
+      image: 'library/postgres',
+      tag: 'latest',
+      service_name: 'db',
+      port: nil,
+      additional_subdomains: [],
+      public: false,
+    }
+    expected_nginx_container_attributes = {
+      image: 'library/nginx',
+      tag: '1.32',
+      service_name: 'nginx',
+      port: 80,
+      additional_subdomains: ['example', 'example-hostname'],
+      public: true,
+    }
+
+    assert_equal expected_app_container_attributes, actual_app_container_attributes
+    assert_equal expected_app_container_attributes, actual_template_app_container_attributes
+
+    assert_equal expected_db_container_attributes, actual_db_container_attributes
+    assert_equal expected_db_container_attributes, actual_template_db_container_attributes
+
+    assert_equal expected_nginx_container_attributes, actual_nginx_container_attributes
+    assert_equal expected_nginx_container_attributes, actual_template_nginx_container_attributes
   end
 
   test '#update - update deployment with metadata' do
@@ -329,7 +378,7 @@ class UffizziCore::Api::Cli::V1::Projects::DeploymentsControllerTest < ActionCon
     @deployment.update!(compose_file: compose_file)
     encoded_content = Base64.encode64(file_content)
     compose_file_attributes = attributes_for(:compose_file, :temporary, project: @project, added_by: @admin, content: encoded_content)
-    2.times { stub_dockerhub_repository('library', 'redis') }
+    2.times { stub_dockerhub_repository_any }
 
     params = {
       project_slug: @project.slug,
@@ -352,7 +401,7 @@ class UffizziCore::Api::Cli::V1::Projects::DeploymentsControllerTest < ActionCon
     @deployment.update!(compose_file: compose_file)
     encoded_content = Base64.encode64(file_content)
     compose_file_attributes = attributes_for(:compose_file, :temporary, project: @project, added_by: @admin, content: encoded_content)
-    stub_dockerhub_repository('library', 'redis')
+    stub_dockerhub_repository_any
 
     params = {
       project_slug: @project.slug,
@@ -365,7 +414,7 @@ class UffizziCore::Api::Cli::V1::Projects::DeploymentsControllerTest < ActionCon
     differences = {
       -> { UffizziCore::ComposeFile.temporary.count } => 0,
       -> { UffizziCore::Template.with_creation_source(UffizziCore::Template.creation_source.compose_file).count } => 0,
-      -> { @deployment.containers.count } => 1,
+      -> { @deployment.containers.count } => 3,
     }
 
     assert_difference differences do
@@ -373,6 +422,54 @@ class UffizziCore::Api::Cli::V1::Projects::DeploymentsControllerTest < ActionCon
     end
 
     assert_response :success
+    container_keys = [:image, :tag, :service_name, :port, :additional_subdomains, :public]
+    actual_containers_attributes = UffizziCore::Container.all.map { |c| c.attributes.deep_symbolize_keys.slice(*container_keys) }
+    actual_template_containers_attributes = UffizziCore::Template.last
+      .payload
+      .deep_symbolize_keys[:containers_attributes]
+      .map { |c| c.slice(*container_keys) }
+
+    actual_app_container_attributes = actual_containers_attributes.detect { |c| c[:service_name] == 'app' }
+    actual_db_container_attributes = actual_containers_attributes.detect { |c| c[:service_name] == 'db' }
+    actual_nginx_container_attributes = actual_containers_attributes.detect { |c| c[:service_name] == 'nginx' }
+
+    actual_template_app_container_attributes = actual_template_containers_attributes.detect { |c| c[:service_name] == 'app' }
+    actual_template_db_container_attributes = actual_template_containers_attributes.detect { |c| c[:service_name] == 'db' }
+    actual_template_nginx_container_attributes = actual_template_containers_attributes.detect { |c| c[:service_name] == 'nginx' }
+
+    expected_app_container_attributes = {
+      image: 'uffizzicloud/app',
+      tag: 'latest',
+      service_name: 'app',
+      port: nil,
+      additional_subdomains: [],
+      public: false,
+    }
+    expected_db_container_attributes = {
+      image: 'library/postgres',
+      tag: 'latest',
+      service_name: 'db',
+      port: nil,
+      additional_subdomains: [],
+      public: false,
+    }
+    expected_nginx_container_attributes = {
+      image: 'library/nginx',
+      tag: '1.32',
+      service_name: 'nginx',
+      port: 80,
+      additional_subdomains: ['example', 'example-hostname'],
+      public: true,
+    }
+
+    assert_equal expected_app_container_attributes, actual_app_container_attributes
+    assert_equal expected_app_container_attributes, actual_template_app_container_attributes
+
+    assert_equal expected_db_container_attributes, actual_db_container_attributes
+    assert_equal expected_db_container_attributes, actual_template_db_container_attributes
+
+    assert_equal expected_nginx_container_attributes, actual_nginx_container_attributes
+    assert_equal expected_nginx_container_attributes, actual_template_nginx_container_attributes
   end
 
   test '#update - update deployment created without compose file' do
@@ -381,7 +478,7 @@ class UffizziCore::Api::Cli::V1::Projects::DeploymentsControllerTest < ActionCon
     create(:template, :compose_file_source, compose_file: compose_file, project: @project, added_by: @admin, payload: @template.payload)
     encoded_content = Base64.encode64(file_content)
     compose_file_attributes = attributes_for(:compose_file, :temporary, project: @project, added_by: @admin, content: encoded_content)
-    stub_dockerhub_repository('library', 'redis')
+    stub_dockerhub_repository_any
 
     params = {
       project_slug: @project.slug,
@@ -396,7 +493,7 @@ class UffizziCore::Api::Cli::V1::Projects::DeploymentsControllerTest < ActionCon
     differences = {
       -> { UffizziCore::ComposeFile.temporary.count } => 1,
       -> { UffizziCore::Template.with_creation_source(UffizziCore::Template.creation_source.compose_file).count } => 1,
-      -> { @deployment.containers.count } => 1,
+      -> { @deployment.containers.count } => 3,
     }
 
     assert_difference differences do
@@ -714,5 +811,199 @@ class UffizziCore::Api::Cli::V1::Projects::DeploymentsControllerTest < ActionCon
 
     Sidekiq::Worker.clear_all
     Sidekiq::Testing.inline!
+  end
+
+  test '#create - with content when compose file does not exist' do
+    stubbed_controller_create_deployment_request = stub_controller_create_deployment_request
+    file_content = File.read('test/fixtures/files/test-compose-success-without-dependencies.yml')
+    encoded_content = Base64.encode64(file_content)
+    stub_dockerhub_repository_any
+
+    params = {
+      project_slug: @project.slug,
+      compose_file: {
+        source: '/gem/tmp/dc.uffizzi-ttl.yaml',
+        path: '/gem/tmp/dc.uffizzi-ttl.yaml',
+        content: encoded_content,
+      },
+      dependencies: [],
+      metadata: {},
+    }
+
+    differences = {
+      -> { UffizziCore::ComposeFile.temporary.count } => 1,
+      -> { UffizziCore::Template.with_creation_source(UffizziCore::Template.creation_source.compose_file).count } => 1,
+      -> { UffizziCore::Deployment.count } => 1,
+      -> { UffizziCore::Container.count } => 3,
+    }
+
+    assert_difference differences do
+      post :create, params: params, format: :json
+    end
+
+    assert_response :success
+    assert_requested stubbed_controller_create_deployment_request
+
+    container_keys = [:image, :tag, :service_name, :port, :additional_subdomains, :public]
+    actual_containers_attributes = UffizziCore::Container.all.map { |c| c.attributes.deep_symbolize_keys.slice(*container_keys) }
+    actual_template_containers_attributes = UffizziCore::Template.last
+      .payload
+      .deep_symbolize_keys[:containers_attributes]
+      .map { |c| c.slice(*container_keys) }
+
+    actual_app_container_attributes = actual_containers_attributes.detect { |c| c[:service_name] == 'app' }
+    actual_db_container_attributes = actual_containers_attributes.detect { |c| c[:service_name] == 'db' }
+    actual_nginx_container_attributes = actual_containers_attributes.detect { |c| c[:service_name] == 'nginx' }
+
+    actual_template_app_container_attributes = actual_template_containers_attributes.detect { |c| c[:service_name] == 'app' }
+    actual_template_db_container_attributes = actual_template_containers_attributes.detect { |c| c[:service_name] == 'db' }
+    actual_template_nginx_container_attributes = actual_template_containers_attributes.detect { |c| c[:service_name] == 'nginx' }
+
+    expected_app_container_attributes = {
+      image: 'uffizzicloud/app',
+      tag: 'latest',
+      service_name: 'app',
+      port: nil,
+      additional_subdomains: [],
+      public: false,
+    }
+    expected_db_container_attributes = {
+      image: 'library/postgres',
+      tag: 'latest',
+      service_name: 'db',
+      port: nil,
+      additional_subdomains: [],
+      public: false,
+    }
+    expected_nginx_container_attributes = {
+      image: 'library/nginx',
+      tag: '1.32',
+      service_name: 'nginx',
+      port: 80,
+      additional_subdomains: ['example', 'example-hostname'],
+      public: true,
+    }
+
+    assert_equal expected_app_container_attributes, actual_app_container_attributes
+    assert_equal expected_app_container_attributes, actual_template_app_container_attributes
+
+    assert_equal expected_db_container_attributes, actual_db_container_attributes
+    assert_equal expected_db_container_attributes, actual_template_db_container_attributes
+
+    assert_equal expected_nginx_container_attributes, actual_nginx_container_attributes
+    assert_equal expected_nginx_container_attributes, actual_template_nginx_container_attributes
+  end
+
+  test '#deploy_containers create a new activity items' do
+    UffizziCore::ControllerService.expects(:deployment_exists?).returns(true)
+
+    digest_data = json_fixture('files/dockerhub/digest.json')
+    deployment_containers_data = json_fixture('files/controller/deployment_containers.json')
+    deployment_data = json_fixture('files/controller/deployments.json')
+
+    stubbed_deployment_request = stub_controller_get_deployment_request(@deployment, deployment_data)
+    stubbed_containers_request = stub_controller_containers_request(@deployment, deployment_containers_data)
+    stubbed_dockerhub_login = stub_dockerhub_login
+
+    params = { project_slug: @project.slug, id: @deployment.id }
+
+    controller_name = deployment_containers_data.first[:spec][:containers].first[:controllerName]
+    app_name = 'app'
+    app_namespace = 'uffizzicloud'
+    nginx_name = 'nginx'
+    nginx_namespace = 'library'
+
+    app_attrs = {
+      controller_name: controller_name,
+      service_name: app_name,
+      image: "#{app_namespace}/#{app_name}",
+      tag: 'latest',
+    }
+
+    nginx_attrs = {
+      controller_name: controller_name,
+      service_name: nginx_name,
+      image: "#{nginx_namespace}/#{nginx_name}",
+      tag: '1.32',
+      public: true,
+      port: 80,
+      target_port: 80,
+      additional_subdomains: ['example', 'example-hostname'],
+    }
+
+    app_repo = create(:repo, :docker_hub, project: @project, namespace: app_namespace, name: app_name)
+    nginx_repo = create(:repo, :docker_hub, project: @project, namespace: nginx_namespace, name: nginx_name)
+
+    app_container = create(:container, :continuously_deploy_enabled, **{ deployment: @deployment, repo: app_repo }.merge(app_attrs))
+    nginx_container = create(:container, :continuously_deploy_enabled, **{ deployment: @deployment, repo: nginx_repo }.merge(nginx_attrs))
+    docker_hub_credential = create(:credential, :docker_hub, account: @account)
+
+    stubbed_digest_auth_app = stub_dockerhub_auth_for_digest(app_container.image)
+    stubbed_digest_auth_nginx = stub_dockerhub_auth_for_digest(nginx_container.image)
+    stubbed_digest_app = stub_dockerhub_get_digest(app_container.image, app_container.tag, digest_data)
+    stubbed_digest_nginx = stub_dockerhub_get_digest(nginx_container.image, nginx_container.tag, digest_data)
+
+    expected_default_params = {
+      secret_variables: [],
+      memory_limit: nil,
+      memory_request: nil,
+      entrypoint: nil,
+      command: nil,
+      port: nil,
+      target_port: nil,
+      public: false,
+      receive_incoming_requests: false,
+      healthcheck: {},
+      volumes: nil,
+      container_config_files: [],
+      additional_subdomains: [],
+    }
+
+    expected_app_container = {
+      id: app_container.id,
+      kind: app_container.kind,
+      variables: [
+        {
+          name: 'UFFIZZI_URL',
+          value: "https://#{@deployment.preview_url}",
+        },
+      ],
+    }.merge(expected_default_params).merge(app_attrs)
+
+    expected_nginx_container = {
+      id: nginx_container.id,
+      kind: nginx_container.kind,
+      variables: [
+        {
+          name: 'UFFIZZI_URL',
+          value: "https://#{@deployment.preview_url}",
+        },
+        {
+          name: 'PORT',
+          value: '80',
+        },
+      ],
+    }.merge(expected_default_params).merge(nginx_attrs)
+
+    expected_request_to_controller = {
+      containers: [expected_app_container, expected_nginx_container],
+      credentials: [{ id: docker_hub_credential.id }],
+      deployment_url: @deployment.preview_url,
+    }
+
+    stubbed_deploy_containers_request = stub_deploy_containers_request_with_body(@deployment, expected_request_to_controller)
+
+    post :deploy_containers, params: params, format: :json
+
+    assert_requested stubbed_deploy_containers_request
+    assert_requested stubbed_digest_app
+    assert_requested stubbed_digest_nginx
+    assert_requested stubbed_digest_auth_app
+    assert_requested stubbed_digest_auth_nginx
+    assert_requested stubbed_dockerhub_login, times: 2
+    assert_requested stubbed_containers_request, times: 2
+    assert_requested stubbed_deployment_request, times: 2
+    assert { UffizziCore::Deployment::DeployContainersJob.jobs.empty? }
+    assert { UffizziCore::ActivityItem::Docker.count == 2 }
   end
 end
