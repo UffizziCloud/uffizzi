@@ -4,6 +4,7 @@ class UffizziCore::Api::Cli::V1::Deployment::CreateForm < UffizziCore::Deploymen
   include UffizziCore::ApplicationForm
 
   permit :creation_source,
+         :metadata,
          containers_attributes: [
            :image,
            :service_name,
@@ -16,10 +17,10 @@ class UffizziCore::Api::Cli::V1::Deployment::CreateForm < UffizziCore::Deploymen
            :command,
            :receive_incoming_requests,
            :continuously_deploy,
-           { healthcheck: {} },
            { variables: [:name, :value],
              secret_variables: [:name, :value],
              volumes: [:source, :target, :type, :read_only],
+             healthcheck: [:test, :interval, :timeout, :retries, :start_period, :disable, { test: [] }],
              repo_attributes: [
                :namespace,
                :name,
@@ -50,6 +51,7 @@ class UffizziCore::Api::Cli::V1::Deployment::CreateForm < UffizziCore::Deploymen
   validate :check_exists_ingress_container
   validate :check_max_memory_limit
   validate :check_max_memory_request
+  validate :check_secrets_exist_in_database
 
   def assign_dependences!(project, user)
     self.project = project
@@ -89,5 +91,18 @@ class UffizziCore::Api::Cli::V1::Deployment::CreateForm < UffizziCore::Deploymen
     return if UffizziCore::DeploymentService.valid_containers_memory_request?(self)
 
     errors.add(:containers, :max_memory_request_error, max: project.account.container_memory_limit)
+  end
+
+  def check_secrets_exist_in_database
+    return if compose_file.nil?
+
+    existing_secrets = project.secrets.pluck('name')
+    compose_file.template.payload['containers_attributes']
+      .map { |container| container['secret_variables'].map { |secret| secret['name'] } }.flatten.uniq
+      .select { |secret| existing_secrets.exclude?(secret) }
+      .each do |secret|
+      error_message = I18n.t('compose.project_secret_not_found', secret: secret)
+      errors.add(:secret_variables, error_message)
+    end
   end
 end

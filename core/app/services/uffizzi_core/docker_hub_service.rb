@@ -1,44 +1,7 @@
 # frozen_string_literal: true
 
 class UffizziCore::DockerHubService
-  HOOK_NAME = 'Uffizzi OpenSource Deploy Webhook'
-  HOOK_URL = "#{Settings.app.host}api/cli/v1/webhooks/docker_hub"
-  REGISTRY = 'registry-1.docker.io'
-
   class << self
-    def create_webhook(credential, image)
-      client = user_client(credential)
-
-      webhooks_response = client.get_webhooks(slug: image, registry: REGISTRY)
-      Rails.logger.info("DockerHubService create_webhook get_webhooks_response=#{webhooks_response.inspect}")
-
-      return false if webhooks_response.status != 200
-
-      webhooks = webhooks_response.result['results']
-
-      webhook = webhooks.detect { |hook| hook['name'] == HOOK_NAME }
-
-      return true if !webhook.nil?
-
-      params = {
-        slug: image,
-        name: HOOK_NAME,
-        expect_final_callback: false,
-        webhooks: [{ name: HOOK_NAME, hook_url: HOOK_URL, registry: REGISTRY }],
-      }
-
-      response = client.create_webhook(params)
-
-      Rails.logger.info("DockerHubService create_webhook create_webhook_response=#{response.inspect} params=#{params.inspect}")
-
-      response.status == 201
-    end
-
-    def send_webhook_answer(callback_url)
-      params = { state: 'success', description: 'Successfully deployed to Uffizzi' }
-      public_docker_hub_client.send_webhook_answer(callback_url, params)
-    end
-
     def accounts(credential)
       client = user_client(credential)
       response = client.accounts
@@ -46,6 +9,16 @@ class UffizziCore::DockerHubService
 
       accounts_response = response.result
       accounts_response.nil? ? [] : accounts_response.namespaces
+    end
+
+    def image_available?(credential, image_data)
+      namespace = image_data[:namespace]
+      repo_name = image_data[:name]
+      client = UffizziCore::DockerHubClient.new(credential)
+      response = client.repository(namespace: namespace, image: repo_name)
+      return false if not_found?(response)
+
+      true
     end
 
     def user_client(credential)
@@ -72,6 +45,10 @@ class UffizziCore::DockerHubService
 
     def public_docker_hub_client
       @public_docker_hub_client ||= UffizziCore::DockerHubClient.new
+    end
+
+    def not_found?(response)
+      response.status == 404
     end
   end
 end

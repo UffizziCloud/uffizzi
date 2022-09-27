@@ -2,24 +2,22 @@
 
 class UffizziCore::ComposeFile::Parsers::Services::ImageParserService
   class << self
-    def parse(image)
-      return {} if image.blank?
+    def parse(value)
+      return {} if value.blank?
 
-      image_parts = image.downcase.split(':')
-      raise UffizziCore::ComposeFile::ParseError, I18n.t('compose.invalid_image_value', value: image) if image_parts.count > 2
+      image_path, tag = get_image_path_and_tag(value)
+      raise_parse_error(value) if image_path.blank?
 
-      image_name, tag = image_parts
       tag = Settings.compose.default_tag if tag.blank?
-      raise UffizziCore::ComposeFile::ParseError, I18n.t('compose.invalid_image_value', value: image) if image_name.blank?
 
-      if valid_image_url?(image_name)
-        url, namespace, name = parse_image_url(image_name)
+      if url?(image_path)
+        host, namespace, name = parse_image_url(image_path)
       else
-        namespace, name = parse_docker_hub_image(image_name)
+        namespace, name = parse_docker_hub_image(image_path)
       end
 
       {
-        registry_url: url,
+        registry_url: host,
         namespace: namespace,
         name: name,
         tag: tag,
@@ -28,44 +26,59 @@ class UffizziCore::ComposeFile::Parsers::Services::ImageParserService
 
     private
 
-    def valid_image_url?(image_name)
-      url = prepare_image_url(image_name)
-
-      URI(url).host.present? && URI(url).host =~ /\w+\.\w+/ && URI(url).path.present?
+    def raise_parse_error(value)
+      raise UffizziCore::ComposeFile::ParseError, I18n.t('compose.invalid_image_value', value: value)
     end
 
-    def prepare_image_url(image_name)
-      if image_name.start_with?('https://')
-        image_name
+    def get_image_path_and_tag(value)
+      image_path_parts = value.downcase.split(':')
+      case image_path_parts.size
+      when 1
+        image_path_parts[0]
+      when 2
+        uri_pattern = /\A\w[\w.-]+:\d+\//
+        tag_pattern = /:\w[\w.-]*\z/
+        if uri_pattern.match?(value)
+          "#{image_path_parts[0]}:#{image_path_parts[1]}"
+        elsif tag_pattern.match?(value)
+          [image_path_parts[0], image_path_parts[1]]
+        else
+          raise_parse_error(value)
+        end
+      when 3
+        ["#{image_path_parts[0]}:#{image_path_parts[1]}", image_path_parts[2]]
       else
-        "https://#{image_name}"
+        raise_parse_error(value)
       end
     end
 
-    def parse_image_url(image_name)
-      prepared_url = prepare_image_url(image_name)
-
-      uri = URI(prepared_url)
-      url = uri.host
-      path = uri.path.delete_suffix('/').delete_prefix('/')
-
-      namespace, name = parse_image_path(path)
-
-      [url, namespace, name]
+    def url?(image_path)
+      uri = URI(add_https_if_needed(image_path))
+      uri.host.present? && uri.host =~ /(localhost(:\d+)?|\w+\.(\w+\.)*\w+)/ && uri.path.present?
+    rescue URI::InvalidURIError
+      false
     end
 
-    def parse_image_path(path)
-      path_parts = path.split('/', 2)
+    def add_https_if_needed(image_path)
+      image_path.start_with?('https://') ? image_path : "https://#{image_path}"
+    end
 
-      if path_parts.count == 1
-        namespace = nil
-        name = path_parts.first
+    def parse_image_url(image_path)
+      uri = URI(add_https_if_needed(image_path))
+      host = "#{uri.host}:#{uri.port}"
+      path = uri.path.delete_prefix('/')
+      namespace, name = get_namespace_and_name(path)
+      [host, namespace, name]
+    end
+
+    def get_namespace_and_name(path)
+      path_parts = path.rpartition('/')
+
+      if path_parts.first.empty?
+        [nil, path_parts.last]
       else
-        namespace = path_parts.first
-        name = path_parts.last
+        [path_parts.first, path_parts.last]
       end
-
-      [namespace, name]
     end
 
     def parse_docker_hub_image(image_name)

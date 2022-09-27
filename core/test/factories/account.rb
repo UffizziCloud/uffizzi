@@ -23,23 +23,12 @@ FactoryBot.define do
 
       after(:create) do |account, evaluator|
         if evaluator.admin
-          invitation = account.invitations.create(
-            token: UffizziCore::TokenService.generate,
-            role: UffizziCore::Invitation.role.admin,
-            email: evaluator.admin.email,
-            invited_by: evaluator.admin,
-          )
-
           user = evaluator.admin
-          user.memberships.create(user: user, account: account, role: invitation.role)
+          user.memberships.create(user: user, account: account, role: UffizziCore::Membership.role.admin)
 
           account.projects.each do |project|
             user.user_projects.create!(user: user, project: project, role: UffizziCore::UserProject.role.admin)
           end
-
-          invitation.accept
-          invitation.invitee = user
-          invitation.save!
         end
       end
     end

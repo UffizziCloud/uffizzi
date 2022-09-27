@@ -23,6 +23,15 @@ class UffizziCore::DockerHubClient
     nil
   end
 
+  def repository(namespace:, image:)
+    url = "#{BASE_URL}/v2/repositories/#{namespace}/#{image}"
+
+    response = connection.get(url) do |request|
+      request.headers['Authorization'] = "JWT #{jwt}"
+    end
+    RequestResult.new(status: response.status, result: response.body)
+  end
+
   def public_images(q:, page: 1, per_page: 25)
     url = "#{BASE_URL}/api/content/v1/products/search"
     params = { page_size: per_page, q: q, type: :image, page: page }
@@ -41,34 +50,6 @@ class UffizziCore::DockerHubClient
       request.headers['Authorization'] = "JWT #{jwt}"
     end
     RequestResult.new(result: response.body)
-  end
-
-  def get_webhooks(slug:, registry:)
-    url = BASE_URL + "/v2/repositories/#{slug}/webhook_pipeline/"
-
-    response = connection.get(url, { registry: registry, page_size: 100 }) do |request|
-      request.headers['Authorization'] = "JWT #{jwt}"
-    end
-
-    RequestResult.new(status: response.status, result: response.body)
-  end
-
-  def create_webhook(slug:, name:, expect_final_callback:, webhooks:)
-    raise NotAuthorizedError if !authentificated?
-
-    url = BASE_URL + "/v2/repositories/#{slug}/webhook_pipeline/"
-
-    params = {
-      name: name,
-      expect_final_callback: expect_final_callback,
-      webhooks: webhooks,
-    }
-
-    response = connection.post(url, params) do |request|
-      request.headers['Authorization'] = "JWT #{jwt}"
-    end
-
-    RequestResult.new(status: response.status, result: response.body)
   end
 
   def accounts
@@ -113,16 +94,6 @@ class UffizziCore::DockerHubClient
     url = "https://auth.docker.io/token?service=registry.docker.io&scope=repository:#{repository}:pull"
     response = connection.get(url, params)
     RequestResult.new(result: response.body)
-  end
-
-  def send_webhook_answer(url, params)
-    conn = Faraday.new do |c|
-      c.request(:json)
-      c.adapter(Faraday.default_adapter)
-    end
-    response = conn.post(url, params)
-
-    RequestResult.quiet.new(result: response.body)
   end
 
   def authentificated?

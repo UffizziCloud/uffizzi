@@ -40,7 +40,7 @@ See our high-level [project roadmap](https://github.com/orgs/UffizziCloud/projec
 
 ## Getting started
 
-The easiest way to get started with Uffizzi is via the managed API service provided by Uffizzi Cloud, as describe in the [quickstart guide](docs.uffizzi.com). This option is free for small teams and is recommended for those who are new to Uffizzi. Alternatively, you can get started creating on-demand test environments on your own cluster by following the [self-hosted installation guide](INSTALL.md).
+The easiest way to get started with Uffizzi is via the managed API service provided by Uffizzi Cloud, as describe in the [quickstart guide](https://docs.uffizzi.com). This option is free for small teams and is recommended for those who are new to Uffizzi. Alternatively, you can get started creating on-demand test environments on your own cluster by following the [self-hosted installation guide](INSTALL.md).
 
 ## Documentation
 - [Main documentation](https://docs.uffizzi.com)

@@ -21,3 +21,7 @@ en:
             containers:
               max_memory_limit_error: 'Memory limit of containers must be less than %{max}'
               max_memory_request_error: 'Memory request of containers must be less than %{max}'
+        uffizzi_core/user:
+          attributes:
+            email:
+              invalid: Invalid email address

@@ -5,6 +5,7 @@ class UffizziCore::Api::Cli::V1::ProjectSerializer < UffizziCore::BaseSerializer
   has_many :deployments
   has_many :secrets
   has_one :default_compose
+  belongs_to :account
 
   attributes :name,
              :slug,

@@ -8,6 +8,16 @@ class UffizziCore::Api::Cli::V1::Projects::DeploymentsControllerTest < ActionCon
     @account = @admin.organizational_account
     @project = create(:project, :with_members, account: @admin.organizational_account, members: [@admin])
     @deployment = create(:deployment, project: @project, state: UffizziCore::Deployment::STATE_ACTIVE)
+    @metadata = {
+      'labels' => {
+        'github' => {
+          'repository' => 'feature/#24_my_awesome_feature',
+          'pull_request' => {
+            'number' => '24',
+          },
+        },
+      },
+    }
 
     @deployment.update!(subdomain: UffizziCore::DeploymentService.build_subdomain(@deployment))
     @credential = create(:credential, :github, :active, account: @account, provider_ref: generate(:number))
@@ -17,7 +27,7 @@ class UffizziCore::Api::Cli::V1::Projects::DeploymentsControllerTest < ActionCon
     target_branch = generate(:branch)
     repo_attributes = attributes_for(
       :repo,
-      :github,
+      :docker_hub,
       namespace: image_namespace,
       name: image_name,
       branch: target_branch,
@@ -44,11 +54,34 @@ class UffizziCore::Api::Cli::V1::Projects::DeploymentsControllerTest < ActionCon
     create(:deployment, project: @project, state: UffizziCore::Deployment::STATE_ACTIVE,
                         creation_source: UffizziCore::Deployment.creation_source.continuous_preview)
 
-    params = { project_slug: @project.slug }
+    params = { project_slug: @project.slug, q: {}.to_json }
 
     get :index, params: params, format: :json
 
     assert_response :success
+  end
+
+  test '#index - with query params' do
+    create(:deployment, project: @project, state: UffizziCore::Deployment::STATE_ACTIVE,
+                        creation_source: UffizziCore::Deployment.creation_source.continuous_preview, metadata: @metadata)
+
+    filter = {
+      'labels' => {
+        'github' => {
+          'repository' => 'feature/#24_my_awesome_feature',
+        },
+      },
+    }
+
+    params = { project_slug: @project.slug, q: filter.to_json }
+
+    get :index, params: params, format: :json
+
+    deployments = JSON.parse(response.body, symbolize_names: true)[:deployments]
+
+    assert_response :success
+    assert_equal(2, UffizziCore::Deployment.count)
+    assert_equal(1, deployments.count)
   end
 
   test '#show' do
@@ -63,7 +96,6 @@ class UffizziCore::Api::Cli::V1::Projects::DeploymentsControllerTest < ActionCon
     Sidekiq::Worker.clear_all
     Sidekiq::Testing.fake!
 
-    create(:credential, :docker_hub, account: @admin.organizational_account)
     file_content = File.read('test/fixtures/files/test-compose-success.yml')
     encoded_content = Base64.encode64(file_content)
     compose_file = create(:compose_file, project: @project, added_by: @admin, content: encoded_content)
@@ -72,7 +104,7 @@ class UffizziCore::Api::Cli::V1::Projects::DeploymentsControllerTest < ActionCon
     target_branch = generate(:branch)
     repo_attributes = attributes_for(
       :repo,
-      :github,
+      :docker_hub,
       namespace: image_namespace,
       name: image_name,
       branch: target_branch,
@@ -91,12 +123,13 @@ class UffizziCore::Api::Cli::V1::Projects::DeploymentsControllerTest < ActionCon
       containers_attributes: [container_attributes],
     }
     create(:template, :compose_file_source, compose_file: compose_file, project: @project, added_by: @admin, payload: template_payload)
+    stub_dockerhub_repository('library', 'redis')
 
-    params = { project_slug: @project.slug, compose_file: {}, dependencies: [] }
+    params = { project_slug: @project.slug, compose_file: {}, dependencies: [], metadata: {} }
 
     differences = {
       -> { UffizziCore::Deployment.active.count } => 1,
-      -> { UffizziCore::Repo::Github.count } => 1,
+      -> { UffizziCore::Repo::DockerHub.count } => 1,
     }
 
     assert_difference differences do
@@ -112,6 +145,49 @@ class UffizziCore::Api::Cli::V1::Projects::DeploymentsControllerTest < ActionCon
     Sidekiq::Testing.inline!
   end
 
+  test '#create - from the existing compose file with metadata' do
+    Sidekiq::Worker.clear_all
+    Sidekiq::Testing.fake!
+
+    file_content = File.read('test/fixtures/files/test-compose-success.yml')
+    encoded_content = Base64.encode64(file_content)
+    compose_file = create(:compose_file, project: @project, added_by: @admin, content: encoded_content)
+    image = generate(:image)
+    image_namespace, image_name = image.split('/')
+    target_branch = generate(:branch)
+    repo_attributes = attributes_for(
+      :repo,
+      :docker_hub,
+      namespace: image_namespace,
+      name: image_name,
+      branch: target_branch,
+    )
+    container_attributes = attributes_for(
+      :container,
+      :with_public_port,
+      :with_named_volume,
+      image: image,
+      tag: target_branch,
+      healthcheck: { test: ['CMD', 'curl', '-f', 'https://localhost'] },
+      receive_incoming_requests: true,
+      repo_attributes: repo_attributes,
+    )
+    template_payload = {
+      containers_attributes: [container_attributes],
+    }
+    create(:template, :compose_file_source, compose_file: compose_file, project: @project, added_by: @admin, payload: template_payload)
+    stub_dockerhub_repository('library', 'redis')
+    params = { project_slug: @project.slug, compose_file: {}, dependencies: [], metadata: @metadata }
+
+    post :create, params: params, format: :json
+
+    assert_response :success
+    assert_equal(@metadata, compose_file.deployments.first.metadata)
+
+    Sidekiq::Worker.clear_all
+    Sidekiq::Testing.inline!
+  end
+
   test '#create - from the existing compose file when credentials are removed' do
     create_deployment_request = stub_controller_create_deployment_request
     file_content = File.read('test/fixtures/files/uffizzi-compose-vote-app-docker.yml')
@@ -122,7 +198,7 @@ class UffizziCore::Api::Cli::V1::Projects::DeploymentsControllerTest < ActionCon
     target_branch = generate(:branch)
     repo_attributes = attributes_for(
       :repo,
-      :github,
+      :docker_hub,
       namespace: image_namespace,
       name: image_name,
       branch: target_branch,
@@ -139,12 +215,13 @@ class UffizziCore::Api::Cli::V1::Projects::DeploymentsControllerTest < ActionCon
       containers_attributes: [container_attributes],
     }
     create(:template, :compose_file_source, compose_file: compose_file, project: @project, added_by: @admin, payload: template_payload)
+    stub_dockerhub_private_repository('library', 'redis')
 
-    params = { project_slug: @project.slug, compose_file: {}, dependencies: [] }
+    params = { project_slug: @project.slug, compose_file: {}, dependencies: [], metadata: {} }
 
     differences = {
       -> { UffizziCore::Deployment.active.count } => 0,
-      -> { UffizziCore::Repo::Github.count } => 0,
+      -> { UffizziCore::Repo::DockerHub.count } => 0,
     }
 
     assert_difference differences do
@@ -163,7 +240,7 @@ class UffizziCore::Api::Cli::V1::Projects::DeploymentsControllerTest < ActionCon
     target_branch = generate(:branch)
     repo_attributes = attributes_for(
       :repo,
-      :github,
+      :docker_hub,
       namespace: image_namespace,
       name: image_name,
       branch: target_branch,
@@ -181,11 +258,11 @@ class UffizziCore::Api::Cli::V1::Projects::DeploymentsControllerTest < ActionCon
     }
     create(:template, :compose_file_source, compose_file: compose_file, project: @project, added_by: @admin, payload: template_payload)
 
-    params = { project_slug: @project.slug, compose_file: {}, dependencies: [] }
+    params = { project_slug: @project.slug, compose_file: {}, dependencies: [], metadata: {} }
 
     differences = {
       -> { UffizziCore::Deployment.active.count } => 0,
-      -> { UffizziCore::Repo::Github.count } => 0,
+      -> { UffizziCore::Repo::DockerHub.count } => 0,
     }
 
     assert_difference differences do
@@ -200,6 +277,7 @@ class UffizziCore::Api::Cli::V1::Projects::DeploymentsControllerTest < ActionCon
       project_slug: @project.slug,
       compose_file: {},
       dependencies: [],
+      metadata: {},
     }
 
     differences = {
@@ -221,13 +299,14 @@ class UffizziCore::Api::Cli::V1::Projects::DeploymentsControllerTest < ActionCon
     @deployment.update!(compose_file: compose_file)
     encoded_content = Base64.encode64(file_content)
     compose_file_attributes = attributes_for(:compose_file, :temporary, project: @project, added_by: @admin, content: encoded_content)
-    create(:credential, :docker_hub, account: @admin.organizational_account)
+    stub_dockerhub_repository('library', 'redis')
 
     params = {
       project_slug: @project.slug,
       compose_file: compose_file_attributes,
       dependencies: [],
       id: @deployment[:id],
+      metadata: {},
     }
 
     differences = {
@@ -243,6 +322,29 @@ class UffizziCore::Api::Cli::V1::Projects::DeploymentsControllerTest < ActionCon
     assert_response :success
   end
 
+  test '#update - update deployment with metadata' do
+    file_content = File.read('test/fixtures/files/test-compose-success-without-dependencies.yml')
+    compose_file = create(:compose_file, project: @project, added_by: @admin)
+    create(:template, :compose_file_source, compose_file: compose_file, project: @project, added_by: @admin, payload: @template.payload)
+    @deployment.update!(compose_file: compose_file)
+    encoded_content = Base64.encode64(file_content)
+    compose_file_attributes = attributes_for(:compose_file, :temporary, project: @project, added_by: @admin, content: encoded_content)
+    2.times { stub_dockerhub_repository('library', 'redis') }
+
+    params = {
+      project_slug: @project.slug,
+      compose_file: compose_file_attributes,
+      dependencies: [],
+      id: @deployment[:id],
+      metadata: @metadata,
+    }
+
+    put :update, params: params, format: :json
+
+    assert_response :success
+    assert_equal(@metadata, @deployment.reload.metadata)
+  end
+
   test '#update - update deployment created from temporary compose file' do
     file_content = File.read('test/fixtures/files/test-compose-success-without-dependencies.yml')
     compose_file = create(:compose_file, :temporary, project: @project, added_by: @admin)
@@ -250,13 +352,14 @@ class UffizziCore::Api::Cli::V1::Projects::DeploymentsControllerTest < ActionCon
     @deployment.update!(compose_file: compose_file)
     encoded_content = Base64.encode64(file_content)
     compose_file_attributes = attributes_for(:compose_file, :temporary, project: @project, added_by: @admin, content: encoded_content)
-    create(:credential, :docker_hub, account: @admin.organizational_account)
+    stub_dockerhub_repository('library', 'redis')
 
     params = {
       project_slug: @project.slug,
       compose_file: compose_file_attributes,
       dependencies: [],
       id: @deployment[:id],
+      metadata: {},
     }
 
     differences = {
@@ -270,6 +373,41 @@ class UffizziCore::Api::Cli::V1::Projects::DeploymentsControllerTest < ActionCon
     end
 
     assert_response :success
+  end
+
+  test '#update - update deployment created without compose file' do
+    file_content = File.read('test/fixtures/files/test-compose-success-without-dependencies.yml')
+    compose_file = create(:compose_file, :temporary, project: @project, added_by: @admin)
+    create(:template, :compose_file_source, compose_file: compose_file, project: @project, added_by: @admin, payload: @template.payload)
+    encoded_content = Base64.encode64(file_content)
+    compose_file_attributes = attributes_for(:compose_file, :temporary, project: @project, added_by: @admin, content: encoded_content)
+    stub_dockerhub_repository('library', 'redis')
+
+    params = {
+      project_slug: @project.slug,
+      compose_file: compose_file_attributes,
+      dependencies: [],
+      id: @deployment[:id],
+    }
+
+    refute(@deployment.compose_file)
+    assert_equal(UffizziCore::Deployment.creation_source.manual, @deployment.creation_source)
+
+    differences = {
+      -> { UffizziCore::ComposeFile.temporary.count } => 1,
+      -> { UffizziCore::Template.with_creation_source(UffizziCore::Template.creation_source.compose_file).count } => 1,
+      -> { @deployment.containers.count } => 1,
+    }
+
+    assert_difference differences do
+      put :update, params: params, format: :json
+    end
+
+    @deployment.reload
+
+    assert_response :success
+    assert_equal(UffizziCore::ComposeFile.last.id, @deployment.compose_file_id)
+    assert_equal(UffizziCore::Deployment.creation_source.compose_file_manual, @deployment.creation_source)
   end
 
   test '#deploy_containers' do
@@ -541,5 +679,40 @@ class UffizziCore::Api::Cli::V1::Projects::DeploymentsControllerTest < ActionCon
     assert { container.reload.disabled? }
 
     assert_response :success
+  end
+
+  test '#create - when compose file does not exist and use docker registry without auth' do
+    Sidekiq::Worker.clear_all
+    Sidekiq::Testing.fake!
+    stub_docker_registry_manifests('https://ttl.sh', 'abc', '1h')
+
+    compose_file_content = File.read('test/fixtures/files/uffizzi-compose-docker-registry-anonymous.yml')
+    encoded_compose_file_content = Base64.encode64(compose_file_content)
+
+    compose_file = {
+      source: '/gem/tmp/docker-compose.uffizzi.yaml',
+      path: '/gem/tmp/docker-compose.uffizzi.yaml',
+      content: encoded_compose_file_content,
+    }
+
+    params = {
+      project_slug: @project.slug,
+      compose_file: compose_file,
+      dependencies: [],
+      metadata: {},
+    }
+
+    differences = {
+      -> { UffizziCore::ComposeFile.temporary.count } => 1,
+      -> { UffizziCore::Template.with_creation_source(UffizziCore::Template.creation_source.compose_file).count } => 1,
+      -> { UffizziCore::Container.count } => 1,
+    }
+
+    assert_difference differences do
+      post :create, params: params, format: :json
+    end
+
+    Sidekiq::Worker.clear_all
+    Sidekiq::Testing.inline!
   end
 end

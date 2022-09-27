@@ -18,10 +18,10 @@ class UffizziCore::Api::Cli::V1::Template::CreateForm < UffizziCore::Template
              :continuously_deploy,
              :service_name,
              :name,
-             :healthcheck,
              { variables: [:name, :value],
                secret_variables: [:name, :value],
                volumes: [:source, :target, :type, :read_only],
+               healthcheck: [:test, :interval, :timeout, :retries, :start_period, :disable, { test: [] }],
                repo_attributes: [
                  :namespace,
                  :name,

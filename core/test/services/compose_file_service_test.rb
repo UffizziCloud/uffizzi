@@ -415,7 +415,7 @@ class UffizziCore::ComposeFileServiceTest < ActiveSupport::TestCase
       UffizziCore::ComposeFileService.parse(content)
     end
 
-    assert_match('The specified value for retries should be an Integer type', e.message)
+    assert_match('Invalid retries value', e.message)
   end
 
   test '#parse - raises error if healthcheck has invalid interval' do
@@ -431,9 +431,9 @@ class UffizziCore::ComposeFileServiceTest < ActiveSupport::TestCase
   end
 
   test '#build_template_attributes - check if x-uffizzi ingress is specified' do
-    create(:credential, :docker_hub, account: @account)
     content = file_fixture('files/compose_files/dockerhub_services/nginx_uffizzi_ingress.yml').read
     parsed_data = UffizziCore::ComposeFileService.parse(content)
+    stub_dockerhub_repository('library', 'nginx')
 
     attributes = UffizziCore::ComposeFileService.build_template_attributes(parsed_data, 'compose.yml', @account.credentials, @project)
 
@@ -445,9 +445,9 @@ class UffizziCore::ComposeFileServiceTest < ActiveSupport::TestCase
   end
 
   test '#build_template_attributes - check if deploy auto is disabled' do
-    create(:credential, :docker_hub, account: @account)
     content = file_fixture('files/compose_files/dockerhub_services/nginx_auto_deploy_off.yml').read
     parsed_data = UffizziCore::ComposeFileService.parse(content)
+    stub_dockerhub_repository('library', 'nginx')
 
     attributes = UffizziCore::ComposeFileService.build_template_attributes(parsed_data, 'compose.yml', @account.credentials, @project)
 
@@ -456,9 +456,9 @@ class UffizziCore::ComposeFileServiceTest < ActiveSupport::TestCase
   end
 
   test '#build_template_attributes - check container default memory' do
-    create(:credential, :docker_hub, account: @account)
     content = file_fixture('files/compose_files/dockerhub_services/nginx.yml').read
     parsed_data = UffizziCore::ComposeFileService.parse(content)
+    stub_dockerhub_repository('library', 'nginx')
 
     attributes = UffizziCore::ComposeFileService.build_template_attributes(parsed_data, 'compose.yml', @account.credentials, @project)
 
@@ -466,10 +466,30 @@ class UffizziCore::ComposeFileServiceTest < ActiveSupport::TestCase
     assert_equal(Settings.compose.default_memory, memory_limit)
   end
 
+  test '#build_template_attributes - public image and no credetial exists' do
+    content = file_fixture('files/compose_files/dockerhub_services/nginx.yml').read
+    parsed_data = UffizziCore::ComposeFileService.parse(content)
+
+    stubbed_dockerhub_repository = stub_dockerhub_repository('library', 'nginx')
+    UffizziCore::ComposeFileService.build_template_attributes(parsed_data, 'compose.yml', @account.credentials, @project)
+    assert_requested(stubbed_dockerhub_repository)
+  end
+
+  test '#build_template_attributes - private image and no credetial exists' do
+    content = file_fixture('files/compose_files/dockerhub_services/nginx.yml').read
+    parsed_data = UffizziCore::ComposeFileService.parse(content)
+
+    stubbed_dockerhub_repository = stub_dockerhub_private_repository('library', 'nginx')
+    assert_raise(UffizziCore::ComposeFile::BuildError) do
+      UffizziCore::ComposeFileService.build_template_attributes(parsed_data, 'compose.yml', @account.credentials, @project)
+    end
+    assert_requested(stubbed_dockerhub_repository)
+  end
+
   test '#build_template_attributes - check if a memory is not in list of available values' do
-    create(:credential, :docker_hub, account: @account)
     content = file_fixture('files/compose_files/dockerhub_services/nginx_invalid_memory.yml').read
     parsed_data = UffizziCore::ComposeFileService.parse(content)
+    stub_dockerhub_repository('library', 'nginx')
 
     e = assert_raise(UffizziCore::ComposeFile::BuildError) do
       UffizziCore::ComposeFileService.build_template_attributes(parsed_data, 'compose.yml', @account.credentials, @project)
@@ -479,9 +499,12 @@ class UffizziCore::ComposeFileServiceTest < ActiveSupport::TestCase
   end
 
   test '#build_template_attributes - check container memory' do
-    create(:credential, :docker_hub, account: @account)
     content = file_fixture('files/compose_files/compose_memory.yml').read
     parsed_data = UffizziCore::ComposeFileService.parse(content)
+    stub_dockerhub_repository('library', 'nginx')
+    stub_dockerhub_repository('library', 'redis')
+    stub_dockerhub_repository('library', 'postgres')
+    stub_dockerhub_repository('library', 'ubuntu')
 
     attributes = UffizziCore::ComposeFileService.build_template_attributes(parsed_data, 'compose.yml', @account.credentials, @project)
 
@@ -525,7 +548,7 @@ class UffizziCore::ComposeFileServiceTest < ActiveSupport::TestCase
       UffizziCore::ComposeFileService.build_template_attributes(parsed_data, 'compose.yml', @account.credentials, @project)
     end
 
-    assert_match("Invalid credential 'azure'", e.message)
+    assert_match(I18n.t('compose.unprocessable_image', value: 'azure'), e.message)
   end
 
   test '#build_template_attributes - check google image build' do
@@ -551,8 +574,8 @@ class UffizziCore::ComposeFileServiceTest < ActiveSupport::TestCase
   end
 
   test '#build_template_attributes - check build of custom docker account' do
-    create(:credential, :docker_hub, account: @account)
     content = file_fixture('files/compose_files/dockerhub_services/account_custom_image.yml').read
+    stub_dockerhub_repository('account', 'custom_image')
 
     parsed_data = UffizziCore::ComposeFileService.parse(content)
     attributes = UffizziCore::ComposeFileService.build_template_attributes(parsed_data, 'compose.yml', @account.credentials, @project)
@@ -602,7 +625,7 @@ class UffizziCore::ComposeFileServiceTest < ActiveSupport::TestCase
     project_secrets = [build(:secret, name: 'POSTGRES_USER', value: generate(:string)),
                        build(:secret, name: 'POSTGRES_PASSWORD', value: generate(:string))]
     @project.secrets.append(project_secrets)
-    create(:credential, :docker_hub, account: @account)
+    stub_dockerhub_repository('library', 'postgres')
 
     content = file_fixture('files/compose_files/dockerhub_services/postgres_secrets.yml').read
     parsed_data = UffizziCore::ComposeFileService.parse(content)
@@ -620,10 +643,9 @@ class UffizziCore::ComposeFileServiceTest < ActiveSupport::TestCase
   end
 
   test '#build_template_attributes - check secrets variables build if a project secret doesn\'t exist' do
-    create(:credential, :docker_hub, account: @account)
-
     content = file_fixture('files/compose_files/dockerhub_services/postgres_secrets.yml').read
     parsed_data = UffizziCore::ComposeFileService.parse(content)
+    stub_dockerhub_repository('library', 'postgres')
 
     e = assert_raise(UffizziCore::ComposeFile::SecretsError) do
       UffizziCore::ComposeFileService.build_template_attributes(parsed_data, 'compose.yml', @account.credentials, @project)
@@ -636,7 +658,7 @@ class UffizziCore::ComposeFileServiceTest < ActiveSupport::TestCase
     project_secrets = [build(:secret, name: 'POSTGRES_USER', value: generate(:string)),
                        build(:secret, name: 'POSTGRES_PASSWORD', value: generate(:string))]
     @project.secrets.append(project_secrets)
-    create(:credential, :docker_hub, account: @account)
+    stub_dockerhub_repository('library', 'postgres')
 
     content = file_fixture('files/compose_files/dockerhub_services/postgres_secrets_duplicates.yml').read
     parsed_data = UffizziCore::ComposeFileService.parse(content)
@@ -654,11 +676,10 @@ class UffizziCore::ComposeFileServiceTest < ActiveSupport::TestCase
   end
 
   test '#build_template_attributes - check global and container continuous preview attributes' do
-    create(:credential, :docker_hub, account: @account)
-
     content = file_fixture('files/compose_files/compose_with_continuous_preview.yml').read
     parsed_data = UffizziCore::ComposeFileService.parse(content)
-
+    stub_dockerhub_repository('library', 'redis')
+    stub_dockerhub_repository('library', 'nginx')
     attributes = UffizziCore::ComposeFileService.build_template_attributes(parsed_data, 'compose.yml', @account.credentials, @project)
 
     nginx_repo_attributes = attributes[:payload][:containers_attributes].detect { |item| item[:image] == 'library/nginx' }[:repo_attributes]
@@ -669,9 +690,9 @@ class UffizziCore::ComposeFileServiceTest < ActiveSupport::TestCase
   end
 
   test '#build_template_attributes - check named volumes' do
-    create(:credential, :docker_hub, account: @account)
     content = file_fixture('files/compose_files/dockerhub_services/volumes_named.yml').read
     parsed_data = UffizziCore::ComposeFileService.parse(content)
+    stub_dockerhub_repository('library', 'nginx')
     attributes = UffizziCore::ComposeFileService.build_template_attributes(parsed_data, 'compose.yml', @account.credentials, @project)
 
     content_data = YAML.safe_load(content)
@@ -679,7 +700,7 @@ class UffizziCore::ComposeFileServiceTest < ActiveSupport::TestCase
     first_volume = nginx_container[:volumes].first
 
     assert(nginx_container[:volumes])
-    assert_equal(UffizziCore::ComposeFile::Parsers::Services::VolumesService::NAMED_VOLUME_TYPE, first_volume[:type])
+    assert_equal(UffizziCore::ComposeFile::Parsers::Services::VolumesParserService::NAMED_VOLUME_TYPE, first_volume[:type])
     assert_equal(content_data.dig('services', 'nginx', 'volumes').first.split(':').first, first_volume[:source])
     assert_equal(content_data.dig('services', 'nginx', 'volumes').first.split(':').second, first_volume[:target])
   end

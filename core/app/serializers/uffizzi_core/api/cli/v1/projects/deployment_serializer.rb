@@ -16,15 +16,12 @@ class UffizziCore::Api::Cli::V1::Projects::DeploymentSerializer < UffizziCore::B
              :image_id,
              :ingress_container_ready,
              :ingress_container_state,
-             :creation_source
+             :creation_source,
+             :metadata
 
   has_many :containers
 
   belongs_to :deployed_by
-
-  def deployed_by
-    object.deployed_by
-  end
 
   def containers
     object.containers.active

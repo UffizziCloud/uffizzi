@@ -8,6 +8,7 @@ class UffizziCore::Api::Cli::V1::ComposeFile::CliForm
   attribute :compose_dependencies, Array
   attribute :compose_repositories, Array
   attribute :content, String
+  attribute :source_kind, Symbol
 
   validates :content, presence: true
 

@@ -11,10 +11,10 @@ class UffizziCore::ComposeFile::Parsers::Services::HealthcheckParserService
 
       {
         test: command,
-        interval: parse_time(healthcheck_data['interval']),
-        timeout: parse_time(healthcheck_data['timeout']),
+        interval: parse_time(:interval, healthcheck_data['interval']),
+        timeout: parse_time(:timeout, healthcheck_data['timeout']),
         retries: parse_retries(healthcheck_data['retries']),
-        start_period: parse_time(healthcheck_data['start_period']),
+        start_period: parse_time(:start_period, healthcheck_data['start_period']),
         disable: parse_disable_option(healthcheck_data['disable'], command),
       }
     end
@@ -28,7 +28,11 @@ class UffizziCore::ComposeFile::Parsers::Services::HealthcheckParserService
       case command
       when Array
         start_command = command.first
-        raise UffizziCore::ComposeFile::ParseError unless REQUIRED_START_COMMANDS.include?(start_command)
+
+        unless REQUIRED_START_COMMANDS.include?(start_command)
+          raise UffizziCore::ComposeFile::ParseError,
+                I18n.t('compose.required_start_commands', available_commands: REQUIRED_START_COMMANDS.join(', '))
+        end
 
         command
       when String
@@ -39,10 +43,22 @@ class UffizziCore::ComposeFile::Parsers::Services::HealthcheckParserService
     end
 
     def parse_retries(value)
-      raise UffizziCore::ComposeFile::ParseError, I18n.t('compose.invalid_integer', option: :retries) unless value.is_a?(Integer)
+      return if value.nil?
+
+      unless value.is_a?(Integer)
+        raise UffizziCore::ComposeFile::ParseError,
+              I18n.t('compose.invalid_retries', value: value)
+      end
+
+      value
     end
 
-    def parse_time(value)
+    def parse_time(key, value)
+      return if value.nil?
+
+      error_message = I18n.t('compose.invalid_time_interval', key: key, value: value)
+      raise UffizziCore::ComposeFile::ParseError, error_message if value.is_a?(Integer)
+
       tokens = {
         's' => 1,
         'm' => 60,
@@ -58,7 +74,7 @@ class UffizziCore::ComposeFile::Parsers::Services::HealthcheckParserService
 
         acc
       rescue StandardError
-        raise UffizziCore::ComposeFile::ParseError, I18n.t('compose.invalid_time_interval')
+        raise UffizziCore::ComposeFile::ParseError, error_message
       end
     end
 

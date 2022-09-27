@@ -80,7 +80,7 @@
           "default": {
             "description": "Create account credential",
             "examples": {
-              "application/json": "type can be one of UffizziCore::Credential::Amazon, UffizziCore::Credential::Azure, UffizziCore::Credential::DockerHub, UffizziCore::Credential::Google, UffizziCore::Credential::GithubContainerRegistry"
+              "application/json": "Possible types:\nUffizziCore::Credential::Amazon, UffizziCore::Credential::Azure, UffizziCore::Credential::DockerHub,\nUffizziCore::Credential::DockerRegistry, UffizziCore::Credential::Google, UffizziCore::Credential::GithubContainerRegistry"
             }
           },
           "201": {
@@ -1301,16 +1301,8 @@
           }
         ],
         "responses": {
-          "200": {
-            "description": "OK",
-            "schema": {
-              "type": "object",
-              "properties": {
-                "project": {
-                  "$ref": "#/definitions/Project"
-                }
-              }
-            }
+          "204": {
+            "description": "No content"
           },
           "404": {
             "description": "Not Found"
@@ -1339,8 +1331,16 @@
           }
         ],
         "responses": {
-          "204": {
-            "description": "No content"
+          "200": {
+            "description": "OK",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "project": {
+                  "$ref": "#/definitions/Project"
+                }
+              }
+            }
           },
           "404": {
             "description": "Not Found"

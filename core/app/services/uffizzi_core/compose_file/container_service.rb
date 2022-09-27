@@ -27,6 +27,17 @@ class UffizziCore::ComposeFile::ContainerService
       registry_url.nil? && repository_url.nil?
     end
 
+    def docker_registry?(container)
+      registry_url = container.dig(:image, :registry_url)
+      return false if registry_url.nil?
+
+      registry_domain_regexp = /(\w+\.\w{2,})(?::\d+)?\z/
+      registry_domain = registry_url.match(registry_domain_regexp)&.to_a&.last
+      return false if registry_domain.nil?
+
+      ['amazonaws.com', 'azurecr.io', 'gcr.io', 'ghcr.io'].exclude?(registry_domain)
+    end
+
     def github_container_registry?(container)
       registry_url = container.dig(:image, :registry_url)
 
@@ -46,23 +57,32 @@ class UffizziCore::ComposeFile::ContainerService
 
     def credential_for_container(container, credentials)
       if UffizziCore::ComposeFile::ContainerService.azure?(container)
-        detect_credential(credentials, :azure)
+        detect_credential(container, credentials, :azure)
       elsif UffizziCore::ComposeFile::ContainerService.docker_hub?(container)
-        detect_credential(credentials, :docker_hub)
+        detect_credential(container, credentials, :docker_hub)
       elsif UffizziCore::ComposeFile::ContainerService.google?(container)
-        detect_credential(credentials, :google)
+        detect_credential(container, credentials, :google)
       end
     end
 
-    def detect_credential(credentials, type)
-      credential = credentials.detect do |item|
-        item.send("#{type}?")
+    def detect_credential(container, credentials, type)
+      credential = credentials.detect { |item| item.send("#{type}?") }
+
+      return credential if image_available?(credential, container[:image], type)
+
+      raise UffizziCore::ComposeFile::CredentialError.new(I18n.t('compose.unprocessable_image', value: type))
+    end
+
+    def image_available?(credential, image_data, type)
+      case type
+      when :docker_hub
+        UffizziCore::DockerHubService.image_available?(credential, image_data)
+      when :docker_registry
+        UffizziCore::DockerRegistryService.image_available?(credential, image_data)
+      else
+        # TODO check image availability in other registry types
+        credential.present?
       end
-
-      error_message = "Invalid credential: #{type}"
-      raise UffizziCore::ComposeFile::CredentialError.new(error_message) if credential.nil?
-
-      credential
     end
   end
 end

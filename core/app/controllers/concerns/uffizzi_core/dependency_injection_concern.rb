@@ -7,10 +7,18 @@ module UffizziCore::DependencyInjectionConcern
     UffizziCore::UserAccessService.new(module_class(:rbac))
   end
 
-  def build_parser_module
-    return unless module_exists?(:github)
+  def find_build_parser_module
+    module_class(:build_parser)
+  end
 
-    module_class(:github)
+  def find_volume_parser_module
+    module_class(:volume_parser)
+  end
+
+  def ci_session
+    return unless module_exists?(:ci_session)
+
+    module_class(:ci_session)
   end
 
   def password_protection_module

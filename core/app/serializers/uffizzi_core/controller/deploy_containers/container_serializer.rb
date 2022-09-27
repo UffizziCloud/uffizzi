@@ -24,26 +24,22 @@ class UffizziCore::Controller::DeployContainers::ContainerSerializer < UffizziCo
 
   def image
     repo = object.repo
-    credential = UffizziCore::RepoService.credential(repo)
-
     case repo.type
-    when UffizziCore::Repo::Google.name, UffizziCore::Repo::Amazon.name, UffizziCore::Repo::Azure.name,
-        UffizziCore::Repo::GithubContainerRegistry.name
-      registry_host = URI.parse(credential.registry_url).host
+    when
+      UffizziCore::Repo::Google.name,
+      UffizziCore::Repo::Amazon.name,
+      UffizziCore::Repo::Azure.name,
+      UffizziCore::Repo::GithubContainerRegistry.name,
+      UffizziCore::Repo::DockerRegistry.name
 
-      "#{registry_host}/#{object.image}"
+      build_registry_image(repo)
     else
       object.image
     end
   end
 
   def tag
-    case object.repo.type
-    when UffizziCore::Repo::Github.name
-      UffizziCore::RepoService.tag(object.repo)
-    else
-      object.tag
-    end
+    object.tag
   end
 
   def entrypoint
@@ -55,7 +51,7 @@ class UffizziCore::Controller::DeployContainers::ContainerSerializer < UffizziCo
   end
 
   def healthcheck
-    return {} if object.healthcheck.nil?
+    return {} if object.healthcheck.blank?
 
     command = object.healthcheck['test']
     new_command = if command.is_a?(Array)
@@ -65,6 +61,17 @@ class UffizziCore::Controller::DeployContainers::ContainerSerializer < UffizziCo
       command.split
     end
 
-    object.healthcheck.merge(test: new_command)
+    object.healthcheck.merge('test' => new_command)
+  end
+
+  private
+
+  def build_registry_image(repo)
+    credential = UffizziCore::RepoService.credential(repo)
+    return object.image if credential.blank?
+
+    registry_host = URI.parse(credential.registry_url).host
+
+    "#{registry_host}/#{object.image}"
   end
 end

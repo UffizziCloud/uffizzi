@@ -17,7 +17,7 @@ en:
     no_services: Service services has neither an image nor a build context specified. At least one must be provided.
     no_ingress: Service ingress has not been defined.
     invalid_image_value: Invalid image value '%{value}'
-    invalid_credential: Invalid credential '%{value}'
+    unprocessable_image: Invalid credential '%{value} or image does not exist'
     invalid_repo_type: Unsupported repo type
     repo_not_found: The specified repository doesn't exist '%{name}'
     ingress_port_not_specified: Ingress port not specified
@@ -56,8 +56,8 @@ en:
     project_secret_not_found: Project secret '%{secret}' not found
     continuous_preview_in_service_level: The option '%{option}' is not supported for service-level. Use 'x-uffizzi-continuous-preview' instead
     file_already_exists: A compose file already exists for this project. Run 'uffizzi compose update' to update this file or 'uffizzi compose rm' to remove it. For more options, see 'uffizzi compose --help'
-    invalid_healthcheck_command: "Service '%{name}' defines an invalid healthcheck: when 'test' is a list the first item must be either NONE, CMD or CMD-SHELL"
-    invalid_time_interval: The time interval should be in the following format '{hours}h{minutes}m{seconds}s'. At least one value must be present.
+    invalid_time_interval: "Invalid time interval: '%{key}:%{value}'. The time interval should be in the following format '{hours}h{minutes}m{seconds}s'. At least one value must be present."
+    invalid_retries: "Invalid retries value: 'retries:%{value}'. The value should be an integer."
     string_or_array_error: "'%{option}' contains an invalid type, it should be a string, or an array"
     not_implemented: "'%{option}' option is not implemented"
     infinite_recursion: "Found infinite recursion for key '%{key}'"
@@ -66,6 +66,13 @@ en:
     volume_invalid_name: "Volumes value '%{name}' does not match any of the regexes: '^[a-zA-Z0-9._-]+$'"
     volume_type_not_supported: Volumes with type '%{type}' does not supported
     named_volume_not_exists: Named volume '%{source_path}:%{target_path}' is used in service '%{service_name}' but no declaration was found in the volumes section.
+    invalid_volume_destination: Invalid volume specification '%{spec}' destination can't be '/'
+    required_start_commands: "When 'test' is a list the first item must be one of: '%{available_commands}'"
   secrets:
     duplicates_exists: Secret with key %{secrets} already exist.
     invalid_key_length: A secret key must be no longer than 256 characters.
+  deployment:
+    invalid_state: Preview with ID deployment-%{id} %{state}
+  session:
+    unsupported_login_type: This type of login is not supported
+    unauthorized: Unauthorized

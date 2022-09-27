@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-class UffizziCore::Api::Cli::V1::Account::CredentialsPolicy < UffizziCore::ApplicationPolicy
+class UffizziCore::Api::Cli::V1::Accounts::CredentialsPolicy < UffizziCore::ApplicationPolicy
   def index?
     context.user_access_module.admin_access_to_account?(context.user, context.account)
   end

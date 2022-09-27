@@ -16,7 +16,6 @@ module UffizziCore::Concerns::Models::Project
     has_many :deployments, dependent: :destroy
     has_many :user_projects, dependent: :destroy
     has_many :users, through: :user_projects
-    has_many :invitations, as: :entityable
     has_many :config_files, dependent: :destroy
     has_many :templates, dependent: :destroy
     has_many :credentials, through: :account

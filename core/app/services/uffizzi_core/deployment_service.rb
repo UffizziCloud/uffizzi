@@ -12,35 +12,38 @@ class UffizziCore::DeploymentService
   }.freeze
 
   class << self
-    def create_from_compose(compose_file, project, user)
+    def create_from_compose(compose_file, project, user, metadata)
       deployment_attributes = ActionController::Parameters.new(compose_file.template.payload)
       deployment_form = UffizziCore::Api::Cli::V1::Deployment::CreateForm.new(deployment_attributes)
       deployment_form.assign_dependences!(project, user)
       deployment_form.compose_file = compose_file
       deployment_form.creation_source = UffizziCore::Deployment.creation_source.compose_file_manual
+      deployment_form.metadata = metadata || {}
 
-      if deployment_form.save
-        update_subdomain!(deployment_form)
-
-        UffizziCore::Deployment::CreateJob.perform_async(deployment_form.id)
-        UffizziCore::Deployment::CreateWebhooksJob.perform_async(deployment_form.id)
-      end
+      run_deployment_creation_tasks(deployment_form) if deployment_form.save
 
       deployment_form
     end
 
-    def update_from_compose(compose_file, project, user, deployment)
+    def update_from_compose(compose_file, project, user, deployment, metadata)
       deployment_attributes = ActionController::Parameters.new(compose_file.template.payload)
 
       deployment_form = UffizziCore::Api::Cli::V1::Deployment::UpdateForm.new(deployment_attributes)
       deployment_form.assign_dependences!(project, user)
       deployment_form.compose_file = compose_file
+      deployment_form.metadata = metadata || {}
 
       ActiveRecord::Base.transaction do
         deployment.containers.destroy_all
-        deployment.compose_file.destroy! if deployment.compose_file.kind.temporary?
-
-        deployment.update!(containers: deployment_form.containers, compose_file_id: compose_file.id)
+        deployment.compose_file.destroy! if deployment.compose_file&.kind&.temporary?
+        params = {
+          containers: deployment_form.containers,
+          compose_file_id: compose_file.id,
+          creation_source: UffizziCore::Deployment.creation_source.compose_file_manual,
+          metadata: deployment_form.metadata,
+          state: :active,
+        }
+        deployment.update!(params)
       end
 
       deployment
@@ -85,25 +88,26 @@ class UffizziCore::DeploymentService
     end
 
     def build_subdomain(deployment)
-      if deployment.continuous_preview_payload.present?
-        continuous_preview_payload = deployment.continuous_preview_payload
+      return build_docker_continuous_preview_subdomain(deployment) if deployment&.continuous_preview_payload&.fetch('docker', nil).present?
 
-        return build_pull_request_subdomain(deployment) if continuous_preview_payload['pull_request'].present?
-        return build_docker_continuous_preview_subdomain(deployment) if continuous_preview_payload['docker'].present?
-      end
+      github_metadata = deployment.metadata.dig('labels', 'github')
+      return build_pull_request_subdomain(deployment) if
+        github_metadata&.dig('pull_request', 'number').present? && github_metadata&.dig('repository').present?
 
       build_default_subdomain(deployment)
     end
 
     def build_pull_request_subdomain(deployment)
-      project = deployment.project
-      continuous_preview_payload = deployment.continuous_preview_payload
-      pull_request_payload = continuous_preview_payload['pull_request']
-      repo_name = pull_request_payload['repository_full_name'].split('/').last
-      deployment_name = name(deployment)
-      subdomain = "pr#{pull_request_payload['id']}-#{deployment_name}-#{repo_name}-#{project.slug}"
-
+      github_payload = deployment.metadata.dig('labels', 'github')
+      repo_name = github_payload['repository'].split('/').last
+      pull_request_number = github_payload['pull_request']['number']
+      subdomain = "pr-#{pull_request_number}-#{name(deployment)}-#{repo_name}-#{deployment.project.slug}"
       format_subdomain(subdomain)
+    end
+
+    def update_subdomain!(deployment)
+      deployment.subdomain = build_subdomain(deployment)
+      deployment.save!
     end
 
     def build_docker_continuous_preview_subdomain(deployment)
@@ -198,34 +202,6 @@ class UffizziCore::DeploymentService
       "deployment-#{deployment.id}"
     end
 
-    def update_subdomain!(deployment)
-      deployment.subdomain = build_subdomain(deployment)
-
-      deployment.save!
-    end
-
-    def create_webhooks(deployment)
-      credential = deployment.project.account.credentials.docker_hub.active.first
-
-      if !deployment.containers.with_docker_hub_repo.exists? || !credential.present?
-        Rails.logger.info("DEPLOYMENT_PROCESS deployment_id=#{deployment.id} create_webhooks no dockerhub containers or credential")
-        return
-      end
-
-      accounts = UffizziCore::DockerHubService.accounts(credential)
-
-      deployment.containers.with_docker_hub_repo.find_each do |container|
-        if !accounts.include?(container.repo.namespace)
-          logger_message = "DEPLOYMENT_PROCESS deployment_id=#{deployment.id} no namespace(#{container.repo.namespace})
-          in accounts(#{accounts.inspect})"
-          Rails.logger.info(logger_message)
-          next
-        end
-
-        UffizziCore::Credential::DockerHub::CreateWebhookJob.perform_async(credential.id, container.image, deployment.id)
-      end
-    end
-
     def pull_request_payload_present?(deployment)
       deployment.continuous_preview_payload.present? && deployment.continuous_preview_payload['pull_request'].present?
     end
@@ -237,6 +213,12 @@ class UffizziCore::DeploymentService
     end
 
     private
+
+    def run_deployment_creation_tasks(deployment)
+      update_subdomain!(deployment)
+
+      UffizziCore::Deployment::CreateJob.perform_async(deployment.id)
+    end
 
     def deployment_process_status(deployment)
       containers = deployment.active_containers
@@ -304,7 +286,10 @@ class UffizziCore::DeploymentService
       subdomain_length_limit = Settings.deployment.subdomain.length_limit
       return rfc_subdomain if rfc_subdomain.length <= subdomain_length_limit
 
-      rfc_subdomain.slice(0, subdomain_length_limit)
+      sliced_subdomain = rfc_subdomain.slice(0, subdomain_length_limit)
+      return sliced_subdomain.chop if sliced_subdomain.end_with?('-')
+
+      sliced_subdomain
     end
   end
 end

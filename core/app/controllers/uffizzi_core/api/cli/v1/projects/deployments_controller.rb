@@ -14,7 +14,10 @@ class UffizziCore::Api::Cli::V1::Projects::DeploymentsController < UffizziCore::
   # @response [Array<Deployment>] 200 OK
   # @response 401 Not authorized
   def index
-    respond_with deployments
+    search_labels = JSON.parse(q_param)
+    filtered_deployments = deployments.with_labels(search_labels)
+
+    respond_with filtered_deployments, each_serializer: UffizziCore::Api::Cli::V1::Projects::DeploymentsSerializer
   end
 
   # Get deployment information by id
@@ -51,7 +54,7 @@ class UffizziCore::Api::Cli::V1::Projects::DeploymentsController < UffizziCore::
     errors = check_credentials(compose_file)
     return render_errors(errors) if errors.present?
 
-    deployment = UffizziCore::DeploymentService.create_from_compose(compose_file, resource_project, current_user)
+    deployment = UffizziCore::DeploymentService.create_from_compose(compose_file, resource_project, current_user, metadata_params)
 
     respond_with deployment
   end
@@ -82,8 +85,9 @@ class UffizziCore::Api::Cli::V1::Projects::DeploymentsController < UffizziCore::
     errors = check_credentials(compose_file)
     return render_errors(errors) if errors.present?
 
-    deployment = UffizziCore::Deployment.find(params[:id])
-    updated_deployment = UffizziCore::DeploymentService.update_from_compose(compose_file, resource_project, current_user, deployment)
+    deployment = deployments.find(params[:id])
+    updated_deployment = UffizziCore::DeploymentService.update_from_compose(compose_file, resource_project, current_user, deployment,
+                                                                            metadata_params)
 
     respond_with updated_deployment
   end
@@ -169,6 +173,10 @@ class UffizziCore::Api::Cli::V1::Projects::DeploymentsController < UffizziCore::
 
   def dependencies_params
     params.permit(dependencies: [:name, :path, :source, :content])
+  end
+
+  def metadata_params
+    params[:metadata]
   end
 
   def render_invalid_file

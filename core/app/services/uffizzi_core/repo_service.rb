@@ -16,6 +16,8 @@ class UffizziCore::RepoService
         credentials.github_container_registry.first
       when UffizziCore::Repo::DockerHub.name
         credentials.docker_hub.first
+      when UffizziCore::Repo::DockerRegistry.name
+        credentials.docker_registry.first
       when UffizziCore::Repo::Azure.name
         credentials.azure.first
       when UffizziCore::Repo::Google.name
