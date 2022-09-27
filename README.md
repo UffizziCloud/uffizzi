@@ -12,25 +12,35 @@ Uffizzi uses namespaces to isolate containerized, production-like replicas of yo
 While Uffizzi depends on Kubernetes, it does not require end-users to interface with Kubernetes directly. Developers can define their application in docker-compose and Uffizzi translates this into Kubernetes API calls that create an environment within a namespace. Uffizzi coordinates a dynamic DNS and TLS certificate for a secure, shareable URL endpoint. New commits automatically update the environment, and the environment with all associated elements can be deleted in response to CI/CD events.
 =======
 
-![banner](docs/images/banner.png)
+![github-banner](https://user-images.githubusercontent.com/7218230/191119628-4d39c65d-465f-4011-9370-d53d7b54d8cc.png)
+
 
 [![License](https://img.shields.io/badge/License-Apache%202.0-blue.svg)](https://opensource.org/licenses/Apache-2.0)
 >>>>>>> develop
 
 ## What is Uffizzi?
 
-Uffizzi is a cloud-native REST API for managing lightweight, event-driven test environments on Kubernetes. It provides Development teams with an environments-as-a-service capability, while eliminating the need for Operations teams to configure and manage test infrastructure and tooling. 
+Uffizzi is a platform that lets you preview pull requests before merging. Create on-demand Preview Environments for APIs, frontends, backends, databases, and microservices. Each Preview Environment gets a secure HTTPS URL that is continually refreshed when you push new commits. Uffizzi also handles clean up, so your environments last only as long as you need them.  
+
+Uffizzi is an open-source, off-the-shelf, cross-platform solution that works with any version control system, container registry, or CI platform.
 
 ## Use cases
-Uffizzi is designed to integrate with any CI/CD platform as a step in your pipeline. Example use cases include rapidly creating PR environments, preview environments, release environments, demo environments, and staging environments. 
+
+Uffizzi is designed to integrate with any CI platform as a step in your pipeline. In addition to Preview Environments, you can also use Uffizzi to rapidly create release environments, demo environments, debugging environments, and staging environments.
+
+Uffizzi is a tool that improves development velocity by removing the bottleneck of a shared test environment, where buggy or conflicting commits from multiple developers often cause an environment to break. Uffizzi Preview Environments enable teams to test the functionality of each branch in clean, production-like environments before merging. Uffizzi also facilitates test parallelization and helps shift testing to the left, where it’s easier to catch and fix bugs.
+
+## What types of apps are supported by Uffizzi?
+
+Uffizzi is designed for full-stack web applications and containerized services, including APIs, backends, frontends, databases, and microservices. Currently, application configurations must be defined via Docker Compose. Support for Helm and other configuration formats are on our [public roadmap](https://github.com/orgs/UffizziCloud/projects/2/views/1?layout=board). See [Docker Compose for Uffizzi ](https://docs.uffizzi.com/references/compose-spec/) to learn more about supported syntax.
 
 ## Why Uffizzi?
 
-- **👩‍💻 Developer-friendly** - The Uffizzi API provides a simplified interface to Kubernetes, allowing you to define your application with Docker Compose.
+- **👩‍💻 Developer-friendly** - Uffizzi is configured via Docker Compose, the same tool many teams use for local development.
 
-- **🪶 Lightweight** - Uffizzi test environments are isolated namespaces within a single cluster. This level of abstraction helps reduce a team's infrastructure footprint and associated overhead.
+- **🪶 Lightweight** - Uffizzi Preview Environments are isolated Pods/Namespaces deployed to a Kubernetes cluster. This level of abstraction helps reduce a team's infrastructure footprint and associated overhead.
 
-- **🔁 Event-driven** - Designed to integrate with any CI/CD system, Uffizzi environments are created, updated, or deleted via triggering events, such as pull requests or new release tags. Uffizzi generates a secure HTTPS URL for each environment, which is continually refreshed in response to new events.
+- **🔁 Event-driven** - Designed to integrate with any CI system, Uffizzi environments are created, updated, or deleted via triggering events, such as pull requests or new release tags. Uffizzi generates a secure HTTPS URL for each environment, which is continually refreshed in response to new events.
 
 - **🧼 Clean** - The ephemeral nature of Uffizzi test environments means your team can test new features or release candidates in clean, parallel environments before merging or promoting to production.
 
