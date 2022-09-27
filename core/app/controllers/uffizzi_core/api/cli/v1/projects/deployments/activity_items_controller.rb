@@ -18,7 +18,7 @@ class UffizziCore::Api::Cli::V1::Projects::Deployments::ActivityItemsController 
     deployment = resource_project.deployments.existed.find(params[:deployment_id])
 
     unless deployment.active?
-      return render json: { errors: { title: [I18n.t('deployment.invalid_state', state: deployment.state)] } },
+      return render json: { errors: { title: [I18n.t('deployment.invalid_state', id: deployment.id, state: deployment.state)] } },
                     status: :unprocessable_entity
     end
 
