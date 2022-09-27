@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-module UffizziCore::CredentialService
+class UffizziCore::CredentialService
   class << self
     def correct_credentials?(credential)
       status = case credential.type
@@ -19,8 +19,7 @@ module UffizziCore::CredentialService
       end
 
       if credential.persisted? && credential.active? && !status
-        Rails.logger.warn("broken credentials, credential_correct? credential_id=#{credential.id}")
-        credential.unauthorize!
+        Rails.logger.warn("Wrong credential: credential_correct? credential_id=#{credential.id}")
       end
 
       status

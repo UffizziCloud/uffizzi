@@ -119,11 +119,7 @@ class UffizziCore::ManageActivityItemsService
     case pod_container_status.to_sym
     when :running
       UffizziCore::Event.state.deployed
-    when :terminated
-      UffizziCore::Event.state.failed
     when :waiting
-      return UffizziCore::Event.state.failed if ['CrashLoopBackOff'].include?(reason)
-
       raise UffizziCore::Deployment::ImagePullError, @deployment.id if ['ErrImagePull', 'ImagePullBackOff'].include?(reason)
 
       UffizziCore::Event.state.deploying

@@ -80,6 +80,7 @@ class UffizziCore::Api::Cli::V1::Projects::DeploymentsControllerTest < ActionCon
     container_attributes = attributes_for(
       :container,
       :with_public_port,
+      :with_named_volume,
       image: image,
       tag: target_branch,
       healthcheck: { test: ['CMD', 'curl', '-f', 'https://localhost'] },
@@ -103,6 +104,9 @@ class UffizziCore::Api::Cli::V1::Projects::DeploymentsControllerTest < ActionCon
     end
 
     assert_response :success
+
+    subdomains = UffizziCore::Deployment.active.map(&:subdomain)
+    assert_nil(subdomains.detect { |s| s.include?('_') })
 
     Sidekiq::Worker.clear_all
     Sidekiq::Testing.inline!
@@ -229,6 +233,7 @@ class UffizziCore::Api::Cli::V1::Projects::DeploymentsControllerTest < ActionCon
     differences = {
       -> { UffizziCore::ComposeFile.temporary.count } => 1,
       -> { UffizziCore::Template.with_creation_source(UffizziCore::Template.creation_source.compose_file).count } => 1,
+      -> { @deployment.containers.count } => 1,
     }
 
     assert_difference differences do
@@ -257,6 +262,7 @@ class UffizziCore::Api::Cli::V1::Projects::DeploymentsControllerTest < ActionCon
     differences = {
       -> { UffizziCore::ComposeFile.temporary.count } => 0,
       -> { UffizziCore::Template.with_creation_source(UffizziCore::Template.creation_source.compose_file).count } => 0,
+      -> { @deployment.containers.count } => 1,
     }
 
     assert_difference differences do
@@ -481,6 +487,7 @@ class UffizziCore::Api::Cli::V1::Projects::DeploymentsControllerTest < ActionCon
     container = create(
       :container,
       :continuously_deploy_enabled,
+      :with_named_volume,
       deployment: @deployment,
       repo: repo,
       image: webhooks_data[:repository][:repo_name],

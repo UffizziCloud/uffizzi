@@ -57,6 +57,7 @@ module UffizziCore::Concerns::Models::Deployment
 
     def after_disable
       clean
+      update!(disabled_at: Time.now)
     end
 
     def after_fail
@@ -66,6 +67,10 @@ module UffizziCore::Concerns::Models::Deployment
     def clean
       active_containers.each(&:disable!)
       UffizziCore::Deployment::DeleteJob.perform_async(id)
+    end
+
+    def preview_url
+      "#{subdomain}.#{Settings.app.managed_dns_zone}"
     end
   end
 end

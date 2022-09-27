@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-module UffizziCore::DeploymentService
+class UffizziCore::DeploymentService
   MIN_TARGET_PORT_RANGE = 37_000
   MAX_TARGET_PORT_RANGE = 39_999
 
@@ -29,23 +29,21 @@ module UffizziCore::DeploymentService
       deployment_form
     end
 
-    def update_from_compose(compose_file, project, user, deployment_id)
+    def update_from_compose(compose_file, project, user, deployment)
       deployment_attributes = ActionController::Parameters.new(compose_file.template.payload)
 
       deployment_form = UffizziCore::Api::Cli::V1::Deployment::UpdateForm.new(deployment_attributes)
       deployment_form.assign_dependences!(project, user)
       deployment_form.compose_file = compose_file
 
-      if deployment_form.valid?
-        deployment = UffizziCore::Deployment.find(deployment_id)
+      ActiveRecord::Base.transaction do
         deployment.containers.destroy_all
-        deployment.compose_file.destroy if deployment.compose_file.kind.temporary?
-        deployment.update!(containers: deployment_form.containers, compose_file_id: compose_file.id)
+        deployment.compose_file.destroy! if deployment.compose_file.kind.temporary?
 
-        return deployment
+        deployment.update!(containers: deployment_form.containers, compose_file_id: compose_file.id)
       end
 
-      deployment_form
+      deployment
     end
 
     def deploy_containers(deployment, repeated = false)
@@ -62,7 +60,7 @@ module UffizziCore::DeploymentService
         Rails.logger.info("DEPLOYMENT_PROCESS deployment_id=#{deployment.id} start deploying into controller")
 
         containers = deployment.active_containers
-        containers = add_default_deployment_variables!(containers)
+        containers = add_default_deployment_variables!(containers, deployment)
 
         UffizziCore::ControllerService.deploy_containers(deployment, containers)
       else
@@ -112,8 +110,8 @@ module UffizziCore::DeploymentService
       project = deployment.project
       continuous_preview_payload = deployment.continuous_preview_payload
       docker_payload = continuous_preview_payload['docker']
-      repo_name = docker_payload['image'].split('/').last.gsub('_', '-')
-      image_tag = docker_payload['tag'].gsub('_', '-')
+      repo_name = docker_payload['image'].split('/').last
+      image_tag = docker_payload['tag']
       deployment_name = name(deployment)
       subdomain = "#{image_tag}-#{deployment_name}-#{repo_name}-#{project.slug}"
 
@@ -284,12 +282,14 @@ module UffizziCore::DeploymentService
       Digest::SHA256.hexdigest("#{container.id}:#{container.image}")[0, 10]
     end
 
-    def add_default_deployment_variables!(containers)
+    def add_default_deployment_variables!(containers, deployment)
       containers.each do |container|
         envs = []
         if container.port.present? && !UffizziCore::ContainerService.defines_env?(container, 'PORT')
           envs.push('name' => 'PORT', 'value' => container.target_port.to_s)
         end
+
+        envs.push('name' => 'UFFIZZI_URL', 'value' => "https://#{deployment.preview_url}")
 
         container.variables = [] if container.variables.nil?
 
@@ -298,10 +298,13 @@ module UffizziCore::DeploymentService
     end
 
     def format_subdomain(full_subdomain_name)
+      # Replace _ to - because RFC 1123 subdomain must consist of lower case alphanumeric characters,
+      # '-' or '.', and must start and end with an alphanumeric character
+      rfc_subdomain = full_subdomain_name.gsub('_', '-')
       subdomain_length_limit = Settings.deployment.subdomain.length_limit
-      return full_subdomain_name if full_subdomain_name.length <= subdomain_length_limit
+      return rfc_subdomain if rfc_subdomain.length <= subdomain_length_limit
 
-      full_subdomain_name.slice(0, subdomain_length_limit)
+      rfc_subdomain.slice(0, subdomain_length_limit)
     end
   end
 end

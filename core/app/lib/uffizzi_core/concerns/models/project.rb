@@ -12,7 +12,7 @@ module UffizziCore::Concerns::Models::Project
 
     belongs_to :account
 
-    has_many :repos
+    has_many :repos, dependent: :destroy
     has_many :deployments, dependent: :destroy
     has_many :user_projects, dependent: :destroy
     has_many :users, through: :user_projects

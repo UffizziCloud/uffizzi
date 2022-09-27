@@ -5,7 +5,7 @@ class UffizziCore::ConfigFile::ApplyJob < UffizziCore::ApplicationJob
 
   sidekiq_retry_in do |count, exception|
     case exception
-    when UffizziCore::ControllerService::DeploymentNotFoundError
+    when UffizziCore::DeploymentNotFoundError
       Rails.logger.info("DEPLOYMENT_PROCESS ApplyJob retry deployment_id=#{exception.deployment_id} count=#{count}")
       Settings.controller.resource_create_retry_time
     end
@@ -22,7 +22,7 @@ class UffizziCore::ConfigFile::ApplyJob < UffizziCore::ApplicationJob
     end
 
     unless UffizziCore::ControllerService.deployment_exists?(deployment)
-      raise UffizziCore::ControllerService::DeploymentNotFoundError,
+      raise UffizziCore::DeploymentNotFoundError,
             deployment_id
     end
 

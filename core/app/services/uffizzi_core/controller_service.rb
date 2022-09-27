@@ -1,7 +1,9 @@
 # frozen_string_literal: true
 
-module UffizziCore::ControllerService
+class UffizziCore::ControllerService
   class << self
+    include UffizziCore::DependencyInjectionConcern
+
     def apply_config_file(deployment, config_file)
       body = {
         config_file: UffizziCore::Controller::ApplyConfigFile::ConfigFileSerializer.new(config_file).as_json,
@@ -50,8 +52,12 @@ module UffizziCore::ControllerService
       body = {
         containers: containers,
         credentials: credentials,
-        deployment_url: UffizziCore::DeploymentService.build_preview_url(deployment),
+        deployment_url: deployment.preview_url,
       }
+
+      if password_protection_module.present?
+        body = password_protection_module.add_password_configuration(body, deployment.project_id)
+      end
 
       controller_client.deploy_containers(deployment_id: deployment.id, body: body)
     end

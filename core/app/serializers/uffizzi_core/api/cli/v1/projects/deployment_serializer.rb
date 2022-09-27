@@ -30,10 +30,6 @@ class UffizziCore::Api::Cli::V1::Projects::DeploymentSerializer < UffizziCore::B
     object.containers.active
   end
 
-  def preview_url
-    UffizziCore::DeploymentService.build_preview_url(object)
-  end
-
   def tag
     object.ingress_container&.tag
   end

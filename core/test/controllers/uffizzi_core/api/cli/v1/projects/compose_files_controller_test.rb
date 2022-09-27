@@ -51,7 +51,10 @@ class UffizziCore::Api::Cli::V1::Projects::ComposeFilesControllerTest < ActionCo
 
     get :show, params: params, format: :json
 
+    error_message = JSON.parse(response.body, symbolize_names: true)[:errors][:title].first
+
     assert_response :not_found
+    assert_equal('UffizziCore::ComposeFile Not Found', error_message)
   end
 
   test '#create - docker compose file' do
@@ -175,6 +178,34 @@ class UffizziCore::Api::Cli::V1::Projects::ComposeFilesControllerTest < ActionCo
     assert_response :success
   end
 
+  test '#create - compose file with volumes' do
+    sign_in @admin
+
+    @compose_file.destroy!
+    create(:credential, :docker_hub, :active, account: @account)
+    base_attributes = attributes_for(:compose_file).slice(:source, :path)
+    file_content = File.read('test/fixtures/files/compose_files/compose_with_volumes.yml')
+    encoded_content = Base64.encode64(file_content)
+    compose_file_attributes = base_attributes.merge(content: encoded_content, repository_id: nil)
+
+    params = {
+      project_slug: @project.slug,
+      compose_file: compose_file_attributes,
+      dependencies: [],
+    }
+
+    differences = {
+      -> { UffizziCore::ComposeFile.main.count } => 1,
+      -> { UffizziCore::Template.with_creation_source(UffizziCore::Template.creation_source.compose_file).count } => 1,
+    }
+
+    assert_difference differences do
+      post :create, params: params, format: :json
+    end
+
+    assert_response :success
+  end
+
   test '#destroy - deletes compose file' do
     sign_in @admin
 
@@ -200,7 +231,10 @@ class UffizziCore::Api::Cli::V1::Projects::ComposeFilesControllerTest < ActionCo
 
     delete :destroy, params: params, format: :json
 
+    error_message = JSON.parse(response.body, symbolize_names: true)[:errors][:title].first
+
     assert_response :not_found
+    assert_equal('UffizziCore::ComposeFile Not Found', error_message)
   end
 
   test '#create - with yaml aliases' do

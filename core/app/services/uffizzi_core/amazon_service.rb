@@ -16,20 +16,6 @@ class UffizziCore::AmazonService
       parsed_host[3]
     end
 
-    def process_webhook(event, event_data)
-      case event
-      when 'PUSH'
-        source = UffizziCore::Repo::Amazon.name
-        image = event_data['repository-name']
-        tag = event_data['image-tag']
-
-        UffizziCore::ContinuouslyDeployService.run_docker_registry_process(source, image, tag)
-        UffizziCore::ContinuousPreviewService.run_docker_registry_process(source, image, tag)
-      else
-        Rails.logger.warn("Amazon #{event} event doesn't support")
-      end
-    end
-
     private
 
     def client(credential)

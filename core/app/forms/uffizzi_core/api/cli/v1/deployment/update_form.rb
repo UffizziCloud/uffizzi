@@ -17,6 +17,7 @@ class UffizziCore::Api::Cli::V1::Deployment::UpdateForm < UffizziCore::Deploymen
     :continuously_deploy,
     { variables: [:name, :value],
       secret_variables: [:name, :value],
+      volumes: [:source, :target, :type, :read_only],
       repo_attributes: [
         :namespace,
         :name,

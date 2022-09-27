@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-module UffizziCore::DockerHubService
+class UffizziCore::DockerHubService
   HOOK_NAME = 'Uffizzi OpenSource Deploy Webhook'
   HOOK_URL = "#{Settings.app.host}api/cli/v1/webhooks/docker_hub"
   REGISTRY = 'registry-1.docker.io'
@@ -49,13 +49,13 @@ module UffizziCore::DockerHubService
     end
 
     def user_client(credential)
-      if @client.nil?
-        @client = UffizziCore::DockerHubClient.new(credential)
+      return @client if @client&.credential&.username == credential.username
 
-        unless @client.authentificated?
-          Rails.logger.warn("broken credentials, DockerHubService credential_id=#{credential.id}")
-          credential.unauthorize! unless credential.unauthorized?
-        end
+      @client = UffizziCore::DockerHubClient.new(credential)
+
+      unless @client.authentificated?
+        Rails.logger.warn("broken credentials, DockerHubService credential_id=#{credential.id}")
+        credential.unauthorize! unless credential.unauthorized?
       end
 
       @client
