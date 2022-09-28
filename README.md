@@ -67,6 +67,7 @@ There are two options to get Uffizzi:
 ## Documentation
 - [Main documentation](https://docs.uffizzi.com)
 - [Docker Compose for Uffizzi ](https://docs.uffizzi.com/references/compose-spec/)
+- [Quickstart guide](https://github.com/UffizziCloud/quickstart)
 
 ## Community
 
