@@ -1,22 +1,8 @@
-<<<<<<< HEAD
-![banner](docs/images/banner.png)
-
-# [Uffizzi](https://uffizzi.com)
-
-Uffizzi is a cloud-native REST API for managing lightweight, event-driven, and ephemeral test environments on Kubernetes. Uffizzi provides test environments as a service to Development teams while reducing management and resource overhead for Operations teams.
-
-Uffizzi allows you to define your application in Docker Compose and is designed to integrate with any CI/CD system.
-
-Uffizzi uses namespaces to isolate containerized, production-like replicas of your application within a single cluster. These environments are designed to host any number of containerized services and can be used for PR/MR environments, preview environments, release environments, demo environments, and staging environments. They require minimal compute resources and can be quickly created, updated, and deleted in response to CI/CD events.
-
-While Uffizzi depends on Kubernetes, it does not require end-users to interface with Kubernetes directly. Developers can define their application in docker-compose and Uffizzi translates this into Kubernetes API calls that create an environment within a namespace. Uffizzi coordinates a dynamic DNS and TLS certificate for a secure, shareable URL endpoint. New commits automatically update the environment, and the environment with all associated elements can be deleted in response to CI/CD events.
-=======
 
 ![github-banner](https://user-images.githubusercontent.com/7218230/191119628-4d39c65d-465f-4011-9370-d53d7b54d8cc.png)
 
 
 [![License](https://img.shields.io/badge/License-Apache%202.0-blue.svg)](https://opensource.org/licenses/Apache-2.0)
->>>>>>> develop
 
 ## What is Uffizzi?
 
@@ -48,9 +34,18 @@ Uffizzi is designed for full-stack web applications and containerized services, 
 
 See our high-level [project roadmap](https://github.com/orgs/UffizziCloud/projects/2/views/1?layout=board), including already delivered milestones.
 
-## Getting started
+## Quickstart (~1 minute)
 
-The easiest way to get started with Uffizzi is via the managed API service provided by Uffizzi Cloud, as describe in the [quickstart guide](https://docs.uffizzi.com). This option is free for small teams and is recommended for those who are new to Uffizzi. Alternatively, you can get started creating on-demand test environments on your own cluster by following the [self-hosted installation guide](INSTALL.md).
+Go to the [`quickstart` repo](https://github.com/UffizziCloud/quickstart#uffizzi-quickstart--1-minute), then follow the intructions in the `README` to create a Preview Environment for a sample application.
+
+## Set up Uffizzi for your application
+
+There are two ways to get Uffizzi:  
+
+1. Self-host Uffizzi on your own Kubernetes cluster  
+2. [Uffizzi Cloud](https://uffizzi.com) (SaaS)  
+
+The easiest way to get started with Uffizzi is via the managed API service provided by Uffizzi Cloud, as described in the . This option is free for small teams and is recommended for those who are new to Uffizzi. Alternatively, you can get started creating on-demand test environments on your own cluster by following the [self-hosted installation guide](INSTALL.md).
 
 ## Documentation
 - [Main documentation](https://docs.uffizzi.com)
