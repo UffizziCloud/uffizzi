@@ -30,7 +30,12 @@ Uffizzi is designed for full-stack web applications and containerized services, 
 
 ## Why Uffizzi?
 
-Uffizzi is a tool designed to help teams catch and fix bugs before they're ever merged. It also improves development velocity by removing the bottleneck of a shared test environment, where buggy or conflicting commits from multiple developers often cause an environment to break. Uffizzi Preview Environments enable teams to test the functionality of each branch in clean, production-like environments before merging. Uffizzi also facilitates test parallelization since teams can create as many Preview Environments as they need.
+Development teams adopt Uffizzi because it...
+- **Improves code quality** by providing a way to test the functionality of each branch in clean, production-like environments before merging.  
+- **Increases development velocity** by removing the bottleneck of a shared test environment, where buggy or conflicting commits from multiple developers often cause an environment to break.  
+- **Facilitates test parallelization** since teams can create as many Preview Environments as they need.
+
+Teams also like Uffizzi because it's...  
 
 - **👩‍💻 Developer-friendly** - Uffizzi is configured via Docker Compose, the same tool many teams use for local development.
 
