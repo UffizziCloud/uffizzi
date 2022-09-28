@@ -30,10 +30,10 @@ Uffizzi is designed for full-stack web applications and containerized services, 
 
 ## Why Uffizzi?
 
-Development teams adopt Uffizzi because it...
-- **Improves code quality** by providing a way to test the functionality of each branch in clean, production-like environments before merging.  
-- **Increases development velocity** by removing the bottleneck of a shared test environment, where buggy or conflicting commits from multiple developers often cause an environment to break.  
-- **Facilitates test parallelization** since teams can create as many Preview Environments as they need.
+Development teams adopt Uffizzi because it... 
+- **Increases development velocity** by removing the bottleneck of a shared test environment, where buggy or conflicting commits from multiple developers often cause delays in feature releases. 
+- **Improves code quality** by providing a way to test the functionality of each branch in clean, isolated, production-like environments before merging.  
+- **Facilitates test parallelization** since teams can create as many Preview Environments as they need and can iterate on features in parallel.
 
 Teams also like Uffizzi because it's...  
 
