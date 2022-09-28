@@ -3,6 +3,7 @@
 module UffizziCore::Concerns::Models::Deployment
   extend ActiveSupport::Concern
 
+  # rubocop:disable Metrics/BlockLength
   included do
     include AASM
     include UffizziCore::StateMachineConcern
@@ -72,5 +73,18 @@ module UffizziCore::Concerns::Models::Deployment
     def preview_url
       "#{subdomain}.#{Settings.app.managed_dns_zone}"
     end
+
+    def from_actions?
+      from_github_actions? || from_gitlab_actions?
+    end
+
+    def from_github_actions?
+      metadata.dig('labels', 'github', 'repository').present?
+    end
+
+    def from_gitlab_actions?
+      metadata.dig('labels', 'gitlab', 'repo').present?
+    end
   end
+  # rubocop:enable Metrics/BlockLength
 end
