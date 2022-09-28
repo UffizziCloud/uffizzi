@@ -16,8 +16,9 @@ Go to the [`quickstart` repo](https://github.com/UffizziCloud/quickstart#uffizzi
 
 ## Use cases
 
-Uffizzi is designed to integrate with any CI platform as a step in your pipeline. In addition to Preview Environments, you can also use Uffizzi to rapidly create:  
-  
+Uffizzi is designed to integrate with any CI platform as a step in your pipeline. You can also use Uffizzi to rapidly create:  
+
+- Pull request environments  
 - Debugging environments  
 - Demo environments  
 - Release environments
