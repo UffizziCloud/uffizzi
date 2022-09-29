@@ -71,6 +71,10 @@ Install Uffizzi on your own Kubernetes cluster by following the [self-hosted ins
 </ol>
 </details>
 
+<details><summary><b>What do you mean by "environments"?</b></summary>
+Uffizzi Preview Environments are built on top of Kubernetes. Uffizzi performs a translation from Compose to Kubernetes, where your application is deployed as a Pod to an isolated Namespace within a cluster. This level of abstraction helps reduce a team's infrastructure footprint and associated overhead. Each Preview Environment exposes one ingress service that can receive HTTPS traffic. Every container in the Preview Environment can communicate internally via `localhost:port`.
+</details>
+
 <details><summary><b>Does Uffizzi support monorepos/polyrepos?</b></summary>
 Yes. Your CI pipeline will typically include a series of <code>build</code>/<code>push</code> steps for each of the components of your application. Uffizzi just needs to know the fully qualified container registry URL for where to find these built images.
 </details>
@@ -96,7 +100,7 @@ Yes. While Uffizzi supports full-stack previews, some users who already leverage
 </details>
 
 <details><summary><b>Is Uffizzi open source?</b></summary>
-Yes. Check out the <a href="https://github.com/UffizziCloud/uffizzi_app">main repo</a>
+Yes. If you have access to a Kubernetes cluster, you can install Uffizzi via Helm. Follow the <a href="https://github.com/UffizziCloud/uffizzi_app/blob/update-description/INSTALL.md">self-hosted installation guide</a>.
 </details>
 
 ## License
