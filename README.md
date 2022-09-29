@@ -51,7 +51,7 @@ See our high-level [project roadmap](https://github.com/orgs/UffizziCloud/projec
 
 ## Get started
 
-Install Uffizzi on your own Kubernetes cluster by following the [self-hosted installation guide](INSTALL.md). Once installed, add Uffizzi as a step in your CI pipeline. As a convenience, we've written actions/jobs for [GitHub Actions](ci/github-actions) or [GitLab CI](ci/gitlab). If you use a different provider, you can write your own action by wrapping the [Uffizzi CLI](https://github.com/UffizziCloud/uffizzi_cli), available as a [Docker image](https://hub.docker.com/r/uffizzi/cli).
+Install Uffizzi on your own Kubernetes cluster by following the [self-hosted installation guide](INSTALL.md). Once installed, add Uffizzi as a step in your CI pipeline. As a convenience, we've written actions/jobs for [GitHub Actions](https://github.com/marketplace/actions/preview-environments) or [GitLab CI](https://gitlab.com/uffizzi/environment-action). If you use a different provider, you can write your own action by wrapping the [Uffizzi CLI](https://github.com/UffizziCloud/uffizzi_cli), available as a [Docker image](https://hub.docker.com/r/uffizzi/cli).
 
 ## Documentation
 
@@ -106,7 +106,7 @@ Yes. While Uffizzi supports full-stack previews, some users who already leverage
 </details>
 
 <details><summary><b>Is Uffizzi open source?</b></summary>
-Yes. If you have access to a Kubernetes cluster, you can install Uffizzi via Helm. Follow the <a href="https://github.com/UffizziCloud/uffizzi_app/INSTALL.md">self-hosted installation guide</a>.
+Yes. If you have access to a Kubernetes cluster, you can install Uffizzi via Helm. Follow the <a href="INSTALL.md">self-hosted installation guide</a>.
 </details>
 
 ## License
