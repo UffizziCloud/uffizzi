@@ -30,6 +30,7 @@ Uffizzi is designed for full-stack web applications and containerized services, 
 ## Why Uffizzi?
 
 Development teams adopt Uffizzi because it... 
+
 - **Increases development velocity** by removing the bottleneck of a shared test environment, where buggy or conflicting commits from multiple developers often cause delays in feature releases. 
 - **Improves code quality** by providing a way to test the functionality of each branch in clean, isolated, production-like environments before merging.  
 - **Facilitates test parallelization** since teams can create as many Preview Environments as they need and can iterate on features in parallel.
@@ -53,8 +54,9 @@ See our high-level [project roadmap](https://github.com/orgs/UffizziCloud/projec
 Install Uffizzi on your own Kubernetes cluster by following the [self-hosted installation guide](INSTALL.md). Once installed, add Uffizzi as a step in your CI pipeline. As a convenience, we've written actions/jobs for [GitHub Actions](https://github.com/UffizziCloud/uffizzi_app/ci/github-actions) or [GitLab CI](https://github.com/UffizziCloud/uffizzi_app/ci/gitlab). If you use a different provider, you can write your own action by wrapping the [Uffizzi CLI](https://github.com/UffizziCloud/uffizzi_cli), available as a [Docker image](https://hub.docker.com/r/uffizzi/cli).
 
 ## Documentation
+
 - [Main documentation](https://docs.uffizzi.com)
-- [Docker Compose for Uffizzi ](https://docs.uffizzi.com/references/compose-spec/)
+- [Docker Compose for Uffizzi](https://docs.uffizzi.com/references/compose-spec/)
 
 ## Community
 
@@ -83,7 +85,7 @@ Uffizzi Preview Environments are built on top of Kubernetes. Uffizzi performs a 
 Yes. Your CI pipeline will typically include a series of <code>build</code>/<code>push</code> steps for each of the components of your application. Uffizzi just needs to know the fully qualified container registry URL for where to find these built images.
 </details>
 
-<details><summary><b>Does Uffizzi support &nbsp; _____________?</b></summary>
+<details><summary><b>Does Uffizzi support _____________?</b></summary>
 Uffizzi is container-centric and primarily designed for web languages. In general, if your application can be containerized, described with Docker Compose, and accepts HTTP traffic, Uffizzi can preview it.
 </details>
 
