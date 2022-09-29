@@ -51,7 +51,7 @@ See our high-level [project roadmap](https://github.com/orgs/UffizziCloud/projec
 
 ## Get started
 
-Install Uffizzi on your own Kubernetes cluster by following the [self-hosted installation guide](INSTALL.md). Once installed, add Uffizzi as a step in your CI pipeline. As a convenience, we've written actions/jobs for [GitHub Actions](https://github.com/UffizziCloud/uffizzi_app/ci/github-actions) or [GitLab CI](https://github.com/UffizziCloud/uffizzi_app/ci/gitlab). If you use a different provider, you can write your own action by wrapping the [Uffizzi CLI](https://github.com/UffizziCloud/uffizzi_cli), available as a [Docker image](https://hub.docker.com/r/uffizzi/cli).
+Install Uffizzi on your own Kubernetes cluster by following the [self-hosted installation guide](INSTALL.md). Once installed, add Uffizzi as a step in your CI pipeline. As a convenience, we've written actions/jobs for [GitHub Actions](ci/github-actions) or [GitLab CI](ci/gitlab). If you use a different provider, you can write your own action by wrapping the [Uffizzi CLI](https://github.com/UffizziCloud/uffizzi_cli), available as a [Docker image](https://hub.docker.com/r/uffizzi/cli).
 
 ## Documentation
 
@@ -78,7 +78,7 @@ Install Uffizzi on your own Kubernetes cluster by following the [self-hosted ins
 </details>
 
 <details><summary><b>What do you mean by "environments"?</b></summary>
-Uffizzi Preview Environments are deployed upon Kubernetes. Uffizzi performs a translation from Compose to Kubernetes, where your application is deployed as a Pod to an isolated Namespace within a cluster. This abstraction helps reduce a team's infrastructure footprint and associated overhead. Uffizzi also creates a unique hostname for each Preview Environment and provision a TLS certificate. Each Preview Environment exposes one socket that can receive HTTP traffic. Every container defined by your Compose can communicate with each other on an internal network via <code>localhost</code>. Application instances that belong to different Preview Environments may only communicate via the public Internet. See the <a href="https://github.com/UffizziCloud/uffizzi_app/INSTALL.md">self-hosted installation guide</a> for more architecture details.
+Uffizzi Preview Environments are deployed upon Kubernetes. Uffizzi performs a translation from Compose to Kubernetes, where your application is deployed as a Pod to an isolated Namespace within a cluster. This abstraction helps reduce a team's infrastructure footprint and associated overhead. Uffizzi also creates a unique hostname for each Preview Environment and provision a TLS certificate. Each Preview Environment exposes one socket that can receive HTTP traffic. Every container defined by your Compose can communicate with each other on an internal network via <code>localhost</code>. Application instances that belong to different Preview Environments may only communicate via the public Internet. See the <a href="./INSTALL.md">self-hosted installation guide</a> for more architecture details.
 </details>
 
 <details><summary><b>Does Uffizzi support monorepos/polyrepos?</b></summary>
@@ -111,8 +111,8 @@ Yes. If you have access to a Kubernetes cluster, you can install Uffizzi via Hel
 
 ## License
 
-This library is licensed under the Apache License, Version 2.0: http://www.apache.org/licenses/LICENSE-2.0
+This library is licensed under the [Apache License, Version 2.0](LICENSE).
 
 ## Security
 
-If you discover a security related issues, please do **not** create a public github issue. Notify the Uffizzi team privately by sending an email to security@uffizzi.com.
+If you discover a security related issues, please do **not** create a public github issue. Notify the Uffizzi team privately by sending an email to `security@uffizzi.com`.
