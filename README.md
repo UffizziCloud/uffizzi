@@ -5,9 +5,13 @@
 
 ## What is Uffizzi?
 
+**Open-source Preview Environments**
+
 Uffizzi is a tool that lets you preview pull requests before merging. Create on-demand Preview Environments for APIs, frontends, backends, databases, and microservices. Each Preview Environment gets a secure HTTPS URL that is continually refreshed when you push new commits. Uffizzi also handles clean up, so your environments last only as long as you need them.  
 
 Uffizzi is an open-source, off-the-shelf, cross-platform solution that works with any version control system, container registry, or CI platform.
+
+<img width="800" alt="environment-url" src="https://user-images.githubusercontent.com/7218230/193065914-0226f551-5806-4185-8ffb-0b671a487e2d.png">
 
 ## Use cases
 
@@ -72,7 +76,7 @@ Install Uffizzi on your own Kubernetes cluster by following the [self-hosted ins
 </details>
 
 <details><summary><b>What do you mean by "environments"?</b></summary>
-Uffizzi Preview Environments are built on top of Kubernetes. Uffizzi performs a translation from Compose to Kubernetes, where your application is deployed as a Pod to an isolated Namespace within a cluster. This level of abstraction helps reduce a team's infrastructure footprint and associated overhead. Each Preview Environment exposes one ingress service that can receive HTTPS traffic. Every container in the Preview Environment can communicate internally via `localhost:port`.
+Uffizzi Preview Environments are built on top of Kubernetes. Uffizzi performs a translation from Compose to Kubernetes, where your application is deployed as a Pod to an isolated Namespace within a cluster. This level of abstraction helps reduce a team's infrastructure footprint and associated overhead. Uffizzi also creates a unique domain for each Preview Environment and handles TLS certificates. Each Preview Environment exposes one ingress service that can receive HTTPS traffic. Every service defined by your Compose can communicate on an internal network via <code>localhost:port</code>. Application instances that belong to different Preview Environments may only communicate via the public Internet. See the <a href="https://github.com/UffizziCloud/uffizzi_app/blob/develop/INSTALL.md">self-hosted installation guide</a> for more architecture details.
 </details>
 
 <details><summary><b>Does Uffizzi support monorepos/polyrepos?</b></summary>
@@ -84,7 +88,7 @@ Uffizzi is container-centric and primarily designed for web languages. In genera
 </details>
 
 <details><summary><b>How can my application services communicate?</b></summary>
-Just like when you run <code>docker-compose up</code> locally, all the <code>services</code> defined in your Compose share a local network and can communicate via <code>localhost:port</code>. Applications that belong to different Preview Environments may only communicate via the public Internet.
+Just like when you run <code>docker-compose up</code> locally, all the <code>services</code> defined in your Compose share a local network and can communicate via <code>localhost:port</code>. Application instances that belong to different Preview Environments may only communicate via the public Internet.
 </details>
 
 <details><summary><b>How is Uffizzi different from GitHub Actions (or other CI providers)?</b></summary>
@@ -100,7 +104,7 @@ Yes. While Uffizzi supports full-stack previews, some users who already leverage
 </details>
 
 <details><summary><b>Is Uffizzi open source?</b></summary>
-Yes. If you have access to a Kubernetes cluster, you can install Uffizzi via Helm. Follow the <a href="https://github.com/UffizziCloud/uffizzi_app/blob/update-description/INSTALL.md">self-hosted installation guide</a>.
+Yes. If you have access to a Kubernetes cluster, you can install Uffizzi via Helm. Follow the <a href="https://github.com/UffizziCloud/uffizzi_app/blob/develop/INSTALL.md">self-hosted installation guide</a>.
 </details>
 
 ## License
