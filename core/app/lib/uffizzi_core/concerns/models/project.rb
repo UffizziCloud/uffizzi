@@ -45,6 +45,11 @@ module UffizziCore::Concerns::Models::Project
       disable_deployments
     end
 
+    def after_activate
+      update(name: name.split('deleted').first.trim)
+      update(slug: slug.split('deleted').first.trim)
+    end
+
     def active_deployments
       deployments.active
     end
