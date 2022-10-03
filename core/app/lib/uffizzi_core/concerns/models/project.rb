@@ -46,8 +46,8 @@ module UffizziCore::Concerns::Models::Project
     end
 
     def after_activate
-      update(name: name.split('deleted').first.trim)
-      update(slug: slug.split('deleted').first.trim)
+      update(name: name.split('deleted').first.strip)
+      update(slug: slug.split('deleted').first.strip)
     end
 
     def active_deployments
