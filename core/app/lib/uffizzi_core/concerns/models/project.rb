@@ -30,7 +30,7 @@ module UffizziCore::Concerns::Models::Project
       state :active, initial: true
       state :disabled
 
-      event :activate do
+      event :activate, after: :after_activate do
         transitions from: [:disabled], to: :active
       end
 
