@@ -51,9 +51,11 @@ class UffizziCore::ComposeFile::Parsers::IngressParserService
     end
 
     def additional_subdomains(ingress_data)
-      return [] if ingress_data['additional_subdomains'].blank?
+      subdomains = ingress_data['additional_subdomains']
 
-      ingress_data['additional_subdomains'].each do |subdomain|
+      return [] if subdomains.blank?
+
+      subdomains.each do |subdomain|
         unless valid_subdomain?(subdomain)
           raise UffizziCore::ComposeFile::ParseError, I18n.t('compose.invalid_additional_subdomain', subdomain: subdomain)
         end
@@ -66,6 +68,8 @@ class UffizziCore::ComposeFile::Parsers::IngressParserService
                                                                 subdomain: subdomain)
         end
       end
+
+      subdomains
     end
 
     def valid_subdomain?(subdomain)
