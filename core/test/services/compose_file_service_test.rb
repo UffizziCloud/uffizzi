@@ -704,24 +704,4 @@ class UffizziCore::ComposeFileServiceTest < ActiveSupport::TestCase
     assert_equal(content_data.dig('services', 'nginx', 'volumes').first.split(':').first, first_volume[:source])
     assert_equal(content_data.dig('services', 'nginx', 'volumes').first.split(':').second, first_volume[:target])
   end
-
-  test '#parse - check invalid additional subdomains' do
-    content = file_fixture('files/compose_files/dockerhub_services/invalid_additional_subdomains.yml').read
-
-    e = assert_raise(UffizziCore::ComposeFile::ParseError) do
-      UffizziCore::ComposeFileService.parse(content)
-    end
-
-    assert_match('Invalid additional subdomain', e.message)
-  end
-
-  test '#parse - check exceed length additional subdomains' do
-    content = file_fixture('files/compose_files/dockerhub_services/ecxeed_length_additional_subdomains.yml').read
-
-    e = assert_raise(UffizziCore::ComposeFile::ParseError) do
-      UffizziCore::ComposeFileService.parse(content)
-    end
-
-    assert_match('exceeds the maximum length', e.message)
-  end
 end

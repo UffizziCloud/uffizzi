@@ -12,6 +12,3 @@ x-uffizzi:
   ingress:
     service: nginx
     port: 80
-    additional_subdomains:
-      - "example"
-      - "example-hostname"

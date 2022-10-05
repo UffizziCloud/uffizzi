@@ -1,9 +1,0 @@
-services:
-  nginx:
-    image: nginx
-
-x-uffizzi-ingress:
-  service: nginx
-  port: 80
-  additional_subdomains:
-    - "example-host-example-hostexample-hostexample-hostexample-hostexample-hostexample-hostexample-hostexample-hostexample-hostexample-hostexample-hostexample-hostexample-hostexample-hostexample-hostexample-host"
