@@ -321,7 +321,7 @@ class UffizziCore::Api::Cli::V1::Projects::DeploymentsControllerTest < ActionCon
 
     assert_response :success
 
-    container_keys = [:image, :tag, :service_name, :port, :additional_subdomains, :public]
+    container_keys = [:image, :tag, :service_name, :port, :public]
     actual_containers_attributes = UffizziCore::Container.all.map { |c| c.attributes.deep_symbolize_keys.slice(*container_keys) }
     actual_template_containers_attributes = UffizziCore::Template.last
       .payload
@@ -341,7 +341,6 @@ class UffizziCore::Api::Cli::V1::Projects::DeploymentsControllerTest < ActionCon
       tag: 'latest',
       service_name: 'app',
       port: nil,
-      additional_subdomains: [],
       public: false,
     }
     expected_db_container_attributes = {
@@ -349,7 +348,6 @@ class UffizziCore::Api::Cli::V1::Projects::DeploymentsControllerTest < ActionCon
       tag: 'latest',
       service_name: 'db',
       port: nil,
-      additional_subdomains: [],
       public: false,
     }
     expected_nginx_container_attributes = {
@@ -357,7 +355,6 @@ class UffizziCore::Api::Cli::V1::Projects::DeploymentsControllerTest < ActionCon
       tag: '1.32',
       service_name: 'nginx',
       port: 80,
-      additional_subdomains: ['example', 'example-hostname'],
       public: true,
     }
 
@@ -422,7 +419,7 @@ class UffizziCore::Api::Cli::V1::Projects::DeploymentsControllerTest < ActionCon
     end
 
     assert_response :success
-    container_keys = [:image, :tag, :service_name, :port, :additional_subdomains, :public]
+    container_keys = [:image, :tag, :service_name, :port, :public]
     actual_containers_attributes = UffizziCore::Container.all.map { |c| c.attributes.deep_symbolize_keys.slice(*container_keys) }
     actual_template_containers_attributes = UffizziCore::Template.last
       .payload
@@ -442,7 +439,6 @@ class UffizziCore::Api::Cli::V1::Projects::DeploymentsControllerTest < ActionCon
       tag: 'latest',
       service_name: 'app',
       port: nil,
-      additional_subdomains: [],
       public: false,
     }
     expected_db_container_attributes = {
@@ -450,7 +446,6 @@ class UffizziCore::Api::Cli::V1::Projects::DeploymentsControllerTest < ActionCon
       tag: 'latest',
       service_name: 'db',
       port: nil,
-      additional_subdomains: [],
       public: false,
     }
     expected_nginx_container_attributes = {
@@ -458,7 +453,6 @@ class UffizziCore::Api::Cli::V1::Projects::DeploymentsControllerTest < ActionCon
       tag: '1.32',
       service_name: 'nginx',
       port: 80,
-      additional_subdomains: ['example', 'example-hostname'],
       public: true,
     }
 
@@ -844,7 +838,7 @@ class UffizziCore::Api::Cli::V1::Projects::DeploymentsControllerTest < ActionCon
     assert_response :success
     assert_requested stubbed_controller_create_deployment_request
 
-    container_keys = [:image, :tag, :service_name, :port, :additional_subdomains, :public]
+    container_keys = [:image, :tag, :service_name, :port, :public]
     actual_containers_attributes = UffizziCore::Container.all.map { |c| c.attributes.deep_symbolize_keys.slice(*container_keys) }
     actual_template_containers_attributes = UffizziCore::Template.last
       .payload
@@ -864,7 +858,6 @@ class UffizziCore::Api::Cli::V1::Projects::DeploymentsControllerTest < ActionCon
       tag: 'latest',
       service_name: 'app',
       port: nil,
-      additional_subdomains: [],
       public: false,
     }
     expected_db_container_attributes = {
@@ -872,7 +865,6 @@ class UffizziCore::Api::Cli::V1::Projects::DeploymentsControllerTest < ActionCon
       tag: 'latest',
       service_name: 'db',
       port: nil,
-      additional_subdomains: [],
       public: false,
     }
     expected_nginx_container_attributes = {
@@ -880,7 +872,6 @@ class UffizziCore::Api::Cli::V1::Projects::DeploymentsControllerTest < ActionCon
       tag: '1.32',
       service_name: 'nginx',
       port: 80,
-      additional_subdomains: ['example', 'example-hostname'],
       public: true,
     }
 
@@ -928,7 +919,6 @@ class UffizziCore::Api::Cli::V1::Projects::DeploymentsControllerTest < ActionCon
       public: true,
       port: 80,
       target_port: 80,
-      additional_subdomains: ['example', 'example-hostname'],
     }
 
     app_repo = create(:repo, :docker_hub, project: @project, namespace: app_namespace, name: app_name)
