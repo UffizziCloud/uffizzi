@@ -40,14 +40,13 @@ module UffizziCore::Concerns::Models::Project
     end
 
     def after_disable
-      update(name: "#{name} deleted #{DateTime.current.strftime('%H:%M:%S-%m%d%Y')}")
-      update(slug: "#{slug} deleted #{DateTime.current.strftime('%H:%M:%S-%m%d%Y')}")
+      deleted_text = "deleted #{DateTime.current.strftime('%H:%M:%S-%m%d%Y')}"
+      update(name: "#{name} #{deleted_text}", slug: "#{slug} #{deleted_text}")
       disable_deployments
     end
 
     def after_activate
-      update(name: name.split('deleted').first.strip)
-      update(slug: slug.split('deleted').first.strip)
+      update(name: name.split('deleted').first.strip, slug: slug.split('deleted').first.strip)
     end
 
     def active_deployments
