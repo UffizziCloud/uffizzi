@@ -11,6 +11,7 @@ PATH
       aws-sdk-ecr (~> 1.47)
       aws-sdk-eventbridge (~> 1.30)
       aws-sdk-iam (~> 1.61)
+      deepsort (~> 0.4.5)
       dotenv
       enumerize
       faraday
@@ -146,6 +147,7 @@ GEM
     connection_pool (2.2.5)
     crass (1.0.6)
     deep_merge (1.2.2)
+    deepsort (0.4.5)
     descendants_tracker (0.0.4)
       thread_safe (~> 0.3, >= 0.3.1)
     dotenv (2.8.1)
