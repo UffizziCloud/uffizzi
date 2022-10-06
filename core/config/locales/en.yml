@@ -76,12 +76,3 @@ en:
   session:
     unsupported_login_type: This type of login is not supported
     unauthorized: Unauthorized
-  enumerize:
-    credential:
-      type:
-        "UffizziCore::Credential::GithubContainerRegistry": "Github Container Registry"
-        "UffizziCore::Credential::DockerHub": "DockerHub"
-        "UffizziCore::Credential::DockerRegistry": "Docker Registry"
-        "UffizziCore::Credential::Azure": "Azure"
-        "UffizziCore::Credential::Google": "Google"
-        "UffizziCore::Credential::Amazon": "Amazon"
