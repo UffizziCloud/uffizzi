@@ -4,11 +4,11 @@ require 'test_helper'
 
 class UffizziCore::Api::Cli::V1::Projects::Deployments::ContainersControllerTest < ActionController::TestCase
   setup do
-    @user = create(:user, :with_organizational_account)
+    @user = create(:user, :with_personal_account)
     sign_in @user
 
-    @account = @user.organizational_account
-    @project = create(:project, :with_members, account: @user.organizational_account, members: [@user])
+    @account = @user.personal_account
+    @project = create(:project, :with_members, account: @user.personal_account, members: [@user])
     @deployment = create(:deployment, project: @project)
   end
 

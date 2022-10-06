@@ -7,8 +7,8 @@ class UffizziCore::ActivityItemServiceTest < ActiveSupport::TestCase
     Sidekiq::Testing.fake!
     Sidekiq::Worker.clear_all
 
-    @user = create(:user, :with_organizational_account)
-    @project = create(:project, account: @user.organizational_account)
+    @user = create(:user, :with_personal_account)
+    @project = create(:project, account: @user.personal_account)
     @deployment = create(:deployment, project: @project)
   end
 

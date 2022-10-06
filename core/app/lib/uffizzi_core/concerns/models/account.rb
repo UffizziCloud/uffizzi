@@ -6,6 +6,7 @@ module UffizziCore::Concerns::Models::Account
   # rubocop:disable Metrics/BlockLength
   included do
     include AASM
+    include UffizziCore::AccountRepo
     include UffizziCore::StateMachineConcern
     extend Enumerize
 

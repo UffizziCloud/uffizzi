@@ -7,8 +7,8 @@ class UffizziCore::DeploymentServiceTest < ActiveSupport::TestCase
     Sidekiq::Testing.fake!
     Sidekiq::Worker.clear_all
 
-    @user = create(:user, :with_organizational_account)
-    @project = create(:project, account: @user.organizational_account)
+    @user = create(:user, :with_personal_account)
+    @project = create(:project, account: @user.personal_account)
     @deployment = create(:deployment, project: @project)
   end
 
@@ -53,7 +53,7 @@ class UffizziCore::DeploymentServiceTest < ActiveSupport::TestCase
   end
 
   test '#disable when the main compose file exists' do
-    user = create(:user, :with_organizational_account)
+    user = create(:user, :with_personal_account)
     compose_file = create(:compose_file, project: @project, added_by: user)
     image = generate(:image)
     image_namespace, image_name = image.split('/')
@@ -96,7 +96,7 @@ class UffizziCore::DeploymentServiceTest < ActiveSupport::TestCase
   end
 
   test '#disable when a temporary compose file exists' do
-    user = create(:user, :with_organizational_account)
+    user = create(:user, :with_personal_account)
     compose_file = create(:compose_file, :temporary, project: @project, added_by: user)
     image = generate(:image)
     image_namespace, image_name = image.split('/')

@@ -73,7 +73,7 @@ class UffizziCore::UserGeneratorService
         owner: user,
         name: DEFAULT_ACCOUNT_NAME,
         state: UffizziCore::Account::STATE_ACTIVE,
-        kind: UffizziCore::Account.kind.organizational,
+        kind: UffizziCore::Account.kind.personal,
       }
     end
 

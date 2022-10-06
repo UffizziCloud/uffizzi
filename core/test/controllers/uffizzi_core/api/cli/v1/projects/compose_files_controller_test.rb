@@ -4,8 +4,8 @@ require 'test_helper'
 
 class UffizziCore::Api::Cli::V1::Projects::ComposeFilesControllerTest < ActionController::TestCase
   setup do
-    @admin = create(:user, :with_organizational_account)
-    @account = @admin.organizational_account
+    @admin = create(:user, :with_personal_account)
+    @account = @admin.personal_account
     @project = create(:project, :with_members, account: @account, members: [@admin])
     @compose_file = create(:compose_file, project: @project, added_by: @admin)
     image = generate(:image)
@@ -127,7 +127,6 @@ class UffizziCore::Api::Cli::V1::Projects::ComposeFilesControllerTest < ActionCo
     sign_in @admin
 
     project = create(:project, :with_members, account: @account, members: [@admin])
-    create(:credential, :github, account: @account, provider_ref: generate(:number))
     create(:credential, :amazon, account: @account)
 
     base_attributes = attributes_for(:compose_file).slice(:source, :path)
@@ -157,7 +156,6 @@ class UffizziCore::Api::Cli::V1::Projects::ComposeFilesControllerTest < ActionCo
     sign_in @admin
 
     project = create(:project, :with_members, account: @account, members: [@admin])
-    create(:credential, :github, account: @account, provider_ref: generate(:number))
     create(:credential, :github_container_registry, account: @account)
     create(:credential, :docker_hub, account: @account)
 
