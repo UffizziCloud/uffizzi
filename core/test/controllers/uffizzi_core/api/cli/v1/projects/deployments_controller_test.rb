@@ -233,7 +233,7 @@ class UffizziCore::Api::Cli::V1::Projects::DeploymentsControllerTest < ActionCon
   end
 
   test '#create - from the existing compose file - when the file is invalid' do
-    create(:credential, :github, account: @admin.personal_account)
+    create(:credential, :github_container_registry, account: @admin.personal_account)
     compose_file = create(:compose_file, :invalid_file, project: @project, added_by: @admin)
     image = generate(:image)
     image_namespace, image_name = image.split('/')
