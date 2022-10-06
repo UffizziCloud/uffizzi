@@ -30,7 +30,7 @@ module UffizziCore::Concerns::Models::Project
       state :active, initial: true
       state :disabled
 
-      event :activate, after: :after_activate do
+      event :activate do
         transitions from: [:disabled], to: :active
       end
 
@@ -40,13 +40,7 @@ module UffizziCore::Concerns::Models::Project
     end
 
     def after_disable
-      deleted_text = "deleted #{DateTime.current.strftime('%H:%M:%S-%m%d%Y')}"
-      update(name: "#{name} #{deleted_text}", slug: "#{slug} #{deleted_text}")
       disable_deployments
-    end
-
-    def after_activate
-      update(name: name.split('deleted').first.strip, slug: slug.split('deleted').first.strip)
     end
 
     def active_deployments
