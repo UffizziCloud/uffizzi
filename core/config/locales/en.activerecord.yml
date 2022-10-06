@@ -13,7 +13,7 @@ en:
             password:
               password_blank: Password/Access Token can't be blank
             username:
-              incorrect: "We were unable to log you into %{type}. Please verify that your username and password are correct."
+              incorrect: We were unable to log you in to docker registry. Please verify that your username and password are correct.
             type:
               exist: Credential of that type already exist.
         uffizzi_core/deployment:
