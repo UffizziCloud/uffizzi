@@ -1,7 +1,14 @@
 services:
-  hello-world:
-    image: redis
+  app:
+    image: uffizzicloud/app
 
-x-uffizzi-ingress:
-  service: hello-world
-  port: 80
+  db:
+    image: postgres:latest
+
+  nginx:
+    image: nginx:1.32
+
+x-uffizzi:
+  ingress:
+    service: nginx
+    port: 80

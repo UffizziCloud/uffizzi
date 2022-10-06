@@ -27,6 +27,10 @@ module UffizziCore::DependencyInjectionConcern
     module_class(:password_protection)
   end
 
+  def find_ingress_parser_module
+    module_class(:ingress_parser)
+  end
+
   private
 
   def module_exists?(module_name)

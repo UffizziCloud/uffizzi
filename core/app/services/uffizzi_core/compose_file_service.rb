@@ -2,6 +2,8 @@
 
 class UffizziCore::ComposeFileService
   class << self
+    include UffizziCore::DependencyInjectionConcern
+
     def create(params, kind)
       compose_file_form = create_compose_form(params, kind)
 
@@ -31,13 +33,24 @@ class UffizziCore::ComposeFileService
       continuous_preview_data = UffizziCore::ComposeFile::Parsers::ContinuousPreviewParserService.parse(continuous_preview_option)
 
       ingress_option = UffizziCore::ComposeFile::ConfigOptionService.ingress_option(compose_data)
-      ingress_data = UffizziCore::ComposeFile::Parsers::IngressParserService.parse(ingress_option, compose_data['services'])
+      ingress_data = parse_ingress(ingress_option, compose_data)
 
       {
         containers: containers_data,
         ingress: ingress_data,
         continuous_preview: continuous_preview_data,
       }
+    end
+
+    def parse_ingress(ingress_option, compose_data)
+      ingress_parser_module = find_ingress_parser_module
+
+      unless ingress_parser_module
+        return UffizziCore::ComposeFile::Parsers::IngressParserService.parse(ingress_option,
+                                                                             compose_data['services'])
+      end
+
+      ingress_parser_module.parse(ingress_option, compose_data['services'])
     end
 
     def build_template_attributes(compose_data, source, credentials, project, compose_dependencies = [], compose_repositories = [])

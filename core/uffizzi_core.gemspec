@@ -57,6 +57,7 @@ Gem::Specification.new do |spec|
   spec.add_development_dependency 'bundler', '~> 2.2'
   spec.add_development_dependency 'byebug'
   spec.add_development_dependency 'config'
+  spec.add_development_dependency 'deepsort', '~> 0.4.5'
   spec.add_development_dependency 'factory_bot'
   spec.add_development_dependency 'faker'
   spec.add_development_dependency 'minitest'
