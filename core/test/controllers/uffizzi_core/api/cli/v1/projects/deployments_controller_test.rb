@@ -808,7 +808,11 @@ class UffizziCore::Api::Cli::V1::Projects::DeploymentsControllerTest < ActionCon
   end
 
   test '#create - with content when compose file does not exist' do
+    deployment_data = json_fixture('files/controller/deployments.json')
+    stubbed_deployment_request = stub_controller_get_deployment_request_any(deployment_data)
     stubbed_controller_create_deployment_request = stub_controller_create_deployment_request
+    stub_controller_apply_credential
+
     file_content = File.read('test/fixtures/files/test-compose-success-without-dependencies.yml')
     encoded_content = Base64.encode64(file_content)
     stub_dockerhub_repository_any
@@ -837,6 +841,7 @@ class UffizziCore::Api::Cli::V1::Projects::DeploymentsControllerTest < ActionCon
 
     assert_response :success
     assert_requested stubbed_controller_create_deployment_request
+    assert_requested stubbed_deployment_request
 
     container_keys = [:image, :tag, :service_name, :port, :public]
     actual_containers_attributes = UffizziCore::Container.all.map { |c| c.attributes.deep_symbolize_keys.slice(*container_keys) }
@@ -977,11 +982,11 @@ class UffizziCore::Api::Cli::V1::Projects::DeploymentsControllerTest < ActionCon
 
     expected_request_to_controller = {
       containers: [expected_app_container, expected_nginx_container],
-      credentials: [{ id: docker_hub_credential.id }],
+      credentials: [{ id: docker_hub_credential.id }, { id: @credential.id }],
       deployment_url: @deployment.preview_url,
     }
 
-    stubbed_deploy_containers_request = stub_deploy_containers_request_with_body(@deployment, expected_request_to_controller)
+    stubbed_deploy_containers_request = stub_deploy_containers_request_with_expected(@deployment, expected_request_to_controller)
 
     post :deploy_containers, params: params, format: :json
 
