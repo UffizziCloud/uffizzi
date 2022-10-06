@@ -18,6 +18,7 @@ module UffizziCore::Concerns::Models::Credential
                 UffizziCore::Credential::DockerRegistry.name,
                 UffizziCore::Credential::GithubContainerRegistry.name,
                 UffizziCore::Credential::Google.name,
+                UffizziCore::Credential::Github.name,
               ])
 
     enumerize :type,
