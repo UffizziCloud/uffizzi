@@ -11,6 +11,18 @@ module UffizziCore::Concerns::Models::Credential
 
     self.table_name = UffizziCore.table_names[:credentials]
 
+    const_set(:CREDENTIAL_TYPES, [
+                'UffizziCore::Credential::Amazon',
+                'UffizziCore::Credential::Azure',
+                'UffizziCore::Credential::DockerHub',
+                'UffizziCore::Credential::DockerRegistry',
+                'UffizziCore::Credential::GithubContainerRegistry',
+                'UffizziCore::Credential::Google',
+              ])
+
+    enumerize :type,
+              in: self::CREDENTIAL_TYPES, i18n_scope: ['enumerize.credential.type']
+
     belongs_to :account
 
     before_destroy :remove_token
