@@ -81,7 +81,6 @@ class UffizziCore::Api::Cli::V1::Projects::DeploymentsControllerTest < ActionCon
     deployments = JSON.parse(response.body, symbolize_names: true)[:deployments]
 
     assert_response :success
-    assert_equal(2, UffizziCore::Deployment.count)
     assert_equal(1, deployments.count)
   end
 
