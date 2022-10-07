@@ -20,9 +20,6 @@ module UffizziCore::Concerns::Models::Credential
                 'UffizziCore::Credential::Google',
               ])
 
-    enumerize :type,
-              in: self::CREDENTIAL_TYPES, i18n_scope: ['enumerize.credential.type']
-
     belongs_to :account
 
     before_destroy :remove_token
