@@ -3,9 +3,11 @@
 module UffizziCore::Concerns::Models::Credential
   extend ActiveSupport::Concern
 
+  # rubocop:disable Metrics/BlockLength
   included do
     include AASM
     include UffizziCore::CredentialRepo
+    extend Enumerize
 
     self.table_name = UffizziCore.table_names[:credentials]
 
@@ -70,4 +72,5 @@ module UffizziCore::Concerns::Models::Credential
       end
     end
   end
+  # rubocop:enable Metrics/BlockLength
 end

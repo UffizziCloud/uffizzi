@@ -156,7 +156,7 @@ class UffizziCore::UserGeneratorServiceTest < ActiveSupport::TestCase
     password = generate(:password)
     project_name = generate(:string)
 
-    create(:user, :with_organizational_account, email: email)
+    create(:user, :with_personal_account, email: email)
 
     assert_raises ActiveRecord::RecordInvalid do
       UffizziCore::UserGeneratorService.generate(email, password, project_name)
@@ -168,7 +168,7 @@ class UffizziCore::UserGeneratorServiceTest < ActiveSupport::TestCase
     password = generate(:password)
     project_name = generate(:string)
 
-    create(:user, :with_organizational_account, email: email)
+    create(:user, :with_personal_account, email: email)
 
     console_mock = mock('console_mock')
     console_mock.stubs(:write)

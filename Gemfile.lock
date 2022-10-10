@@ -1,7 +1,7 @@
 PATH
   remote: core
   specs:
-    uffizzi_core (1.1.2)
+    uffizzi_core (2.0.3)
       aasm
       actionpack (~> 6.1.0)
       active_model_serializers
@@ -36,7 +36,7 @@ PATH
 GEM
   remote: https://rubygems.org/
   specs:
-    aasm (5.3.1)
+    aasm (5.4.0)
       concurrent-ruby (~> 1.0)
     actioncable (6.1.5)
       actionpack (= 6.1.5)
@@ -109,8 +109,8 @@ GEM
     ast (2.4.2)
     awesome_print (1.9.2)
     aws-eventstream (1.2.0)
-    aws-partitions (1.637.0)
-    aws-sdk-core (3.155.0)
+    aws-partitions (1.644.0)
+    aws-sdk-core (3.159.0)
       aws-eventstream (~> 1, >= 1.0.2)
       aws-partitions (~> 1, >= 1.525.0)
       aws-sigv4 (~> 1.1)
@@ -124,7 +124,7 @@ GEM
     aws-sdk-iam (1.70.0)
       aws-sdk-core (~> 3, >= 3.127.0)
       aws-sigv4 (~> 1.1)
-    aws-sigv4 (1.5.1)
+    aws-sigv4 (1.5.2)
       aws-eventstream (~> 1, >= 1.0.2)
     axiom-types (0.1.1)
       descendants_tracker (~> 0.0.4)

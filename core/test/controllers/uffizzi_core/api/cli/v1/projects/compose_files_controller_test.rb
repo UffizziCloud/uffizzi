@@ -4,8 +4,8 @@ require 'test_helper'
 
 class UffizziCore::Api::Cli::V1::Projects::ComposeFilesControllerTest < ActionController::TestCase
   setup do
-    @admin = create(:user, :with_organizational_account)
-    @account = @admin.organizational_account
+    @admin = create(:user, :with_personal_account)
+    @account = @admin.personal_account
     @project = create(:project, :with_members, account: @account, members: [@admin])
     @compose_file = create(:compose_file, project: @project, added_by: @admin)
     image = generate(:image)
@@ -71,12 +71,7 @@ class UffizziCore::Api::Cli::V1::Projects::ComposeFilesControllerTest < ActionCo
       content: json_fixture('files/compose_dependencies/configs/vote_conf.json')[:content],
     }
 
-    stub_dockerhub_repository('library', 'redis')
-    stub_dockerhub_repository('library', 'postgres')
-    stub_dockerhub_repository('library', 'nginx')
-    stub_dockerhub_repository('uffizzicloud', 'example-vote')
-    stub_dockerhub_repository('uffizzicloud', 'example-worker')
-    stub_dockerhub_repository('uffizzicloud', 'example-result')
+    stub_dockerhub_repository_any
 
     params = {
       project_slug: @project.slug,
@@ -102,7 +97,7 @@ class UffizziCore::Api::Cli::V1::Projects::ComposeFilesControllerTest < ActionCo
     base_attributes = attributes_for(:compose_file).slice(:source, :path)
     file_content = File.read('test/fixtures/files/test-compose-success-without-dependencies.yml')
     encoded_content = Base64.encode64(file_content)
-    stub_dockerhub_repository('library', 'redis')
+    stub_dockerhub_repository_any
     compose_file_attributes = base_attributes.merge(content: encoded_content, repository_id: nil)
 
     params = {
@@ -127,7 +122,6 @@ class UffizziCore::Api::Cli::V1::Projects::ComposeFilesControllerTest < ActionCo
     sign_in @admin
 
     project = create(:project, :with_members, account: @account, members: [@admin])
-    create(:credential, :github, account: @account, provider_ref: generate(:number))
     create(:credential, :amazon, account: @account)
 
     base_attributes = attributes_for(:compose_file).slice(:source, :path)
@@ -157,7 +151,6 @@ class UffizziCore::Api::Cli::V1::Projects::ComposeFilesControllerTest < ActionCo
     sign_in @admin
 
     project = create(:project, :with_members, account: @account, members: [@admin])
-    create(:credential, :github, account: @account, provider_ref: generate(:number))
     create(:credential, :github_container_registry, account: @account)
     create(:credential, :docker_hub, account: @account)
 
@@ -190,8 +183,7 @@ class UffizziCore::Api::Cli::V1::Projects::ComposeFilesControllerTest < ActionCo
     @compose_file.destroy!
     base_attributes = attributes_for(:compose_file).slice(:source, :path)
     file_content = File.read('test/fixtures/files/compose_files/compose_with_volumes.yml')
-    stub_dockerhub_repository('library', 'nginx')
-    stub_dockerhub_repository('library', 'web_service')
+    stub_dockerhub_repository_any
     encoded_content = Base64.encode64(file_content)
     compose_file_attributes = base_attributes.merge(content: encoded_content, repository_id: nil)
 

@@ -4,8 +4,8 @@ require 'test_helper'
 
 class UffizziCore::ManageActivityItemsServiceTest < ActiveSupport::TestCase
   setup do
-    @user = create(:user, :with_organizational_account)
-    @project = create(:project, account: @user.organizational_account)
+    @user = create(:user, :with_personal_account)
+    @project = create(:project, account: @user.personal_account)
   end
 
   test '#container_status_items - deployment has no containers' do
@@ -34,7 +34,7 @@ class UffizziCore::ManageActivityItemsServiceTest < ActiveSupport::TestCase
   end
 
   test '#container_status_items - deployment has containers' do
-    create(:credential, :docker_hub, account: @user.organizational_account)
+    create(:credential, :docker_hub, account: @user.personal_account)
     deployment = create(:deployment, project: @project)
     repo = create(:repo, :docker_hub, project: @project)
     create(:build, :successful, :deployed, repo: repo)

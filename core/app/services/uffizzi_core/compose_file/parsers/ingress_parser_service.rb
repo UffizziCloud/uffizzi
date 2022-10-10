@@ -7,11 +7,12 @@ class UffizziCore::ComposeFile::Parsers::IngressParserService
 
       container_name = container_name(ingress_data, services_data)
       port = port(ingress_data)
+      additional_attributes = build_additional_attributes(ingress_data, services_data)
 
       {
         container_name: container_name,
         port: port,
-      }
+      }.merge(additional_attributes)
     end
 
     private
@@ -46,6 +47,10 @@ class UffizziCore::ComposeFile::Parsers::IngressParserService
       end
 
       port
+    end
+
+    def build_additional_attributes(*)
+      {}
     end
   end
 end

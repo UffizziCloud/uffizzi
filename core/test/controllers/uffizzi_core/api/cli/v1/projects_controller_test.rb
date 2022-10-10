@@ -4,10 +4,10 @@ require 'test_helper'
 
 class UffizziCore::Api::Cli::V1::ProjectsControllerTest < ActionController::TestCase
   setup do
-    @user = create(:user, :with_organizational_account)
+    @user = create(:user, :with_personal_account)
     sign_in @user
 
-    @project = create(:project, :with_members, account: @user.organizational_account, members: [@user])
+    @project = create(:project, :with_members, account: @user.personal_account, members: [@user])
   end
 
   test '#index' do

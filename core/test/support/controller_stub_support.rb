@@ -25,6 +25,12 @@ module UffizziCore::ControllerStubSupport
     stub_request(:get, uri).to_return(status: 200, body: data.to_json, headers: { 'Content-Type' => 'application/json' })
   end
 
+  def stub_controller_get_deployment_request_any(data = nil)
+    uri = %r{#{Regexp.quote(Settings.controller.url.to_s)}/deployments/[0-9]*}
+
+    stub_request(:get, uri).to_return(status: 200, body: data.to_json, headers: { 'Content-Type' => 'application/json' })
+  end
+
   def stub_delete_controller_deployment_request(deployment)
     uri = "#{Settings.controller.url}/deployments/#{deployment.id}"
 
@@ -65,5 +71,16 @@ module UffizziCore::ControllerStubSupport
     uri = "#{Settings.controller.url}/deployments/#{deployment_id}/containers/#{pod_name}/logs?limit=#{limit}"
 
     stub_request(:get, uri).to_return(status: 200, body: data.to_json, headers: { 'Content-Type' => 'application/json' })
+  end
+
+  def stub_deploy_containers_request_with_expected(deployment, expected_request)
+    uri = "#{Settings.controller.url}/deployments/#{deployment.id}/containers"
+
+    stub_request(:post, uri).with do |req|
+      actual_body = JSON.parse(req.body).deep_symbolize_keys.deep_sort
+      expected_body = expected_request.deep_symbolize_keys.deep_sort
+
+      actual_body == expected_body
+    end
   end
 end

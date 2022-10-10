@@ -24,8 +24,12 @@ module UffizziCore::Concerns::Models::User
 
     enumerize :creation_source, in: UffizziCore.user_creation_sources, predicates: true
 
-    def organizational_account
-      accounts.find_by(kind: UffizziCore::Account.kind.organizational)
+    def default_account
+      personal_account
+    end
+
+    def personal_account
+      accounts.find_by(kind: UffizziCore::Account.kind.personal)
     end
 
     def active_projects

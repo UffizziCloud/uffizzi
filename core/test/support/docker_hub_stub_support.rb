@@ -45,4 +45,10 @@ module UffizziCore::DockerHubStubSupport
 
     stub_request(:get, url).to_return(status: 404)
   end
+
+  def stub_dockerhub_repository_any
+    uri = %r{#{API_URL}/repositories/.*/.*}
+
+    stub_request(:get, uri).to_return(status: 200)
+  end
 end

@@ -11,7 +11,7 @@ account = UffizziCore::Account.create!(
   owner: user,
   name: 'default',
   state: UffizziCore::Account::STATE_ACTIVE,
-  kind: UffizziCore::Account.kind.organizational,
+  kind: UffizziCore::Account.kind.personal,
 )
 
 user.memberships.create!(account: account, role: UffizziCore::Membership.role.admin)

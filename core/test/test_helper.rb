@@ -19,6 +19,7 @@ require 'rails/test_help'
 require 'sidekiq/testing'
 require 'webmock/minitest'
 require 'octokit'
+require 'deepsort'
 
 FactoryBot.reload
 WebMock.disable_net_connect!
