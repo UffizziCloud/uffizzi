@@ -3,15 +3,22 @@
 
 [![License](https://img.shields.io/badge/License-Apache%202.0-blue.svg)](https://opensource.org/licenses/Apache-2.0)
 
-## What is Uffizzi?
+## Uffizzi - Open-source Preview Environments
 
-**Open-source Preview Environments**
+#### Don't merge until you preview
 
 Uffizzi is a tool that lets you preview pull requests before merging. Create on-demand Preview Environments for APIs, frontends, backends, databases, and microservices. Each Preview Environment gets a secure HTTPS URL that is continually refreshed when you push new commits. Uffizzi also handles clean up, so your environments last only as long as you need them.  
 
 Uffizzi is an open-source, off-the-shelf, cross-platform solution that works with any version control system, container registry, or CI platform.
 
-<img width="800" alt="environment-url" src="https://user-images.githubusercontent.com/7218230/193065914-0226f551-5806-4185-8ffb-0b671a487e2d.png">
+<img width="600" alt="preview-url" src="https://user-images.githubusercontent.com/7218230/194924634-391aff82-8adf-473b-800e-a20dcdab82dd.png">
+
+## Give us a star ⭐️
+If you're interested in Uffizzi, give us a star to helps others discover the project.
+
+## Quickstart (~1 minute)
+
+Go to the [`quickstart` repo](https://github.com/UffizziCloud/quickstart#uffizzi-quickstart--1-minute), then follow the instructions in the `README` to create a Preview Environment for a sample application.
 
 ## Use cases
 
@@ -49,14 +56,21 @@ Teams also like Uffizzi because it's...
 
 See our high-level [project roadmap](https://github.com/orgs/UffizziCloud/projects/2/views/1?layout=board), including already delivered milestones.
 
-## Get started
+## Set up Preview Environments for your application
 
-Install Uffizzi on your own Kubernetes cluster by following the [self-hosted installation guide](INSTALL.md). Once installed, add Uffizzi as a step in your CI pipeline. As a convenience, we've written actions/jobs for [GitHub Actions](https://github.com/marketplace/actions/preview-environments) or [GitLab CI](https://gitlab.com/uffizzi/environment-action). If you use a different provider, you can write your own action by wrapping the [Uffizzi CLI](https://github.com/UffizziCloud/uffizzi_cli), available as a [Docker image](https://hub.docker.com/r/uffizzi/cli).
+(If you haven't completed the [quickstart guide](https://github.com/UffizziCloud/quickstart), we recommend starting there to understand how Uffizzi works and how it's configured.)  
+
+There are two options to get Uffizzi:  
+
+1. **Use [Uffizzi Cloud](https://uffizzi.com) (SaaS)** - This is fastest and easiest way to get started with Uffizzi. Uffizzi Cloud is free for small teams and is recommended for those who are new to Uffizzi. It also includes some premium options like single sign-on (SSO) and password-protected URLs for your Preview Environments. If you want to use Uffizzi Cloud, you can follow this [step-by-step guide](https://docs.uffizzi.com/set-up-uffizzi-for-your-applicaiton) to configure Preview Environments for your own application.  
+
+2. **Install open-source Uffizzi on your own Kubernetes cluster** - Alternatively, you can install Uffizzi on your own cluster by following the [self-hosted installation guide](INSTALL.md).
 
 ## Documentation
 
 - [Main documentation](https://docs.uffizzi.com)
-- [Docker Compose for Uffizzi](https://docs.uffizzi.com/references/compose-spec/)
+- [Docker Compose for Uffizzi ](https://docs.uffizzi.com/references/compose-spec/)
+- [Quickstart guide](https://github.com/UffizziCloud/quickstart)
 
 ## Community
 
@@ -64,9 +78,9 @@ Install Uffizzi on your own Kubernetes cluster by following the [self-hosted ins
 - [Subscribe to our newsletter](http://eepurl.com/hsws0b) - Receive monthly updates about new features and special events  
 - [Contributing to Uffizzi](CONTRIBUTING.md) - Start here if you want to contribute
 - [Code of Conduct](CODE_OF_CONDUCT.md) - Let's keep it professional
-- Give us a star ⭐️ - If you are using Uffizzi or just think it's an interesting project, star this repo! This helps others find out about our project.
 
 ## FAQs
+
 <details><summary><b>What about my database?</b></summary>
 <p>All services defined by your Docker Compose file are deployed to Preview Environments as containers—this includes databases, caches, and other datastores. This means that even if you use a managed database service like Amazon RDS for production, you should use a database <i>image</i> in your Compose (See <a href="https://github.com/UffizziCloud/quickstart/blob/fc0afa8c7b62c342bdf5fda8f5dc5b25c7a23dab/docker-compose.uffizzi.yml#L14-L23">this example</a> that uses a <code>postgres</code> image from Docker Hub).</p>
 
@@ -90,7 +104,7 @@ Uffizzi is container-centric and primarily designed for web languages. In genera
 </details>
 
 <details><summary><b>How can my application services communicate?</b></summary>
-Just like when you run <code>docker-compose up</code> locally, all the <code>services</code> defined in your Compose share a local network and can communicate via <code>localhost:port</code>. Application instances that belong to different Preview Environments may only communicate via the public Internet.
+Just like when you run <code>docker-compose up</code> locally, all the <code>services</code> defined in your Compose share a local network and can communicate via <code>localhost</code>. Application instances that belong to different Preview Environments may only communicate via the public Internet.
 </details>
 
 <details><summary><b>How is Uffizzi different from GitHub Actions (or other CI providers)?</b></summary>
