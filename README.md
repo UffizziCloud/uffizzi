@@ -62,7 +62,7 @@ See our high-level [project roadmap](https://github.com/orgs/UffizziCloud/projec
 
 There are two options to get Uffizzi:  
 
-1. **Use [Uffizzi Cloud](https://uffizzi.com) (SaaS)** - This is fastest and easiest way to get started with Uffizzi. Uffizzi Cloud is free for small teams and is recommended for those who are new to Uffizzi. It also includes some premium options like single sign-on (SSO) and password-protected URLs for your Preview Environments. If you choose this option, you can follow this [step-by-step guide](https://docs.uffizzi.com/set-up-uffizzi-for-your-applicaiton) to configure Preview Environments for your own application.  
+1. **Use [Uffizzi Cloud](https://uffizzi.com) (SaaS)** - This is fastest and easiest way to get started with Uffizzi. Uffizzi Cloud is free for small teams and is recommended for those who are new to Uffizzi. It also includes some premium options like single sign-on (SSO) and password-protected URLs for your Preview Environments. If you want to use Uffizzi Cloud, you can follow this [step-by-step guide](https://docs.uffizzi.com/set-up-uffizzi-for-your-applicaiton) to configure Preview Environments for your own application.  
 
 2. **Install open-source Uffizzi on your own Kubernetes cluster** - Alternatively, you can install Uffizzi on your own cluster by following the [self-hosted installation guide](INSTALL.md). If you self-host Uffizzi, be sure to change the `server` URL in your pipeline job:  
 ``` yaml
