@@ -6,9 +6,16 @@
 
 ## What is Uffizzi?
 
+#### Don't merge until you preview  
+
 Uffizzi is a tool that lets you preview pull requests before merging. Create on-demand Preview Environments for APIs, frontends, backends, databases, and microservices. Each Preview Environment gets a secure HTTPS URL that is continually refreshed when you push new commits. Uffizzi also handles clean up, so your environments last only as long as you need them.  
 
 Uffizzi is an open-source, off-the-shelf, cross-platform solution that works with any version control system, container registry, or CI platform.
+
+<img width="600" alt="preview-url" src="https://user-images.githubusercontent.com/7218230/194924634-391aff82-8adf-473b-800e-a20dcdab82dd.png">
+
+## Give us a star ⭐️
+If you're interested in Uffizzi, give us a star to helps others discover the project.
 
 ## Quickstart (~1 minute)
 
@@ -80,7 +87,6 @@ There are two options to get Uffizzi:
 - [Subscribe to our newsletter](http://eepurl.com/hsws0b) - Receive monthly updates about new features and special events  
 - [Contributing to Uffizzi](CONTRIBUTING.md) - Start here if you want to contribute
 - [Code of Conduct](CODE_OF_CONDUCT.md) - Let's keep it professional
-- Give us a star ⭐️ - If you are using Uffizzi or just think it's an interesting project, star this repo! This helps others find out about our project.
 
 ## FAQs
 <details><summary><b>What about my database?</b></summary>
