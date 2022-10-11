@@ -14,7 +14,7 @@ Uffizzi is an open-source, off-the-shelf, cross-platform solution that works wit
 <img width="600" alt="preview-url" src="https://user-images.githubusercontent.com/7218230/194924634-391aff82-8adf-473b-800e-a20dcdab82dd.png">
 
 ## Give us a star ⭐️
-If you're interested in Uffizzi, give us a star to helps others discover the project.
+If you're interested in Uffizzi, give us a star. It helps others discover the project.
 
 ## Quickstart (~1 minute)
 
