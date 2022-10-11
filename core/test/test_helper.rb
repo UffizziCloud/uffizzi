@@ -20,6 +20,7 @@ require 'sidekiq/testing'
 require 'webmock/minitest'
 require 'octokit'
 require 'deepsort'
+require 'hash_diff'
 
 FactoryBot.reload
 WebMock.disable_net_connect!

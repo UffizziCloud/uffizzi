@@ -16,7 +16,8 @@ class UffizziCore::ComposeFile::Builders::ContainerHostVolumeFilesBuilderService
         detected_host_volume_file = host_volume_files.detect { |host_volume_file| host_volume_file.source == detected_dependency[:source] }
 
         if detected_host_volume_file.nil?
-          raise UffizziCore::ComposeFile::BuildError, I18n.t('compose.config_file_not_found', name: container_host_volume_data[:source])
+          raise UffizziCore::ComposeFile::BuildError,
+                I18n.t('compose.host_volume_file_not_found', name: container_host_volume_data[:source])
         end
 
         {

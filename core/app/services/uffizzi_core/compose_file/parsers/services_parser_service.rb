@@ -70,12 +70,12 @@ class UffizziCore::ComposeFile::Parsers::ServicesParserService
       build_parser_module.parse(value, compose_payload)
     end
 
-    def parse_volumes(value, volumes_payload)
+    def parse_volumes(volumes, additional_data)
       volume_parser_module = find_volume_parser_module
 
-      return UffizziCore::ComposeFile::Parsers::Services::VolumesParserService.parse(value, volumes_payload) unless volume_parser_module
+      return UffizziCore::ComposeFile::Parsers::Services::VolumesParserService.parse(volumes, additional_data) unless volume_parser_module
 
-      volume_parser_module.parse(value, volumes_payload)
+      volume_parser_module.parse(volumes, additional_data)
     end
   end
 end

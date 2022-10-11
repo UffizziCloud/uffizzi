@@ -64,13 +64,8 @@ class UffizziCore::DeploymentService
 
         containers = deployment.active_containers
         containers_with_variables = add_default_deployment_variables!(containers, deployment)
-        host_volume_files = containers
-          .joins(:host_volume_files)
-          .select('host_volume_files.*')
-          .order('host_volume_files.id')
-          .distinct
 
-        UffizziCore::ControllerService.deploy_containers(deployment, containers_with_variables, host_volume_files)
+        UffizziCore::ControllerService.deploy_containers(deployment, containers_with_variables)
       else
         Rails.logger.info("DEPLOYMENT_PROCESS deployment_id=#{deployment.id} deployment has builds errors, stopping")
       end

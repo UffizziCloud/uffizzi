@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-class UffizziCore::ComposeFile::Parsers::VolumesParserService
+class UffizziCore::ComposeFile::Parsers::NamedVolumesParserService
   VALID_VOLUME_NAME_REGEX = /^[a-zA-Z0-9._-]+$/.freeze
 
   class << self

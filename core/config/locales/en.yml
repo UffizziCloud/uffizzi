@@ -33,6 +33,7 @@ en:
     image_build_no_specified: Service '%{value}' has neither an image nor a build context specified. At least one must be provided.
     build_context_no_specified: The context option should be specified
     config_file_not_found: Config file not found '%{name}'
+    host_volume_file_not_found: Host volume file not found '%{name}'
     invalid_context: Invalid context value '%{value}'
     invalid_bool_value: Invalid %{field} value '%{value}'. The value should be `true` or `false`
     invalid_delete_after_postfix: The postfix of the delete_preview_after value should be `h`

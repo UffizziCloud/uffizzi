@@ -5,8 +5,7 @@ module UffizziCore::HostVolumeFileRepo
 
   included do
     scope :by_deployment, ->(deployment) {
-      select(:id)
-        .joins(:container_host_volume_files)
+      joins(:container_host_volume_files)
         .where(container_host_volume_files: { container: deployment.containers })
         .distinct
     }
