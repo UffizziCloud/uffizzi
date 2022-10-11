@@ -80,7 +80,11 @@ module UffizziCore::ControllerStubSupport
       actual_body = JSON.parse(req.body).deep_symbolize_keys.deep_sort
       expected_body = expected_request.deep_symbolize_keys.deep_sort
 
-      actual_body == expected_body
+      is_equal = actual_body == expected_body
+
+      ap(HashDiff.diff(actual_body, expected_body)) unless is_equal
+
+      is_equal
     end
   end
 end

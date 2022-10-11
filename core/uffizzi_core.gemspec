@@ -60,6 +60,7 @@ Gem::Specification.new do |spec|
   spec.add_development_dependency 'deepsort', '~> 0.4.5'
   spec.add_development_dependency 'factory_bot'
   spec.add_development_dependency 'faker'
+  spec.add_development_dependency 'hash_diff', '~> 1.1'
   spec.add_development_dependency 'minitest'
   spec.add_development_dependency 'minitest-hooks'
   spec.add_development_dependency 'minitest-power_assert'

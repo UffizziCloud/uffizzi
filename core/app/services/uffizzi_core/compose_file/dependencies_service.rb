@@ -51,20 +51,22 @@ class UffizziCore::ComposeFile::DependenciesService
       container_volumes = container[:volumes]
       return [] unless container_volumes.present?
 
-      container_volumes.map do |container_volume|
-        detected_raw_dependency = raw_dependencies.detect { |raw_dependency| raw_dependency[:source] == container_volume[:source] }
-        builded_source = build_source_path(compose_path, detected_raw_dependency[:source])
+      container_volumes
+        .select { |c| c[:type] == UffizziCore::ComposeFile::Parsers::Services::VolumesParserService::HOST_VOLUME_TYPE }
+        .map do |container_volume|
+          detected_raw_dependency = raw_dependencies.detect { |raw_dependency| raw_dependency[:source] == container_volume[:source] }
+          builded_source = build_source_path(compose_path, detected_raw_dependency[:source])
 
-        {
-          content: detected_raw_dependency[:content],
-          path: detected_raw_dependency[:path],
-          container_name: container[:container_name],
-          source: builded_source,
-          raw_source: detected_raw_dependency[:source],
-          type: VOLUME_TYPE,
-          is_file: detected_raw_dependency[:is_file],
-        }
-      end
+          {
+            content: detected_raw_dependency[:content],
+            path: detected_raw_dependency[:path],
+            container_name: container[:container_name],
+            source: builded_source,
+            raw_source: detected_raw_dependency[:source],
+            type: VOLUME_TYPE,
+            is_file: detected_raw_dependency[:is_file],
+          }
+        end
     end
 
     def base_file_params(dependency, container)

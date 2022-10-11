@@ -1,0 +1,35 @@
+services:
+  app:
+    image: uffizzicloud/app
+    volumes:
+      - ./some_app_dir:/var/app/some_dir
+      - ./files/some_app_file:/var/app/some_app_files
+      - app_share:/some_app_share:ro
+      - /some_anonymous_dir
+
+  db:
+    image: postgres:latest
+    volumes:
+      - source: ./some_app_dir
+        target: /var/db/some_dir_2
+      - source: ./some_app_dir
+        target: /var/db/some_dir_2
+      - source: ./some_db_dir
+        target: /var/db/some_dir_3
+      - source: ./some_db_file
+        target: /var/db/some_db_files
+      - source: db_share
+        target: /some_db_share
+        read_only: true
+
+  nginx:
+    image: nginx:1.32
+
+volumes:
+  app_share:
+  db_share:
+
+x-uffizzi:
+  ingress:
+    service: nginx
+    port: 80

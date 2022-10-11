@@ -21,7 +21,7 @@ class UffizziCore::ComposeFileService
       check_config_options_format(compose_data)
       configs_data = UffizziCore::ComposeFile::Parsers::ConfigsParserService.parse(compose_data['configs'])
       secrets_data = UffizziCore::ComposeFile::Parsers::SecretsParserService.parse(compose_data['secrets'])
-      named_volume_names = UffizziCore::ComposeFile::Parsers::VolumesParserService.parse(compose_data['volumes'])
+      named_volume_names = UffizziCore::ComposeFile::Parsers::NamedVolumesParserService.parse(compose_data['volumes'])
       containers_data = UffizziCore::ComposeFile::Parsers::ServicesParserService.parse(
         compose_data['services'],
         configs_data,

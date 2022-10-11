@@ -221,6 +221,7 @@ GEM
       faraday (~> 1.0)
     globalid (1.0.0)
       activesupport (>= 5.0)
+    hash_diff (1.1.1)
     hashdiff (1.0.1)
     hashie (5.0.0)
     i18n (1.10.0)
@@ -380,6 +381,7 @@ DEPENDENCIES
   deepsort (~> 0.4.5)
   factory_bot
   faker
+  hash_diff (~> 1.1)
   minitest
   minitest-hooks
   minitest-power_assert
