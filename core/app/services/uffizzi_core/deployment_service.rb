@@ -300,13 +300,13 @@ class UffizziCore::DeploymentService
     def github_pull_request_data(deployment)
       github_data = deployment.metadata.dig('labels', 'github')
 
-      [github_data.dig('repository'), github_data.dig('event', 'number')
+      [github_data['repository'], github_data.dig('event', 'number')]
     end
 
     def gitlab_merge_request_data(deployment)
       gitlab_data = deployment.metadata.dig('labels', 'gitlab')
 
-      [gitlab_data.dig('repo'), gitlab_data.dig('merge_request', 'number')
+      [gitlab_data['repo'], gitlab_data.dig('merge_request', 'number')]
     end
   end
 end
