@@ -27,8 +27,9 @@ class UffizziCore::ActivityItemService
 
     def fail_deployment!(activity_item)
       deployment = activity_item.container.deployment
+      last_event = activity_item.events.order_by_id.last
 
-      activity_item.events.create(state: UffizziCore::Event.state.failed)
+      activity_item.events.create(state: UffizziCore::Event.state.failed) if last_event&.state != UffizziCore::Event.state.failed
 
       UffizziCore::DeploymentService.fail!(deployment)
     end
