@@ -98,7 +98,7 @@ class UffizziCore::DeploymentService
 
     def build_pull_request_subdomain(deployment)
       repo_name, pull_request_number = pull_request_data(deployment)
-      return raise UffizziCore::Deployment::LabelsNotFoundError if repo_name.nil? || pull_request_number.nil?
+      raise UffizziCore::Deployment::LabelsNotFoundError if repo_name.nil? || pull_request_number.nil?
 
       subdomain = "pr-#{pull_request_number}-#{name(deployment)}-#{repo_name.downcase}-#{deployment.project.slug}"
       format_subdomain(subdomain)
