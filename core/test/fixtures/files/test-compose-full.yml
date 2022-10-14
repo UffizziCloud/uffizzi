@@ -1,6 +1,12 @@
 services:
   app:
     image: uffizzicloud/app
+    env_file:
+      - local.env
+      - ./env_files/env_file.env
+    configs:
+      - source: app_conf
+        target: /etc/nginxz
     volumes:
       - ./some_app_dir:/var/app/some_dir
       - ./files/some_app_file:/var/app/some_app_files
@@ -24,6 +30,12 @@ services:
 
   nginx:
     image: nginx:1.32
+
+configs:
+  app_conf:
+    file: ./app.conf
+  default_conf:
+    file: config_files/config_file.conf
 
 volumes:
   app_share:

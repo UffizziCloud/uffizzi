@@ -30,7 +30,7 @@ class UffizziCore::ComposeFile::Builders::ContainerBuilderService
     )
     is_ingress = ingress_container?(container_name, ingress_data)
     repo_attributes = repo_attributes(container_data, continuous_preview_global_data)
-    additional_subdomains = is_ingress ? ingress_data[:additional_subdomains] : []
+    additional_subdomains = is_ingress ? ingress_data.fetch(:additional_subdomains, []) : []
 
     {
       tag: tag(image_data, repo_attributes),

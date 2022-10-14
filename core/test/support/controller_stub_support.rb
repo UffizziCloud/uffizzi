@@ -61,6 +61,21 @@ module UffizziCore::ControllerStubSupport
     stub_request(:post, uri)
   end
 
+  def stub_apply_config_file_request_with_expected(deployment, config_file, expected_request)
+    uri = "#{Settings.controller.url}/deployments/#{deployment.id}/config_files/#{config_file.id}"
+
+    stub_request(:post, uri).with do |req|
+      actual_body = JSON.parse(req.body).deep_symbolize_keys.deep_sort
+      expected_body = expected_request.deep_symbolize_keys.deep_sort
+
+      is_equal = actual_body == expected_body
+
+      ap(HashDiff.diff(actual_body, expected_body)) unless is_equal
+
+      is_equal
+    end
+  end
+
   def stub_controller_get_deployment_events(deployment, body)
     uri = "#{Settings.controller.url}/deployments/#{deployment.id}/containers/events"
 
