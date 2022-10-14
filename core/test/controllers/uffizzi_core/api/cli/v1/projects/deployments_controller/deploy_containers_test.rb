@@ -299,7 +299,7 @@ class UffizziCore::Api::Cli::V1::Projects::DeploymentsControllerTest < ActionCon
   end
 
   test '#deploy_containers create a new activity items' do
-    UffizziCore::ControllerService.expects(:deployment_exists?).returns(true)
+    UffizziCore::ControllerService.expects(:deployment_exists?).at_least(1).returns(true)
 
     digest_data = json_fixture('files/dockerhub/digest.json')
     deployment_containers_data = json_fixture('files/controller/deployment_containers.json')
@@ -403,6 +403,9 @@ class UffizziCore::Api::Cli::V1::Projects::DeploymentsControllerTest < ActionCon
                                                                                host_volume_file: host_volume_file_app_file,
                                                                                source_path: host_volume_file_attrs_app_file[:source])
 
+    app_config_file = create(:config_file, :compose_file_source, project: @project, payload: 'data', filename: 'config_file.conf')
+    app_container_config_file = create(:container_config_file, container: app_container, config_file: app_config_file)
+
     stubbed_digest_auth_app = stub_dockerhub_auth_for_digest(app_container.image)
     stubbed_digest_auth_nginx = stub_dockerhub_auth_for_digest(nginx_container.image)
     stubbed_digest_app = stub_dockerhub_get_digest(app_container.image, app_container.tag, digest_data)
@@ -444,6 +447,17 @@ class UffizziCore::Api::Cli::V1::Projects::DeploymentsControllerTest < ActionCon
           source_path: container_host_volume_files_app_file.source_path,
         },
       ],
+      container_config_files: [
+        {
+          mount_path: app_container_config_file.mount_path,
+          config_file: {
+            id: app_config_file.id,
+            filename: app_config_file.filename,
+            kind: app_config_file.kind,
+            payload: app_config_file.payload,
+          },
+        },
+      ],
     }
 
     expected_nginx_container_attrs = {
@@ -461,7 +475,7 @@ class UffizziCore::Api::Cli::V1::Projects::DeploymentsControllerTest < ActionCon
       ],
     }
 
-    expected_request_to_controller = {
+    expected_request_container_to_controller = {
       containers: [
         expected_default_container_params.merge(expected_app_container_attrs).merge(container_app_attrs),
         expected_default_container_params.merge(expected_nginx_container_attrs).merge(container_nginx_attrs),
@@ -487,7 +501,17 @@ class UffizziCore::Api::Cli::V1::Projects::DeploymentsControllerTest < ActionCon
       ],
     }
 
-    stubbed_deploy_containers_request = stub_deploy_containers_request_with_expected(@deployment, expected_request_to_controller)
+    expected_request_config_file_to_controller = {
+      config_file: {
+        id: app_config_file.id,
+        filename: app_config_file.filename,
+        kind: app_config_file.kind,
+        payload: app_config_file.payload,
+      },
+    }
+
+    stub_apply_config_file_request_with_expected(@deployment, app_config_file, expected_request_config_file_to_controller)
+    stubbed_deploy_containers_request = stub_deploy_containers_request_with_expected(@deployment, expected_request_container_to_controller)
 
     params = { project_slug: @project.slug, id: @deployment.id }
 
