@@ -8,26 +8,30 @@ class UffizziCore::ComposeFile::Parsers::Services::VolumesParserService
   READ_WRITE_OPTION = 'rw'
 
   class << self
-    def parse(volumes, volumes_payload)
+    def parse(volumes, additional_data)
       return [] if volumes.blank?
+
+      if volumes.is_a?(String)
+        raise UffizziCore::ComposeFile::ParseError, I18n.t('compose.volumes_should_be_array', volumes: volumes)
+      end
 
       volumes.map do |volume|
         volume_data = case volume
                       when String
-                        process_short_syntax(volume, volumes_payload)
+                        process_short_syntax(volume, additional_data)
                       when Hash
-                        process_long_syntax(volume, volumes_payload)
+                        process_long_syntax(volume, additional_data)
                       else
                         raise UffizziCore::ComposeFile::ParseError, I18n.t('compose.invalid_type', option: :volumes)
         end
 
         volume_data
-      end
+      end.uniq
     end
 
     private
 
-    def process_short_syntax(volume_data, volumes_payload)
+    def process_short_syntax(volume_data, additional_data)
       volume_parts = volume_data.split(':').map(&:strip)
       read_only = volume_parts.last.to_s.downcase == READONLY_OPTION
       part1, part2 = volume_parts
@@ -36,10 +40,10 @@ class UffizziCore::ComposeFile::Parsers::Services::VolumesParserService
 
       raise UffizziCore::ComposeFile::ParseError, I18n.t('compose.volume_prop_is_required', prop_name: 'source') if source_path.blank?
 
-      build_volume_attributes(source_path, target_path, read_only, volumes_payload)
+      build_volume_attributes(source_path, target_path, read_only, additional_data)
     end
 
-    def process_long_syntax(volume_data, volumes_payload)
+    def process_long_syntax(volume_data, additional_data)
       source_path = volume_data['source'].to_s.strip
       target_path = volume_data['target'].to_s.strip
       read_only = volume_data['read_only'].present?
@@ -47,7 +51,7 @@ class UffizziCore::ComposeFile::Parsers::Services::VolumesParserService
       raise UffizziCore::ComposeFile::ParseError, I18n.t('compose.volume_prop_is_required', prop_name: 'source') if source_path.blank?
       raise UffizziCore::ComposeFile::ParseError, I18n.t('compose.volume_prop_is_required', prop_name: 'target') if target_path.blank?
 
-      build_volume_attributes(source_path, target_path, read_only, volumes_payload)
+      build_volume_attributes(source_path, target_path, read_only, additional_data)
     end
 
     def build_volume_attributes(source_path, target_path, read_only, params = {})
@@ -70,10 +74,7 @@ class UffizziCore::ComposeFile::Parsers::Services::VolumesParserService
     end
 
     def build_volume_type(source_path, target_path)
-      if path?(source_path) && path?(target_path)
-        raise UffizziCore::ComposeFile::ParseError, I18n.t('compose.volume_type_not_supported', type: HOST_VOLUME_TYPE)
-      end
-
+      return HOST_VOLUME_TYPE if path?(source_path) && path?(target_path)
       return ANONYMOUS_VOLUME_TYPE if path?(source_path) && target_path.blank?
       return NAMED_VOLUME_TYPE if source_path.present? && !path?(source_path) && path?(target_path)
 
@@ -81,7 +82,7 @@ class UffizziCore::ComposeFile::Parsers::Services::VolumesParserService
     end
 
     def path?(path)
-      /^(\/|\.\/|~\/)/.match?(path)
+      path.to_s.start_with?('/', './', '../')
     end
 
     def validate_named_volume(source_path, target_path, named_volumes_names, service_name)

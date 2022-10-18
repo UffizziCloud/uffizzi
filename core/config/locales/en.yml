@@ -33,6 +33,7 @@ en:
     image_build_no_specified: Service '%{value}' has neither an image nor a build context specified. At least one must be provided.
     build_context_no_specified: The context option should be specified
     config_file_not_found: Config file not found '%{name}'
+    host_volume_file_not_found: Host volume file not found '%{name}'
     invalid_context: Invalid context value '%{value}'
     invalid_bool_value: Invalid %{field} value '%{value}'. The value should be `true` or `false`
     invalid_delete_after_postfix: The postfix of the delete_preview_after value should be `h`
@@ -64,10 +65,10 @@ en:
     volume_path_is_invalid: The path '%{path}' is invalid
     volume_prop_is_required: The '%{prop_name}' is a required property
     volume_invalid_name: "Volumes value '%{name}' does not match any of the regexes: '^[a-zA-Z0-9._-]+$'"
-    volume_type_not_supported: Volumes with type '%{type}' does not supported
     named_volume_not_exists: Named volume '%{source_path}:%{target_path}' is used in service '%{service_name}' but no declaration was found in the volumes section.
     invalid_volume_destination: Invalid volume specification '%{spec}' destination can't be '/'
     required_start_commands: "When 'test' is a list the first item must be one of: '%{available_commands}'"
+    volumes_should_be_array: Volumes '%{volumes}' should be an arra
   secrets:
     duplicates_exists: Secret with key %{secrets} already exist.
     invalid_key_length: A secret key must be no longer than 256 characters.

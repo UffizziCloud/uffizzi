@@ -299,7 +299,7 @@ class UffizziCore::Api::Cli::V1::Projects::DeploymentsControllerTest < ActionCon
   end
 
   test '#deploy_containers create a new activity items' do
-    UffizziCore::ControllerService.expects(:deployment_exists?).returns(true)
+    UffizziCore::ControllerService.expects(:deployment_exists?).at_least(1).returns(true)
 
     digest_data = json_fixture('files/dockerhub/digest.json')
     deployment_containers_data = json_fixture('files/controller/deployment_containers.json')
@@ -309,7 +309,11 @@ class UffizziCore::Api::Cli::V1::Projects::DeploymentsControllerTest < ActionCon
     stubbed_containers_request = stub_controller_containers_request(@deployment, deployment_containers_data)
     stubbed_dockerhub_login = stub_dockerhub_login
 
-    params = { project_slug: @project.slug, id: @deployment.id }
+    compose_file_name = 'test-compose-full.yml'
+    file_content = File.read("test/fixtures/files/#{compose_file_name}")
+    encoded_content = Base64.encode64(file_content)
+    compose_file = create(:compose_file, content: encoded_content, repository_id: nil, branch: nil, project: @project)
+    @deployment.update!(compose_file: compose_file)
 
     controller_name = deployment_containers_data.first[:spec][:containers].first[:controllerName]
     app_name = 'app'
@@ -317,14 +321,44 @@ class UffizziCore::Api::Cli::V1::Projects::DeploymentsControllerTest < ActionCon
     nginx_name = 'nginx'
     nginx_namespace = 'library'
 
-    app_attrs = {
+    host_volume_file_attrs_app_dir = {
+      type: 'host',
+      source: './some_app_dir',
+      target: '/var/app/some_dir',
+      read_only: false,
+    }
+
+    host_volume_file_attrs_app_file = {
+      type: 'host',
+      source: './files/some_app_file',
+      target: '/var/app/some_app_files',
+      read_only: false,
+    }
+
+    container_app_attrs = {
       controller_name: controller_name,
       service_name: app_name,
       image: "#{app_namespace}/#{app_name}",
       tag: 'latest',
+      volumes: [
+        host_volume_file_attrs_app_dir,
+        host_volume_file_attrs_app_file,
+        {
+          type: 'named',
+          source: 'app_share',
+          target: '/some_app_share',
+          read_only: true,
+        },
+        {
+          type: 'anonymous',
+          source: '/some_anonymous_dir',
+          target: nil,
+          read_only: false,
+        },
+      ],
     }
 
-    nginx_attrs = {
+    container_nginx_attrs = {
       controller_name: controller_name,
       service_name: nginx_name,
       image: "#{nginx_namespace}/#{nginx_name}",
@@ -334,19 +368,50 @@ class UffizziCore::Api::Cli::V1::Projects::DeploymentsControllerTest < ActionCon
       target_port: 80,
     }
 
+    host_volume_file_app_dir_params = {
+      path: host_volume_file_attrs_app_dir[:source],
+      source: "#{compose_file_name}/#{host_volume_file_attrs_app_dir[:source]}",
+      payload: 'some_app_dir_data',
+      is_file: false,
+      project: @project,
+      compose_file: compose_file,
+    }
+
+    host_volume_file_app_file_params = {
+      path: host_volume_file_attrs_app_file[:source],
+      source: "#{compose_file_name}/#{host_volume_file_attrs_app_file[:source]}",
+      payload: 'some_app_file_data',
+      is_file: true,
+      project: @project,
+      compose_file: compose_file,
+    }
+
+    docker_hub_credential = create(:credential, :docker_hub, account: @account)
     app_repo = create(:repo, :docker_hub, project: @project, namespace: app_namespace, name: app_name)
     nginx_repo = create(:repo, :docker_hub, project: @project, namespace: nginx_namespace, name: nginx_name)
+    host_volume_file_app_dir = create(:host_volume_file, **host_volume_file_app_dir_params)
+    host_volume_file_app_file = create(:host_volume_file, **host_volume_file_app_file_params)
+    app_container = create(:container, :continuously_deploy_enabled,
+                           **{ deployment: @deployment, repo: app_repo }.merge(container_app_attrs))
+    nginx_container = create(:container, :continuously_deploy_enabled,
+                             **{ deployment: @deployment, repo: nginx_repo }.merge(container_nginx_attrs))
 
-    app_container = create(:container, :continuously_deploy_enabled, **{ deployment: @deployment, repo: app_repo }.merge(app_attrs))
-    nginx_container = create(:container, :continuously_deploy_enabled, **{ deployment: @deployment, repo: nginx_repo }.merge(nginx_attrs))
-    docker_hub_credential = create(:credential, :docker_hub, account: @account)
+    container_host_volume_files_app_dir = create(:container_host_volume_file, container: app_container,
+                                                                              host_volume_file: host_volume_file_app_dir,
+                                                                              source_path: host_volume_file_attrs_app_dir[:source])
+    container_host_volume_files_app_file = create(:container_host_volume_file, container: app_container,
+                                                                               host_volume_file: host_volume_file_app_file,
+                                                                               source_path: host_volume_file_attrs_app_file[:source])
+
+    app_config_file = create(:config_file, :compose_file_source, project: @project, payload: 'data', filename: 'config_file.conf')
+    app_container_config_file = create(:container_config_file, container: app_container, config_file: app_config_file)
 
     stubbed_digest_auth_app = stub_dockerhub_auth_for_digest(app_container.image)
     stubbed_digest_auth_nginx = stub_dockerhub_auth_for_digest(nginx_container.image)
     stubbed_digest_app = stub_dockerhub_get_digest(app_container.image, app_container.tag, digest_data)
     stubbed_digest_nginx = stub_dockerhub_get_digest(nginx_container.image, nginx_container.tag, digest_data)
 
-    expected_default_params = {
+    expected_default_container_params = {
       secret_variables: [],
       memory_limit: nil,
       memory_request: nil,
@@ -360,9 +425,10 @@ class UffizziCore::Api::Cli::V1::Projects::DeploymentsControllerTest < ActionCon
       volumes: nil,
       container_config_files: [],
       additional_subdomains: [],
+      container_host_volume_files: [],
     }
 
-    expected_app_container = {
+    expected_app_container_attrs = {
       id: app_container.id,
       kind: app_container.kind,
       variables: [
@@ -371,9 +437,30 @@ class UffizziCore::Api::Cli::V1::Projects::DeploymentsControllerTest < ActionCon
           value: "https://#{@deployment.preview_url}",
         },
       ],
-    }.merge(expected_default_params).merge(app_attrs)
+      container_host_volume_files: [
+        {
+          host_volume_file_id: host_volume_file_app_dir.id,
+          source_path: container_host_volume_files_app_dir.source_path,
+        },
+        {
+          host_volume_file_id: host_volume_file_app_file.id,
+          source_path: container_host_volume_files_app_file.source_path,
+        },
+      ],
+      container_config_files: [
+        {
+          mount_path: app_container_config_file.mount_path,
+          config_file: {
+            id: app_config_file.id,
+            filename: app_config_file.filename,
+            kind: app_config_file.kind,
+            payload: app_config_file.payload,
+          },
+        },
+      ],
+    }
 
-    expected_nginx_container = {
+    expected_nginx_container_attrs = {
       id: nginx_container.id,
       kind: nginx_container.kind,
       variables: [
@@ -386,15 +473,47 @@ class UffizziCore::Api::Cli::V1::Projects::DeploymentsControllerTest < ActionCon
           value: '80',
         },
       ],
-    }.merge(expected_default_params).merge(nginx_attrs)
-
-    expected_request_to_controller = {
-      containers: [expected_app_container, expected_nginx_container],
-      credentials: [{ id: docker_hub_credential.id }, { id: @credential.id }],
-      deployment_url: @deployment.preview_url,
     }
 
-    stubbed_deploy_containers_request = stub_deploy_containers_request_with_expected(@deployment, expected_request_to_controller)
+    expected_request_container_to_controller = {
+      containers: [
+        expected_default_container_params.merge(expected_app_container_attrs).merge(container_app_attrs),
+        expected_default_container_params.merge(expected_nginx_container_attrs).merge(container_nginx_attrs),
+      ],
+      credentials: [{ id: docker_hub_credential.id }, { id: @credential.id }],
+      deployment_url: @deployment.preview_url,
+      compose_file: { source_kind: 'local' },
+      host_volume_files: [
+        {
+          id: host_volume_file_app_dir.id,
+          source: host_volume_file_app_dir_params[:source],
+          path: host_volume_file_app_dir_params[:path],
+          payload: Base64.encode64(host_volume_file_app_dir_params[:payload]),
+          is_file: host_volume_file_app_dir_params[:is_file],
+        },
+        {
+          id: host_volume_file_app_file.id,
+          source: host_volume_file_app_file_params[:source],
+          path: host_volume_file_app_file_params[:path],
+          payload: Base64.encode64(host_volume_file_app_file_params[:payload]),
+          is_file: host_volume_file_app_file_params[:is_file],
+        },
+      ],
+    }
+
+    expected_request_config_file_to_controller = {
+      config_file: {
+        id: app_config_file.id,
+        filename: app_config_file.filename,
+        kind: app_config_file.kind,
+        payload: app_config_file.payload,
+      },
+    }
+
+    stub_apply_config_file_request_with_expected(@deployment, app_config_file, expected_request_config_file_to_controller)
+    stubbed_deploy_containers_request = stub_deploy_containers_request_with_expected(@deployment, expected_request_container_to_controller)
+
+    params = { project_slug: @project.slug, id: @deployment.id }
 
     post :deploy_containers, params: params, format: :json
 

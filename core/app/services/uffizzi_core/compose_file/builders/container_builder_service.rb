@@ -25,9 +25,12 @@ class UffizziCore::ComposeFile::Builders::ContainerBuilderService
                                                                                                                     container_name)
     configs_dependencies = UffizziCore::ComposeFile::GithubDependenciesService.configs_dependencies_for_container(compose_dependencies,
                                                                                                                   container_name)
+    host_volumes_dependencies = UffizziCore::ComposeFile::GithubDependenciesService.host_volumes_dependencies_for_container(
+      compose_dependencies, container_name
+    )
     is_ingress = ingress_container?(container_name, ingress_data)
     repo_attributes = repo_attributes(container_data, continuous_preview_global_data)
-    additional_subdomains = is_ingress ? ingress_data[:additional_subdomains] : []
+    additional_subdomains = is_ingress ? ingress_data.fetch(:additional_subdomains, []) : []
 
     {
       tag: tag(image_data, repo_attributes),
@@ -43,12 +46,13 @@ class UffizziCore::ComposeFile::Builders::ContainerBuilderService
       repo_attributes: repo_attributes,
       continuously_deploy: continuously_deploy(deploy_data),
       receive_incoming_requests: is_ingress,
-      container_config_files_attributes: config_files(configs_data, configs_dependencies),
+      container_config_files_attributes: container_config_files_attributes(configs_data, configs_dependencies),
       service_name: container_name,
       name: container_name,
       healthcheck: healthcheck_data,
       volumes: volumes_data,
       additional_subdomains: additional_subdomains,
+      container_host_volume_files_attributes: container_host_volume_files_attributes(volumes_data, host_volumes_dependencies),
     }
   end
   # rubocop:enable Metrics/PerceivedComplexity
@@ -226,10 +230,17 @@ class UffizziCore::ComposeFile::Builders::ContainerBuilderService
     variables_builder.build_secret_attributes(secrets)
   end
 
-  def config_files(config_files_data, dependencies)
-    builder = UffizziCore::ComposeFile::Builders::ConfigFilesBuilderService.new(project)
+  def container_config_files_attributes(config_files_data, dependencies)
+    UffizziCore::ComposeFile::Builders::ContainerConfigFilesBuilderService.build_attributes(config_files_data, dependencies, project)
+  end
 
-    builder.build_attributes(config_files_data, dependencies)
+  def container_host_volume_files_attributes(volumes_data, host_volumes_dependencies)
+    host_volumes_data = volumes_data.select do |v|
+      v[:type] == UffizziCore::ComposeFile::Parsers::Services::VolumesParserService::HOST_VOLUME_TYPE
+    end
+
+    UffizziCore::ComposeFile::Builders::ContainerHostVolumeFilesBuilderService
+      .build_attributes(host_volumes_data, host_volumes_dependencies, project)
   end
 
   def docker_builder(type)

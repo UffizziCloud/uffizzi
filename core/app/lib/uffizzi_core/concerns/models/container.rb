@@ -20,6 +20,8 @@ module UffizziCore::Concerns::Models::Container
     has_many :activity_items, dependent: :destroy
     has_many :container_config_files, dependent: :destroy
     has_many :config_files, through: :container_config_files
+    has_many :container_host_volume_files, dependent: :destroy
+    has_many :host_volume_files, through: :container_host_volume_files
 
     attribute :public, :boolean, default: false
     attribute :port, :integer, default: nil
@@ -38,6 +40,7 @@ module UffizziCore::Concerns::Models::Container
 
     accepts_nested_attributes_for :repo
     accepts_nested_attributes_for :container_config_files, allow_destroy: true
+    accepts_nested_attributes_for :container_host_volume_files, allow_destroy: true
 
     validates :variables, 'uffizzi_core/environment_variable_list': true, allow_nil: true
     validates :secret_variables, 'uffizzi_core/environment_variable_list': true, allow_nil: true

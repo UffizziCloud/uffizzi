@@ -63,9 +63,9 @@ class UffizziCore::DeploymentService
         Rails.logger.info("DEPLOYMENT_PROCESS deployment_id=#{deployment.id} start deploying into controller")
 
         containers = deployment.active_containers
-        containers = add_default_deployment_variables!(containers, deployment)
+        containers_with_variables = add_default_deployment_variables!(containers, deployment)
 
-        UffizziCore::ControllerService.deploy_containers(deployment, containers)
+        UffizziCore::ControllerService.deploy_containers(deployment, containers_with_variables)
       else
         Rails.logger.info("DEPLOYMENT_PROCESS deployment_id=#{deployment.id} deployment has builds errors, stopping")
       end

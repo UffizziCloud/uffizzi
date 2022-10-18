@@ -45,14 +45,25 @@ class UffizziCore::ControllerService
       containers = containers.map do |container|
         UffizziCore::Controller::DeployContainers::ContainerSerializer.new(container).as_json(include: '**')
       end
+
       credentials = deployment.credentials.deployable.map do |credential|
         UffizziCore::Controller::DeployContainers::CredentialSerializer.new(credential).as_json
+      end
+
+      host_volume_files = UffizziCore::HostVolumeFile.by_deployment(deployment).map do |host_volume_file|
+        UffizziCore::Controller::DeployContainers::HostVolumeFileSerializer.new(host_volume_file).as_json
+      end
+
+      compose_file = if deployment.compose_file.present?
+        UffizziCore::Controller::DeployContainers::ComposeFileSerializer.new(deployment.compose_file).as_json
       end
 
       body = {
         containers: containers,
         credentials: credentials,
         deployment_url: deployment.preview_url,
+        compose_file: compose_file,
+        host_volume_files: host_volume_files,
       }
 
       if password_protection_module.present?

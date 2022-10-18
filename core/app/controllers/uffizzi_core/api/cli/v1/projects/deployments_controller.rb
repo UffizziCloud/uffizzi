@@ -40,7 +40,7 @@ class UffizziCore::Api::Cli::V1::Projects::DeploymentsController < UffizziCore::
   # @parameter project_slug(required,path) [string] The project slug
   # @parameter params(required,body)   [object<
   #    compose_file: object<path: string, source: string, content: string>,
-  #    dependencies: Array<object<path: string, source: string, content: string>>>]
+  #    dependencies: Array<object<path: string, source: string, content: string, use_kind: string, is_file: boolean>>>]
   #
   # @response [Deployment] 201 OK
   # @response [object<errors: object<state: string>>] 422 Unprocessable Entity
@@ -66,7 +66,7 @@ class UffizziCore::Api::Cli::V1::Projects::DeploymentsController < UffizziCore::
   # @parameter project_slug(required,path) [string] The project slug
   # @parameter params(required,body)   [object<
   #    compose_file: object<path: string, source: string, content: string>,
-  #    dependencies: Array<object<path: string, source: string, content: string>>>]
+  #    dependencies: Array<object<path: string, source: string, content: string, use_kind: string, is_file: boolean>>>]
   #
   # @response [Deployment] 201 OK
   # @response [object<errors: object<state: string>>] 422 Unprocessable Entity
@@ -172,7 +172,7 @@ class UffizziCore::Api::Cli::V1::Projects::DeploymentsController < UffizziCore::
   end
 
   def dependencies_params
-    params.permit(dependencies: [:name, :path, :source, :content])
+    params.permit(dependencies: [:path, :source, :content, :use_kind, :is_file])
   end
 
   def metadata_params

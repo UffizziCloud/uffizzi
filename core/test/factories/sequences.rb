@@ -63,6 +63,10 @@ FactoryBot.define do
     "/volumes/directory-#{n}"
   end
 
+  sequence :relative_path do |n|
+    "./directory-#{n}"
+  end
+
   sequence :number, aliases: [
     :integer,
     :mileage,
