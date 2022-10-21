@@ -32,10 +32,6 @@ class UffizziCore::RepoService
       #{repo.project_id}:#{repo.id}")[0, 10]}"
     end
 
-    def tag(repo)
-      repo&.builds&.deployed&.last&.commit || 'latest'
-    end
-
     def image(repo)
       repo_credential = credential(repo)
 

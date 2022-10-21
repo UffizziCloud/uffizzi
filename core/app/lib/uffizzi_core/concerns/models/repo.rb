@@ -13,7 +13,6 @@ module UffizziCore::Concerns::Models::Repo
 
     belongs_to :project
     has_one :container, inverse_of: :repo, dependent: :destroy
-    has_many :builds, dependent: :destroy
 
     validates :dockerfile_path, presence: true, if: :dockerfile?
     validates :delete_preview_after, numericality: { greater_than: 0, only_integer: true }, allow_nil: true

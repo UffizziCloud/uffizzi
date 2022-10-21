@@ -12,7 +12,6 @@ class UffizziCore::Api::Cli::V1::Projects::DeploymentSerializer < UffizziCore::B
              :preview_url,
              :tag,
              :branch,
-             :commit,
              :image_id,
              :ingress_container_ready,
              :ingress_container_state,
@@ -33,10 +32,6 @@ class UffizziCore::Api::Cli::V1::Projects::DeploymentSerializer < UffizziCore::B
 
   def branch
     object.ingress_container&.repo&.branch
-  end
-
-  def commit
-    object.ingress_container&.repo&.builds&.deployed&.last&.commit.to_s.slice(0..5)
   end
 
   def image_id
