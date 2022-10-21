@@ -9,7 +9,7 @@ module UffizziCore::Concerns::Models::Event
 
     self.table_name = UffizziCore.table_names[:events]
 
-    enumerize :state, in: [:queued, :successful, :deployed, :failed, :building, :timeout, :cancelled, :deploying], predicates: true,
+    enumerize :state, in: [:waiting, :queued, :successful, :deployed, :failed, :building, :timeout, :cancelled, :deploying], predicates: true,
                       scope: true
 
     belongs_to :activity_item, touch: true
