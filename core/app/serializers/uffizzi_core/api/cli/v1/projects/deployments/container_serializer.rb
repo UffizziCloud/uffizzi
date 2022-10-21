@@ -9,15 +9,7 @@ class UffizziCore::Api::Cli::V1::Projects::Deployments::ContainerSerializer < Uf
 
   def name
     image_name = object.image.split('/').pop
-    commit = object&.repo&.builds&.deployed&.last&.commit
-    container_name = "#{image_name}:#{object.tag}"
-
-    if !commit.nil?
-      short_commit_hash = commit.slice(0..5)
-      container_name = "#{container_name}@#{short_commit_hash}"
-    end
-
-    container_name
+    "#{image_name}:#{object.tag}"
   end
 
   def secret_variables
