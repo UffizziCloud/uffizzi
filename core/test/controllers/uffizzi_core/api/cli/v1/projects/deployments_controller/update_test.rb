@@ -192,6 +192,13 @@ class UffizziCore::Api::Cli::V1::Projects::DeploymentsControllerTest < ActionCon
           use_kind: 'volume',
         },
         {
+          content: "ZGF0YQ==\n",
+          is_file: false,
+          path: '/gem/tmp',
+          source: './',
+          use_kind: 'volume',
+        },
+        {
           content: "S0VZPXZhbHVl\n",
           path: 'env_files/env_file.env',
           source: 'env_files/env_file.env',
@@ -225,7 +232,7 @@ class UffizziCore::Api::Cli::V1::Projects::DeploymentsControllerTest < ActionCon
       -> { UffizziCore::ComposeFile.temporary.count } => 0,
       -> { UffizziCore::Template.with_creation_source(UffizziCore::Template.creation_source.compose_file).count } => 0,
       -> { @deployment.containers.count } => 3,
-      -> { UffizziCore::HostVolumeFile.count } => 4,
+      -> { UffizziCore::HostVolumeFile.count } => 5,
       -> { UffizziCore::ConfigFile.count } => 1,
     }
 
@@ -274,6 +281,12 @@ class UffizziCore::Api::Cli::V1::Projects::DeploymentsControllerTest < ActionCon
           type: 'host',
           source: './files/some_app_file',
           target: '/var/app/some_app_files',
+          read_only: false,
+        },
+        {
+          type: 'host',
+          source: './',
+          target: '/var/entire_app',
           read_only: false,
         },
         {

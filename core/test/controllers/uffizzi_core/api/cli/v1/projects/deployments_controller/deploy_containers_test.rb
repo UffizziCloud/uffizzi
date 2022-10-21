@@ -328,6 +328,13 @@ class UffizziCore::Api::Cli::V1::Projects::DeploymentsControllerTest < ActionCon
       read_only: false,
     }
 
+    host_volume_file_attrs_app_dir2 = {
+      type: 'host',
+      source: './',
+      target: '/var/entire_app',
+      read_only: false,
+    }
+
     host_volume_file_attrs_app_file = {
       type: 'host',
       source: './files/some_app_file',
@@ -343,6 +350,7 @@ class UffizziCore::Api::Cli::V1::Projects::DeploymentsControllerTest < ActionCon
       volumes: [
         host_volume_file_attrs_app_dir,
         host_volume_file_attrs_app_file,
+        host_volume_file_attrs_app_dir2,
         {
           type: 'named',
           source: 'app_share',
@@ -377,6 +385,15 @@ class UffizziCore::Api::Cli::V1::Projects::DeploymentsControllerTest < ActionCon
       compose_file: compose_file,
     }
 
+    host_volume_file_app_dir2_params = {
+      path: host_volume_file_attrs_app_dir2[:source],
+      source: "#{compose_file_name}/#{host_volume_file_attrs_app_dir2[:source]}",
+      payload: 'some_app_dir_data',
+      is_file: false,
+      project: @project,
+      compose_file: compose_file,
+    }
+
     host_volume_file_app_file_params = {
       path: host_volume_file_attrs_app_file[:source],
       source: "#{compose_file_name}/#{host_volume_file_attrs_app_file[:source]}",
@@ -390,6 +407,7 @@ class UffizziCore::Api::Cli::V1::Projects::DeploymentsControllerTest < ActionCon
     app_repo = create(:repo, :docker_hub, project: @project, namespace: app_namespace, name: app_name)
     nginx_repo = create(:repo, :docker_hub, project: @project, namespace: nginx_namespace, name: nginx_name)
     host_volume_file_app_dir = create(:host_volume_file, **host_volume_file_app_dir_params)
+    host_volume_file_app_dir2 = create(:host_volume_file, **host_volume_file_app_dir2_params)
     host_volume_file_app_file = create(:host_volume_file, **host_volume_file_app_file_params)
     app_container = create(:container, :continuously_deploy_enabled,
                            **{ deployment: @deployment, repo: app_repo }.merge(container_app_attrs))
@@ -399,6 +417,9 @@ class UffizziCore::Api::Cli::V1::Projects::DeploymentsControllerTest < ActionCon
     container_host_volume_files_app_dir = create(:container_host_volume_file, container: app_container,
                                                                               host_volume_file: host_volume_file_app_dir,
                                                                               source_path: host_volume_file_attrs_app_dir[:source])
+    container_host_volume_files_app_dir2 = create(:container_host_volume_file, container: app_container,
+                                                                               host_volume_file: host_volume_file_app_dir2,
+                                                                               source_path: host_volume_file_attrs_app_dir2[:source])
     container_host_volume_files_app_file = create(:container_host_volume_file, container: app_container,
                                                                                host_volume_file: host_volume_file_app_file,
                                                                                source_path: host_volume_file_attrs_app_file[:source])
@@ -441,6 +462,10 @@ class UffizziCore::Api::Cli::V1::Projects::DeploymentsControllerTest < ActionCon
         {
           host_volume_file_id: host_volume_file_app_dir.id,
           source_path: container_host_volume_files_app_dir.source_path,
+        },
+        {
+          host_volume_file_id: host_volume_file_app_dir2.id,
+          source_path: container_host_volume_files_app_dir2.source_path,
         },
         {
           host_volume_file_id: host_volume_file_app_file.id,
@@ -490,6 +515,13 @@ class UffizziCore::Api::Cli::V1::Projects::DeploymentsControllerTest < ActionCon
           path: host_volume_file_app_dir_params[:path],
           payload: Base64.encode64(host_volume_file_app_dir_params[:payload]),
           is_file: host_volume_file_app_dir_params[:is_file],
+        },
+        {
+          id: host_volume_file_app_dir2.id,
+          source: host_volume_file_app_dir2_params[:source],
+          path: host_volume_file_app_dir2_params[:path],
+          payload: Base64.encode64(host_volume_file_app_dir2_params[:payload]),
+          is_file: host_volume_file_app_dir2_params[:is_file],
         },
         {
           id: host_volume_file_app_file.id,
