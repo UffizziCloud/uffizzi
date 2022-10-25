@@ -230,10 +230,10 @@ ActiveRecord::Schema.define(version: 2022_09_27_113647) do
     t.boolean "is_file"
     t.binary "payload"
     t.bigint "added_by_id"
-    t.bigint "project_id", null: false
-    t.bigint "compose_file_id", null: false
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
+    t.bigint "project_id", null: false
+    t.bigint "compose_file_id", null: false
     t.index ["compose_file_id"], name: "index_host_volume_file_on_compose_file_id"
     t.index ["project_id"], name: "index_host_volume_file_on_project_id"
   end

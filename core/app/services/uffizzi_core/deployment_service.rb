@@ -89,19 +89,18 @@ class UffizziCore::DeploymentService
 
     def build_subdomain(deployment)
       return build_docker_continuous_preview_subdomain(deployment) if deployment&.continuous_preview_payload&.fetch('docker', nil).present?
+      return build_pull_request_subdomain(deployment) if deployment.from_actions?
 
-      github_metadata = deployment.metadata.dig('labels', 'github')
-      return build_pull_request_subdomain(deployment) if
-        github_metadata&.dig('pull_request', 'number').present? && github_metadata&.dig('repository').present?
-
+      build_default_subdomain(deployment)
+    rescue UffizziCore::Deployment::LabelsNotFoundError
       build_default_subdomain(deployment)
     end
 
     def build_pull_request_subdomain(deployment)
-      github_payload = deployment.metadata.dig('labels', 'github')
-      repo_name = github_payload['repository'].split('/').last.downcase
-      pull_request_number = github_payload['pull_request']['number']
-      subdomain = "pr-#{pull_request_number}-#{name(deployment)}-#{repo_name}-#{deployment.project.slug}"
+      repo_name, pull_request_number = pull_request_data(deployment)
+      raise UffizziCore::Deployment::LabelsNotFoundError if repo_name.nil? || pull_request_number.nil?
+
+      subdomain = "pr-#{pull_request_number}-#{name(deployment)}-#{repo_name.downcase}"
       format_subdomain(subdomain)
     end
 
@@ -290,6 +289,24 @@ class UffizziCore::DeploymentService
       return sliced_subdomain.chop if sliced_subdomain.end_with?('-')
 
       sliced_subdomain
+    end
+
+    def pull_request_data(deployment)
+      return github_pull_request_data(deployment) if deployment.from_github_actions?
+
+      gitlab_merge_request_data(deployment)
+    end
+
+    def github_pull_request_data(deployment)
+      github_data = deployment.metadata.dig('labels', 'github')
+
+      [github_data['repository'], github_data.dig('event', 'number')]
+    end
+
+    def gitlab_merge_request_data(deployment)
+      gitlab_data = deployment.metadata.dig('labels', 'gitlab')
+
+      [gitlab_data['repo'], gitlab_data.dig('merge_request', 'number')]
     end
   end
 end
