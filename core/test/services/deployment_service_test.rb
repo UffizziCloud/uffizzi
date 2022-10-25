@@ -161,4 +161,56 @@ class UffizziCore::DeploymentServiceTest < ActiveSupport::TestCase
 
     refute(deployment_failed)
   end
+
+  test '#build_subdomain with github pull request data' do
+    metadata = {
+      'labels' => {
+        'github' => {
+          'repository' => 'hello-world',
+          'event' => {
+            'number' => '24',
+          },
+        },
+      },
+    }
+    deployment = create(:deployment, project: @project, state: UffizziCore::Deployment::STATE_ACTIVE, metadata: metadata)
+    subdomain = UffizziCore::DeploymentService.build_subdomain(deployment)
+
+    assert_equal("pr-24-deployment-#{deployment.id}-hello-world", subdomain)
+  end
+
+  test '#build_subdomain with gitlab merge request data' do
+    metadata = {
+      'labels' => {
+        'gitlab' => {
+          'repo' => 'hello-world',
+          'merge_request' => {
+            'number' => '24',
+          },
+        },
+      },
+    }
+    deployment = create(:deployment, project: @project, state: UffizziCore::Deployment::STATE_ACTIVE, metadata: metadata)
+    subdomain = UffizziCore::DeploymentService.build_subdomain(deployment)
+
+    assert_equal("pr-24-deployment-#{deployment.id}-hello-world", subdomain)
+  end
+
+  test '#build_subdomain with wrong labels - a default url is created' do
+    metadata = {
+      'labels' => {
+        'gitlab' => {
+          'repo' => 'hello-world',
+          'merge_request' => {
+            'wrong_option' => '24',
+          },
+        },
+      },
+    }
+    deployment = create(:deployment, project: @project, state: UffizziCore::Deployment::STATE_ACTIVE, metadata: metadata)
+    subdomain = UffizziCore::DeploymentService.build_subdomain(deployment)
+    formatted_project_slug = @project.slug.gsub('_', '-')
+
+    assert_equal("deployment-#{deployment.id}-#{formatted_project_slug}", subdomain)
+  end
 end

@@ -336,6 +336,13 @@ class UffizziCore::Api::Cli::V1::Projects::DeploymentsControllerTest < ActionCon
           use_kind: 'volume',
         },
         {
+          content: "ZGF0YQ==\n",
+          is_file: false,
+          path: '/gem/tmp',
+          source: './',
+          use_kind: 'volume',
+        },
+        {
           content: "S0VZPXZhbHVl\n",
           path: 'env_files/env_file.env',
           source: 'env_files/env_file.env',
@@ -369,7 +376,7 @@ class UffizziCore::Api::Cli::V1::Projects::DeploymentsControllerTest < ActionCon
       -> { UffizziCore::Template.with_creation_source(UffizziCore::Template.creation_source.compose_file).count } => 1,
       -> { UffizziCore::Deployment.count } => 1,
       -> { UffizziCore::Container.count } => 3,
-      -> { UffizziCore::HostVolumeFile.count } => 4,
+      -> { UffizziCore::HostVolumeFile.count } => 5,
       -> { UffizziCore::ConfigFile.count } => 1,
       -> { UffizziCore::Repo.count } => 3,
     }
@@ -421,6 +428,12 @@ class UffizziCore::Api::Cli::V1::Projects::DeploymentsControllerTest < ActionCon
           type: 'host',
           source: './files/some_app_file',
           target: '/var/app/some_app_files',
+          read_only: false,
+        },
+        {
+          type: 'host',
+          source: './',
+          target: '/var/entire_app',
           read_only: false,
         },
         {
@@ -526,7 +539,7 @@ class UffizziCore::Api::Cli::V1::Projects::DeploymentsControllerTest < ActionCon
     actual_host_volume_file_paths = UffizziCore::HostVolumeFile.pluck(:path)
     expected_host_volume_file_paths = params[:dependencies].select { |d| d[:use_kind] == 'volume' }.pluck(:path)
 
-    assert_equal expected_host_volume_file_paths, actual_host_volume_file_paths
+    assert_equal expected_host_volume_file_paths.sort, actual_host_volume_file_paths.sort
 
     actual_host_volume_file_sources = UffizziCore::HostVolumeFile.pluck(:source)
     expected_host_volume_file_sources = params[:dependencies]
@@ -534,7 +547,7 @@ class UffizziCore::Api::Cli::V1::Projects::DeploymentsControllerTest < ActionCon
       .pluck(:source)
       .map { |s| "#{compose_file_name}/#{s}" }
 
-    assert_equal expected_host_volume_file_sources, actual_host_volume_file_sources
+    assert_equal expected_host_volume_file_sources.sort, actual_host_volume_file_sources.sort
 
     actual_host_volume_file_count_which_is_file = UffizziCore::HostVolumeFile.where(is_file: true).count
 

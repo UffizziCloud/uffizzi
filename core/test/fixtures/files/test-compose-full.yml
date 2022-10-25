@@ -10,6 +10,7 @@ services:
     volumes:
       - ./some_app_dir:/var/app/some_dir
       - ./files/some_app_file:/var/app/some_app_files
+      - ./:/var/entire_app
       - app_share:/some_app_share:ro
       - /some_anonymous_dir
 
