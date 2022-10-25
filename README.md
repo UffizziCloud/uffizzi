@@ -32,7 +32,7 @@ Uffizzi is designed to integrate with any CI platform as a step in your pipeline
 
 ## What types of apps are supported by Uffizzi?
 
-Uffizzi is designed for full-stack web applications and containerized services, including APIs, backends, frontends, databases, and microservices. Currently, application configurations must be defined via Docker Compose. Support for Helm and other configuration formats are on our [public roadmap](https://github.com/orgs/UffizziCloud/projects/2/views/1?layout=board). See [Docker Compose for Uffizzi ](https://docs.uffizzi.com/references/compose-spec/) to learn more about supported syntax.
+Uffizzi is designed for full-stack web applications and containerized services, including APIs, backends, frontends, databases, microservices, binaries and command line tools . Currently, application configurations must be defined via Docker Compose. Support for Helm and other configuration formats are on our [public roadmap](https://github.com/orgs/UffizziCloud/projects/2/views/1?layout=board). See [Docker Compose for Uffizzi ](https://docs.uffizzi.com/references/compose-spec/) to learn more about supported syntax.
 
 ## Why Uffizzi?
 
