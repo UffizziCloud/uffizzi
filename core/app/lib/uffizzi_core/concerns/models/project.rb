@@ -40,8 +40,6 @@ module UffizziCore::Concerns::Models::Project
     end
 
     def after_disable
-      update(name: "#{name} deleted #{DateTime.current.strftime('%H:%M:%S-%m%d%Y')}")
-      update(slug: "#{slug} deleted #{DateTime.current.strftime('%H:%M:%S-%m%d%Y')}")
       disable_deployments
     end
 
