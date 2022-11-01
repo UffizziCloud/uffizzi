@@ -61,10 +61,6 @@ module UffizziCore::Concerns::Models::Deployment
       update!(disabled_at: Time.now)
     end
 
-    def after_fail
-      active_containers.each(&:disable!)
-    end
-
     def clean
       active_containers.each(&:disable!)
       UffizziCore::Deployment::DeleteJob.perform_async(id)
