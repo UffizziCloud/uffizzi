@@ -29,7 +29,6 @@ class UffizziCore::Api::Cli::V1::ComposeFile::TemplateForm
     )
   rescue StandardError => e
     self.template_build_error = e
-    raise e
   end
 
   private
@@ -40,6 +39,8 @@ class UffizziCore::Api::Cli::V1::ComposeFile::TemplateForm
       errors.add(SECRETS_ERROR_KEY, template_build_error.message)
     when UffizziCore::ComposeFile::BuildError
       errors.add(TEMPLATE_BUILD_ERROR_KEY, template_build_error.message)
+    when StandardError
+      raise template_build_error
     end
   end
 end
