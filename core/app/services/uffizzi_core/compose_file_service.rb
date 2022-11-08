@@ -179,9 +179,8 @@ class UffizziCore::ComposeFileService
 
         raise ActiveRecord::Rollback if errors.present?
       end
-      raise UffizziCore::ComposeFile::ParseError, errors.full_messages.join('; ') if errors.present?
 
-      compose_file_form
+      [compose_file_form, errors]
     end
 
     def load_compose_data(compose_content)
