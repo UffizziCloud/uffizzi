@@ -36,21 +36,7 @@ Uffizzi is designed for full-stack web applications and containerized services, 
 
 ## Why Uffizzi?
 
-Development teams adopt Uffizzi because it... 
-
-- **Increases development velocity** by removing the bottleneck of a shared test environment, where buggy or conflicting commits from multiple developers often cause delays in feature releases. 
-- **Improves code quality** by providing a way to test the functionality of each branch in clean, isolated, production-like environments before merging.  
-- **Facilitates test parallelization** since teams can create as many Preview Environments as they need and can iterate on features in parallel.
-
-Teams also like Uffizzi because it's...  
-
-- **👩‍💻 Developer-friendly** - Uffizzi is configured via Docker Compose, the same tool many teams use for local development.
-
-- **🪶 Lightweight** - Uffizzi Preview Environments are isolated namespaces designed to be fast and ephemeral.
-
-- **🔁 Event-driven** - Designed to integrate with any CI system, Uffizzi Preview Environments are created, updated, or deleted via triggering events, such as pull requests or new release tags. Uffizzi generates a secure HTTPS URL for each environment, which is continually refreshed in response to new events.
-
-- **🧼 Clean** - The ephemeral nature of Uffizzi Preview Environments means your team can test new features or release candidates in clean, parallel environments before merging or promoting to production.
+Uffizzi helps busy project leaders approve pull requests faster. Testing a live preview provides a more holistic way to assess a new feature or bug fix, rather than simply reviewing code changes. Uffizzi also removes the added step of pulling down the branch to test it locally: Uffizzi seamlessly integrates with CI providers like GitHub Actions and posts comments directly to pull request issues, so there is no additional step for the maintainer or the contributor.
 
 ## Project roadmap
 
