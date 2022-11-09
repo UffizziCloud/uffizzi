@@ -7,7 +7,7 @@
 
 #### Don't merge until you preview
 
-Uffizzi is a tool that lets you preview pull requests before merging. Create on-demand Preview Environments for APIs, frontends, backends, databases, microservices, binaries and command line tools. Each Preview Environment gets a secure HTTPS URL that is continually refreshed when you push new commits. Uffizzi also handles clean up, so your environments last only as long as you need them.  
+Uffizzi is a tool that lets you preview pull requests before merging. Create on-demand Preview Environments for APIs, frontends, backends, databases, microservices, binaries and command-line tools. Each Preview Environment gets a secure HTTPS URL that is continually refreshed when you push new commits. Uffizzi also handles clean up, so your environments last only as long as you need them.  
 
 Uffizzi is an open-source, off-the-shelf, cross-platform solution that works with any version control system, container registry, or CI platform.
 
@@ -86,7 +86,7 @@ Yes. Your CI pipeline will typically include a series of <code>build</code>/<cod
 </details>
 
 <details><summary><b>Does Uffizzi support _____________?</b></summary>
-Uffizzi is container-centric and primarily designed for web languages. In general, if your application can be containerized, described with Docker Compose, and accepts HTTP traffic, Uffizzi can preview it.
+Uffizzi is container-centric, so in general, if your application can be containerized, described with Docker Compose, and accepts HTTP traffic, Uffizzi can preview it. Uffizzi supports web applications, microservices, databases, binaries, and command-line tools.
 </details>
 
 <details><summary><b>How can my application services communicate?</b></summary>
