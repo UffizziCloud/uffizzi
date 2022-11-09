@@ -4,10 +4,15 @@ class UffizziCore::LogsService
   NOT_ALLOWED_SYMBOLS_IN_NAME_REGEX = /[^a-zA-Z0-9-]/.freeze
 
   class << self
-    def fetch_container_logs(container, query = {})
+    def fetch_container_logs(container, query = {}, pretty_format=false)
       response = request_logs(container, query).result || {}
       response = Hashie::Mash.new(response)
-      logs = response.logs || []
+      return { logs: response.logs } unless pretty_format
+
+      logs = response.logs.map do |item|
+        timestamp, *payload = item.split(' ')
+        { timestamp: timestamp&.gsub('T', ' ')&.gsub('Z', ' UTC'), payload: payload.join(' ') }
+      end
 
       {
         logs: logs,
