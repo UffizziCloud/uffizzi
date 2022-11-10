@@ -16,20 +16,13 @@ class UffizziCore::Api::Cli::V1::Projects::Deployments::Containers::LogsControll
   end
 
   test '#index' do
-    insert_id = generate(:string)
+    timestamp = generate(:string)
     payload = generate(:string)
 
-    logs = UffizziCore::Converters.deep_lower_camelize_keys(
-      {
-        logs: [
-          {
-            insert_id: insert_id,
-            payload: payload,
-          },
-        ],
-      },
-    )
-    stubbed_request = stub_container_log_request(@deployment.id, @pod_name, @limit, @previous, logs)
+    logs = { logs: ["#{timestamp} #{payload}"] }
+
+    pod_name = UffizziCore::ContainerService.pod_name(@container)
+    stubbed_request = stub_container_log_request(@deployment.id, pod_name, limit, logs)
 
     params = {
       project_slug: @project.slug,
@@ -48,7 +41,7 @@ class UffizziCore::Api::Cli::V1::Projects::Deployments::Containers::LogsControll
     collected_result = {
       logs: [
         {
-          insert_id: insert_id,
+          timestamp: timestamp,
           payload: payload,
         },
       ],
