@@ -23,6 +23,7 @@ class UffizziCore::LogsService
         deployment_id: deployment.id,
         container_name: UffizziCore::ContainerService.pod_name(container),
         limit: query[:limit],
+        previous: query[:previous],
       )
     end
 

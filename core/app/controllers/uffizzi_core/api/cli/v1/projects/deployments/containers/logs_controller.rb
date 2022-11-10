@@ -22,6 +22,6 @@ class UffizziCore::Api::Cli::V1::Projects::Deployments::Containers::LogsControll
   private
 
   def logs_params
-    params.permit(:limit)
+    params.permit(:limit, :previous)
   end
 end
