@@ -7,9 +7,10 @@ class UffizziCore::LogsService
     def fetch_container_logs(container, query = {})
       response = request_logs(container, query).result || {}
       response = Hashie::Mash.new(response)
+      logs = response.logs || []
 
       {
-        logs: format_logs(response.logs),
+        logs: format_logs(logs),
       }
     end
 
