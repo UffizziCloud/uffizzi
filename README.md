@@ -7,7 +7,7 @@
 
 #### Don't merge until you preview
 
-Uffizzi is a tool that lets you preview pull requests before merging. Create on-demand Preview Environments for APIs, frontends, backends, databases, microservices, binaries and command line tools. Each Preview Environment gets a secure HTTPS URL that is continually refreshed when you push new commits. Uffizzi also handles clean up, so your environments last only as long as you need them.  
+Uffizzi is a tool that lets you preview pull requests before merging. Create on-demand Preview Environments for APIs, frontends, backends, databases, microservices, binaries and command-line tools. Each Preview Environment gets a secure HTTPS URL that is continually refreshed when you push new commits. Uffizzi also handles clean up, so your environments last only as long as you need them.  
 
 Uffizzi is an open-source, off-the-shelf, cross-platform solution that works with any version control system, container registry, or CI platform.
 
@@ -36,21 +36,7 @@ Uffizzi is designed for full-stack web applications and containerized services, 
 
 ## Why Uffizzi?
 
-Development teams adopt Uffizzi because it... 
-
-- **Increases development velocity** by removing the bottleneck of a shared test environment, where buggy or conflicting commits from multiple developers often cause delays in feature releases. 
-- **Improves code quality** by providing a way to test the functionality of each branch in clean, isolated, production-like environments before merging.  
-- **Facilitates test parallelization** since teams can create as many Preview Environments as they need and can iterate on features in parallel.
-
-Teams also like Uffizzi because it's...  
-
-- **👩‍💻 Developer-friendly** - Uffizzi is configured via Docker Compose, the same tool many teams use for local development.
-
-- **🪶 Lightweight** - Uffizzi Preview Environments are isolated namespaces designed to be fast and ephemeral.
-
-- **🔁 Event-driven** - Designed to integrate with any CI system, Uffizzi Preview Environments are created, updated, or deleted via triggering events, such as pull requests or new release tags. Uffizzi generates a secure HTTPS URL for each environment, which is continually refreshed in response to new events.
-
-- **🧼 Clean** - The ephemeral nature of Uffizzi Preview Environments means your team can test new features or release candidates in clean, parallel environments before merging or promoting to production.
+Uffizzi helps busy project leaders approve pull requests faster. Testing a live preview provides a more holistic way to assess a new feature or bug fix, rather than simply reviewing code changes. Uffizzi also removes the added step of pulling down the branch to test it locally: Uffizzi seamlessly integrates with CI providers like GitHub Actions and posts comments directly to pull request issues, so there is no additional step for the maintainer or the contributor.
 
 ## Project roadmap
 
@@ -62,7 +48,7 @@ See our high-level [project roadmap](https://github.com/orgs/UffizziCloud/projec
 
 There are two options to get Uffizzi:  
 
-1. **Use [Uffizzi Cloud](https://uffizzi.com) (SaaS)** - This is fastest and easiest way to get started with Uffizzi. Uffizzi Cloud is free for small teams and is recommended for those who are new to Uffizzi. It also includes some premium options like single sign-on (SSO) and password-protected URLs for your Preview Environments. If you want to use Uffizzi Cloud, you can follow this [step-by-step guide](https://docs.uffizzi.com/set-up-uffizzi-for-your-applicaiton) to configure Preview Environments for your own application.  
+1. **Use [Uffizzi Cloud](https://uffizzi.com) (SaaS)** - This is fastest and easiest way to get started with Uffizzi. Uffizzi Cloud is free for small teams and is recommended for those who are new to Uffizzi. It also includes some premium options like single sign-on (SSO) and password-protected URLs for your Preview Environments. If you want to use Uffizzi Cloud, you can follow this [step-by-step guide](https://docs.uffizzi.com/set-up-uffizzi-for-your-application) to configure Preview Environments for your own application.  
 
 2. **Install open-source Uffizzi on your own Kubernetes cluster** - Alternatively, you can install Uffizzi on your own cluster by following the [self-hosted installation guide](INSTALL.md).
 
@@ -100,7 +86,7 @@ Yes. Your CI pipeline will typically include a series of <code>build</code>/<cod
 </details>
 
 <details><summary><b>Does Uffizzi support _____________?</b></summary>
-Uffizzi is container-centric and primarily designed for web languages. In general, if your application can be containerized, described with Docker Compose, and accepts HTTP traffic, Uffizzi can preview it.
+Uffizzi is container-centric, so in general, if your application can be containerized, described with Docker Compose, and accepts HTTP traffic, Uffizzi can preview it. Uffizzi supports web applications, microservices, databases, binaries, and command-line tools.
 </details>
 
 <details><summary><b>How can my application services communicate?</b></summary>

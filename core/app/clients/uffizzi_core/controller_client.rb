@@ -39,8 +39,8 @@ class UffizziCore::ControllerClient
     get("/deployments/#{deployment_id}/containers/metrics")
   end
 
-  def deployment_container_logs(deployment_id:, container_name:, limit:)
-    get("/deployments/#{deployment_id}/containers/#{container_name}/logs?limit=#{limit}")
+  def deployment_container_logs(deployment_id:, container_name:, limit:, previous:)
+    get("/deployments/#{deployment_id}/containers/#{container_name}/logs?limit=#{limit}&previous=#{previous}")
   end
 
   def deployment_containers_events(deployment_id:)

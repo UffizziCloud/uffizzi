@@ -23,7 +23,6 @@ group :development, :test do
 end
 
 group :development do
-  gem 'listen', '~> 3.2'
   gem 'rubocop'
   gem 'rubocop-minitest'
   gem 'rubocop-rake'

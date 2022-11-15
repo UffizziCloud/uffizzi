@@ -8,6 +8,9 @@ class UffizziCore::Api::Cli::V1::Projects::Deployments::Containers::LogsControll
     @project = create(:project, :with_members, account: @user.personal_account, members: [@user])
     @deployment = create(:deployment, project: @project)
     @container = create(:container, deployment: @deployment)
+    @pod_name = UffizziCore::ContainerService.pod_name(@container)
+    @limit = 30
+    @previous = false
 
     sign_in @user
   end
@@ -15,7 +18,6 @@ class UffizziCore::Api::Cli::V1::Projects::Deployments::Containers::LogsControll
   test '#index' do
     insert_id = generate(:string)
     payload = generate(:string)
-    limit = 30
 
     logs = UffizziCore::Converters.deep_lower_camelize_keys(
       {
@@ -27,14 +29,14 @@ class UffizziCore::Api::Cli::V1::Projects::Deployments::Containers::LogsControll
         ],
       },
     )
-    pod_name = UffizziCore::ContainerService.pod_name(@container)
-    stubbed_request = stub_container_log_request(@deployment.id, pod_name, limit, logs)
+    stubbed_request = stub_container_log_request(@deployment.id, @pod_name, @limit, @previous, logs)
 
     params = {
       project_slug: @project.slug,
       deployment_id: @deployment.id,
       container_name: @container.service_name,
-      limit: 30,
+      limit: @limit,
+      previous: @previous,
     }
 
     get :index, params: params, format: :json
@@ -56,22 +58,20 @@ class UffizziCore::Api::Cli::V1::Projects::Deployments::Containers::LogsControll
   end
 
   test '#index with empty logs info' do
-    limit = 30
-
     logs = UffizziCore::Converters.deep_lower_camelize_keys(
       {
         logs: [],
       },
     )
 
-    pod_name = UffizziCore::ContainerService.pod_name(@container)
-    stubbed_request = stub_container_log_request(@deployment.id, pod_name, limit, logs)
+    stubbed_request = stub_container_log_request(@deployment.id, @pod_name, @limit, @previous, logs)
 
     params = {
       project_slug: @project.slug,
       deployment_id: @deployment.id,
       container_name: @container.service_name,
-      limit: 30,
+      limit: @limit,
+      previous: @previous,
     }
 
     get :index, params: params, format: :json
@@ -82,21 +82,19 @@ class UffizziCore::Api::Cli::V1::Projects::Deployments::Containers::LogsControll
   end
 
   test '#index with controller error' do
-    limit = 30
-
     logs = UffizziCore::Converters.deep_lower_camelize_keys(
       {
         logs: [],
       },
     )
-    pod_name = UffizziCore::ContainerService.pod_name(@container)
-    stubbed_request = stub_container_log_request(@deployment.id, pod_name, limit, logs)
+    stubbed_request = stub_container_log_request(@deployment.id, @pod_name, @limit, @previous, logs)
 
     params = {
       project_slug: @project.slug,
       deployment_id: @deployment.id,
       container_name: @container.service_name,
-      limit: 30,
+      limit: @limit,
+      previous: @previous,
     }
 
     get :index, params: params, format: :json

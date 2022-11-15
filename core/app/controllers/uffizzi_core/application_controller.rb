@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 class UffizziCore::ApplicationController < ActionController::Base
-  include Pundit
+  include Pundit::Authorization
   include UffizziCore::ResponseService
   include UffizziCore::AuthManagement
   include UffizziCore::AuthorizationConcern
@@ -12,8 +12,10 @@ class UffizziCore::ApplicationController < ActionController::Base
 
   protect_from_forgery with: :exception
   RESCUABLE_EXCEPTIONS = [RuntimeError, TypeError, NameError, ArgumentError, SyntaxError].freeze
-  rescue_from *RESCUABLE_EXCEPTIONS do |exception|
-    render_server_error(exception)
+  unless Rails.env.test?
+    rescue_from *RESCUABLE_EXCEPTIONS do |exception|
+      render_server_error(exception)
+    end
   end
   rescue_from ActiveRecord::RecordNotFound do |exception|
     render_not_found(exception)

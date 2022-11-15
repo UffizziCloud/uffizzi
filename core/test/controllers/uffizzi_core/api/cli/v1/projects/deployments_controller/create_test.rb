@@ -20,7 +20,6 @@ class UffizziCore::Api::Cli::V1::Projects::DeploymentsControllerTest < ActionCon
     }
 
     @deployment.update!(subdomain: UffizziCore::DeploymentService.build_subdomain(@deployment))
-    @credential = create(:credential, :github_container_registry, account: @account)
 
     image = generate(:image)
     image_namespace, image_name = image.split('/')
@@ -601,6 +600,234 @@ class UffizziCore::Api::Cli::V1::Projects::DeploymentsControllerTest < ActionCon
 
     assert_response :success
 
+    Sidekiq::Worker.clear_all
+    Sidekiq::Testing.inline!
+  end
+
+  test '#create - from amazon image with credentials' do
+    Sidekiq::Worker.clear_all
+    Sidekiq::Testing.fake!
+    registry_url = 'https://323707565364.dkr.ecr.us-east-1.amazonaws.com'
+    stub_docker_registry_manifests(registry_url, 'test-compose', 'latest')
+
+    sign_in @admin
+
+    project = create(:project, :with_members, account: @account, members: [@admin])
+    create(:credential, :amazon, :active, account: @account, registry_url: registry_url)
+
+    base_attributes = attributes_for(:compose_file).slice(:source, :path)
+    file_content = File.read('test/fixtures/files/uffizzi-compose-amazon.yml')
+    encoded_content = Base64.encode64(file_content)
+    compose_file_attributes = base_attributes.merge(content: encoded_content, repository_id: nil)
+
+    differences = {
+      -> { UffizziCore::ComposeFile.temporary.count } => 1,
+      -> { UffizziCore::Template.with_creation_source(UffizziCore::Template.creation_source.compose_file).count } => 1,
+      -> { UffizziCore::Container.count } => 1,
+    }
+
+    params = {
+      project_slug: project.slug,
+      compose_file: compose_file_attributes,
+      dependencies: [],
+      metadata: {},
+    }
+
+    assert_difference differences do
+      post :create, params: params, format: :json
+    end
+
+    assert_response :success
+    Sidekiq::Worker.clear_all
+    Sidekiq::Testing.inline!
+  end
+
+  test '#create - compose file with jfrog docker registry with auth' do
+    Sidekiq::Worker.clear_all
+    Sidekiq::Testing.fake!
+    stub_docker_registry_manifests('https://elnealo.jfrog.io', 'uffizzi-test-docker/webhook-test-app', 'latest')
+
+    compose_file_content = File.read('test/fixtures/files/test-compose-success-jfrog.yml')
+    encoded_compose_file_content = Base64.encode64(compose_file_content)
+
+    compose_file = {
+      source: '/gem/tmp/docker-compose.uffizzi.yaml',
+      path: '/gem/tmp/docker-compose.uffizzi.yaml',
+      content: encoded_compose_file_content,
+    }
+
+    params = {
+      project_slug: @project.slug,
+      compose_file: compose_file,
+      dependencies: [],
+      metadata: {},
+    }
+
+    differences = {
+      -> { UffizziCore::ComposeFile.temporary.count } => 1,
+      -> { UffizziCore::Template.with_creation_source(UffizziCore::Template.creation_source.compose_file).count } => 1,
+      -> { UffizziCore::Container.count } => 1,
+    }
+
+    assert_difference differences do
+      post :create, params: params, format: :json
+    end
+
+    Sidekiq::Worker.clear_all
+    Sidekiq::Testing.inline!
+  end
+
+  test '#create - from azure image with credentials' do
+    Sidekiq::Worker.clear_all
+    Sidekiq::Testing.fake!
+    registry_url = 'account.azurecr.io/nginx:latest'
+    stub_docker_registry_manifests(registry_url, 'test-compose', 'latest')
+
+    sign_in @admin
+
+    project = create(:project, :with_members, account: @account, members: [@admin])
+    create(:credential, :azure, :active, account: @account, registry_url: registry_url)
+
+    base_attributes = attributes_for(:compose_file).slice(:source, :path)
+    file_content = File.read('test/fixtures/files/uffizzi-compose-azure.yml')
+    encoded_content = Base64.encode64(file_content)
+    compose_file_attributes = base_attributes.merge(content: encoded_content, repository_id: nil)
+
+    differences = {
+      -> { UffizziCore::ComposeFile.temporary.count } => 1,
+      -> { UffizziCore::Template.with_creation_source(UffizziCore::Template.creation_source.compose_file).count } => 1,
+      -> { UffizziCore::Container.count } => 1,
+    }
+
+    params = {
+      project_slug: project.slug,
+      compose_file: compose_file_attributes,
+      dependencies: [],
+      metadata: {},
+    }
+
+    assert_difference differences do
+      post :create, params: params, format: :json
+    end
+
+    assert_response :success
+    Sidekiq::Worker.clear_all
+    Sidekiq::Testing.inline!
+  end
+
+  test '#create - from google(gcr) image with credentials' do
+    Sidekiq::Worker.clear_all
+    Sidekiq::Testing.fake!
+    registry_url = 'gcr.io/project1/test-compose:latest'
+    stub_docker_registry_manifests(registry_url, 'test-compose', 'latest')
+
+    sign_in @admin
+
+    project = create(:project, :with_members, account: @account, members: [@admin])
+    create(:credential, :google, :active, account: @account, registry_url: registry_url)
+
+    base_attributes = attributes_for(:compose_file).slice(:source, :path)
+    file_content = File.read('test/fixtures/files/uffizzi-compose-google.yml')
+    encoded_content = Base64.encode64(file_content)
+    compose_file_attributes = base_attributes.merge(content: encoded_content, repository_id: nil)
+
+    differences = {
+      -> { UffizziCore::ComposeFile.temporary.count } => 1,
+      -> { UffizziCore::Template.with_creation_source(UffizziCore::Template.creation_source.compose_file).count } => 1,
+      -> { UffizziCore::Container.count } => 1,
+    }
+
+    params = {
+      project_slug: project.slug,
+      compose_file: compose_file_attributes,
+      dependencies: [],
+      metadata: {},
+    }
+
+    assert_difference differences do
+      post :create, params: params, format: :json
+    end
+
+    assert_response :success
+    Sidekiq::Worker.clear_all
+    Sidekiq::Testing.inline!
+  end
+
+  test '#create - from ghcr image with credentials' do
+    Sidekiq::Worker.clear_all
+    Sidekiq::Testing.fake!
+    registry_url = 'ghcr.io/project1/test-compose:latest'
+    stub_docker_registry_manifests(registry_url, 'test-compose', 'latest')
+
+    sign_in @admin
+
+    project = create(:project, :with_members, account: @account, members: [@admin])
+    create(:credential, :github_container_registry, :active, account: @account, registry_url: registry_url)
+
+    base_attributes = attributes_for(:compose_file).slice(:source, :path)
+    file_content = File.read('test/fixtures/files/uffizzi-compose-ghcr.yml')
+    encoded_content = Base64.encode64(file_content)
+    compose_file_attributes = base_attributes.merge(content: encoded_content, repository_id: nil)
+
+    differences = {
+      -> { UffizziCore::ComposeFile.temporary.count } => 1,
+      -> { UffizziCore::Template.with_creation_source(UffizziCore::Template.creation_source.compose_file).count } => 1,
+      -> { UffizziCore::Container.count } => 1,
+    }
+
+    params = {
+      project_slug: project.slug,
+      compose_file: compose_file_attributes,
+      dependencies: [],
+      metadata: {},
+    }
+
+    assert_difference differences do
+      post :create, params: params, format: :json
+    end
+
+    assert_response :success
+    Sidekiq::Worker.clear_all
+    Sidekiq::Testing.inline!
+  end
+
+  test '#create - from dockerhub image with credentials' do
+    Sidekiq::Worker.clear_all
+    Sidekiq::Testing.fake!
+    registry_url = 'project1/test-compose:latest'
+    stub_docker_registry_manifests(registry_url, 'test-compose', 'latest')
+    stubbed_dockerhub_login = stub_dockerhub_login
+    stub_dockerhub_repository('project1', 'test-compose')
+
+    sign_in @admin
+
+    project = create(:project, :with_members, account: @account, members: [@admin])
+    create(:credential, :docker_hub, :active, account: @account, registry_url: registry_url)
+
+    base_attributes = attributes_for(:compose_file).slice(:source, :path)
+    file_content = File.read('test/fixtures/files/uffizzi-compose-dockerhub.yml')
+    encoded_content = Base64.encode64(file_content)
+    compose_file_attributes = base_attributes.merge(content: encoded_content, repository_id: nil)
+
+    differences = {
+      -> { UffizziCore::ComposeFile.temporary.count } => 1,
+      -> { UffizziCore::Template.with_creation_source(UffizziCore::Template.creation_source.compose_file).count } => 1,
+      -> { UffizziCore::Container.count } => 1,
+    }
+
+    params = {
+      project_slug: project.slug,
+      compose_file: compose_file_attributes,
+      dependencies: [],
+      metadata: {},
+    }
+
+    assert_difference differences do
+      post :create, params: params, format: :json
+    end
+
+    assert_response :success
+    assert_requested stubbed_dockerhub_login, times: 2
     Sidekiq::Worker.clear_all
     Sidekiq::Testing.inline!
   end

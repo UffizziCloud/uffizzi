@@ -15,7 +15,7 @@ class UffizziCore::GoogleServiceTest < ActiveSupport::TestCase
     stubbed_google_registry_token = stub_google_registry_token(token_response)
     stubbed_google_registry_manifests = stub_google_registry_manifests(image, tag, headers_response, {})
 
-    digest = UffizziCore::GoogleService.digest(credential, image, tag)
+    digest = UffizziCore::ContainerRegistry::GoogleService.digest(credential, image, tag)
 
     assert_requested stubbed_google_registry_token
     assert_requested stubbed_google_registry_manifests
