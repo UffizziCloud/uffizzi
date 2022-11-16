@@ -10,11 +10,7 @@ class UffizziCore::Api::Cli::V1::Projects::DeploymentsPolicy < UffizziCore::Appl
   end
 
   def create?
-    if context.params["metadata"]["labels"]["github"].present?
-      context.user_access_module.any_access_to_project?(context.user, context.project)
-    else
-      context.user_access_module.admin_or_developer_access_to_project?(context.user, context.project)
-    end
+    context.user_access_module.admin_or_developer_access_to_project?(context.user, context.project)
   end
 
   def update?
