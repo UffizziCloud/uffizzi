@@ -30,7 +30,7 @@ class UffizziCore::LogsService
     def format_logs(logs)
       logs.map do |item|
         timestamp, *payload = item.split
-        formatted_timestamp = timestamp.to_time(:utc).strftime('%Y-%m-%d %H:%M:%S.%L %Z')
+        formatted_timestamp = timestamp.present? ? timestamp.to_time(:utc).strftime('%Y-%m-%d %H:%M:%S.%L %Z') : nil
         { timestamp: formatted_timestamp, payload: payload.join(' ') }
       end
     end
