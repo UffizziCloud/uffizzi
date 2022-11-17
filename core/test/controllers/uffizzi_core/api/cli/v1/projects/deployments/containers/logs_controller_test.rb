@@ -16,13 +16,10 @@ class UffizziCore::Api::Cli::V1::Projects::Deployments::Containers::LogsControll
   end
 
   test '#index' do
-    timestamp = generate(:string)
-    payload = generate(:string)
-
-    logs = { logs: ["#{timestamp} #{payload}"] }
+    controller_response = json_fixture('files/controller/containers/logs.json')
 
     pod_name = UffizziCore::ContainerService.pod_name(@container)
-    stubbed_request = stub_container_log_request(@deployment.id, pod_name, @limit, @previous, logs)
+    stubbed_request = stub_container_log_request(@deployment.id, pod_name, @limit, @previous, controller_response)
 
     params = {
       project_slug: @project.slug,
@@ -38,26 +35,22 @@ class UffizziCore::Api::Cli::V1::Projects::Deployments::Containers::LogsControll
 
     assert_response :success
 
-    collected_result = {
-      logs: [
-        {
-          timestamp: timestamp,
-          payload: payload,
-        },
-      ],
-    }.to_json
+    data = JSON.parse(response.body)
 
-    assert_equal collected_result, response.body
+    entry = data['logs'].first
+    assert(entry['timestamp'].present?)
+    assert(entry['timestamp'].exclude?('Z'))
+    assert(entry['payload'].present?)
   end
 
   test '#index with empty logs info' do
-    logs = UffizziCore::Converters.deep_lower_camelize_keys(
+    controller_response = UffizziCore::Converters.deep_lower_camelize_keys(
       {
         logs: [],
       },
     )
 
-    stubbed_request = stub_container_log_request(@deployment.id, @pod_name, @limit, @previous, logs)
+    stubbed_request = stub_container_log_request(@deployment.id, @pod_name, @limit, @previous, controller_response)
 
     params = {
       project_slug: @project.slug,
@@ -75,12 +68,12 @@ class UffizziCore::Api::Cli::V1::Projects::Deployments::Containers::LogsControll
   end
 
   test '#index with controller error' do
-    logs = UffizziCore::Converters.deep_lower_camelize_keys(
+    controller_response = UffizziCore::Converters.deep_lower_camelize_keys(
       {
         logs: [],
       },
     )
-    stubbed_request = stub_container_log_request(@deployment.id, @pod_name, @limit, @previous, logs)
+    stubbed_request = stub_container_log_request(@deployment.id, @pod_name, @limit, @previous, controller_response)
 
     params = {
       project_slug: @project.slug,
