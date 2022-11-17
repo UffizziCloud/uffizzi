@@ -30,7 +30,8 @@ class UffizziCore::LogsService
     def format_logs(logs)
       logs.map do |item|
         timestamp, *payload = item.split
-        { timestamp: timestamp, payload: payload.join(' ') }
+        formatted_timestamp = timestamp.to_time(:utc).strftime('%Y-%m-%d %H:%M:%S.%L %Z')
+        { timestamp: formatted_timestamp, payload: payload.join(' ') }
       end
     end
 
