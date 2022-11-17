@@ -16,7 +16,7 @@ class UffizziCore::Api::Cli::V1::Projects::Deployments::Containers::LogsControll
   end
 
   test '#index' do
-    controller_response = json_fixture('files/controller/containers/logs.json')
+    controller_response = json_fixture('files/controller/logs.json')
 
     pod_name = UffizziCore::ContainerService.pod_name(@container)
     stubbed_request = stub_container_log_request(@deployment.id, pod_name, @limit, @previous, controller_response)
