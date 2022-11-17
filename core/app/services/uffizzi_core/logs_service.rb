@@ -28,11 +28,9 @@ class UffizziCore::LogsService
     end
 
     def format_logs(logs)
-      miliseconds_count = 3
       logs.map do |item|
         timestamp, *payload = item.split
-        formatted_timestamp = timestamp.present? ? timestamp.to_time(:utc).round(miliseconds_count).to_s : nil
-        { timestamp: formatted_timestamp, payload: payload.join(' ') }
+        { timestamp: timestamp, payload: payload.join(' ') }
       end
     end
 

@@ -37,10 +37,15 @@ class UffizziCore::Api::Cli::V1::Projects::Deployments::Containers::LogsControll
 
     data = JSON.parse(response.body)
 
-    entry = data['logs'].first
-    assert(entry['timestamp'].present?)
-    assert(entry['timestamp'].exclude?('Z'))
-    assert(entry['payload'].present?)
+    expected_result = {
+      'logs' => [
+        {
+          'timestamp' => '2022-11-14T11:46:55.474292870Z',
+          'payload' => '/docker-entrypoint.sh: /docker-entrypoint.d/ is not empty, will attempt to perform configuration',
+        },
+      ],
+    }
+    assert_equal(expected_result, data)
   end
 
   test '#index with empty logs info' do
