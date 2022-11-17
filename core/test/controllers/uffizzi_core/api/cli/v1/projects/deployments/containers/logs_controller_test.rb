@@ -40,7 +40,7 @@ class UffizziCore::Api::Cli::V1::Projects::Deployments::Containers::LogsControll
     expected_result = {
       'logs' => [
         {
-          'timestamp' => '2022-11-14T11:46:55.474292870Z',
+          'timestamp' => '2022-11-14 11:46:55.474 UTC',
           'payload' => '/docker-entrypoint.sh: /docker-entrypoint.d/ is not empty, will attempt to perform configuration',
         },
       ],
