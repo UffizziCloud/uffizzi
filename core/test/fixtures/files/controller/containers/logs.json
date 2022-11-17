@@ -1,0 +1,11 @@
+{ "logs":
+  [
+    "2022-11-14T11:46:55.474292870Z /docker-entrypoint.sh: /docker-entrypoint.d/ is not empty, will attempt to perform configuration",
+    "2022-11-14T11:46:55.475072578Z /docker-entrypoint.sh: Launching /docker-entrypoint.d/10-listen-on-ipv6-by-default.sh",
+    "2022-11-14T11:46:55.480102448Z 10-listen-on-ipv6-by-default.sh: info: Getting the checksum of /etc/nginx/conf.d/default.conf",
+    "2022-11-14T11:46:55.487085655Z 10-listen-on-ipv6-by-default.sh: info: Enabled listen on IPv6 in /etc/nginx/conf.d/default.conf",
+    "2022-11-14T11:46:55.487274079Z /docker-entrypoint.sh: Launching /docker-entrypoint.d/20-envsubst-on-templates.sh",
+    "2022-11-14T11:46:55.489832948Z /docker-entrypoint.sh: Launching /docker-entrypoint.d/30-tune-worker-processes.sh",
+    "2022-11-14T11:46:55.490972068Z /docker-entrypoint.sh: Configuration complete; ready for start up"
+  ]
+}
