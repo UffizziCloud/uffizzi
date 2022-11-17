@@ -22,7 +22,7 @@ class UffizziCore::Api::Cli::V1::Projects::Deployments::Containers::LogsControll
     logs = { logs: ["#{timestamp} #{payload}"] }
 
     pod_name = UffizziCore::ContainerService.pod_name(@container)
-    stubbed_request = stub_container_log_request(@deployment.id, pod_name, limit, logs)
+    stubbed_request = stub_container_log_request(@deployment.id, pod_name, @limit, @previous, logs)
 
     params = {
       project_slug: @project.slug,
