@@ -29,6 +29,18 @@ class UffizziCore::ImageParserServiceTest < ActiveSupport::TestCase
       { registry_url: 'localhost:80', namespace: nil, name: 'redis', tag: '5.3' },
       image_parser_service.parse('localhost:80/redis:5.3'),
     )
+    assert_equal(
+      { registry_url: nil, namespace: 'namespace', name: 'redis', tag: 'RELEASE.2021-12-18T04-42-33Z' },
+      image_parser_service.parse('NAMESPACE/REDIS:RELEASE.2021-12-18T04-42-33Z'),
+    )
+    assert_equal(
+      { registry_url: nil, namespace: 'library', name: 'uffizzi', tag: 'RELEASE.2021-12-18T04-42-33Z' },
+      image_parser_service.parse('UFFIZZI:RELEASE.2021-12-18T04-42-33Z'),
+    )
+    assert_equal(
+      { registry_url: nil, namespace: 'library', name: 'uffizzi', tag: 'latest' },
+      image_parser_service.parse('UFFIZZI'),
+    )
   end
 
   test '#parse with exception' do
