@@ -30,16 +30,24 @@ class UffizziCore::ImageParserServiceTest < ActiveSupport::TestCase
       image_parser_service.parse('localhost:80/redis:5.3'),
     )
     assert_equal(
-      { registry_url: nil, namespace: 'namespace', name: 'redis', tag: 'RELEASE.2021-12-18T04-42-33Z' },
-      image_parser_service.parse('NAMESPACE/REDIS:RELEASE.2021-12-18T04-42-33Z'),
+      { registry_url: nil, namespace: 'uppercase_namespace', name: 'uppercase_name', tag: 'UPPERCASE_TAG' },
+      image_parser_service.parse('UPPERCASE_NAMESPACE/UPPERCASE_NAME:UPPERCASE_TAG'),
     )
     assert_equal(
-      { registry_url: nil, namespace: 'library', name: 'uffizzi', tag: 'RELEASE.2021-12-18T04-42-33Z' },
-      image_parser_service.parse('UFFIZZI:RELEASE.2021-12-18T04-42-33Z'),
+      { registry_url: nil, namespace: 'library', name: 'uppercase_name', tag: 'UPPERCASE_TAG' },
+      image_parser_service.parse('UPPERCASE_NAME:UPPERCASE_TAG'),
     )
     assert_equal(
-      { registry_url: nil, namespace: 'library', name: 'uffizzi', tag: 'latest' },
-      image_parser_service.parse('UFFIZZI'),
+      { registry_url: nil, namespace: 'library', name: 'uppercase_name', tag: 'latest' },
+      image_parser_service.parse('UPPERCASE_NAME'),
+    )
+    assert_equal(
+      { registry_url: nil, namespace: 'library', name: 'lower_case_name', tag: 'lower_case_tag' },
+      image_parser_service.parse('lower_case_name:lower_case_tag'),
+    )
+    assert_equal(
+      { registry_url: nil, namespace: 'library', name: 'lower_case_name', tag: 'UPPERCASE_TAG' },
+      image_parser_service.parse('lower_case_name:UPPERCASE_TAG'),
     )
   end
 
