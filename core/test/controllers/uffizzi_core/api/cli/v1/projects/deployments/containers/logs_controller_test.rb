@@ -16,20 +16,10 @@ class UffizziCore::Api::Cli::V1::Projects::Deployments::Containers::LogsControll
   end
 
   test '#index' do
-    insert_id = generate(:string)
-    payload = generate(:string)
+    controller_response = json_fixture('files/controller/logs.json')
 
-    logs = UffizziCore::Converters.deep_lower_camelize_keys(
-      {
-        logs: [
-          {
-            insert_id: insert_id,
-            payload: payload,
-          },
-        ],
-      },
-    )
-    stubbed_request = stub_container_log_request(@deployment.id, @pod_name, @limit, @previous, logs)
+    pod_name = UffizziCore::ContainerService.pod_name(@container)
+    stubbed_request = stub_container_log_request(@deployment.id, pod_name, @limit, @previous, controller_response)
 
     params = {
       project_slug: @project.slug,
@@ -45,26 +35,27 @@ class UffizziCore::Api::Cli::V1::Projects::Deployments::Containers::LogsControll
 
     assert_response :success
 
-    collected_result = {
-      logs: [
+    data = JSON.parse(response.body)
+
+    expected_result = {
+      'logs' => [
         {
-          insert_id: insert_id,
-          payload: payload,
+          'timestamp' => '2022-11-14 11:46:55.474 UTC',
+          'payload' => '/docker-entrypoint.sh: /docker-entrypoint.d/ is not empty, will attempt to perform configuration',
         },
       ],
-    }.to_json
-
-    assert_equal collected_result, response.body
+    }
+    assert_equal(expected_result, data)
   end
 
   test '#index with empty logs info' do
-    logs = UffizziCore::Converters.deep_lower_camelize_keys(
+    controller_response = UffizziCore::Converters.deep_lower_camelize_keys(
       {
         logs: [],
       },
     )
 
-    stubbed_request = stub_container_log_request(@deployment.id, @pod_name, @limit, @previous, logs)
+    stubbed_request = stub_container_log_request(@deployment.id, @pod_name, @limit, @previous, controller_response)
 
     params = {
       project_slug: @project.slug,
@@ -82,12 +73,12 @@ class UffizziCore::Api::Cli::V1::Projects::Deployments::Containers::LogsControll
   end
 
   test '#index with controller error' do
-    logs = UffizziCore::Converters.deep_lower_camelize_keys(
+    controller_response = UffizziCore::Converters.deep_lower_camelize_keys(
       {
         logs: [],
       },
     )
-    stubbed_request = stub_container_log_request(@deployment.id, @pod_name, @limit, @previous, logs)
+    stubbed_request = stub_container_log_request(@deployment.id, @pod_name, @limit, @previous, controller_response)
 
     params = {
       project_slug: @project.slug,

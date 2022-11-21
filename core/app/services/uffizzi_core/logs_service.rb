@@ -10,7 +10,7 @@ class UffizziCore::LogsService
       logs = response.logs || []
 
       {
-        logs: logs,
+        logs: format_logs(logs),
       }
     end
 
@@ -25,6 +25,14 @@ class UffizziCore::LogsService
         limit: query[:limit],
         previous: query[:previous] || false,
       )
+    end
+
+    def format_logs(logs)
+      logs.map do |item|
+        timestamp, *payload = item.split
+        formatted_timestamp = timestamp.present? ? timestamp.to_time(:utc).strftime('%Y-%m-%d %H:%M:%S.%L %Z') : nil
+        { timestamp: formatted_timestamp, payload: payload.join(' ') }
+      end
     end
 
     def controller_client

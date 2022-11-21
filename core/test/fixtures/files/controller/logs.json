@@ -1,0 +1,5 @@
+{ "logs":
+  [
+    "2022-11-14T11:46:55.474292870Z /docker-entrypoint.sh: /docker-entrypoint.d/ is not empty, will attempt to perform configuration"
+  ]
+}

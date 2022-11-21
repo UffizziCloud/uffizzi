@@ -1,7 +1,7 @@
 PATH
   remote: .
   specs:
-    uffizzi_core (2.0.9)
+    uffizzi_core (2.0.10)
       aasm
       actionpack (~> 6.1.0)
       active_model_serializers
@@ -108,8 +108,8 @@ GEM
       activerecord (>= 5.2.6)
     awesome_print (1.9.2)
     aws-eventstream (1.2.0)
-    aws-partitions (1.660.0)
-    aws-sdk-core (3.167.0)
+    aws-partitions (1.664.0)
+    aws-sdk-core (3.168.1)
       aws-eventstream (~> 1, >= 1.0.2)
       aws-partitions (~> 1, >= 1.651.0)
       aws-sigv4 (~> 1.5)
@@ -266,7 +266,7 @@ GEM
       faraday (>= 1, < 3)
       sawyer (~> 0.9)
     parslet (2.0.0)
-    pg (1.4.4)
+    pg (1.4.5)
     power_assert (2.0.1)
     pry (0.13.1)
       coderay (~> 1.1)
@@ -325,9 +325,9 @@ GEM
       railties (>= 5.0)
     rexml (3.2.5)
     rolify (6.0.0)
-    rswag-api (2.7.0)
+    rswag-api (2.8.0)
       railties (>= 3.1, < 7.1)
-    rswag-ui (2.7.0)
+    rswag-ui (2.8.0)
       actionpack (>= 3.1, < 7.1)
       railties (>= 3.1, < 7.1)
     ruby2_keywords (0.0.5)
