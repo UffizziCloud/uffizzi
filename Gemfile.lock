@@ -1,7 +1,7 @@
 PATH
   remote: core
   specs:
-    uffizzi_core (2.0.9)
+    uffizzi_core (2.0.10)
       aasm
       actionpack (~> 6.1.0)
       active_model_serializers
@@ -109,8 +109,8 @@ GEM
     ast (2.4.2)
     awesome_print (1.9.2)
     aws-eventstream (1.2.0)
-    aws-partitions (1.660.0)
-    aws-sdk-core (3.167.0)
+    aws-partitions (1.664.0)
+    aws-sdk-core (3.168.1)
       aws-eventstream (~> 1, >= 1.0.2)
       aws-partitions (~> 1, >= 1.651.0)
       aws-sigv4 (~> 1.5)
@@ -310,9 +310,9 @@ GEM
       railties (>= 5.0)
     rexml (3.2.5)
     rolify (6.0.0)
-    rswag-api (2.7.0)
+    rswag-api (2.8.0)
       railties (>= 3.1, < 7.1)
-    rswag-ui (2.7.0)
+    rswag-ui (2.8.0)
       actionpack (>= 3.1, < 7.1)
       railties (>= 3.1, < 7.1)
     rubocop (1.26.0)
