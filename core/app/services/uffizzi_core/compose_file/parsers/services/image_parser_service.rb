@@ -10,10 +10,11 @@ class UffizziCore::ComposeFile::Parsers::Services::ImageParserService
 
       tag = Settings.compose.default_tag if tag.blank?
 
-      if url?(image_path)
-        host, namespace, name = parse_image_url(image_path)
+      formatted_image_path = image_path.downcase
+      if url?(formatted_image_path)
+        host, namespace, name = parse_image_url(formatted_image_path)
       else
-        namespace, name = parse_docker_hub_image(image_path)
+        namespace, name = parse_docker_hub_image(formatted_image_path)
       end
 
       {
@@ -31,7 +32,8 @@ class UffizziCore::ComposeFile::Parsers::Services::ImageParserService
     end
 
     def get_image_path_and_tag(value)
-      image_path_parts = value.downcase.split(':')
+      image_path_parts = value.split(':')
+
       case image_path_parts.size
       when 1
         image_path_parts[0]
