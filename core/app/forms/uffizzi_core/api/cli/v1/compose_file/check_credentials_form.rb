@@ -25,5 +25,7 @@ class UffizziCore::Api::Cli::V1::ComposeFile::CheckCredentialsForm
     end
   rescue UffizziCore::ComposeFile::CredentialError => e
     errors.add(:credentials, e.message)
+  rescue UffizziCore::ComposeFile::ParseError => e
+    errors.add(:compose, e.message)
   end
 end
