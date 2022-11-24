@@ -282,7 +282,7 @@ class UffizziCore::DeploymentService
     def format_subdomain(full_subdomain_name)
       # Replace _ to - because RFC 1123 subdomain must consist of lower case alphanumeric characters,
       # '-' or '.', and must start and end with an alphanumeric character
-      rfc_subdomain = full_subdomain_name.downcase.gsub('_', '-')
+      rfc_subdomain = full_subdomain_name.gsub('_', '-')
       subdomain_length_limit = Settings.deployment.subdomain.length_limit
       return rfc_subdomain if rfc_subdomain.length <= subdomain_length_limit
 
