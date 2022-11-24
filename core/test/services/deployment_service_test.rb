@@ -213,4 +213,21 @@ class UffizziCore::DeploymentServiceTest < ActiveSupport::TestCase
 
     assert_equal("deployment-#{deployment.id}-#{formatted_project_slug}", subdomain)
   end
+
+  test '#build_subdomain with github pull request data with dot in repository name' do
+    metadata = {
+      'labels' => {
+        'github' => {
+          'repository' => 'hello-world.js',
+          'event' => {
+            'number' => '24',
+          },
+        },
+      },
+    }
+    deployment = create(:deployment, project: @project, state: UffizziCore::Deployment::STATE_ACTIVE, metadata: metadata)
+    subdomain = UffizziCore::DeploymentService.build_subdomain(deployment)
+
+    assert_equal("pr-24-deployment-#{deployment.id}-hello-world-js", subdomain)
+  end
 end

@@ -100,7 +100,7 @@ class UffizziCore::DeploymentService
       repo_name, pull_request_number = pull_request_data(deployment)
       raise UffizziCore::Deployment::LabelsNotFoundError if repo_name.nil? || pull_request_number.nil?
 
-      formatted_repo_name = repo_name.split('/').last.downcase
+      formatted_repo_name = format_url_safe(repo_name.split('/').last.downcase)
       subdomain = "pr-#{pull_request_number}-#{name(deployment)}-#{formatted_repo_name}"
       format_subdomain(subdomain)
     end
@@ -308,6 +308,10 @@ class UffizziCore::DeploymentService
       gitlab_data = deployment.metadata.dig('labels', 'gitlab')
 
       [gitlab_data['repo'], gitlab_data.dig('merge_request', 'number')]
+    end
+
+    def format_url_safe(name)
+      name.gsub(/ /, '-').gsub(/[^\w-]+/, '-')
     end
   end
 end
