@@ -214,7 +214,6 @@ class UffizziCore::DeploymentServiceTest < ActiveSupport::TestCase
     assert_equal("deployment-#{deployment.id}-#{formatted_project_slug}", subdomain)
   end
 
-
   test '#build_subdomain with github pull request data with dot in repository name' do
     metadata = {
       'labels' => {
