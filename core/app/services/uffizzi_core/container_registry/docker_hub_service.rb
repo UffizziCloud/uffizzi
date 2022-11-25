@@ -26,7 +26,7 @@ class UffizziCore::ContainerRegistry::DockerHubService
 
       @client = UffizziCore::DockerHubClient.new(credential)
 
-      unless @client.authentificated?
+      unless @client.authenticated?
         Rails.logger.warn("broken credentials, DockerHubService credential_id=#{credential.id}")
         credential.unauthorize! unless credential.unauthorized?
       end
@@ -42,7 +42,7 @@ class UffizziCore::ContainerRegistry::DockerHubService
     end
 
     def credential_correct?(credential)
-      client(credential).authentificated?
+      client(credential).authenticated?
     end
 
     private

@@ -7,7 +7,7 @@ class UffizziCore::ContainerRegistry::GithubContainerRegistryService
     end
 
     def credential_correct?(credential)
-      client(credential).authentificated?
+      client(credential).authenticated?
     rescue URI::InvalidURIError, Faraday::ConnectionFailed
       false
     end

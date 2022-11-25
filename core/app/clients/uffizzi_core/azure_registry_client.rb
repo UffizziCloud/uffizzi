@@ -25,7 +25,7 @@ class UffizziCore::AzureRegistryClient
     RequestResult.new(result: response.body)
   end
 
-  def authentificated?
+  def authenticated?
     token.present?
   end
 

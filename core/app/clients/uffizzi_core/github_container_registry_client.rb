@@ -19,7 +19,7 @@ class UffizziCore::GithubContainerRegistryClient
     RequestResult.new(result: response.body)
   end
 
-  def authentificated?
+  def authenticated?
     token.present?
   end
 

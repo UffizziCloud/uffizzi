@@ -10,10 +10,10 @@ class UffizziCore::DockerHubClient
     @credential = credential
     return unless credential
 
-    @jwt = authentificate
+    @jwt = authenticate
   end
 
-  def authentificate
+  def authenticate
     params = { username: credential.username, password: credential.password }
     url = "#{BASE_URL}/v2/users/login/"
     response = connection.post(url, params)
@@ -42,7 +42,7 @@ class UffizziCore::DockerHubClient
   end
 
   def private_images(account:, page: 1, per_page: 25)
-    raise NotAuthorizedError if !authentificated? || account.empty?
+    raise NotAuthorizedError if !authenticated? || account.empty?
 
     url =  BASE_URL + "/v2/repositories/#{account}/"
     params = { page_size: per_page, page: page }
@@ -53,7 +53,7 @@ class UffizziCore::DockerHubClient
   end
 
   def accounts
-    raise NotAuthorizedError if !authentificated?
+    raise NotAuthorizedError if !authenticated?
 
     url = "#{BASE_URL}/v2/repositories/namespaces/"
     response = connection.get(url) do |request|
@@ -96,7 +96,7 @@ class UffizziCore::DockerHubClient
     RequestResult.new(result: response.body)
   end
 
-  def authentificated?
+  def authenticated?
     jwt.present?
   end
 
