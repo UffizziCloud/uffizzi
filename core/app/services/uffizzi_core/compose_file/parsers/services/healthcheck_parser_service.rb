@@ -7,7 +7,7 @@ class UffizziCore::ComposeFile::Parsers::Services::HealthcheckParserService
     def parse(healthcheck_data)
       return {} if healthcheck_data.blank?
 
-      raise UffizziCore::ComposeFile::ParseError, I18n.t('compose.invalid_healthcheck_option') if !valid_options?(healthcheck_data)
+      raise UffizziCore::ComposeFile::ParseError, I18n.t('compose.invalid_healthcheck_option') unless valid_options?(healthcheck_data)
 
       command = parse_command(healthcheck_data) if healthcheck_data['test'].present?
 
