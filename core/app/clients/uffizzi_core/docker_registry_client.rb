@@ -22,12 +22,13 @@ class UffizziCore::DockerRegistryClient
   private
 
   def build_connection(registry_url, username, password)
-    Faraday.new(registry_url) do |conn|
-      conn.request(:basic_auth, username, password) if username.present? && password.present?
-      conn.request(:json)
-      conn.response(:json)
-      conn.response(:follow_redirects)
-      conn.adapter(Faraday.default_adapter)
+    Faraday.new(registry_url) do |faraday|
+      faraday.request(:basic_auth, username, password) if username.present? && password.present?
+      faraday.request(:json)
+      faraday.response(:json)
+      faraday.response(:follow_redirects)
+      faraday.response(:raise_error)
+      faraday.adapter(Faraday.default_adapter)
     end
   end
 end

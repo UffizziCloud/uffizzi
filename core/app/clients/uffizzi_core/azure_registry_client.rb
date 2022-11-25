@@ -32,11 +32,12 @@ class UffizziCore::AzureRegistryClient
   private
 
   def build_connection(registry_url, username, password)
-    Faraday.new(registry_url) do |conn|
-      conn.request(:basic_auth, username, password)
-      conn.request(:json)
-      conn.response(:json)
-      conn.adapter(Faraday.default_adapter)
+    Faraday.new(registry_url) do |faraday|
+      faraday.request(:basic_auth, username, password)
+      faraday.request(:json)
+      faraday.response(:json)
+      faraday.response(:raise_error)
+      faraday.adapter(Faraday.default_adapter)
     end
   end
 end

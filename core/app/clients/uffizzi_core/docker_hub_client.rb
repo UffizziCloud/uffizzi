@@ -103,10 +103,11 @@ class UffizziCore::DockerHubClient
   private
 
   def build_connection
-    Faraday.new do |conn|
-      conn.request(:json)
-      conn.response(:json)
-      conn.adapter(Faraday.default_adapter)
+    Faraday.new do |faraday|
+      faraday.request(:json)
+      faraday.response(:json)
+      faraday.response(:raise_error)
+      faraday.adapter(Faraday.default_adapter)
     end
   end
 end

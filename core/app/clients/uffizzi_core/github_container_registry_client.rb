@@ -33,20 +33,22 @@ class UffizziCore::GithubContainerRegistryClient
   private
 
   def connection
-    Faraday.new(registry_url) do |conn|
-      conn.request(:basic_auth, @username, @password)
-      conn.request(:json)
-      conn.response(:json)
-      conn.adapter(Faraday.default_adapter)
+    Faraday.new(registry_url) do |faraday|
+      faraday.request(:basic_auth, @username, @password)
+      faraday.request(:json)
+      faraday.response(:json)
+      faraday.response(:raise_error)
+      faraday.adapter(Faraday.default_adapter)
     end
   end
 
   def token_connection
-    Faraday.new(registry_url) do |conn|
-      conn.request(:authorization, 'Bearer', token)
-      conn.request(:json)
-      conn.response(:json)
-      conn.adapter(Faraday.default_adapter)
+    Faraday.new(registry_url) do |faraday|
+      faraday.request(:authorization, 'Bearer', token)
+      faraday.request(:json)
+      faraday.response(:json)
+      faraday.response(:raise_error)
+      faraday.adapter(Faraday.default_adapter)
     end
   end
 end
