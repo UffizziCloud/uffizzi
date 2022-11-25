@@ -457,6 +457,10 @@ class UffizziCore::Api::Cli::V1::Projects::DeploymentsControllerTest < ActionCon
           name: 'UFFIZZI_URL',
           value: "https://#{@deployment.preview_url}",
         },
+        {
+          name: 'UFFIZZI_DOMAIN',
+          value: @deployment.preview_url,
+        },
       ],
       container_host_volume_files: [
         {
@@ -492,6 +496,10 @@ class UffizziCore::Api::Cli::V1::Projects::DeploymentsControllerTest < ActionCon
         {
           name: 'UFFIZZI_URL',
           value: "https://#{@deployment.preview_url}",
+        },
+        {
+          name: 'UFFIZZI_DOMAIN',
+          value: @deployment.preview_url,
         },
         {
           name: 'PORT',
