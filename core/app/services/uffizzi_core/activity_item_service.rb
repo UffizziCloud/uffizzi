@@ -29,7 +29,7 @@ class UffizziCore::ActivityItemService
       deployment = activity_item.container.deployment
       last_event = activity_item.events.order_by_id.last
 
-      activity_item.events.create(state: UffizziCore::Event.state.failed) if last_event&.state != UffizziCore::Event.state.failed
+      activity_item.events.create(state: UffizziCore::Event.state.failed) unless last_event&.failed
 
       UffizziCore::DeploymentService.fail!(deployment)
     end
