@@ -2,12 +2,17 @@
 
 class UffizziCore::ComposeFile::Parsers::Services::HealthcheckParserService
   REQUIRED_START_COMMANDS = ['NONE', 'CMD', 'CMD-SHELL'].freeze
+  REQUIRED_OPTIONS = ['test', 'disable'].freeze
 
   class << self
     def parse(healthcheck_data)
       return {} if healthcheck_data.blank?
 
-      raise UffizziCore::ComposeFile::ParseError, I18n.t('compose.invalid_healthcheck_option') unless valid_options?(healthcheck_data)
+      unless required_options_any?(healthcheck_data)
+        raise UffizziCore::ComposeFile::ParseError,
+              I18n.t('compose.healthcheck_missing_required_option',
+                     required_options: REQUIRED_OPTIONS.join(', '))
+      end
 
       command = parse_command(healthcheck_data) if healthcheck_data['test'].present?
 
@@ -88,7 +93,7 @@ class UffizziCore::ComposeFile::Parsers::Services::HealthcheckParserService
       raise UffizziCore::ComposeFile::ParseError, I18n.t('compose.invalid_bool_value', field: 'disable', value: value)
     end
 
-    def valid_options?(healthcheck_data)
+    def required_options_any?(healthcheck_data)
       healthcheck_data['test'].present? || healthcheck_data['disable'].present?
     end
   end
