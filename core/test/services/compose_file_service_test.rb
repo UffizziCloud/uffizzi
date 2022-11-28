@@ -446,7 +446,7 @@ class UffizziCore::ComposeFileServiceTest < ActiveSupport::TestCase
       UffizziCore::ComposeFileService.parse(content)
     end
 
-    error_message = "'test' or 'disable' option must be present in healthcheck"
+    error_message = 'One of these options is required: test, disable'
     assert_match(error_message, e.message)
   end
 
