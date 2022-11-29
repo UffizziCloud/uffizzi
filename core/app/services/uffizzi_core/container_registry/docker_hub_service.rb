@@ -15,7 +15,7 @@ class UffizziCore::ContainerRegistry::DockerHubService
       namespace = image_data[:namespace]
       repo_name = image_data[:name]
       client = UffizziCore::DockerHubClient.new(credential)
-      response = client.repository(namespace: namespace, image: repo_name)
+      client.repository(namespace: namespace, image: repo_name)
 
       true
     rescue Faraday::ResourceNotFound
