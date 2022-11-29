@@ -54,10 +54,6 @@ FactoryBot.define do
       state { :payment_issue }
     end
 
-    trait :draft do
-      state { UffizziCore::Account::STATE_DRAFT }
-    end
-
     trait :sso_connection_active do
       sso_state { UffizziCore::Account::STATE_CONNECTION_ACTIVE }
     end
