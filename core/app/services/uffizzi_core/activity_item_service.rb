@@ -4,6 +4,8 @@ class UffizziCore::ActivityItemService
   COMPLETED_STATES = ['deployed', 'failed', 'cancelled'].freeze
 
   class << self
+    include UffizziCore::DependencyInjectionConcern
+
     def create_docker_item!(repo, container)
       activity_item_attributes = {
         namespace: repo.namespace,
@@ -29,7 +31,7 @@ class UffizziCore::ActivityItemService
       deployment = activity_item.container.deployment
       last_event = activity_item.events.order_by_id.last
 
-      activity_item.events.create(state: UffizziCore::Event.state.failed) unless last_event&.failed
+      activity_item.events.create(state: UffizziCore::Event.state.failed) unless last_event&.failed?
 
       UffizziCore::DeploymentService.fail!(deployment)
     end
@@ -56,6 +58,11 @@ class UffizziCore::ActivityItemService
 
       activity_item.events.create(state: status) if last_event&.state != status
 
+      if failed?(status)
+        UffizziCore::ActivityItemService.fail_deployment!(activity_item)
+        notification_module.notify_about_failed_deployment(deployment) if notification_module.present?
+      end
+
       return unless [UffizziCore::Event.state.building, UffizziCore::Event.state.deploying].include?(status)
 
       UffizziCore::Deployment::ManageDeployActivityItemJob.perform_in(5.seconds, activity_item.id)
@@ -75,6 +82,10 @@ class UffizziCore::ActivityItemService
 
       last_event = activity_item.events.last
       COMPLETED_STATES.include?(last_event.state)
+    end
+
+    def failed?(status)
+      status == UffizziCore::Event.state.failed
     end
   end
 end

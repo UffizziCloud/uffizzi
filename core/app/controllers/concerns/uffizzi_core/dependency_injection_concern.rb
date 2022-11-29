@@ -31,6 +31,12 @@ module UffizziCore::DependencyInjectionConcern
     module_class(:ingress_parser)
   end
 
+  def notification_module
+    return unless module_exists?(:notification_module)
+
+    module_class(:notification_module)
+  end
+
   private
 
   def module_exists?(module_name)
