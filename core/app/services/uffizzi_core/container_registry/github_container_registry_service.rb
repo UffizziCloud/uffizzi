@@ -8,14 +8,6 @@ class UffizziCore::ContainerRegistry::GithubContainerRegistryService
 
     def credential_correct?(credential)
       client(credential).authenticated?
-    rescue URI::InvalidURIError, Faraday::ConnectionFailed
-      false
-    end
-
-    def access_token(credential)
-      client(credential).token
-    rescue URI::InvalidURIError, Faraday::ConnectionFailed
-      false
     end
 
     private

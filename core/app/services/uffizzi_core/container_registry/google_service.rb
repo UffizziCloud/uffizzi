@@ -14,8 +14,6 @@ class UffizziCore::ContainerRegistry::GoogleService
 
     def credential_correct?(credential)
       client(credential).authenticated?
-    rescue URI::InvalidURIError, Faraday::ConnectionFailed
-      false
     end
 
     private

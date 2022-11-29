@@ -8,8 +8,6 @@ class UffizziCore::ContainerRegistry::AzureService
 
     def credential_correct?(credential)
       client(credential).authenticated?
-    rescue URI::InvalidURIError, Faraday::ConnectionFailed
-      false
     end
 
     private

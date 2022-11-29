@@ -16,15 +16,16 @@ class UffizziCore::ContainerRegistry::DockerHubService
       repo_name = image_data[:name]
       client = UffizziCore::DockerHubClient.new(credential)
       response = client.repository(namespace: namespace, image: repo_name)
-      return false if not_found?(response)
 
       true
+    rescue Faraday::ResourceNotFound
+      false
     end
 
     def user_client(credential)
       return @client if @client&.credential&.username == credential.username
 
-      @client = UffizziCore::DockerHubClient.new(credential)
+      @client = client(credential)
 
       unless @client.authenticated?
         Rails.logger.warn("broken credentials, DockerHubService credential_id=#{credential.id}")
@@ -49,10 +50,6 @@ class UffizziCore::ContainerRegistry::DockerHubService
 
     def client(credential)
       UffizziCore::DockerHubClient.new(credential)
-    end
-
-    def not_found?(response)
-      response.status == 404
     end
   end
 end

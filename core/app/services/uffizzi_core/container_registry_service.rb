@@ -62,6 +62,8 @@ class UffizziCore::ContainerRegistryService
 
   def credential_correct?(credential)
     service.credential_correct?(credential)
+  rescue URI::InvalidURIError, Faraday::ConnectionFailed, Faraday::UnauthorizedError, Faraday::ForbiddenError
+    false
   end
 
   def image_data

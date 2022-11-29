@@ -16,6 +16,7 @@ class UffizziCore::Api::Cli::V1::Projects::ApplicationController < UffizziCore::
   end
 
   def handle_container_registry_client_error(exception)
-    render json: { errors: exception.response[:body][:errors] }, status: exception.response[:status]
+    body = exception.response[:body].empty? ? '' : JSON.parse(exception.response[:body])
+    render json: { errors: body }, status: exception.response[:status]
   end
 end
