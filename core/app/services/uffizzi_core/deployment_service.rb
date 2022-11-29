@@ -135,7 +135,8 @@ class UffizziCore::DeploymentService
     end
 
     def build_deployment_url(deployment)
-      "#{Settings.app.managed_dns_zone}/projects/#{deployment.project_id}/deployments"
+      domain = Settings.app.uffizzi_url || Settings.app.managed_dns_zone
+      "#{domain}/projects/#{deployment.project_id}/deployments"
     end
 
     def all_containers_have_unique_ports?(containers)
