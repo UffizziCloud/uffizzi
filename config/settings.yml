@@ -6,7 +6,6 @@ app:
   login:  <%= ENV['APP_LOGIN'] || '' %>
   password:  <%= ENV['APP_PASSWORD'] || '' %>
   managed_dns_zone: <%= ENV['MANAGED_DNS_ZONE_DNS_NAME'] %>
-  uffizzi_url: <%= ENV['UFFIZZI_URL'] %>
 github:
   app_id: <%= ENV['GITHUB_APP_ID'] %>
   app_slug: <%= ENV['GITHUB_APP_SLUG'] %>
