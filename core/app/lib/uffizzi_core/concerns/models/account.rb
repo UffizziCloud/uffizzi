@@ -30,9 +30,10 @@ module UffizziCore::Concerns::Models::Account
       state :active
       state :payment_issue
       state :disabled
+      state :draft
 
       event :activate do
-        transitions from: [:payment_issue, :disabled, :require_card, :trial], to: :active
+        transitions from: [:payment_issue, :disabled, :require_card, :trial, :draft], to: :active
       end
 
       event :enable_paywall do
