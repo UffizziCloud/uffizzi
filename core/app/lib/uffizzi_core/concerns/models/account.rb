@@ -25,13 +25,18 @@ module UffizziCore::Concerns::Models::Account
     has_many :payments, dependent: :destroy
 
     aasm(:state) do
-      state :active, initial: true
+      state :trial, initial: true
+      state :require_card
+      state :active
       state :payment_issue
       state :disabled
-      state :draft
 
       event :activate do
-        transitions from: [:payment_issue, :disabled, :draft], to: :active
+        transitions from: [:payment_issue, :disabled, :require_card, :trial], to: :active
+      end
+
+      event :enable_paywall do
+        transitions from: [:trial], to: :require_card
       end
 
       event :raise_payment_issue, before_success: :update_payment_issue_date do
@@ -39,7 +44,7 @@ module UffizziCore::Concerns::Models::Account
       end
 
       event :disable, after: :disable_projects do
-        transitions from: [:active, :payment_issue], to: :disabled
+        transitions from: [:active, :payment_issue, :trial, :require_card], to: :disabled
       end
     end
 
