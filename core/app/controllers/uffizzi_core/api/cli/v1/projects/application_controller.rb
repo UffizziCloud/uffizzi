@@ -15,8 +15,10 @@ class UffizziCore::Api::Cli::V1::Projects::ApplicationController < UffizziCore::
     UffizziCore::ProjectContext.new(current_user, user_access_module, resource_project, resource_account, params)
   end
 
+  private
+
   def handle_container_registry_client_error(exception)
-    body = exception.response[:body].empty? ? '' : JSON.parse(exception.response[:body])
-    render json: { errors: body }, status: exception.response[:status]
+    errors = exception.response[:body].empty? ? I18n.t('registry.error', code: exception.response[:status]) : JSON.parse(exception.response[:body], symbolize_names: true)[:errors]
+    render json: { errors: errors }, status: :unprocessable_entity
   end
 end
