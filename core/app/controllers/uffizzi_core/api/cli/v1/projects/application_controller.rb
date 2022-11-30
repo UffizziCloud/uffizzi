@@ -19,11 +19,15 @@ class UffizziCore::Api::Cli::V1::Projects::ApplicationController < UffizziCore::
 
   def handle_container_registry_client_error(exception)
     errors = if exception.response[:body].empty?
-      I18n.t('registry.error', code: exception.response[:status])
+      { registry_error: [I18n.t('registry.error', code: exception.response[:status])] }
     else
-      JSON.parse(exception.response[:body], symbolize_names: true)[:errors]
+      convert_errors_array_to_object(JSON.parse(exception.response[:body], symbolize_names: true)[:errors])
     end
 
     render json: { errors: errors }, status: :unprocessable_entity
+  end
+
+  def convert_errors_array_to_object(array)
+    array.reduce({}) { |acc, error| acc.merge(error[:code] => [error[:message], error[:detail].to_json]) }
   end
 end
