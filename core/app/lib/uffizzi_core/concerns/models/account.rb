@@ -26,17 +26,17 @@ module UffizziCore::Concerns::Models::Account
 
     aasm(:state) do
       state :trial, initial: true
-      state :require_card
+      state :spent_free_limit
       state :active
       state :payment_issue
       state :disabled
 
       event :activate do
-        transitions from: [:payment_issue, :disabled, :require_card, :trial], to: :active
+        transitions from: [:payment_issue, :disabled, :spent_free_limit, :trial], to: :active
       end
 
-      event :enable_paywall do
-        transitions from: [:trial], to: :require_card
+      event :disable_trial do
+        transitions from: [:trial], to: :spent_free_limit
       end
 
       event :raise_payment_issue, before_success: :update_payment_issue_date do
@@ -44,7 +44,7 @@ module UffizziCore::Concerns::Models::Account
       end
 
       event :disable, after: :disable_projects do
-        transitions from: [:active, :payment_issue, :trial, :require_card], to: :disabled
+        transitions from: [:active, :payment_issue, :trial, :spent_free_limit], to: :disabled
       end
     end
 
