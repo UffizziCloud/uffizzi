@@ -94,7 +94,7 @@ class UffizziCore::ComposeFile::Parsers::Services::HealthcheckParserService
     end
 
     def required_options_any?(healthcheck_data)
-      healthcheck_data['test'].present? || healthcheck_data['disable'].present?
+      (REQUIRED_OPTIONS & healthcheck_data.keys).present?
     end
   end
 end
