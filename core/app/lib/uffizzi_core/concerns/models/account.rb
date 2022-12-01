@@ -26,17 +26,17 @@ module UffizziCore::Concerns::Models::Account
 
     aasm(:state) do
       state :trial, initial: true
-      state :spent_free_limit
+      state :trial_quota_exceeded
       state :active
       state :payment_issue
       state :disabled
 
       event :activate do
-        transitions from: [:payment_issue, :disabled, :spent_free_limit, :trial], to: :active
+        transitions from: [:payment_issue, :disabled, :trial_quota_exceeded, :trial], to: :active
       end
 
       event :disable_trial do
-        transitions from: [:trial], to: :spent_free_limit
+        transitions from: [:trial], to: :trial_quota_exceeded
       end
 
       event :raise_payment_issue, before_success: :update_payment_issue_date do
@@ -44,7 +44,7 @@ module UffizziCore::Concerns::Models::Account
       end
 
       event :disable, after: :disable_projects do
-        transitions from: [:active, :payment_issue, :trial, :spent_free_limit], to: :disabled
+        transitions from: [:active, :payment_issue, :trial, :trial_quota_exceeded], to: :disabled
       end
     end
 
