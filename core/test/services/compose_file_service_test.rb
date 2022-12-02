@@ -709,7 +709,7 @@ class UffizziCore::ComposeFileServiceTest < ActiveSupport::TestCase
     content = file_fixture('files/compose_files/compose_with_syntax_error.yml').read
 
     e = assert_raise(UffizziCore::ComposeFile::ParseError) do
-      parsed_data = UffizziCore::ComposeFileService.parse(content)
+      UffizziCore::ComposeFileService.parse(content)
     end
 
     assert_equal("Syntax error: could not find expected ':' while scanning a simple key at line 5 column 3", e.message)
