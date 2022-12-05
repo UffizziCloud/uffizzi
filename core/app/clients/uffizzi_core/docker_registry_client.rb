@@ -22,7 +22,7 @@ class UffizziCore::DockerRegistryClient
   private
 
   def build_connection(registry_url, username, password)
-    Faraday.new(registry_url) do |faraday|
+    connection = Faraday.new(registry_url) do |faraday|
       faraday.request(:basic_auth, username, password) if username.present? && password.present?
       faraday.request(:json)
       faraday.response(:json)
@@ -30,5 +30,7 @@ class UffizziCore::DockerRegistryClient
       faraday.response(:raise_error)
       faraday.adapter(Faraday.default_adapter)
     end
+
+    connection.extend(UffizziCore::HttpRequestDecorator)
   end
 end
