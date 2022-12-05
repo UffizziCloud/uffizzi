@@ -14,12 +14,9 @@ class UffizziCore::ContainerRegistry::DockerHubService
     def image_available?(credential, image_data)
       namespace = image_data[:namespace]
       repo_name = image_data[:name]
-      client = UffizziCore::DockerHubClient.new(credential)
-      client.repository(namespace: namespace, image: repo_name)
+      client(credential).repository(namespace: namespace, image: repo_name)
 
       true
-    rescue Faraday::ResourceNotFound
-      false
     end
 
     def user_client(credential)
@@ -36,7 +33,7 @@ class UffizziCore::ContainerRegistry::DockerHubService
     end
 
     def digest(credential, image, tag)
-      docker_hub_client = UffizziCore::DockerHubClient.new(credential)
+      docker_hub_client = client(credential)
       token = docker_hub_client.get_token(image).result.token
       response = docker_hub_client.digest(image: image, tag: tag, token: token)
       response.headers['docker-content-digest']

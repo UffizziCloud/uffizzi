@@ -7,8 +7,9 @@ class UffizziCore::DockerRegistryClient
   end
 
   def authenticated?
-    response = @connection.head('/v2/')
-    response.status == 200
+    @connection.head('/v2/')
+
+    true
   end
 
   def manifests(image:, tag:, namespace: nil)

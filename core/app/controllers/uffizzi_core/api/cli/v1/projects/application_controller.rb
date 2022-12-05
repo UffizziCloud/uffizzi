@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 class UffizziCore::Api::Cli::V1::Projects::ApplicationController < UffizziCore::Api::Cli::V1::ApplicationController
-  rescue_from Faraday::ClientError, with: :handle_container_registry_client_error
+  rescue_from UffizziCore::ContainerRegistryError, with: :handle_container_registry_client_error
 
   def resource_project
     @resource_project ||= current_user.projects.find_by!(slug: params[:project_slug])
@@ -18,11 +18,11 @@ class UffizziCore::Api::Cli::V1::Projects::ApplicationController < UffizziCore::
   private
 
   def handle_container_registry_client_error(exception)
-    response_body = exception.response[:body]
-    errors = if response_body.empty? || !JSON.parse(response_body, symbolize_names: true).has_key?(:errors)
+    response_body = exception.response[:body].empty? ? {} : JSON.parse(exception.response[:body], symbolize_names: true)
+    errors = if !response_body.has_key?(:errors)
       { registry_error: [I18n.t('registry.error', code: exception.response[:status])] }
     else
-      convert_errors_array_to_object(JSON.parse(response_body, symbolize_names: true)[:errors])
+      convert_errors_array_to_object(response_body[:errors])
     end
 
     render json: { errors: errors }, status: :unprocessable_entity
