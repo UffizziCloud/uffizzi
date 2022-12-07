@@ -148,6 +148,9 @@ GEM
     deep_merge (1.2.2)
     descendants_tracker (0.0.4)
       thread_safe (~> 0.3, >= 0.3.1)
+    digest (3.1.1)
+    docker_distribution (0.1.0)
+      digest (~> 3)
     dotenv (2.8.1)
     dry-configurable (0.14.0)
       concurrent-ruby (~> 1.0)
@@ -375,6 +378,7 @@ DEPENDENCIES
   bootsnap (>= 1.4.2)
   byebug
   config
+  docker_distribution (~> 0.1.0)
   health_check
   pg (>= 0.18, < 2.0)
   puma (~> 4.1)
