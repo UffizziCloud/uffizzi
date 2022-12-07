@@ -2,8 +2,8 @@
 
 module UffizziCore::HttpRequestDecorator
   [:get, :post, :head].each do |method|
-    define_method(method) do |url, params_or_body = nil, headers = nil|
-      super(url, params_or_body, headers)
+    define_method(method) do |url, params_or_body = nil, headers = nil, &block|
+      super(url, params_or_body, headers, &block)
     rescue Faraday::ClientError => e
       raise UffizziCore::ContainerRegistryError.new(e.response)
     end
