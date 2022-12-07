@@ -47,7 +47,7 @@ module UffizziCore::Concerns::Models::Deployment
         transitions from: [:disabled], to: :active
       end
 
-      event :fail, after: :after_fail do
+      event :fail do
         transitions from: [:active], to: :failed
       end
 
@@ -59,10 +59,6 @@ module UffizziCore::Concerns::Models::Deployment
     def after_disable
       clean
       update!(disabled_at: Time.now)
-    end
-
-    def after_fail
-      active_containers.each(&:disable!)
     end
 
     def clean
