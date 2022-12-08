@@ -1,9 +1,16 @@
 # frozen_string_literal: true
 
 class UffizziCore::ContainerRegistryError < Faraday::ClientError
-  def initialize(exc, response = nil)
+  attr_reader :error_key
+
+  def initialize(exc, response = nil, error_key = UffizziCore::ComposeFile::ErrorsService::GENERIC_CONTAINER_REGISTRY_ERROR_KEY)
     exc_msg_and_response!(exc, response)
     super(prepare_message)
+    @error_key = JSON.parse(message, symbolize_names: true).has_key?(:registry_error) ? error_key : "non_#{error_key}"
+  end
+
+  def generic?
+    error_key == UffizziCore::ComposeFile::ErrorsService::GENERIC_CONTAINER_REGISTRY_ERROR_KEY
   end
 
   private
