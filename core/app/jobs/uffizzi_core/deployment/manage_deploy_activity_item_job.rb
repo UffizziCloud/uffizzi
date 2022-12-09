@@ -1,13 +1,22 @@
 # frozen_string_literal: true
 
 class UffizziCore::Deployment::ManageDeployActivityItemJob < UffizziCore::ApplicationJob
-  sidekiq_options queue: :deployments, retry: 3
+  sidekiq_options queue: :deployments, retry: Settings.default_job_retry_count
 
   sidekiq_retry_in do |count, exception|
     case exception
     when UffizziCore::Deployment::ImagePullError
       Rails.logger.info("DEPLOYMENT_PROCESS ManageDeployActivityItemJob retry deployment_id=#{exception.deployment_id} count=#{count}")
-      15.seconds
+      Settings.controller.resource_create_retry_time
+    when ActiveRecord::RecordNotFound
+      :kill if exception.model.constantize == UffizziCore::ActivityItem
+    else
+      if count == Settings.default_job_retry_count
+        Sentry.capture_exception(exception)
+        :kill
+      else
+        Settings.controller.resource_create_retry_time
+      end
     end
   end
 
