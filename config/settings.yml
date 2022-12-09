@@ -31,9 +31,7 @@ controller:
   limits:
     cpu: '200m'
   namespace_prefix: 'app-'
-  resource_create_retry_time: 15.seconds
-  resource_update_retry_time: 15.seconds
-  resource_create_retry_count: 60
+  resource_create_retry_time: <%= 15.seconds %>
   resource_update_retry_count: 60
 billing_cycle:
   hours_count: 720
@@ -71,3 +69,4 @@ continuous_preview:
 deployment:
   subdomain:
     length_limit: 63
+default_job_retry_count: 5

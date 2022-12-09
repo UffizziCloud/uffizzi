@@ -8,6 +8,13 @@ class UffizziCore::ConfigFile::ApplyJob < UffizziCore::ApplicationJob
     when UffizziCore::DeploymentNotFoundError
       Rails.logger.info("DEPLOYMENT_PROCESS ApplyJob retry deployment_id=#{exception.deployment_id} count=#{count}")
       Settings.controller.resource_create_retry_time
+    else
+      if [Settings.default_job_retry_count, Settings.controller.resource_create_retry_count].include?(count)
+        Sentry.capture_exception(exception)
+        :kill
+      else
+        Settings.controller.resource_create_retry_time
+      end
     end
   end
 
