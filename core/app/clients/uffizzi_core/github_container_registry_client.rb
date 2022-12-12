@@ -41,7 +41,7 @@ class UffizziCore::GithubContainerRegistryClient
       faraday.adapter(Faraday.default_adapter)
     end
 
-    connection.extend(UffizziCore::HttpRequestDecorator)
+    connection.extend(UffizziCore::ContainerRegistryRequestDecorator)
   end
 
   def token_connection
@@ -53,6 +53,6 @@ class UffizziCore::GithubContainerRegistryClient
       faraday.adapter(Faraday.default_adapter)
     end
 
-    connection.extend(UffizziCore::HttpRequestDecorator)
+    connection.extend(UffizziCore::ContainerRegistryRequestDecorator)
   end
 end

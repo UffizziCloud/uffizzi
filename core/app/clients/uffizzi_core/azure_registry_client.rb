@@ -40,6 +40,6 @@ class UffizziCore::AzureRegistryClient
       faraday.adapter(Faraday.default_adapter)
     end
 
-    connection.extend(UffizziCore::HttpRequestDecorator)
+    connection.extend(UffizziCore::ContainerRegistryRequestDecorator)
   end
 end
