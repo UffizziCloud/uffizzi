@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-class UffizziCore::DockerHubService
+class UffizziCore::ContainerRegistry::DockerHubService
   class << self
     def accounts(credential)
       client = user_client(credential)
@@ -41,10 +41,14 @@ class UffizziCore::DockerHubService
       response.headers['docker-content-digest']
     end
 
+    def credential_correct?(credential)
+      client(credential).authentificated?
+    end
+
     private
 
-    def public_docker_hub_client
-      @public_docker_hub_client ||= UffizziCore::DockerHubClient.new
+    def client(credential)
+      UffizziCore::DockerHubClient.new(credential)
     end
 
     def not_found?(response)

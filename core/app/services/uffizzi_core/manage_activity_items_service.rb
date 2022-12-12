@@ -56,16 +56,11 @@ class UffizziCore::ManageActivityItemsService
   def build_container_status_items(network_connectivities, containers_replicas)
     containers.map do |container|
       network_connectivity = network_connectivities.detect { |item| item[:id] == container.id }
-      any_container_is_building = containers_replicas.any? do |container_replicas|
-        container_replicas[:items].any? do |item|
-          item[:status] == UffizziCore::Event.state.building
-        end
-      end
       container_replicas = containers_replicas.detect { |item| item[:id] == container.id }
 
       {
         id: container.id,
-        status: build_container_status(container, network_connectivity, container_replicas, any_container_is_building),
+        status: build_container_status(container, network_connectivity, container_replicas),
       }
     end
   end
@@ -74,9 +69,7 @@ class UffizziCore::ManageActivityItemsService
     replicas.any? { |replica| replica[:status] == status }
   end
 
-  def build_container_status(container, network_connectivity, container_replicas, any_container_is_building)
-    return building_container_status(container) if any_container_is_building
-
+  def build_container_status(container, network_connectivity, container_replicas)
     error = replicas_contains_status?(container_replicas[:items], UffizziCore::Event.state.failed)
     container_is_running = replicas_contains_status?(container_replicas[:items], UffizziCore::Event.state.deployed)
     deployed = !error && container_is_running
@@ -89,10 +82,6 @@ class UffizziCore::ManageActivityItemsService
     end
 
     container_status(error, deployed)
-  end
-
-  def building_container_status(_container)
-    UffizziCore::Event.state.deploying
   end
 
   def container_status(error, deployed)

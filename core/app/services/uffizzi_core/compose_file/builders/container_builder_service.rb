@@ -21,13 +21,11 @@ class UffizziCore::ComposeFile::Builders::ContainerBuilderService
     healthcheck_data = container_data[:healthcheck] || {}
     volumes_data = container_data[:volumes] || []
 
-    env_file_dependencies = UffizziCore::ComposeFile::GithubDependenciesService.env_file_dependencies_for_container(compose_dependencies,
-                                                                                                                    container_name)
-    configs_dependencies = UffizziCore::ComposeFile::GithubDependenciesService.configs_dependencies_for_container(compose_dependencies,
-                                                                                                                  container_name)
-    host_volumes_dependencies = UffizziCore::ComposeFile::GithubDependenciesService.host_volumes_dependencies_for_container(
-      compose_dependencies, container_name
-    )
+    github_deps_service = UffizziCore::ComposeFile::GithubDependenciesService
+
+    env_file_dependencies = github_deps_service.env_file_dependencies_for_container(compose_dependencies, container_name)
+    configs_dependencies = github_deps_service.configs_dependencies_for_container(compose_dependencies, container_name)
+    host_volumes_dependencies = github_deps_service.host_volumes_dependencies_for_container(compose_dependencies, container_name)
     is_ingress = ingress_container?(container_name, ingress_data)
     repo_attributes = repo_attributes(container_data, continuous_preview_global_data)
     additional_subdomains = is_ingress ? ingress_data.fetch(:additional_subdomains, []) : []
@@ -59,11 +57,29 @@ class UffizziCore::ComposeFile::Builders::ContainerBuilderService
 
   private
 
+  def container_registry(container_data)
+    @container_registry ||= UffizziCore::ContainerRegistryService.init_by_container(container_data)
+  end
+
   def repo_attributes(container_data, continuous_preview_global_data)
     repo_attributes = build_repo_attributes(container_data)
     continuous_preview_container_data = container_data[:'x-uffizzi-continuous-preview'] || container_data[:'x-uffizzi-continuous-previews']
 
     set_continuous_preview_attributes_to_repo(repo_attributes, continuous_preview_global_data.to_h, continuous_preview_container_data.to_h)
+  end
+
+  def build_repo_attributes(container_data)
+    container_registry = container_registry(container_data)
+    repo_type = container_registry.repo_type.name
+    raise UffizziCore::ComposeFile::BuildError, I18n.t('compose.invalid_repo_type') if repo_type.blank?
+
+    image_data = container_registry.image_data
+    if container_registry.image_available?(credentials)
+      docker_repo_builder = UffizziCore::ComposeFile::Builders::DockerRepoBuilderService.new(repo_type)
+      return docker_repo_builder.build_attributes(image_data)
+    end
+
+    raise UffizziCore::ComposeFile::BuildError, I18n.t('compose.unprocessable_image', value: container_registry.type)
   end
 
   def set_continuous_preview_attributes_to_repo(repo_attributes, global_data, container_data)
@@ -78,16 +94,17 @@ class UffizziCore::ComposeFile::Builders::ContainerBuilderService
     condition_attributes.each do |attribute|
       repo_attributes[attribute] = select_continuous_preview_attribute(global_data[attribute], container_data[attribute], false)
     end
-    repo_attributes[:delete_preview_after] =
-      select_continuous_preview_attribute(global_data.dig(:delete_preview_after, :value),
-                                          container_data.dig(:delete_preview_after, :value), nil)
+
+    global = global_data.dig(:delete_preview_after, :value)
+    local = container_data.dig(:delete_preview_after, :value)
+    repo_attributes[:delete_preview_after] = select_continuous_preview_attribute(global, local, nil)
 
     repo_attributes
   end
 
   def select_continuous_preview_attribute(global_attribute, local_attribute, default_attribute)
-    return local_attribute if !local_attribute.nil?
-    return global_attribute if !global_attribute.nil?
+    return local_attribute if local_attribute.present?
+    return global_attribute if global_attribute.present?
 
     default_attribute
   end
@@ -104,24 +121,15 @@ class UffizziCore::ComposeFile::Builders::ContainerBuilderService
 
   def image(container_data, image_data, build_data, credentials)
     if image_data.present?
-      image_name(container_data, image_data, credentials)
+      container_registry(container_data).image_name(credentials)
     else
       "#{build_data[:account_name]}/#{build_data[:repository_name]}"
     end
   end
 
-  def image_name(container_data, image_data, credentials)
-    if image_data[:registry_url].present? &&
-        !UffizziCore::ComposeFile::ContainerService.google?(container_data) &&
-        !UffizziCore::ComposeFile::ContainerService.github_container_registry?(container_data) &&
-        !UffizziCore::ComposeFile::ContainerService.docker_registry?(container_data)
-      image_data[:name]
-    elsif UffizziCore::ComposeFile::ContainerService.docker_registry?(container_data) &&
-        credential_by_scope(credentials, :docker_registry).nil?
-      [image_data[:registry_url], image_data[:namespace], image_data[:name]].compact.join('/')
-    else
-      "#{image_data[:namespace]}/#{image_data[:name]}"
-    end
+  def image_name(container_data)
+    container_registry = container_registry(container_data)
+    container_registry.image_name(credentials)
   end
 
   def ingress_container?(container_name, ingress)
@@ -130,13 +138,11 @@ class UffizziCore::ComposeFile::Builders::ContainerBuilderService
 
   def entrypoint(container_data)
     entrypoint = container_data[:entrypoint]
-
     entrypoint.present? ? entrypoint.to_s : nil
   end
 
   def command(container_data)
     command = container_data[:command]
-
     command.present? ? command.to_s : nil
   end
 
@@ -169,57 +175,10 @@ class UffizziCore::ComposeFile::Builders::ContainerBuilderService
     memory_value
   end
 
-  def build_repo_attributes(container_data)
-    repo_type = repo_type(container_data)
-    image_data = container_data[:image]
-
-    case repo_type
-    when UffizziCore::Repo::DockerHub.name
-      build_docker_repo_attributes(image_data, credentials, :docker_hub, UffizziCore::Repo::DockerHub.name)
-    when UffizziCore::Repo::DockerRegistry.name
-      build_docker_repo_attributes(image_data, credentials, :docker_registry, UffizziCore::Repo::DockerRegistry.name)
-    when UffizziCore::Repo::Azure.name
-      build_docker_repo_attributes(image_data, credentials, :azure, UffizziCore::Repo::Azure.name)
-    when UffizziCore::Repo::Google.name
-      build_docker_repo_attributes(image_data, credentials, :google, UffizziCore::Repo::Google.name)
-    when UffizziCore::Repo::GithubContainerRegistry.name
-      build_docker_repo_attributes(image_data, credentials, :github_container_registry, UffizziCore::Repo::GithubContainerRegistry.name)
-    when UffizziCore::Repo::Amazon.name
-      build_docker_repo_attributes(image_data, credentials, :amazon, UffizziCore::Repo::Amazon.name)
-    else
-      raise UffizziCore::ComposeFile::BuildError, I18n.t('compose.invalid_repo_type')
-    end
-  end
-
-  def repo_type(container_data)
-    if UffizziCore::ComposeFile::ContainerService.azure?(container_data)
-      UffizziCore::Repo::Azure.name
-    elsif UffizziCore::ComposeFile::ContainerService.docker_hub?(container_data)
-      UffizziCore::Repo::DockerHub.name
-    elsif UffizziCore::ComposeFile::ContainerService.docker_registry?(container_data)
-      UffizziCore::Repo::DockerRegistry.name
-    elsif UffizziCore::ComposeFile::ContainerService.google?(container_data)
-      UffizziCore::Repo::Google.name
-    elsif UffizziCore::ComposeFile::ContainerService.github_container_registry?(container_data)
-      UffizziCore::Repo::GithubContainerRegistry.name
-    elsif UffizziCore::ComposeFile::ContainerService.amazon?(container_data)
-      UffizziCore::Repo::Amazon.name
-    end
-  end
-
   def continuously_deploy(deploy_data)
     return :disabled if deploy_data[:auto] == false
 
     :enabled
-  end
-
-  def build_docker_repo_attributes(image_data, credentials, scope, repo_type)
-    credential = credential_by_scope(credentials, scope)
-    if UffizziCore::ComposeFile::ContainerService.image_available?(credential, image_data, scope)
-      return docker_builder(repo_type).build_attributes(image_data)
-    end
-
-    raise UffizziCore::ComposeFile::BuildError, I18n.t('compose.unprocessable_image', value: scope)
   end
 
   def variables(variables_data, dependencies)
@@ -243,15 +202,7 @@ class UffizziCore::ComposeFile::Builders::ContainerBuilderService
       .build_attributes(host_volumes_data, host_volumes_dependencies, project)
   end
 
-  def docker_builder(type)
-    @docker_builder ||= UffizziCore::ComposeFile::Builders::DockerRepoBuilderService.new(type)
-  end
-
   def variables_builder
     @variables_builder ||= UffizziCore::ComposeFile::Builders::VariablesBuilderService.new(project)
-  end
-
-  def credential_by_scope(credentials, scope)
-    credentials.send(scope).first
   end
 end

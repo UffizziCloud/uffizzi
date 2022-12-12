@@ -11,6 +11,15 @@ module UffizziCore::Concerns::Models::Credential
 
     self.table_name = UffizziCore.table_names[:credentials]
 
+    const_set(:CREDENTIAL_TYPES, [
+                'UffizziCore::Credential::Amazon',
+                'UffizziCore::Credential::Azure',
+                'UffizziCore::Credential::DockerHub',
+                'UffizziCore::Credential::DockerRegistry',
+                'UffizziCore::Credential::GithubContainerRegistry',
+                'UffizziCore::Credential::Google',
+              ])
+
     belongs_to :account
 
     before_destroy :remove_token
@@ -35,28 +44,24 @@ module UffizziCore::Concerns::Models::Credential
       end
     end
 
-    def github_container_registry?
-      type == UffizziCore::Credential::GithubContainerRegistry.name
+    UffizziCore::ContainerRegistryService.sources.each do |t|
+      define_method :"#{t}?" do
+        type == "UffizziCore::Credential::#{t.to_s.camelize}"
+      end
     end
 
-    def docker_hub?
-      type == UffizziCore::Credential::DockerHub.name
-    end
+    def correct?
+      credential = self
+      return false unless credential
 
-    def docker_registry?
-      type == UffizziCore::Credential::DockerRegistry.name
-    end
+      container_registry_service = UffizziCore::ContainerRegistryService.init_by_subclass(credential.type)
+      status = container_registry_service.credential_correct?(credential)
 
-    def azure?
-      type == UffizziCore::Credential::Azure.name
-    end
+      if credential.persisted? && credential.active? && !status
+        Rails.logger.warn("Wrong credential: credential_correct? credential_id=#{credential.id}")
+      end
 
-    def google?
-      type == UffizziCore::Credential::Google.name
-    end
-
-    def amazon?
-      type == UffizziCore::Credential::Amazon.name
+      status
     end
 
     private

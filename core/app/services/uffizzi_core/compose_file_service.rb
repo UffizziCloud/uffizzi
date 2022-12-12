@@ -59,19 +59,6 @@ class UffizziCore::ComposeFileService
       builder.build_attributes(compose_data, compose_dependencies, source)
     end
 
-    def containers_credentials(compose_data, credentials)
-      containers = compose_data[:containers]
-      detected_credentials = containers.map do |container|
-        UffizziCore::ComposeFile::ContainerService.credential_for_container(container, credentials)
-      end
-
-      result = []
-      detected_credentials.compact
-        .group_by { |credential| credential[:id] }
-        .each_pair { |_id, value| result << value.first }
-      result
-    end
-
     def has_secret?(compose_file, secret)
       containers = compose_file.template.payload['containers_attributes']
 
@@ -91,8 +78,7 @@ class UffizziCore::ComposeFileService
 
         if new_secrets_errors.present?
           new_errors = { UffizziCore::ComposeFile::ErrorsService::SECRETS_ERROR_KEY => new_secrets_errors }
-          UffizziCore::ComposeFile::ErrorsService.update_compose_errors!(compose_file,
-                                                                         compose_file_errors.merge(new_errors),
+          UffizziCore::ComposeFile::ErrorsService.update_compose_errors!(compose_file, compose_file_errors.merge(new_errors),
                                                                          compose_file.content)
           next
         end
@@ -117,12 +103,8 @@ class UffizziCore::ComposeFileService
     end
 
     def create_temporary_compose(resource_project, current_user, compose_file_params, dependencies)
-      create_params = {
-        project: resource_project,
-        user: current_user,
-        compose_file_params: compose_file_params,
-        dependencies: dependencies || [],
-      }
+      create_params = { project: resource_project, user: current_user, compose_file_params: compose_file_params,
+                        dependencies: dependencies || [] }
       kind = UffizziCore::ComposeFile.kind.temporary
       UffizziCore::ComposeFileService.create(create_params, kind)
     end
@@ -173,11 +155,7 @@ class UffizziCore::ComposeFileService
     end
 
     def prepare_compose_file_dependencies(compose_dependencies)
-      compose_dependencies.map do |dependency|
-        {
-          path: dependency[:path],
-        }
-      end
+      compose_dependencies.map { |dependency| { path: dependency[:path] } }
     end
 
     def persist!(compose_file_form, cli_form)
@@ -201,6 +179,7 @@ class UffizziCore::ComposeFileService
 
         raise ActiveRecord::Rollback if errors.present?
       end
+
       [compose_file_form, errors]
     end
 
@@ -208,9 +187,8 @@ class UffizziCore::ComposeFileService
       begin
         compose_data = YAML.safe_load(compose_content, aliases: true)
       rescue Psych::SyntaxError
-        raise UffizziCore::ComposeFile::ParseError, 'Invalid compose file'
+        raise UffizziCore::ComposeFile::ParseError, I18n.t('compose.invalid_file')
       end
-
       raise UffizziCore::ComposeFile::ParseError, I18n.t('compose.unsupported_file') if compose_data.nil?
 
       compose_data

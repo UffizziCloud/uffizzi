@@ -16,6 +16,6 @@ class UffizziCore::Api::Cli::V1::Account::Credential::UpdateForm < UffizziCore::
   end
 
   def check_credential_correctness
-    errors.add(:username, :incorrect) unless UffizziCore::CredentialService.correct_credentials?(self)
+    errors.add(:username, :incorrect) unless correct?
   end
 end

@@ -100,7 +100,7 @@ class UffizziCore::DeploymentService
       repo_name, pull_request_number = pull_request_data(deployment)
       raise UffizziCore::Deployment::LabelsNotFoundError if repo_name.nil? || pull_request_number.nil?
 
-      formatted_repo_name = repo_name.split('/').last.downcase
+      formatted_repo_name = format_url_safe(repo_name.split('/').last.downcase)
       subdomain = "pr-#{pull_request_number}-#{name(deployment)}-#{formatted_repo_name}"
       format_subdomain(subdomain)
     end
@@ -135,7 +135,7 @@ class UffizziCore::DeploymentService
     end
 
     def build_deployment_url(deployment)
-      "#{Settings.app.managed_dns_zone}/projects/#{deployment.project_id}/deployments"
+      "#{Settings.app.host}/projects/#{deployment.project_id}/deployments"
     end
 
     def all_containers_have_unique_ports?(containers)
@@ -272,6 +272,7 @@ class UffizziCore::DeploymentService
         end
 
         envs.push('name' => 'UFFIZZI_URL', 'value' => "https://#{deployment.preview_url}")
+        envs.push('name' => 'UFFIZZI_DOMAIN', 'value' => deployment.preview_url)
 
         container.variables = [] if container.variables.nil?
 
@@ -308,6 +309,10 @@ class UffizziCore::DeploymentService
       gitlab_data = deployment.metadata.dig('labels', 'gitlab')
 
       [gitlab_data['repo'], gitlab_data.dig('merge_request', 'number')]
+    end
+
+    def format_url_safe(name)
+      name.gsub(/ /, '-').gsub(/[^\w-]+/, '-')
     end
   end
 end

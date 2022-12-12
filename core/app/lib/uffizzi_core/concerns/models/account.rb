@@ -16,8 +16,6 @@ module UffizziCore::Concerns::Models::Account
     validates :kind, presence: true
     validates :domain, uniqueness: true, if: :domain
 
-    belongs_to :owner, class_name: UffizziCore::User.name, foreign_key: :owner_id
-
     has_many :memberships, dependent: :destroy
     has_many :users, through: :memberships
     has_many :credentials, dependent: :destroy

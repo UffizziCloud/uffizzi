@@ -15,7 +15,14 @@ class UffizziCore::Api::Cli::V1::ComposeFile::CheckCredentialsForm
     compose_payload = { compose_file: compose_file }
     compose_data = UffizziCore::ComposeFileService.parse(compose_content, compose_payload)
 
-    UffizziCore::ComposeFileService.containers_credentials(compose_data, credentials)
+    containers = compose_data[:containers]
+    containers.map do |container|
+      container_registry_service = UffizziCore::ContainerRegistryService.init_by_container(container)
+      credential = container_registry_service.credential(credentials)
+      next credential if container_registry_service.image_available?(credentials)
+
+      raise UffizziCore::ComposeFile::CredentialError.new(I18n.t('compose.unprocessable_image', value: container_registry_service.type))
+    end
   rescue UffizziCore::ComposeFile::CredentialError => e
     errors.add(:credentials, e.message)
   end
