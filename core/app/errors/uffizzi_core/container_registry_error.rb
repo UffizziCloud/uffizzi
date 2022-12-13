@@ -27,6 +27,6 @@ class UffizziCore::ContainerRegistryError < Faraday::ClientError
   end
 
   def convert_errors_array_to_object(array)
-    array.reduce({}) { |acc, error| acc.merge(error[:code] => [error[:message], error[:detail].to_json]) }
+    array.reduce({}) { |acc, error| acc.merge(error[:code] => [error[:message], error[:detail].to_json].join(', ')) }
   end
 end

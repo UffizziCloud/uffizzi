@@ -28,7 +28,7 @@ class UffizziCore::Api::Cli::V1::ComposeFile::CheckCredentialsForm
   rescue UffizziCore::ComposeFile::CredentialError => e
     errors.add(:credentials, e.message)
   rescue UffizziCore::ContainerRegistryError => e
-    errors.add(:credentials, I18n.t('compose.unprocessable_image', value: type)) if e.generic?
+    errors.add(:credentials, I18n.t('compose.unprocessable_image', value: type)) and return if e.generic?
 
     raise e
   end

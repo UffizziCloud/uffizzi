@@ -6,7 +6,6 @@ class UffizziCore::ApplicationController < ActionController::Base
   include UffizziCore::AuthManagement
   include UffizziCore::AuthorizationConcern
   include UffizziCore::DependencyInjectionConcern
-  include UffizziCore::ErrorHandlingConcern
 
   DEFAULT_PAGE = 1
   DEFAULT_PER_PAGE = 20
