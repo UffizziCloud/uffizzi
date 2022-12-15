@@ -69,6 +69,7 @@ en:
     invalid_volume_destination: Invalid volume specification '%{spec}' destination can't be '/'
     required_start_commands: "When 'test' is a list the first item must be one of: '%{available_commands}'"
     volumes_should_be_array: Volumes '%{volumes}' should be an arra
+    healthcheck_missing_required_option: "One of these options is required: %{required_options}"
   secrets:
     duplicates_exists: Secret with key %{secrets} already exist.
     invalid_key_length: A secret key must be no longer than 256 characters.
