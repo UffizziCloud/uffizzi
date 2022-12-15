@@ -11,6 +11,7 @@ PATH
       aws-sdk-ecr (~> 1.47)
       aws-sdk-eventbridge (~> 1.30)
       aws-sdk-iam (~> 1.61)
+      docker_distribution
       dotenv
       enumerize
       faraday
@@ -378,7 +379,6 @@ DEPENDENCIES
   bootsnap (>= 1.4.2)
   byebug
   config
-  docker_distribution (~> 0.1.0)
   health_check
   pg (>= 0.18, < 2.0)
   puma (~> 4.1)

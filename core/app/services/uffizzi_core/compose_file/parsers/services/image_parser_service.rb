@@ -1,27 +1,30 @@
 # frozen_string_literal: true
 
+require 'docker_distribution'
 class UffizziCore::ComposeFile::Parsers::Services::ImageParserService
   class << self
     def parse(value)
       return {} if value.blank?
 
-      image_path, tag = get_image_path_and_tag(value)
-      raise_parse_error(value) if image_path.blank?
+      data = DockerDistribution::Reference.parse(value)
 
-      tag = Settings.compose.default_tag if tag.blank?
+      # image_path, tag = get_image_path_and_tag(value)
+      # raise_parse_error(value) if image_path.blank?
 
-      formatted_image_path = image_path.downcase
-      if url?(formatted_image_path)
-        host, namespace, name = parse_image_url(formatted_image_path)
-      else
-        namespace, name = parse_docker_hub_image(formatted_image_path)
-      end
+      # tag = Settings.compose.default_tag if tag.blank?
+
+      # formatted_image_path = image_path.downcase
+      # if url?(formatted_image_path)
+      #   host, namespace, name = parse_image_url(formatted_image_path)
+      # else
+      #   namespace, name = parse_docker_hub_image(formatted_image_path)
+      # end
 
       {
-        registry_url: host,
-        namespace: namespace,
-        name: name,
-        tag: tag,
+        registry_url: data.domain,
+        namespace: data.domain,
+        name: data.path,
+        tag: data.tag,
       }
     end
 

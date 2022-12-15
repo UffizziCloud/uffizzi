@@ -29,6 +29,7 @@ Gem::Specification.new do |spec|
   spec.add_dependency 'aws-sdk-ecr', '~> 1.47'
   spec.add_dependency 'aws-sdk-eventbridge', '~> 1.30'
   spec.add_dependency 'aws-sdk-iam', '~> 1.61'
+  spec.add_dependency 'docker_distribution', '~> 0.1.0'
   spec.add_dependency 'dotenv'
   spec.add_dependency 'enumerize'
   spec.add_dependency 'faraday'
