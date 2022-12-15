@@ -38,5 +38,33 @@ class UffizziCore::ContainerService
 
       container_memory_request <= max_memory_limit
     end
+
+    def last_state(container)
+      pods = pods_by_container(container)
+      container_status = container_status(container, pods)
+      return {} if container_status.blank? || container_status&.dig('last_state')&.blank?
+
+      container_status['last_state'].map do |code, state|
+        {
+          code: code,
+          reason: state.reason,
+          exit_code: state.exit_code,
+          started_at: state.started_at,
+          finished_at: state.finished_at,
+        }
+      end.first
+    end
+
+    private
+
+    def container_status(container, pods)
+      pods
+        .flat_map { |pod| pod&.status&.container_statuses }
+        .detect { |cs| cs.name.include?(container.controller_name) }
+    end
+
+    def pods_by_container(container)
+      UffizziCore::ControllerService.fetch_pods(container.deployment)
+    end
   end
 end

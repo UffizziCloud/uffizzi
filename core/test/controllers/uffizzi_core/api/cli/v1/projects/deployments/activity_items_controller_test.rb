@@ -24,4 +24,23 @@ class UffizziCore::Api::Cli::V1::Projects::Deployments::ActivityItemsControllerT
 
     assert_response :success
   end
+
+  test '#index - with failed deployment' do
+    @deployment.fail!
+    container = create(:container, :with_public_port, deployment: @deployment)
+    create(:activity_item, :with_building_event, tag: container.tag, container: container, deployment: @deployment)
+
+    params = {
+      project_slug: @project.slug,
+      deployment_id: @deployment.id,
+    }
+
+    get :index, params: params, format: :json
+
+    assert_response :unprocessable_entity
+
+    response_body = JSON.parse(response.body)
+
+    assert_equal("Preview with ID deployment-#{@deployment.id} failed", response_body['errors']['title'].first)
+  end
 end

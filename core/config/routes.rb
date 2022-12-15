@@ -16,6 +16,7 @@ UffizziCore::Engine.routes.draw do
                 resources :activity_items, only: ['index']
                 resources :events, only: ['index']
                 resources :containers, only: ['index'], param: :name do
+                  get :k8s_container_description
                   scope module: :containers do
                     resources :logs, only: ['index']
                     resources :builds, only: [] do
