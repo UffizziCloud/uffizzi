@@ -398,6 +398,15 @@ class UffizziCore::ComposeFileServiceTest < ActiveSupport::TestCase
     assert(container_with_healthcheck[:healthcheck][:disable])
   end
 
+  test '#parse - parses compose file with healthcheck disabled is true and test not set' do
+    content = file_fixture('files/compose_files/healthcheck/healthcheck_with_disable.yml').read
+
+    result = UffizziCore::ComposeFileService.parse(content)
+    container_with_healthcheck = result[:containers].select { |container| container[:container_name] == 'hello-world' }.first
+
+    assert(container_with_healthcheck[:healthcheck][:disable])
+  end
+
   test '#parse - raises error if the healthcheck command has invalid type' do
     content = file_fixture('files/compose_files/healthcheck/invalid_command.yml').read
 
@@ -427,6 +436,17 @@ class UffizziCore::ComposeFileServiceTest < ActiveSupport::TestCase
 
     error_message = "The time interval should be in the following format '{hours}h{minutes}m{seconds}s'. " \
                     'At least one value must be present.'
+    assert_match(error_message, e.message)
+  end
+
+  test '#parse - raises error if test or disble option are not present' do
+    content = file_fixture('files/compose_files/healthcheck/invalid_options.yml').read
+
+    e = assert_raise(UffizziCore::ComposeFile::ParseError) do
+      UffizziCore::ComposeFileService.parse(content)
+    end
+
+    error_message = 'One of these options is required: test, disable'
     assert_match(error_message, e.message)
   end
 
@@ -703,5 +723,15 @@ class UffizziCore::ComposeFileServiceTest < ActiveSupport::TestCase
     assert_equal(UffizziCore::ComposeFile::Parsers::Services::VolumesParserService::NAMED_VOLUME_TYPE, first_volume[:type])
     assert_equal(content_data.dig('services', 'nginx', 'volumes').first.split(':').first, first_volume[:source])
     assert_equal(content_data.dig('services', 'nginx', 'volumes').first.split(':').second, first_volume[:target])
+  end
+
+  test '#parse - handle Psych::SyntaxError' do
+    content = file_fixture('files/compose_files/compose_with_syntax_error.yml').read
+
+    e = assert_raise(UffizziCore::ComposeFile::ParseError) do
+      UffizziCore::ComposeFileService.parse(content)
+    end
+
+    assert_equal("Syntax error: could not find expected ':' while scanning a simple key at line 5 column 3", e.message)
   end
 end
