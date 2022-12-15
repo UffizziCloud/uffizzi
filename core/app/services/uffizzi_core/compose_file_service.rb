@@ -186,8 +186,9 @@ class UffizziCore::ComposeFileService
     def load_compose_data(compose_content)
       begin
         compose_data = YAML.safe_load(compose_content, aliases: true)
-      rescue Psych::SyntaxError
-        raise UffizziCore::ComposeFile::ParseError, I18n.t('compose.invalid_file')
+      rescue Psych::SyntaxError => e
+        err = [e.problem, e.context].compact.join(' ')
+        raise UffizziCore::ComposeFile::ParseError, I18n.t('compose.invalid_file', err: err, line: e.line, column: e.column)
       end
       raise UffizziCore::ComposeFile::ParseError, I18n.t('compose.unsupported_file') if compose_data.nil?
 

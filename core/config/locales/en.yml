@@ -12,7 +12,7 @@ en:
       &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Uffizzi was unable to deploy a preview of this pull request because the compose file in this branch is invalid.
   compose:
     unsupported_file: Unsupported compose file
-    invalid_file: Invalid compose file
+    invalid_file: 'Syntax error: %{err} at line %{line} column %{column}'
     invalid_config_option: Invalid config option '%{value}' - only a-zA-Z0-9._- characters are allowed
     no_services: Service services has neither an image nor a build context specified. At least one must be provided.
     no_ingress: Service ingress has not been defined.
