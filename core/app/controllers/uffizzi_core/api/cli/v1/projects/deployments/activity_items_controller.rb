@@ -15,7 +15,7 @@ class UffizziCore::Api::Cli::V1::Projects::Deployments::ActivityItemsController 
   # @response 401 Not authorized
   # @response 404 Not found
   def index
-    deployment = resource_project.deployments.existed.find(params[:deployment_id])
+    deployment = resource_project.deployments.actual.find(params[:deployment_id])
 
     unless deployment.active?
       return render json: { errors: { title: [I18n.t('deployment.invalid_state', id: deployment.id, state: deployment.state)] } },
