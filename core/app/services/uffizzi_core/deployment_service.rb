@@ -13,10 +13,10 @@ class UffizziCore::DeploymentService
 
   class << self
     include UffizziCore::DependencyInjectionConcern
-  
+
     def create_from_compose(compose_file, project, user, params)
       deployment_attributes = ActionController::Parameters.new(compose_file.template.payload)
-      deployment_form = UffizziCore::Api::Cli::V1::Deployment::CreateForm.new(deployment_attributes)
+      deployment_form = deployment_create_form.new(deployment_attributes)
       deployment_form.assign_dependences!(project, user)
       deployment_form.compose_file = compose_file
       deployment_form.creation_source = params[:creation_source] || UffizziCore::Deployment.creation_source.compose_file_manual

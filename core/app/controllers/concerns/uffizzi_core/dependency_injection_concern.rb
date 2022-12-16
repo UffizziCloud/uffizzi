@@ -37,6 +37,10 @@ module UffizziCore::DependencyInjectionConcern
     module_class(:notification_module)
   end
 
+  def deployment_create_form
+    module_class(:deployment_create_form) || UffizziCore::Api::Cli::V1::Deployment::CreateForm
+  end
+
   private
 
   def module_exists?(module_name)
