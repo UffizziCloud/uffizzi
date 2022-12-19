@@ -31,6 +31,6 @@ class UffizziCore::Api::Cli::V1::Ci::SessionsController < UffizziCore::Api::Cli:
   private
 
   def user_params
-    params.require(:user).permit(:token)
+    params.require(:user).permit(:token, :pipeline_token)
   end
 end
