@@ -79,7 +79,10 @@ class UffizziCore::ComposeFile::Builders::ContainerBuilderService
       return docker_repo_builder.build_attributes(image_data)
     end
 
-    raise UffizziCore::ComposeFile::BuildError, I18n.t('compose.unprocessable_image', value: container_registry.type)
+  rescue UffizziCore::ContainerRegistryError => e
+    raise UffizziCore::ComposeFile::BuildError, I18n.t('compose.unprocessable_image', value: container_registry.type) if e.generic?
+
+    raise e
   end
 
   def set_continuous_preview_attributes_to_repo(repo_attributes, global_data, container_data)
