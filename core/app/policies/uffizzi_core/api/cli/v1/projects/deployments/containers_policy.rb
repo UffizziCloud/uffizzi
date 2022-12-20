@@ -6,6 +6,6 @@ class UffizziCore::Api::Cli::V1::Projects::Deployments::ContainersPolicy < Uffiz
   end
 
   def k8s_container_description?
-    index?
+    context.user_access_module.any_access_to_project?(context.user, context.project)
   end
 end
