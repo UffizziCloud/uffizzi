@@ -2,6 +2,7 @@
 
 class UffizziCore::Api::Cli::V1::ComposeFile::TemplateForm
   include UffizziCore::ApplicationFormWithoutActiveRecord
+  include UffizziCore::FormUtils
 
   SECRETS_ERROR_KEY = 'secret_variables'
   TEMPLATE_BUILD_ERROR_KEY = 'template_build_error'
@@ -40,7 +41,7 @@ class UffizziCore::Api::Cli::V1::ComposeFile::TemplateForm
     when UffizziCore::ComposeFile::BuildError
       errors.add(TEMPLATE_BUILD_ERROR_KEY, template_build_error.message)
     when UffizziCore::ContainerRegistryError
-      JSON.parse(template_build_error.message).each { |key, value| errors.add(key, value) }
+      fill_errors_with_json_from_error_message(template_build_error.message)
     when StandardError
       raise template_build_error
     end

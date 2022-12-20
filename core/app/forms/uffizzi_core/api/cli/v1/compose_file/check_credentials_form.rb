@@ -2,6 +2,7 @@
 
 class UffizziCore::Api::Cli::V1::ComposeFile::CheckCredentialsForm
   include UffizziCore::ApplicationFormWithoutActiveRecord
+  include UffizziCore::FormUtils
 
   attr_reader :type
 
@@ -33,6 +34,6 @@ class UffizziCore::Api::Cli::V1::ComposeFile::CheckCredentialsForm
       return
     end
 
-    raise e
+    fill_errors_with_json_from_error_message(e.message)
   end
 end
