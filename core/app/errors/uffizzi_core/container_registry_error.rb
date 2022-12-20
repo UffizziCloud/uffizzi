@@ -20,7 +20,7 @@ class UffizziCore::ContainerRegistryError < Faraday::ClientError
     errors = if response_body_.has_key?(:errors)
       convert_errors_array_to_object(response_body_[:errors])
     else
-      { registry_error: [I18n.t('registry.error', code: response_status)] }
+      { registry_error: I18n.t('registry.error', code: response_status) }
     end
 
     errors.to_json
