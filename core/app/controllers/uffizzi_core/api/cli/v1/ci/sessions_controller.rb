@@ -31,6 +31,6 @@ class UffizziCore::Api::Cli::V1::Ci::SessionsController < UffizziCore::Api::Cli:
   private
 
   def user_params
-    params.require(:user).permit(:token, :access_token)
+    params.require(:user).permit(:token, :github_access_token)
   end
 end
