@@ -79,8 +79,9 @@ class UffizziCore::ComposeFile::Builders::ContainerBuilderService
       return docker_repo_builder.build_attributes(image_data)
     end
 
+    UffizziCore::ComposeFile::ErrorsService.raise_build_error!(container_registry.type)
   rescue UffizziCore::ContainerRegistryError => e
-    raise UffizziCore::ComposeFile::BuildError, I18n.t('compose.unprocessable_image', value: container_registry.type) if e.generic?
+    UffizziCore::ComposeFile::ErrorsService.raise_build_error!(container_registry.type) if e.generic?
 
     raise e
   end

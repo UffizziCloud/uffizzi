@@ -500,7 +500,7 @@ class UffizziCore::ComposeFileServiceTest < ActiveSupport::TestCase
     parsed_data = UffizziCore::ComposeFileService.parse(content)
 
     stubbed_dockerhub_repository = stub_dockerhub_private_repository('library', 'nginx')
-    assert_raise(UffizziCore::ContainerRegistryError) do
+    assert_raise(UffizziCore::ComposeFile::BuildError) do
       UffizziCore::ComposeFileService.build_template_attributes(parsed_data, 'compose.yml', @account.credentials, @project)
     end
     assert_requested(stubbed_dockerhub_repository)

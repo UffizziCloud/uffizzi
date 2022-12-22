@@ -3,6 +3,7 @@
 class UffizziCore::ComposeFile::ErrorsService
   SECRETS_ERROR_KEY = 'secret_variables'
   GENERIC_CONTAINER_REGISTRY_ERROR_KEY = 'generic_container_registry_error'
+
   class << self
     def has_error?(compose_file, error_code)
       error = compose_file.payload.dig('errors', error_code)
@@ -42,6 +43,10 @@ class UffizziCore::ComposeFile::ErrorsService
       compose_file.save!
 
       compose_file
+    end
+
+    def raise_build_error!(type)
+      raise UffizziCore::ComposeFile::BuildError, I18n.t('compose.unprocessable_image', value: type)
     end
   end
 end
