@@ -12,12 +12,12 @@ class UffizziCore::DeploymentService
   }.freeze
 
   class << self
-    def create_from_compose(compose_file, project, user, metadata)
+    def create_from_compose(compose_file, project, user, metadata, creation_source = nil)
       deployment_attributes = ActionController::Parameters.new(compose_file.template.payload)
       deployment_form = UffizziCore::Api::Cli::V1::Deployment::CreateForm.new(deployment_attributes)
       deployment_form.assign_dependences!(project, user)
       deployment_form.compose_file = compose_file
-      deployment_form.creation_source = UffizziCore::Deployment.creation_source.compose_file_manual
+      deployment_form.creation_source = creation_source || UffizziCore::Deployment.creation_source.compose_file_manual
       deployment_form.metadata = metadata || {}
 
       run_deployment_creation_tasks(deployment_form) if deployment_form.save
