@@ -9,6 +9,8 @@ class UffizziCore::DockerRegistryClient
   def authenticated?
     response = @connection.head('/v2/')
     response.status == 200
+  rescue Faraday::ConnectionFailed
+    false
   end
 
   def manifests(image:, tag:, namespace: nil)
@@ -26,7 +28,6 @@ class UffizziCore::DockerRegistryClient
       conn.request(:basic_auth, username, password) if username.present? && password.present?
       conn.request(:json)
       conn.response(:json)
-      conn.response(:follow_redirects)
       conn.adapter(Faraday.default_adapter)
     end
   end
