@@ -81,9 +81,7 @@ class UffizziCore::ComposeFile::Builders::ContainerBuilderService
 
     UffizziCore::ComposeFile::ErrorsService.raise_build_error!(container_registry.type)
   rescue UffizziCore::ContainerRegistryError => e
-    UffizziCore::ComposeFile::ErrorsService.raise_build_error!(container_registry.type) if e.generic?
-
-    raise e
+    UffizziCore::ComposeFile::ErrorsService.raise_build_error!(container_registry.type, e.errors)
   end
 
   def set_continuous_preview_attributes_to_repo(repo_attributes, global_data, container_data)

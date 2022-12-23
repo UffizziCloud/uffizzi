@@ -2,7 +2,6 @@
 
 class UffizziCore::Api::Cli::V1::ComposeFile::CheckCredentialsForm
   include UffizziCore::ApplicationFormWithoutActiveRecord
-  include UffizziCore::FormUtils
 
   attr_reader :type
 
@@ -26,14 +25,10 @@ class UffizziCore::Api::Cli::V1::ComposeFile::CheckCredentialsForm
 
       raise UffizziCore::ComposeFile::CredentialError.new(I18n.t('compose.unprocessable_image', value: type))
     end
+  rescue UffizziCore::ContainerRegistryError => e
+    errors.add(:credentials, I18n.t('compose.unprocessable_image', value: type))
+    errors.add(e.error_key, e.message)
   rescue UffizziCore::ComposeFile::CredentialError => e
     errors.add(:credentials, e.message)
-  rescue UffizziCore::ContainerRegistryError => e
-    if e.generic?
-      errors.add(:credentials, I18n.t('compose.unprocessable_image', value: type))
-      return
-    end
-
-    fill_errors_with_json_from_error_message(e.message)
   end
 end
