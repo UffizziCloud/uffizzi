@@ -57,8 +57,12 @@ class UffizziCore::Api::Cli::V1::Projects::DeploymentsController < UffizziCore::
     errors = check_credentials(compose_file)
     return render_errors(errors) if errors.present?
 
-    deployment = UffizziCore::DeploymentService.create_from_compose(compose_file, resource_project, current_user, metadata_params,
-                                                                    creation_source_params)
+    params = {
+      metadata: metadata_params,
+      creation_source: creation_source_params,
+    }
+
+    deployment = UffizziCore::DeploymentService.create_from_compose(compose_file, resource_project, current_user, params)
 
     respond_with deployment
   end
