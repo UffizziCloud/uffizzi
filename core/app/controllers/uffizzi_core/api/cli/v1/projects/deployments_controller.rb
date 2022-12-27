@@ -3,7 +3,10 @@
 # @resource Deployment
 
 class UffizziCore::Api::Cli::V1::Projects::DeploymentsController < UffizziCore::Api::Cli::V1::Projects::ApplicationController
+  include UffizziCore::Api::Cli::V1::Projects::DeploymentsControllerModule
+
   before_action :authorize_uffizzi_core_api_cli_v1_projects_deployments
+  before_action :check_account_state, only: [:create, :update]
 
   # Get a list of active deployements for a project
   #
