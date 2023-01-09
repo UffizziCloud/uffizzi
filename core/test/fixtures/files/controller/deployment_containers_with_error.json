@@ -1,0 +1,186 @@
+[
+    {
+        "metadata": {
+            "name": "app-deployment-1-54c7f5f884-xcn5h",
+            "generate_name": "app-deployment-1-54c7f5f884-",
+            "namespace": "deployment-1",
+            "uid": "4992a195-4156-4aa0-a76a-43345621e7ff",
+            "resource_version": "249176761",
+            "creation_timestamp": "2022-12-05T18:11:04Z",
+            "labels": {
+                "app": "app-deployment-1",
+                "app.kubernetes.io/managed_by": "uffizzi",
+                "pod_template_hash": "54c7f5f884"
+            },
+            "annotations": {
+                "kubectl.kubernetes.io/restarted_at": "2022-12-05T18:11:03Z"
+            },
+            "owner_references": [
+                {
+                    "api_version": "apps/v1",
+                    "kind": "ReplicaSet",
+                    "name": "app-deployment-1-54c7f5f884",
+                    "uid": "e7615d70-e805-423c-91f4-a6679b194365",
+                    "controller": true,
+                    "block_owner_deletion": true
+                }
+            ]
+        },
+        "spec": {
+            "containers": [
+                {
+                    "name": "f03d008a48",
+                    "image": "library/nginx:latest",
+                    "args": [
+                        "exit"
+                    ],
+                    "ports": [
+                        {
+                            "name": "default-port",
+                            "container_port": 80,
+                            "protocol": "TCP"
+                        }
+                    ],
+                    "env": [
+                        {
+                            "name": "PORT",
+                            "value": "80"
+                        },
+                        {
+                            "name": "UFFIZZI_URL",
+                            "value": "https://deployment-1-test-preview-jymy.localhost:7000"
+                        },
+                        {
+                            "name": "UFFIZZI_DOMAIN",
+                            "value": "deployment-1-test-preview-jymy.localhost:7000"
+                        }
+                    ],
+                    "resources": {
+                        "limits": {
+                            "cpu": "1",
+                            "memory": "125Mi"
+                        },
+                        "requests": {
+                            "cpu": "0",
+                            "memory": "125Mi"
+                        }
+                    },
+                    "startup_probe": {
+                        "tcp_socket": {
+                            "port": 80
+                        },
+                        "initial_delay_seconds": 10,
+                        "timeout_seconds": 1,
+                        "period_seconds": 15,
+                        "success_threshold": 1,
+                        "failure_threshold": 80
+                    },
+                    "termination_message_path": "/dev/termination-log",
+                    "termination_message_policy": "File",
+                    "image_pull_policy": "Always"
+                }
+            ],
+            "restart_policy": "Always",
+            "termination_grace_period_seconds": 30,
+            "dns_policy": "ClusterFirst",
+            "node_selector": {
+                "sandbox.gke.io/runtime": "gvisor"
+            },
+            "service_account_name": "default",
+            "service_account": "default",
+            "automount_service_account_token": false,
+            "node_name": "gke-uffizzi-client-sandbox-588e8350-tk79",
+            "security_context": {},
+            "scheduler_name": "default-scheduler",
+            "tolerations": [
+                {
+                    "key": "sandbox.gke.io/runtime",
+                    "operator": "Exists"
+                },
+                {
+                    "key": "node.kubernetes.io/not-ready",
+                    "operator": "Exists",
+                    "effect": "NoExecute",
+                    "toleration_seconds": 300
+                },
+                {
+                    "key": "node.kubernetes.io/unreachable",
+                    "operator": "Exists",
+                    "effect": "NoExecute",
+                    "toleration_seconds": 300
+                }
+            ],
+            "priority": 0,
+            "enable_service_links": true,
+            "preemption_policy": "PreemptLowerPriority"
+        },
+        "status": {
+            "phase": "Running",
+            "conditions": [
+                {
+                    "type": "Initialized",
+                    "status": "True",
+                    "last_probe_time": null,
+                    "last_transition_time": "2022-12-05T18:11:04Z"
+                },
+                {
+                    "type": "Ready",
+                    "status": "False",
+                    "last_probe_time": null,
+                    "last_transition_time": "2022-12-05T18:11:04Z",
+                    "reason": "ContainersNotReady",
+                    "message": "containers with unready status: [f03d008a48]"
+                },
+                {
+                    "type": "ContainersReady",
+                    "status": "False",
+                    "last_probe_time": null,
+                    "last_transition_time": "2022-12-05T18:11:04Z",
+                    "reason": "ContainersNotReady",
+                    "message": "containers with unready status: [f03d008a48]"
+                },
+                {
+                    "type": "PodScheduled",
+                    "status": "True",
+                    "last_probe_time": null,
+                    "last_transition_time": "2022-12-05T18:11:04Z"
+                }
+            ],
+            "host_ip": "10.128.0.49",
+            "pod_ip": "10.20.6.38",
+            "pod_i_ps": [
+                {
+                    "ip": "10.20.6.38"
+                }
+            ],
+            "start_time": "2022-12-05T18:11:04Z",
+            "container_statuses": [
+                {
+                    "name": "f03d008a48",
+                    "state": {
+                        "waiting": {
+                            "reason": "CrashLoopBackOff",
+                            "message": "back-off 40s restarting failed container=f03d008a48 pod=app-deployment-1-54c7f5f884-xcn5h_deployment-1(4992a195-4156-4aa0-a76a-43345621e7ff)"
+                        }
+                    },
+                    "last_state": {
+                        "terminated": {
+                            "exit_code": 127,
+                            "reason": "Error",
+                            "started_at": "2022-12-05T18:11:46Z",
+                            "finished_at": "2022-12-05T18:11:46Z",
+                            "container_id": "containerd://f467da4f32e086c93a92a54917c054ef15e8ab84413b843495c12a277e94b2dd"
+                        }
+                    },
+                    "ready": false,
+                    "restart_count": 3,
+                    "image": "docker.io/library/nginx:latest",
+                    "image_id": "docker.io/library/nginx@sha256:e209ac2f37c70c1e0e9873a5f7231e91dcd83fdf1178d8ed36c2ec09974210ba",
+                    "container_id": "containerd://f467da4f32e086c93a92a54917c054ef15e8ab84413b843495c12a277e94b2dd",
+                    "started": false
+                }
+            ],
+            "qos_class": "Burstable"
+        }
+    }
+]
