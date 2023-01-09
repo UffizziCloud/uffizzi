@@ -5,9 +5,9 @@ class UffizziCore::ContainerRegistry::DockerRegistryService
     def image_available?(credential, image_data)
       client_params = build_client_params(credential, image_data)
       client = UffizziCore::DockerRegistryClient.new(**client_params)
-      response = client.manifests(namespace: image_data[:namespace], image: image_data[:name], tag: image_data[:tag])
+      client.manifests(namespace: image_data[:namespace], image: image_data[:name], tag: image_data[:tag])
 
-      response.status < 400
+      true
     end
 
     def credential_correct?(credential)
