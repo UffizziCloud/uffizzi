@@ -167,11 +167,8 @@ class UffizziCore::Api::Cli::V1::Projects::DeploymentsControllerTest < ActionCon
     )
     container_attributes = attributes_for(
       :container,
-      :with_public_port,
-      :with_named_volume,
       image: image,
       tag: target_branch,
-      healthcheck: { test: ['CMD', 'curl', '-f', 'https://localhost'] },
       receive_incoming_requests: true,
       repo_attributes: repo_attributes,
     )
