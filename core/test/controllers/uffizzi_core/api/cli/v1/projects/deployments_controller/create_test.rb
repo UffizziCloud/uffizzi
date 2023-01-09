@@ -182,7 +182,7 @@ class UffizziCore::Api::Cli::V1::Projects::DeploymentsControllerTest < ActionCon
     stub_dockerhub_repository('library', 'redis')
     creation_source = UffizziCore::Deployment.creation_source.manual
 
-    params = { project_slug: @project.slug, compose_file: {}, dependencies: [], creation_source: creation_source}
+    params = { project_slug: @project.slug, compose_file: {}, dependencies: [], creation_source: creation_source }
 
     post :create, params: params, format: :json
 
