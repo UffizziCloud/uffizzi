@@ -19,6 +19,7 @@ module UffizziCore::Concerns::Models::User
     has_many :accounts, through: :memberships
     has_many :user_projects, dependent: :destroy
     has_many :projects, through: :user_projects
+    has_many :deployments, class_name: UffizziCore::Deployment.name, foreign_key: :deployed_by_id, dependent: :nullify
 
     has_one_attached :avatar
 
@@ -30,14 +31,6 @@ module UffizziCore::Concerns::Models::User
 
     def personal_account
       accounts.find_by(kind: UffizziCore::Account.kind.personal)
-    end
-
-    def active_projects
-      projects.active
-    end
-
-    def deployments
-      UffizziCore::Deployment.where(project_id: active_projects)
     end
 
     def full_name
