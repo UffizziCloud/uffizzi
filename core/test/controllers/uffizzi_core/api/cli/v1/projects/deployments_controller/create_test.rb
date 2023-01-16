@@ -142,6 +142,51 @@ class UffizziCore::Api::Cli::V1::Projects::DeploymentsControllerTest < ActionCon
     deployment = compose_file.deployments.first
     assert_equal(@metadata, deployment.metadata)
     assert_equal(deployment.subdomain.downcase, deployment.subdomain)
+    assert_equal(deployment.creation_source, UffizziCore::Deployment.creation_source.compose_file_manual)
+
+    Sidekiq::Worker.clear_all
+    Sidekiq::Testing.inline!
+  end
+
+  test '#create - from the existing compose file with creation_source' do
+    Sidekiq::Worker.clear_all
+    Sidekiq::Testing.fake!
+
+    file_content = File.read('test/fixtures/files/test-compose-success.yml')
+    encoded_content = Base64.encode64(file_content)
+    compose_file = create(:compose_file, project: @project, added_by: @admin, content: encoded_content)
+    image = generate(:image)
+    image_namespace, image_name = image.split('/')
+    target_branch = generate(:branch)
+    repo_attributes = attributes_for(
+      :repo,
+      :docker_hub,
+      namespace: image_namespace,
+      name: image_name,
+      branch: target_branch,
+    )
+    container_attributes = attributes_for(
+      :container,
+      image: image,
+      tag: target_branch,
+      receive_incoming_requests: true,
+      repo_attributes: repo_attributes,
+    )
+    template_payload = {
+      containers_attributes: [container_attributes],
+    }
+    create(:template, :compose_file_source, compose_file: compose_file, project: @project, added_by: @admin, payload: template_payload)
+    stub_dockerhub_repository('library', 'redis')
+    creation_source = UffizziCore::Deployment.creation_source.manual
+
+    params = { project_slug: @project.slug, compose_file: {}, dependencies: [], creation_source: creation_source }
+
+    post :create, params: params, format: :json
+
+    assert_response :success
+    deployment = compose_file.deployments.first
+
+    assert_equal(deployment.creation_source, creation_source)
 
     Sidekiq::Worker.clear_all
     Sidekiq::Testing.inline!
