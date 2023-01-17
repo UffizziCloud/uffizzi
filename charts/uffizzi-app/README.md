@@ -80,13 +80,13 @@ If this is your first time using Helm, consult their documentation: https://helm
 Begin by adding our Helm repository:
 
 ```
-helm repo add uffizzi-app https://uffizzicloud.github.io/uffizzi_app/
+helm repo add uffizzi https://uffizzicloud.github.io/uffizzi/
 ```
 
 Then install the lastest version as a new release using the values you specified earlier. We recommend isolating Uffizzi in its own Namespace.
 
 ```
-helm install my-uffizzi-app uffizzi-app/uffizzi-app --values myvals.yaml --namespace uffizzi --create-namespace
+helm install my-uffizzi uffizzi/uffizzi --values myvals.yaml --namespace uffizzi --create-namespace
 ```
 
 If you encounter any errors here, tell us about them in [our Slack](https://join.slack.com/t/uffizzi/shared_invite/zt-ffr4o3x0-J~0yVT6qgFV~wmGm19Ux9A).
@@ -113,7 +113,7 @@ You'll need to create at least one User Account to access your Uffizzi installat
 If you did not specify a `firstUser`, or if you want to provision additional Users, you may execute an interactive `rake` task within the application server container:
 
 ```
-kubectl exec -it deploy/my-uffizzi-app-web --namespace uffizzi -- rake uffizzi_core:create_user
+kubectl exec -it deploy/my-uffizzi-web --namespace uffizzi -- rake uffizzi_core:create_user
 Enter User Email (default: user@example.com): user@example.com
 Enter Password:
 Enter Project Name (default: default):
@@ -125,6 +125,6 @@ If everything went well, you can now connect to the Uffizzi API service and begi
 
 ## More Info
 
-See this project's main repository here: https://github.com/UffizziCloud/uffizzi_app
+See this project's main repository here: https://github.com/UffizziCloud/uffizzi
 
 And explore Uffizzi https://uffizzi.com
