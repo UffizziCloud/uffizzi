@@ -99,7 +99,7 @@ class UffizziCore::DeploymentService
     end
 
     def build_pull_request_subdomain(deployment)
-      repo_name, pull_request_number = pull_request_data(deployment)
+      _, repo_name, pull_request_number = pull_request_data(deployment)
       raise UffizziCore::Deployment::LabelsNotFoundError if repo_name.nil? || pull_request_number.nil?
 
       formatted_repo_name = format_url_safe(repo_name.split('/').last.downcase)
@@ -304,13 +304,13 @@ class UffizziCore::DeploymentService
     def github_pull_request_data(deployment)
       github_data = deployment.metadata.dig('labels', 'github')
 
-      [github_data['repository'], github_data.dig('event', 'number')]
+      [:github, github_data['repository'], github_data.dig('event', 'number')]
     end
 
     def gitlab_merge_request_data(deployment)
       gitlab_data = deployment.metadata.dig('labels', 'gitlab')
 
-      [gitlab_data['repo'], gitlab_data.dig('merge_request', 'number')]
+      [:gitlab, gitlab_data['repo'], gitlab_data.dig('merge_request', 'number')]
     end
 
     def format_url_safe(name)
