@@ -20,7 +20,7 @@ module UffizziCore::Concerns::Models::ComposeFile
     has_many :host_volume_files, dependent: :destroy
     has_many :deployments, dependent: :nullify
 
-    enumerize :kind, in: [:main, :temporary], predicates: true, scope: :shallow, default: :main
+    enumerize :kind, in: UffizziCore.compose_file_kinds, predicates: true, scope: :shallow, default: :main
 
     validates :source, presence: true
     validate :main_compose_file_uniqueness, on: :create, if: -> { kind.main? }
