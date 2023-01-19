@@ -27,7 +27,7 @@ module UffizziCore::Concerns::Models::Deployment
 
     validates :kind, presence: true
 
-    enumerize :creation_source, in: [:manual, :continuous_preview, :compose_file_manual, :compose_file_continuous_preview],
+    enumerize :creation_source, in: [:manual, :demo, :continuous_preview, :compose_file_manual, :compose_file_continuous_preview],
                                 predicates: true, scope: true, default: :manual
 
     accepts_nested_attributes_for :containers, allow_destroy: true
