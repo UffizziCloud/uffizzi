@@ -259,6 +259,7 @@ ActiveRecord::Schema.define(version: 2023_02_20_123146) do
     t.text "role", null: false
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
+    t.string "state"
     t.index ["account_id"], name: "index_memberships_on_account_id"
     t.index ["user_id", "account_id"], name: "index_memberships_on_user_id_and_account_id"
     t.index ["user_id"], name: "index_memberships_on_user_id"

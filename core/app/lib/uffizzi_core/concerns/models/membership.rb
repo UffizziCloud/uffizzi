@@ -4,6 +4,8 @@ module UffizziCore::Concerns::Models::Membership
   extend ActiveSupport::Concern
 
   included do
+    include AASM
+    include UffizziCore::StateMachineConcern
     include UffizziCore::MembershipRepo
     extend Enumerize
 
@@ -16,5 +18,18 @@ module UffizziCore::Concerns::Models::Membership
     belongs_to :user
 
     validates :role, presence: true
+
+    aasm(:state) do
+      state :active, initial: true
+      state :blocked
+
+      event :activate do
+        transitions from: [:blocked], to: :active
+      end
+
+      event :block do
+        transitions from: [:active], to: :blocked
+      end
+    end
   end
 end
