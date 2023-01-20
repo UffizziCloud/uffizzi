@@ -93,9 +93,11 @@ Uffizzi does not replace GitHub Actions or any other CI provider. Uffizzi previe
 
 <p>If your application requires test data, you will need to seed your database when your Preview Environment is created. Here are two methods for seeding databases:</p>
 <ol>
-  <li>(Recommended) Have your application perform a data migration on start-up. You can add a conditional to do this only if the database is uninitialized.</li>
-  <li>Bundle test data into the database image itself. This method is only recommended for small datasets (< 50MB), as it will increase the size of your image and deployment times.</li>
-</ol>
+  <li>Load an SQL dump file upon container initialization.</li>
+  <li>Use a language/framework-specific migration tool such as <code>db:migrate</code> for Rails or <code>manage.py loaddata</code> for Django.</li>
+</ol>  
+
+<a href="https://www.uffizzi.com/preview-environments-guide/database-seeding">Learn more about database seeding in Uffizzi</a>
 </details>
 
 <details><summary><b>What do you mean by "environments"?</b></summary>
