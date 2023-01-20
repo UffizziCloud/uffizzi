@@ -5,6 +5,7 @@ class UffizziCore::DockerRegistryClient
     'application/vnd.oci.image.index.v1+json',
     'application/vnd.oci.image.manifest.v1+json',
     'application/vnd.docker.distribution.manifest.v2+json',
+    '*/*',
   ].freeze
 
   def initialize(registry_url:, username: nil, password: nil)
