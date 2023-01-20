@@ -80,7 +80,7 @@ If this is your first time using Helm, consult their documentation: https://helm
 Begin by adding our Helm repository:
 
 ```
-helm repo add uffizzi-app https://uffizzicloud.github.io/uffizzi_app/
+helm repo add uffizzi https://uffizzicloud.github.io/uffizzi/
 ```
 
 Then install the lastest version as a new release using the values you specified earlier. We recommend isolating Uffizzi in its own Namespace.
