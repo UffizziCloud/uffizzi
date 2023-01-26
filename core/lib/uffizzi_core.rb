@@ -64,4 +64,5 @@ module UffizziCore
   mattr_accessor :user_creation_sources, default: [:system, :online_registration, :google, :sso]
   mattr_accessor :user_project_roles, default: [:admin, :developer, :viewer]
   mattr_accessor :account_sources, default: [:manual]
+  mattr_accessor :compose_file_kinds, default: [:main, :temporary]
 end
