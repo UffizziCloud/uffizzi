@@ -24,11 +24,11 @@ dependencies:
     version: "1.0.0"
     repository: https://uffizzicloud.github.io/uffizzi_controller/
   - name: postgresql
-    version: "~11.1.29"
+    version: "12.1.11"
     repository: https://charts.bitnami.com/bitnami
     condition: postgresql.enabled
   - name: redis
-    version: "~16.8.10"
+    version: "17.6.0"
     repository: https://charts.bitnami.com/bitnami
     condition: redis.enabled
 maintainers:
