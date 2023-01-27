@@ -43,13 +43,6 @@ module UffizziCore::DependencyInjectionConcern
     module_class(:deployment_module)
   end
 
-  def default_cli_deployment_creation_source
-    creation_source = UffizziCore.dependencies[:default_cli_deployment_creation_source]
-    return UffizziCore::Deployment.creation_source.compose_file_manual if creation_source.nil?
-
-    UffizziCore::Deployment.creation_source.public_send(creation_source)
-  end
-
   private
 
   def module_exists?(module_name)
