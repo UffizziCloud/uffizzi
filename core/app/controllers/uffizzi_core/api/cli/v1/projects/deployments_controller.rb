@@ -4,7 +4,6 @@
 
 class UffizziCore::Api::Cli::V1::Projects::DeploymentsController < UffizziCore::Api::Cli::V1::Projects::ApplicationController
   include UffizziCore::Api::Cli::V1::Projects::DeploymentsControllerModule
-  include UffizziCore::DependencyInjectionConcern
 
   before_action :authorize_uffizzi_core_api_cli_v1_projects_deployments
   before_action :check_account_state, only: [:create, :update]
@@ -189,7 +188,7 @@ class UffizziCore::Api::Cli::V1::Projects::DeploymentsController < UffizziCore::
   end
 
   def creation_source_params
-    params[:creation_source] || default_cli_deployment_creation_source
+    params[:creation_source]
   end
 
   def render_invalid_file
