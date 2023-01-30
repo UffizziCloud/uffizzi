@@ -12,6 +12,8 @@ class UffizziCore::DeploymentService
   }.freeze
 
   class << self
+    include UffizziCore::DependencyInjectionConcern
+
     def create_from_compose(compose_file, project, user, params)
       deployment_attributes = ActionController::Parameters.new(compose_file.template.payload)
       deployment_form = UffizziCore::Api::Cli::V1::Deployment::CreateForm.new(deployment_attributes)
