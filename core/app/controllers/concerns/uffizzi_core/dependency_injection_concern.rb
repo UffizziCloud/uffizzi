@@ -37,6 +37,12 @@ module UffizziCore::DependencyInjectionConcern
     module_class(:notification_module)
   end
 
+  def deployment_module
+    return unless module_exists?(:deployment_module)
+
+    module_class(:deployment_module)
+  end
+
   private
 
   def module_exists?(module_name)
