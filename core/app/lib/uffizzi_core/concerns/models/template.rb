@@ -18,7 +18,6 @@ module UffizziCore::Concerns::Models::Template
     enumerize :creation_source, in: [:manual, :compose_file, :system], predicates: true, scope: true
 
     validates :name, presence: true
-    validates :name, uniqueness: { scope: :project }, if: -> { compose_file.blank? || compose_file.kind.main? }
 
     def valid_containers_memory_limit?
       containers_attributes = payload['containers_attributes']
