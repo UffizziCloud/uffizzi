@@ -33,8 +33,6 @@ class UffizziCore::Api::Cli::V1::Deployment::UpdateForm < UffizziCore::Deploymen
                :kind,
                :dockerfile_path,
                :dockerfile_context_path,
-               :deploy_preview_when_pull_request_is_opened,
-               :delete_preview_when_pull_request_is_closed,
                :deploy_preview_when_image_tag_is_created,
                :delete_preview_when_image_tag_is_updated,
                :share_to_github,

@@ -9,8 +9,6 @@ FactoryBot.define do
     branch
     description
     repository_id { generate(:number) }
-    deploy_preview_when_pull_request_is_opened { false }
-    delete_preview_when_pull_request_is_closed { false }
     deploy_preview_when_image_tag_is_created { false }
     delete_preview_when_image_tag_is_updated { false }
     delete_preview_after { nil }
