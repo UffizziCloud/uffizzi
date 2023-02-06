@@ -1,7 +1,7 @@
 PATH
   remote: core
   specs:
-    uffizzi_core (2.1.1)
+    uffizzi_core (2.1.2)
       aasm
       actionpack (~> 6.1.0)
       active_model_serializers
@@ -36,7 +36,7 @@ PATH
 GEM
   remote: https://rubygems.org/
   specs:
-    aasm (5.4.0)
+    aasm (5.5.0)
       concurrent-ruby (~> 1.0)
     actioncable (6.1.5)
       actionpack (= 6.1.5)
@@ -109,7 +109,7 @@ GEM
     ast (2.4.2)
     awesome_print (1.9.2)
     aws-eventstream (1.2.0)
-    aws-partitions (1.703.0)
+    aws-partitions (1.705.0)
     aws-sdk-core (3.170.0)
       aws-eventstream (~> 1, >= 1.0.2)
       aws-partitions (~> 1, >= 1.651.0)
@@ -305,11 +305,11 @@ GEM
       i18n
     redis (4.6.0)
     regexp_parser (2.2.1)
-    responders (3.0.1)
-      actionpack (>= 5.0)
-      railties (>= 5.0)
+    responders (3.1.0)
+      actionpack (>= 5.2)
+      railties (>= 5.2)
     rexml (3.2.5)
-    rolify (6.0.0)
+    rolify (6.0.1)
     rswag-api (2.8.0)
       railties (>= 3.1, < 7.1)
     rswag-ui (2.8.0)
