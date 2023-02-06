@@ -80,11 +80,14 @@ bin/rails test
 
 In order to add a new migration do the following steps:
 
-1. Add a new migration inside the core
+1. Add a new migration to `core/db/migrate`.
 2. Run the command inside the `web` container
-
 ```bash
 rake uffizzi_core:install
 ```
-
 This command copies the new migration to the `db/migrate` folder
+
+3. Migrate both `core` and `web` with 
+```
+bundler exec rails db:migrate
+```
