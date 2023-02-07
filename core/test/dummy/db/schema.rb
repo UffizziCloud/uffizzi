@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2022_09_27_113647) do
+ActiveRecord::Schema.define(version: 2023_02_07_061251) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -331,13 +331,13 @@ ActiveRecord::Schema.define(version: 2022_09_27_113647) do
     t.string "dockerfile_path"
     t.jsonb "args"
     t.string "dockerfile_context_path"
-    t.boolean "deploy_preview_when_pull_request_is_opened"
-    t.boolean "delete_preview_when_pull_request_is_closed"
     t.boolean "deploy_preview_when_image_tag_is_created"
     t.boolean "delete_preview_when_image_tag_is_updated"
     t.boolean "share_to_github"
     t.integer "delete_preview_after"
     t.string "tag_pattern_deprecated"
+    t.boolean "deploy_preview_when_pull_request_is_opened"
+    t.boolean "delete_preview_when_pull_request_is_closed"
     t.index ["project_id"], name: "index_repos_on_project_id"
   end
 
