@@ -1,6 +1,6 @@
 apiVersion: v2
 name: uffizzi-app
-version: 1.2.0
+version: 1.2.1
 kubeVersion: ">= 1.21.0-0" # https://issuetracker.google.com/issues/77503699
 description: "Uffizzi is an open-source engine for creating lightweight, ephemeral test environments for APIs and full-stack applications. Uffizzi enables teams to preview new features before merging."
 type: application
@@ -18,17 +18,17 @@ keywords:
   - cp
 home: https://uffizzi.com/
 sources:
-  - https://github.com/UffizziCloud/uffizzi_app
+  - https://github.com/UffizziCloud/uffizzi
 dependencies:
   - name: uffizzi-controller
     version: "1.0.0"
     repository: https://uffizzicloud.github.io/uffizzi_controller/
   - name: postgresql
-    version: "~11.1.29"
+    version: "12.1.11"
     repository: https://charts.bitnami.com/bitnami
     condition: postgresql.enabled
   - name: redis
-    version: "~16.8.10"
+    version: "17.6.0"
     repository: https://charts.bitnami.com/bitnami
     condition: redis.enabled
 maintainers:

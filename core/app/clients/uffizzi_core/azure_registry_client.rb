@@ -25,18 +25,21 @@ class UffizziCore::AzureRegistryClient
     RequestResult.new(result: response.body)
   end
 
-  def authentificated?
+  def authenticated?
     token.present?
   end
 
   private
 
   def build_connection(registry_url, username, password)
-    Faraday.new(registry_url) do |conn|
-      conn.request(:basic_auth, username, password)
-      conn.request(:json)
-      conn.response(:json)
-      conn.adapter(Faraday.default_adapter)
+    connection = Faraday.new(registry_url) do |faraday|
+      faraday.request(:basic_auth, username, password)
+      faraday.request(:json)
+      faraday.response(:json)
+      faraday.response(:raise_error)
+      faraday.adapter(Faraday.default_adapter)
     end
+
+    connection.extend(UffizziCore::ContainerRegistryRequestDecorator)
   end
 end

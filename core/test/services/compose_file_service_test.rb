@@ -486,7 +486,7 @@ class UffizziCore::ComposeFileServiceTest < ActiveSupport::TestCase
     assert_equal(Settings.compose.default_memory, memory_limit)
   end
 
-  test '#build_template_attributes - public image and no credetial exists' do
+  test '#build_template_attributes - public image and no credential exists' do
     content = file_fixture('files/compose_files/dockerhub_services/nginx.yml').read
     parsed_data = UffizziCore::ComposeFileService.parse(content)
 
@@ -495,7 +495,7 @@ class UffizziCore::ComposeFileServiceTest < ActiveSupport::TestCase
     assert_requested(stubbed_dockerhub_repository)
   end
 
-  test '#build_template_attributes - private image and no credetial exists' do
+  test '#build_template_attributes - private image and no credential exists' do
     content = file_fixture('files/compose_files/dockerhub_services/nginx.yml').read
     parsed_data = UffizziCore::ComposeFileService.parse(content)
 
@@ -723,5 +723,15 @@ class UffizziCore::ComposeFileServiceTest < ActiveSupport::TestCase
     assert_equal(UffizziCore::ComposeFile::Parsers::Services::VolumesParserService::NAMED_VOLUME_TYPE, first_volume[:type])
     assert_equal(content_data.dig('services', 'nginx', 'volumes').first.split(':').first, first_volume[:source])
     assert_equal(content_data.dig('services', 'nginx', 'volumes').first.split(':').second, first_volume[:target])
+  end
+
+  test '#parse - handle Psych::SyntaxError' do
+    content = file_fixture('files/compose_files/compose_with_syntax_error.yml').read
+
+    e = assert_raise(UffizziCore::ComposeFile::ParseError) do
+      UffizziCore::ComposeFileService.parse(content)
+    end
+
+    assert_equal("Syntax error: could not find expected ':' while scanning a simple key at line 5 column 3", e.message)
   end
 end

@@ -14,9 +14,7 @@ class UffizziCore::ContainerRegistry::DockerHubService
     def image_available?(credential, image_data)
       namespace = image_data[:namespace]
       repo_name = image_data[:name]
-      client = UffizziCore::DockerHubClient.new(credential)
-      response = client.repository(namespace: namespace, image: repo_name)
-      return false if not_found?(response)
+      client(credential).repository(namespace: namespace, image: repo_name)
 
       true
     end
@@ -24,9 +22,9 @@ class UffizziCore::ContainerRegistry::DockerHubService
     def user_client(credential)
       return @client if @client&.credential&.username == credential.username
 
-      @client = UffizziCore::DockerHubClient.new(credential)
+      @client = client(credential)
 
-      unless @client.authentificated?
+      unless @client.authenticated?
         Rails.logger.warn("broken credentials, DockerHubService credential_id=#{credential.id}")
         credential.unauthorize! unless credential.unauthorized?
       end
@@ -35,24 +33,20 @@ class UffizziCore::ContainerRegistry::DockerHubService
     end
 
     def digest(credential, image, tag)
-      docker_hub_client = UffizziCore::DockerHubClient.new(credential)
+      docker_hub_client = client(credential)
       token = docker_hub_client.get_token(image).result.token
       response = docker_hub_client.digest(image: image, tag: tag, token: token)
       response.headers['docker-content-digest']
     end
 
     def credential_correct?(credential)
-      client(credential).authentificated?
+      client(credential).authenticated?
     end
 
     private
 
     def client(credential)
       UffizziCore::DockerHubClient.new(credential)
-    end
-
-    def not_found?(response)
-      response.status == 404
     end
   end
 end

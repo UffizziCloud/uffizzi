@@ -8,16 +8,6 @@ class UffizziCore::Api::Cli::V1::Projects::DeploymentsControllerTest < ActionCon
     @account = @admin.personal_account
     @project = create(:project, :with_members, account: @admin.personal_account, members: [@admin])
     @deployment = create(:deployment, project: @project, state: UffizziCore::Deployment::STATE_ACTIVE)
-    @metadata = {
-      'labels' => {
-        'github' => {
-          'repository' => 'feature/#24_my_awesome_feature',
-          'pull_request' => {
-            'number' => '24',
-          },
-        },
-      },
-    }
 
     @deployment.update!(subdomain: UffizziCore::DeploymentService.build_subdomain(@deployment))
     @credential = create(:credential, :github_container_registry, account: @account)
@@ -299,6 +289,18 @@ class UffizziCore::Api::Cli::V1::Projects::DeploymentsControllerTest < ActionCon
   end
 
   test '#deploy_containers create a new activity items' do
+    metadata = {
+      'labels' => {
+        'github' => {
+          'repository' => 'feature/#24_my_awesome_feature',
+          'event' => {
+            'number' => '24',
+          },
+        },
+      },
+    }
+    @deployment.update!(metadata: metadata)
+
     UffizziCore::ControllerService.expects(:deployment_exists?).at_least(1).returns(true)
 
     digest_data = json_fixture('files/dockerhub/digest.json')
@@ -461,6 +463,10 @@ class UffizziCore::Api::Cli::V1::Projects::DeploymentsControllerTest < ActionCon
           name: 'UFFIZZI_DOMAIN',
           value: @deployment.preview_url,
         },
+        {
+          name: 'UFFIZZI_PREDICTABLE_URL',
+          value: '',
+        },
       ],
       container_host_volume_files: [
         {
@@ -504,6 +510,10 @@ class UffizziCore::Api::Cli::V1::Projects::DeploymentsControllerTest < ActionCon
         {
           name: 'PORT',
           value: '80',
+        },
+        {
+          name: 'UFFIZZI_PREDICTABLE_URL',
+          value: '',
         },
       ],
     }

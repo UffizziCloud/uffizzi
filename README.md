@@ -26,6 +26,7 @@ Uffizzi is designed to integrate with any CI platform as a step in your pipeline
 
 - Pull request environments  
 - Debugging environments  
+- Hotfix environments  
 - Demo environments  
 - Release environments
 - Staging environments  
@@ -48,7 +49,7 @@ See our high-level [project roadmap](https://github.com/orgs/UffizziCloud/projec
 
 There are two options to get Uffizzi:  
 
-1. **Use [Uffizzi Cloud](https://uffizzi.com) (SaaS)** - This is fastest and easiest way to get started with Uffizzi. Uffizzi Cloud is free for small teams and is recommended for those who are new to Uffizzi. It also includes some premium options like single sign-on (SSO) and password-protected URLs for your Preview Environments. If you want to use Uffizzi Cloud, you can follow this [step-by-step guide](https://docs.uffizzi.com/set-up-uffizzi-for-your-application) to configure Preview Environments for your own application.  
+1. **Use [Uffizzi Cloud](https://uffizzi.com) (SaaS)** - This is fastest and easiest way to get started and includes two free concurrent Preview Environments for your team. It also includes some premium options like single sign-on (SSO) and password-protected preview URLs. If you want to use Uffizzi Cloud, you can follow this [step-by-step guide](https://docs.uffizzi.com/set-up-uffizzi-for-your-application) to configure Preview Environments for your own application.  
 
 2. **Install open-source Uffizzi on your own Kubernetes cluster** - Alternatively, you can install Uffizzi on your own cluster by following the [self-hosted installation guide](INSTALL.md).
 
@@ -67,14 +68,36 @@ There are two options to get Uffizzi:
 
 ## FAQs
 
+<details><summary><b>My team tests locally. Why do I need Preview Environments?</b></summary>
+<ol>
+  <li>Preview Environments more closely resemble production. Uffizzi deploys images built from your CI pipeline—similar to the ones deployed to a production environment. Uffizzi Preview Environments also include a full network stack, including a domain and TLS certificate.</li>
+  <li>Preview Environments provide a quality gate to help keep dirty code out of your main branch. Teams can test new features or bug fixes in clean, isolated environments.</li>
+  <li>Public preview URLs allow every stakeholder on a team to review features and bug fixes. This helps shorten the feedback loop between developer and reviewer/tester, resulting in faster releases.</li>
+</ol>
+</details>
+
+<details><summary><b>How is Uffizzi different from Codespaces, Gitpod, etc.?</b></summary>
+<p>Codespaces, Gitpod, and similar tools provide development environments hosted in the cloud. They let you open code editors like VS Code in your browser and make it easy to standardize development environments for your whole team. They can also provide developers access to more powerful machines than typically available on a laptop or desktop.</p>
+
+<p>Uffizzi, by contrast, is downstream of these tools—i.e., Uffizzi Preview Environments are intended to be used once your code is ready for review. When added to your CI pipeline, Uffizzi will create a Preview Environment after a pull request is opened. Uffizzi works with whatever development method you choose—whether local or with cloud-based development environments like Gitpod or Codespaces.</p>
+
+<p>Uffizzi is most useful for peer review, team leaders, QA, or anyone testing branches before they're merged with a shared branch such as main or master. </p>
+</details>
+
+<details><summary><b>How is Uffizzi different from GitHub Actions (or other CI providers)?</b></summary>
+Uffizzi does not replace GitHub Actions or any other CI provider. Uffizzi previews are meant to be added as a step in your existing CI pipeline, after your container images are built and pushed to a container registry.
+</details>
+
 <details><summary><b>What about my database?</b></summary>
 <p>All services defined by your Docker Compose file are deployed to Preview Environments as containers—this includes databases, caches, and other datastores. This means that even if you use a managed database service like Amazon RDS for production, you should use a database <i>image</i> in your Compose (See <a href="https://github.com/UffizziCloud/quickstart/blob/fc0afa8c7b62c342bdf5fda8f5dc5b25c7a23dab/docker-compose.uffizzi.yml#L14-L23">this example</a> that uses a <code>postgres</code> image from Docker Hub).</p>
 
 <p>If your application requires test data, you will need to seed your database when your Preview Environment is created. Here are two methods for seeding databases:</p>
 <ol>
-  <li>(Recommended) Have your application perform a data migration on start-up. You can add a conditional to do this only if the database is uninitialized.</li>
-  <li>Bundle test data into the database image itself. This method is only recommended for small datasets (< 50MB), as it will increase the size of your image and deployment times.</li>
-</ol>
+  <li>Load an SQL dump file upon container initialization.</li>
+  <li>Use a language/framework-specific migration tool such as <code>db:migrate</code> for Rails or <code>manage.py loaddata</code> for Django.</li>
+</ol>  
+
+<a href="https://www.uffizzi.com/preview-environments-guide/database-seeding">Learn more about database seeding in Uffizzi</a>
 </details>
 
 <details><summary><b>What do you mean by "environments"?</b></summary>
@@ -91,10 +114,6 @@ Uffizzi is container-centric, so in general, if your application can be containe
 
 <details><summary><b>How can my application services communicate?</b></summary>
 Just like when you run <code>docker-compose up</code> locally, all the <code>services</code> defined in your Compose share a local network and can communicate via <code>localhost</code>. Application instances that belong to different Preview Environments may only communicate via the public Internet.
-</details>
-
-<details><summary><b>How is Uffizzi different from GitHub Actions (or other CI providers)?</b></summary>
-Uffizzi does not replace GitHub Actions or any other CI provider. Uffizzi previews are meant to be added as a step in your existing CI pipeline, after your container images are built and pushed to a container registry.
 </details>
 
 <details><summary><b>Can I connect Uffizzi with Netlify/Vercel?</b></summary>

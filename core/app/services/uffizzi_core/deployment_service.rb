@@ -12,36 +12,37 @@ class UffizziCore::DeploymentService
   }.freeze
 
   class << self
-    def create_from_compose(compose_file, project, user, metadata)
+    include UffizziCore::DependencyInjectionConcern
+
+    def create_from_compose(compose_file, project, user, params)
       deployment_attributes = ActionController::Parameters.new(compose_file.template.payload)
       deployment_form = UffizziCore::Api::Cli::V1::Deployment::CreateForm.new(deployment_attributes)
       deployment_form.assign_dependences!(project, user)
       deployment_form.compose_file = compose_file
-      deployment_form.creation_source = UffizziCore::Deployment.creation_source.compose_file_manual
-      deployment_form.metadata = metadata || {}
+      deployment_form.creation_source = params[:creation_source] || UffizziCore::Deployment.creation_source.compose_file_manual
+      deployment_form.metadata = params[:metadata] || {}
 
       run_deployment_creation_tasks(deployment_form) if deployment_form.save
 
       deployment_form
     end
 
-    def update_from_compose(compose_file, project, user, deployment, metadata)
+    def update_from_compose(compose_file, project, user, deployment, metadata = {})
       deployment_attributes = ActionController::Parameters.new(compose_file.template.payload)
 
       deployment_form = UffizziCore::Api::Cli::V1::Deployment::UpdateForm.new(deployment_attributes)
       deployment_form.assign_dependences!(project, user)
       deployment_form.compose_file = compose_file
-      deployment_form.metadata = metadata || {}
+      deployment_form.metadata = metadata
 
       ActiveRecord::Base.transaction do
         deployment.containers.destroy_all
         deployment.compose_file.destroy! if deployment.compose_file&.kind&.temporary?
+        deployment.activate unless deployment.active?
         params = {
           containers: deployment_form.containers,
           compose_file_id: compose_file.id,
-          creation_source: UffizziCore::Deployment.creation_source.compose_file_manual,
           metadata: deployment_form.metadata,
-          state: :active,
         }
         deployment.update!(params)
       end
@@ -97,7 +98,7 @@ class UffizziCore::DeploymentService
     end
 
     def build_pull_request_subdomain(deployment)
-      repo_name, pull_request_number = pull_request_data(deployment)
+      _, repo_name, pull_request_number = pull_request_data(deployment)
       raise UffizziCore::Deployment::LabelsNotFoundError if repo_name.nil? || pull_request_number.nil?
 
       formatted_repo_name = format_url_safe(repo_name.split('/').last.downcase)
@@ -274,6 +275,9 @@ class UffizziCore::DeploymentService
         envs.push('name' => 'UFFIZZI_URL', 'value' => "https://#{deployment.preview_url}")
         envs.push('name' => 'UFFIZZI_DOMAIN', 'value' => deployment.preview_url)
 
+        preview_url = "https://#{deployment_module.build_preview_url(deployment)}" if deployment_module.present?
+        envs.push('name' => 'UFFIZZI_PREDICTABLE_URL', 'value' => preview_url || '')
+
         container.variables = [] if container.variables.nil?
 
         container.variables.push(*envs)
@@ -302,13 +306,13 @@ class UffizziCore::DeploymentService
     def github_pull_request_data(deployment)
       github_data = deployment.metadata.dig('labels', 'github')
 
-      [github_data['repository'], github_data.dig('event', 'number')]
+      [:github, github_data['repository'], github_data.dig('event', 'number')]
     end
 
     def gitlab_merge_request_data(deployment)
       gitlab_data = deployment.metadata.dig('labels', 'gitlab')
 
-      [gitlab_data['repo'], gitlab_data.dig('merge_request', 'number')]
+      [:gitlab, gitlab_data['repo'], gitlab_data.dig('merge_request', 'number')]
     end
 
     def format_url_safe(name)

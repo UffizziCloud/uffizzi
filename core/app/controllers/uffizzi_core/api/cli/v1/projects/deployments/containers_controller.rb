@@ -21,4 +21,12 @@ class UffizziCore::Api::Cli::V1::Projects::Deployments::ContainersController <
 
     respond_with containers
   end
+
+  def k8s_container_description
+    deployment ||= resource_project.deployments.enabled.find(params[:deployment_id])
+    container = deployment.containers.active.find_by!(service_name: params[:container_name])
+    last_state = UffizziCore::ContainerService.last_state(container)
+
+    render json: { last_state: last_state }
+  end
 end

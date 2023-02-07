@@ -1,14 +1,24 @@
 # frozen_string_literal: true
 
 class UffizziCore::DockerRegistryClient
+  ACCEPTED_TYPES = [
+    'application/vnd.oci.image.index.v1+json',
+    'application/vnd.oci.image.manifest.v1+json',
+    'application/vnd.docker.distribution.manifest.v1+json',
+    'application/vnd.docker.distribution.manifest.v2+json',
+    'application/vnd.docker.distribution.manifest.list.v2+json',
+    '*/*',
+  ].freeze
+
   def initialize(registry_url:, username: nil, password: nil)
     @registry_url = registry_url
     @connection = build_connection(@registry_url, username, password)
   end
 
   def authenticated?
-    response = @connection.head('/v2/')
-    response.status == 200
+    @connection.head('/v2/')
+
+    true
   end
 
   def manifests(image:, tag:, namespace: nil)
@@ -22,12 +32,16 @@ class UffizziCore::DockerRegistryClient
   private
 
   def build_connection(registry_url, username, password)
-    Faraday.new(registry_url) do |conn|
-      conn.request(:basic_auth, username, password) if username.present? && password.present?
-      conn.request(:json)
-      conn.response(:json)
-      conn.response(:follow_redirects)
-      conn.adapter(Faraday.default_adapter)
+    connection = Faraday.new(registry_url) do |faraday|
+      faraday.headers['Accept'] = ACCEPTED_TYPES
+      faraday.request(:basic_auth, username, password) if username.present? && password.present?
+      faraday.request(:json)
+      faraday.response(:json)
+      faraday.response(:follow_redirects)
+      faraday.response(:raise_error)
+      faraday.adapter(Faraday.default_adapter)
     end
+
+    connection.extend(UffizziCore::ContainerRegistryRequestDecorator)
   end
 end
