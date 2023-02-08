@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 # This migration comes from uffizzi_core (originally 20230203071725)
 class DeleteObsoleteFieldsFromRepo < ActiveRecord::Migration[6.1]
   def change
