@@ -3,7 +3,10 @@
 # @resource Project
 
 class UffizziCore::Api::Cli::V1::ProjectsController < UffizziCore::Api::Cli::V1::ApplicationController
+  include UffizziCore::Api::Cli::V1::ProjectsControllerModule
+
   before_action :authorize_uffizzi_core_api_cli_v1_projects
+  after_action :update_show_trial_quota_exceeded_warning, only: :destroy
 
   # Get projects of current user
   #
@@ -48,12 +51,9 @@ class UffizziCore::Api::Cli::V1::ProjectsController < UffizziCore::Api::Cli::V1:
     params.require(:project)
   end
 
-  def resource_project
-    @resource_project ||= current_user.projects.find_by(slug: params[:slug])
-  end
-
   def policy_context
-    account = resource_project&.account || current_user.default_account
+    current_project = current_user.projects.find_by(slug: params[:slug])
+    account = current_project&.account || current_user.default_account
 
     UffizziCore::AccountContext.new(current_user, user_access_module, account, params)
   end
