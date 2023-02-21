@@ -220,7 +220,7 @@ class UffizziCore::DeploymentService
         envs.push('name' => 'UFFIZZI_URL', 'value' => "https://#{deployment.preview_url}")
         envs.push('name' => 'UFFIZZI_DOMAIN', 'value' => deployment.preview_url)
 
-        preview_url = "https://#{deployment_module.build_preview_url(deployment)}" if deployment_module.present?
+        preview_url = "https://#{domain_module.build_preview_url(deployment)}" if domain_module.present?
         envs.push('name' => 'UFFIZZI_PREDICTABLE_URL', 'value' => preview_url || '')
 
         container.variables = [] if container.variables.nil?
