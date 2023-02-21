@@ -72,7 +72,7 @@ class UffizziCore::ActivityItemService
     def completed?(activity_item)
       return true if activity_item.nil?
 
-      last_event = activity_item.events.last
+      last_event = activity_item.events.order_by_id.last
       COMPLETED_STATES.include?(last_event.state)
     end
 
