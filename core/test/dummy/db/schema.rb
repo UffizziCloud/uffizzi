@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2023_02_07_061251) do
+ActiveRecord::Schema.define(version: 2023_02_20_123146) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -164,6 +164,7 @@ ActiveRecord::Schema.define(version: 2023_02_07_061251) do
     t.jsonb "healthcheck"
     t.jsonb "volumes"
     t.string "additional_subdomains", default: [], array: true
+    t.datetime "apply_at", precision: 6
     t.index ["deployment_id"], name: "index_containers_on_deployment_id"
     t.index ["repo_id"], name: "index_containers_on_repo_id"
   end
@@ -258,6 +259,7 @@ ActiveRecord::Schema.define(version: 2023_02_07_061251) do
     t.text "role", null: false
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
+    t.string "state"
     t.index ["account_id"], name: "index_memberships_on_account_id"
     t.index ["user_id", "account_id"], name: "index_memberships_on_user_id_and_account_id"
     t.index ["user_id"], name: "index_memberships_on_user_id"
@@ -331,13 +333,13 @@ ActiveRecord::Schema.define(version: 2023_02_07_061251) do
     t.string "dockerfile_path"
     t.jsonb "args"
     t.string "dockerfile_context_path"
+    t.boolean "deploy_preview_when_pull_request_is_opened"
+    t.boolean "delete_preview_when_pull_request_is_closed"
     t.boolean "deploy_preview_when_image_tag_is_created"
     t.boolean "delete_preview_when_image_tag_is_updated"
     t.boolean "share_to_github"
     t.integer "delete_preview_after"
     t.string "tag_pattern_deprecated"
-    t.boolean "deploy_preview_when_pull_request_is_opened"
-    t.boolean "delete_preview_when_pull_request_is_closed"
     t.index ["project_id"], name: "index_repos_on_project_id"
   end
 

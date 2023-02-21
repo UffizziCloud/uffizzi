@@ -15,13 +15,25 @@ class UffizziCore::ManageActivityItemsService
   end
 
   def container_status_items
-    network_connectivities = build_network_connectivities
-    containers_replicas = build_containers_replicas
+    build_container_status_items(builded_network_connectivities, build_containers_replicas)
+  end
 
-    build_container_status_items(network_connectivities, containers_replicas)
+  def k8s_containers_apply_at_timestamp
+    data = builded_network_connectivities.last
+    return if data.nil?
+
+    apply_at = data[:items].last&.fetch(:apply_at, nil)
+
+    return if apply_at.nil?
+
+    apply_at.to_i
   end
 
   private
+
+  def builded_network_connectivities
+    @builded_network_connectivities ||= build_network_connectivities
+  end
 
   def build_network_connectivities
     containers.with_public_access.map do |container|
@@ -36,7 +48,7 @@ class UffizziCore::ManageActivityItemsService
     network_connectivities.map do |network_connectivity|
       type, value = network_connectivity
 
-      { type: type, status: value.status }
+      { type: type, status: value.status, apply_at: value.apply_at }
     end
   end
 
@@ -127,7 +139,7 @@ class UffizziCore::ManageActivityItemsService
     network_connectivity = Hashie::Mash.new(JSON.parse(deployment_network_connectivity))
     containers_network_connectivity = network_connectivity&.containers
 
-    containers_network_connectivity[container.id.to_s] if !containers_network_connectivity.nil?
+    containers_network_connectivity[container.id.to_s] unless containers_network_connectivity.nil?
   end
 
   def deployment_network_connectivity

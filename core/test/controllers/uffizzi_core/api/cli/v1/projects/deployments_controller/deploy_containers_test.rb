@@ -323,6 +323,9 @@ class UffizziCore::Api::Cli::V1::Projects::DeploymentsControllerTest < ActionCon
     nginx_name = 'nginx'
     nginx_namespace = 'library'
 
+    freeze_time
+    current_time = Time.now
+
     host_volume_file_attrs_app_dir = {
       type: 'host',
       source: './some_app_dir',
@@ -415,6 +418,9 @@ class UffizziCore::Api::Cli::V1::Projects::DeploymentsControllerTest < ActionCon
                            **{ deployment: @deployment, repo: app_repo }.merge(container_app_attrs))
     nginx_container = create(:container, :continuously_deploy_enabled,
                              **{ deployment: @deployment, repo: nginx_repo }.merge(container_nginx_attrs))
+
+    app_container.update!(apply_at: current_time)
+    nginx_container.update!(apply_at: current_time)
 
     container_host_volume_files_app_dir = create(:container_host_volume_file, container: app_container,
                                                                               host_volume_file: host_volume_file_app_dir,
@@ -518,10 +524,22 @@ class UffizziCore::Api::Cli::V1::Projects::DeploymentsControllerTest < ActionCon
       ],
     }
 
+    apply_at_timestamp = app_container.reload.apply_at_timestamp
+
+    expected_app_container = expected_default_container_params
+      .merge(expected_app_container_attrs)
+      .merge(container_app_attrs)
+      .merge({ apply_at: apply_at_timestamp })
+
+    expected_nginx_container = expected_default_container_params
+      .merge(expected_nginx_container_attrs)
+      .merge(container_nginx_attrs)
+      .merge({ apply_at: apply_at_timestamp })
+
     expected_request_container_to_controller = {
       containers: [
-        expected_default_container_params.merge(expected_app_container_attrs).merge(container_app_attrs),
-        expected_default_container_params.merge(expected_nginx_container_attrs).merge(container_nginx_attrs),
+        expected_app_container,
+        expected_nginx_container,
       ],
       credentials: [{ id: docker_hub_credential.id }, { id: @credential.id }],
       deployment_url: @deployment.preview_url,
@@ -577,5 +595,7 @@ class UffizziCore::Api::Cli::V1::Projects::DeploymentsControllerTest < ActionCon
     assert_requested stubbed_deployment_request, times: 2
     assert { UffizziCore::Deployment::DeployContainersJob.jobs.empty? }
     assert { UffizziCore::ActivityItem::Docker.count == 2 }
+
+    travel_back
   end
 end
