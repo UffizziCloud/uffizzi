@@ -174,7 +174,7 @@ class UffizziCore::DeploymentServiceTest < ActiveSupport::TestCase
       },
     }
     deployment = create(:deployment, project: @project, state: UffizziCore::Deployment::STATE_ACTIVE, metadata: metadata)
-    subdomain = UffizziCore::DeploymentService.build_subdomain(deployment)
+    subdomain = UffizziCore::Deployment::DomainService.build_subdomain(deployment)
 
     assert_equal("pr-24-deployment-#{deployment.id}-hello-world", subdomain)
   end
@@ -191,7 +191,7 @@ class UffizziCore::DeploymentServiceTest < ActiveSupport::TestCase
       },
     }
     deployment = create(:deployment, project: @project, state: UffizziCore::Deployment::STATE_ACTIVE, metadata: metadata)
-    subdomain = UffizziCore::DeploymentService.build_subdomain(deployment)
+    subdomain = UffizziCore::Deployment::DomainService.build_subdomain(deployment)
 
     assert_equal("pr-24-deployment-#{deployment.id}-hello-world", subdomain)
   end
@@ -208,7 +208,7 @@ class UffizziCore::DeploymentServiceTest < ActiveSupport::TestCase
       },
     }
     deployment = create(:deployment, project: @project, state: UffizziCore::Deployment::STATE_ACTIVE, metadata: metadata)
-    subdomain = UffizziCore::DeploymentService.build_subdomain(deployment)
+    subdomain = UffizziCore::Deployment::DomainService.build_subdomain(deployment)
     formatted_project_slug = @project.slug.gsub('_', '-')
 
     assert_equal("deployment-#{deployment.id}-#{formatted_project_slug}", subdomain)
@@ -226,7 +226,7 @@ class UffizziCore::DeploymentServiceTest < ActiveSupport::TestCase
       },
     }
     deployment = create(:deployment, project: @project, state: UffizziCore::Deployment::STATE_ACTIVE, metadata: metadata)
-    subdomain = UffizziCore::DeploymentService.build_subdomain(deployment)
+    subdomain = UffizziCore::Deployment::DomainService.build_subdomain(deployment)
 
     assert_equal("pr-24-deployment-#{deployment.id}-hello-world-js", subdomain)
   end

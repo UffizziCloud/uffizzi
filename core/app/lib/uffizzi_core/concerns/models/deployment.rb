@@ -74,15 +74,15 @@ module UffizziCore::Concerns::Models::Deployment
       "#{subdomain}.#{Settings.app.managed_dns_zone}"
     end
 
-    def from_actions?
-      from_github_actions? || from_gitlab_actions?
+    def has_pull_request_data?
+      has_github_pull_request_data? || has_gitlab_pull_request_data?
     end
 
-    def from_github_actions?
+    def has_github_pull_request_data?
       metadata.dig('labels', 'github', 'repository').present?
     end
 
-    def from_gitlab_actions?
+    def has_gitlab_pull_request_data?
       metadata.dig('labels', 'gitlab', 'repo').present?
     end
   end
