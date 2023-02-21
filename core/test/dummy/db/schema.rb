@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2022_09_27_113647) do
+ActiveRecord::Schema.define(version: 2023_02_20_123146) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -164,6 +164,7 @@ ActiveRecord::Schema.define(version: 2022_09_27_113647) do
     t.jsonb "healthcheck"
     t.jsonb "volumes"
     t.string "additional_subdomains", default: [], array: true
+    t.datetime "apply_at", precision: 6
     t.index ["deployment_id"], name: "index_containers_on_deployment_id"
     t.index ["repo_id"], name: "index_containers_on_repo_id"
   end
@@ -258,6 +259,7 @@ ActiveRecord::Schema.define(version: 2022_09_27_113647) do
     t.text "role", null: false
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
+    t.string "state"
     t.index ["account_id"], name: "index_memberships_on_account_id"
     t.index ["user_id", "account_id"], name: "index_memberships_on_user_id_and_account_id"
     t.index ["user_id"], name: "index_memberships_on_user_id"

@@ -180,7 +180,10 @@ class UffizziCore::DeploymentService
     end
 
     def create_activity_items(deployment)
+      current_time = Time.now
+
       deployment.active_containers.each do |container|
+        container.update!(apply_at: current_time)
         repo = container.repo
         activity_item = UffizziCore::ActivityItemService.create_docker_item!(repo, container)
 
