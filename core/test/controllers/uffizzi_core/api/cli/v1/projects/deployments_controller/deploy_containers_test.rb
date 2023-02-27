@@ -322,9 +322,7 @@ class UffizziCore::Api::Cli::V1::Projects::DeploymentsControllerTest < ActionCon
     app_namespace = 'uffizzicloud'
     nginx_name = 'nginx'
     nginx_namespace = 'library'
-
-    freeze_time
-    current_time = Time.now
+    container_version = '1'
 
     host_volume_file_attrs_app_dir = {
       type: 'host',
@@ -419,9 +417,6 @@ class UffizziCore::Api::Cli::V1::Projects::DeploymentsControllerTest < ActionCon
     nginx_container = create(:container, :continuously_deploy_enabled,
                              **{ deployment: @deployment, repo: nginx_repo }.merge(container_nginx_attrs))
 
-    app_container.update!(apply_at: current_time)
-    nginx_container.update!(apply_at: current_time)
-
     container_host_volume_files_app_dir = create(:container_host_volume_file, container: app_container,
                                                                               host_volume_file: host_volume_file_app_dir,
                                                                               source_path: host_volume_file_attrs_app_dir[:source])
@@ -455,6 +450,7 @@ class UffizziCore::Api::Cli::V1::Projects::DeploymentsControllerTest < ActionCon
       container_config_files: [],
       additional_subdomains: [],
       container_host_volume_files: [],
+      version: container_version,
     }
 
     expected_app_container_attrs = {
@@ -524,17 +520,13 @@ class UffizziCore::Api::Cli::V1::Projects::DeploymentsControllerTest < ActionCon
       ],
     }
 
-    apply_at_timestamp = app_container.reload.apply_at_timestamp
-
     expected_app_container = expected_default_container_params
       .merge(expected_app_container_attrs)
       .merge(container_app_attrs)
-      .merge({ apply_at: apply_at_timestamp })
 
     expected_nginx_container = expected_default_container_params
       .merge(expected_nginx_container_attrs)
       .merge(container_nginx_attrs)
-      .merge({ apply_at: apply_at_timestamp })
 
     expected_request_container_to_controller = {
       containers: [
@@ -583,7 +575,9 @@ class UffizziCore::Api::Cli::V1::Projects::DeploymentsControllerTest < ActionCon
 
     params = { project_slug: @project.slug, id: @deployment.id }
 
-    post :deploy_containers, params: params, format: :json
+    UffizziCore::ContainerService.stub(:generate_version, container_version) do
+      post :deploy_containers, params: params, format: :json
+    end
 
     assert_requested stubbed_deploy_containers_request
     assert_requested stubbed_digest_app
@@ -595,7 +589,5 @@ class UffizziCore::Api::Cli::V1::Projects::DeploymentsControllerTest < ActionCon
     assert_requested stubbed_deployment_request, times: 2
     assert { UffizziCore::Deployment::DeployContainersJob.jobs.empty? }
     assert { UffizziCore::ActivityItem::Docker.count == 2 }
-
-    travel_back
   end
 end
