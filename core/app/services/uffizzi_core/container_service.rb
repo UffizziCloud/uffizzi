@@ -55,6 +55,10 @@ class UffizziCore::ContainerService
       end.first
     end
 
+    def generate_version
+      (Time.now.to_f * 1000).to_i.to_s
+    end
+
     private
 
     def container_status(container, pods)

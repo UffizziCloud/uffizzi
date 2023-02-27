@@ -18,15 +18,13 @@ class UffizziCore::ManageActivityItemsService
     build_container_status_items(builded_network_connectivities, build_containers_replicas)
   end
 
-  def k8s_containers_apply_at_timestamp
+  def actual?(container)
     data = builded_network_connectivities.last
-    return if data.nil?
+    return false if data.nil?
 
-    apply_at = data[:items].last&.fetch(:apply_at, nil)
+    version = data[:items].last&.fetch(:version, nil)
 
-    return if apply_at.nil?
-
-    apply_at.to_i
+    container.version == version
   end
 
   private
@@ -48,7 +46,7 @@ class UffizziCore::ManageActivityItemsService
     network_connectivities.map do |network_connectivity|
       type, value = network_connectivity
 
-      { type: type, status: value.status, apply_at: value.apply_at }
+      { type: type, status: value.status, version: value.version }
     end
   end
 

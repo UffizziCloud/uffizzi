@@ -164,7 +164,7 @@ ActiveRecord::Schema.define(version: 2023_02_20_123146) do
     t.jsonb "healthcheck"
     t.jsonb "volumes"
     t.string "additional_subdomains", default: [], array: true
-    t.datetime "apply_at", precision: 6
+    t.string "version"
     t.index ["deployment_id"], name: "index_containers_on_deployment_id"
     t.index ["repo_id"], name: "index_containers_on_repo_id"
   end
@@ -259,7 +259,6 @@ ActiveRecord::Schema.define(version: 2023_02_20_123146) do
     t.text "role", null: false
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
-    t.string "state"
     t.index ["account_id"], name: "index_memberships_on_account_id"
     t.index ["user_id", "account_id"], name: "index_memberships_on_user_id_and_account_id"
     t.index ["user_id"], name: "index_memberships_on_user_id"

@@ -20,7 +20,7 @@ class UffizziCore::Controller::DeployContainers::ContainerSerializer < UffizziCo
              :volumes,
              :service_name,
              :additional_subdomains,
-             :apply_at
+             :version
 
   has_many :container_config_files
   has_many :container_host_volume_files
@@ -65,10 +65,6 @@ class UffizziCore::Controller::DeployContainers::ContainerSerializer < UffizziCo
     end
 
     object.healthcheck.merge('test' => new_command)
-  end
-
-  def apply_at
-    object.apply_at_timestamp
   end
 
   private
