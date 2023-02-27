@@ -70,10 +70,6 @@ module UffizziCore::Concerns::Models::Container
       "#{image}:#{tag}"
     end
 
-    def apply_at_timestamp
-      (apply_at.to_f * 1000).to_i
-    end
-
     private
 
     def should_check_port
