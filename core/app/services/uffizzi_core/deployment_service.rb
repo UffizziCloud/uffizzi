@@ -235,10 +235,7 @@ class UffizziCore::DeploymentService
     end
 
     def create_activity_items(deployment)
-      version = UffizziCore::ContainerService.generate_version
-
       deployment.active_containers.each do |container|
-        container.update!(version: version)
         repo = container.repo
         activity_item = UffizziCore::ActivityItemService.create_docker_item!(repo, container)
 

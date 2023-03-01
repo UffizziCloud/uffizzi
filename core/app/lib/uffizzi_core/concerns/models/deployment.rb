@@ -44,7 +44,7 @@ module UffizziCore::Concerns::Models::Deployment
       state :disabled
 
       event :activate, after: :after_activate do
-        transitions from: [:disabled], to: :active
+        transitions from: [:disabled, :failed], to: :active
       end
 
       event :fail do

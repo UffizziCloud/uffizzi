@@ -322,7 +322,6 @@ class UffizziCore::Api::Cli::V1::Projects::DeploymentsControllerTest < ActionCon
     app_namespace = 'uffizzicloud'
     nginx_name = 'nginx'
     nginx_namespace = 'library'
-    container_version = '1'
 
     host_volume_file_attrs_app_dir = {
       type: 'host',
@@ -450,7 +449,6 @@ class UffizziCore::Api::Cli::V1::Projects::DeploymentsControllerTest < ActionCon
       container_config_files: [],
       additional_subdomains: [],
       container_host_volume_files: [],
-      version: container_version,
     }
 
     expected_app_container_attrs = {
@@ -575,9 +573,7 @@ class UffizziCore::Api::Cli::V1::Projects::DeploymentsControllerTest < ActionCon
 
     params = { project_slug: @project.slug, id: @deployment.id }
 
-    UffizziCore::ContainerService.stub(:generate_version, container_version) do
-      post :deploy_containers, params: params, format: :json
-    end
+    post :deploy_containers, params: params, format: :json
 
     assert_requested stubbed_deploy_containers_request
     assert_requested stubbed_digest_app
