@@ -15,23 +15,10 @@ class UffizziCore::ManageActivityItemsService
   end
 
   def container_status_items
-    build_container_status_items(builded_network_connectivities, build_containers_replicas)
-  end
-
-  def actual?(container)
-    data = builded_network_connectivities.last
-    return false if data.nil?
-
-    version = data[:items].last&.fetch(:version, nil)
-
-    container.version == version
+    build_container_status_items(build_network_connectivities, build_containers_replicas)
   end
 
   private
-
-  def builded_network_connectivities
-    @builded_network_connectivities ||= build_network_connectivities
-  end
 
   def build_network_connectivities
     containers.with_public_access.map do |container|
@@ -46,7 +33,7 @@ class UffizziCore::ManageActivityItemsService
     network_connectivities.map do |network_connectivity|
       type, value = network_connectivity
 
-      { type: type, status: value.status, version: value.version }
+      { type: type, status: value.status }
     end
   end
 
