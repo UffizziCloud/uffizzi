@@ -73,18 +73,6 @@ module UffizziCore::Concerns::Models::Deployment
     def preview_url
       "#{subdomain}.#{Settings.app.managed_dns_zone}"
     end
-
-    def has_pull_request_data?
-      has_github_pull_request_data? || has_gitlab_pull_request_data?
-    end
-
-    def has_github_pull_request_data?
-      metadata.dig('labels', 'github', 'repository').present?
-    end
-
-    def has_gitlab_pull_request_data?
-      metadata.dig('labels', 'gitlab', 'repo').present?
-    end
   end
   # rubocop:enable Metrics/BlockLength
 end
