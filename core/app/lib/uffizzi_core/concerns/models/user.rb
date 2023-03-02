@@ -30,7 +30,7 @@ module UffizziCore::Concerns::Models::User
     end
 
     def personal_account
-      accounts.find_by(kind: UffizziCore::Account.kind.personal)
+      accounts.personal.find_by(owner_id: id)
     end
 
     def full_name
