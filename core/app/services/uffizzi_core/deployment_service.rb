@@ -27,13 +27,13 @@ class UffizziCore::DeploymentService
       deployment_form
     end
 
-    def update_from_compose(compose_file, project, user, deployment, metadata = {})
+    def update_from_compose(compose_file, project, user, deployment, metadata)
       deployment_attributes = ActionController::Parameters.new(compose_file.template.payload)
 
       deployment_form = UffizziCore::Api::Cli::V1::Deployment::UpdateForm.new(deployment_attributes)
       deployment_form.assign_dependences!(project, user)
       deployment_form.compose_file = compose_file
-      deployment_form.metadata = metadata
+      deployment_form.metadata = metadata || {}
 
       ActiveRecord::Base.transaction do
         deployment.containers.destroy_all

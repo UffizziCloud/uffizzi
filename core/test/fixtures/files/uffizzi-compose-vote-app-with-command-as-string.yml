@@ -1,0 +1,19 @@
+services:
+  postgres:
+    image: postgres:12
+    command: postgres -c jit=off
+    restart: always
+    ports:
+      - "5432:5432"
+    environment:
+      POSTGRES_PASSWORD: postgrespassword
+  nginx:
+    image: nginx:1.32
+    command: 
+      - "-g"
+      - "daemon off;"
+
+x-uffizzi:
+  ingress:
+    service: nginx
+    port: 80
