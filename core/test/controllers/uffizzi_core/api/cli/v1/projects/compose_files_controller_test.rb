@@ -206,37 +206,6 @@ class UffizziCore::Api::Cli::V1::Projects::ComposeFilesControllerTest < ActionCo
     assert_response :success
   end
 
-  test '#destroy - deletes compose file' do
-    sign_in @admin
-
-    params = { project_slug: @project.slug }
-
-    differences = {
-      -> { UffizziCore::ComposeFile.count } => -1,
-      -> { UffizziCore::Template.with_creation_source(UffizziCore::Template.creation_source.compose_file).count } => -1,
-    }
-
-    assert_difference differences do
-      delete :destroy, params: params, format: :json
-    end
-
-    assert_response :no_content
-  end
-
-  test '#destroy - when compose_file not found' do
-    sign_in @admin
-
-    @compose_file.destroy!
-    params = { project_slug: @project.slug }
-
-    delete :destroy, params: params, format: :json
-
-    error_message = JSON.parse(response.body, symbolize_names: true)[:errors][:title].first
-
-    assert_response :not_found
-    assert_equal('UffizziCore::ComposeFile Not Found', error_message)
-  end
-
   test '#create - with yaml aliases' do
     sign_in @admin
 
@@ -269,5 +238,67 @@ class UffizziCore::Api::Cli::V1::Projects::ComposeFilesControllerTest < ActionCo
     end
 
     assert_response :success
+  end
+
+  test '#create - string command' do
+    sign_in @admin
+
+    @compose_file.destroy!
+    base_attributes = attributes_for(:compose_file).slice(:source, :path)
+    file_content = File.read('test/fixtures/files/uffizzi-compose-vote-app-with-command-as-string.yml')
+    encoded_content = Base64.encode64(file_content)
+    compose_file_attributes = base_attributes.merge(content: encoded_content, repository_id: nil)
+
+    stub_dockerhub_repository_any
+
+    params = {
+      project_slug: @project.slug,
+      compose_file: compose_file_attributes,
+      dependencies: [],
+    }
+
+    differences = {
+      -> { UffizziCore::ComposeFile.main.count } => 1,
+      -> { UffizziCore::Template.with_creation_source(UffizziCore::Template.creation_source.compose_file).count } => 1,
+    }
+
+    assert_difference differences do
+      post :create, params: params, format: :json
+    end
+
+    assert_response :success
+    template = UffizziCore::Template.last
+    assert_equal('["postgres", "-c", "jit=off"]', template.payload['containers_attributes'].first['command'])
+  end
+
+  test '#destroy - deletes compose file' do
+    sign_in @admin
+
+    params = { project_slug: @project.slug }
+
+    differences = {
+      -> { UffizziCore::ComposeFile.count } => -1,
+      -> { UffizziCore::Template.with_creation_source(UffizziCore::Template.creation_source.compose_file).count } => -1,
+    }
+
+    assert_difference differences do
+      delete :destroy, params: params, format: :json
+    end
+
+    assert_response :no_content
+  end
+
+  test '#destroy - when compose_file not found' do
+    sign_in @admin
+
+    @compose_file.destroy!
+    params = { project_slug: @project.slug }
+
+    delete :destroy, params: params, format: :json
+
+    error_message = JSON.parse(response.body, symbolize_names: true)[:errors][:title].first
+
+    assert_response :not_found
+    assert_equal('UffizziCore::ComposeFile Not Found', error_message)
   end
 end
