@@ -19,14 +19,6 @@ class UffizziCore::ActivityItemService
       create_item!(activity_item_attributes)
     end
 
-    def disable_deployment!(activity_item)
-      deployment = activity_item.container.deployment
-
-      activity_item.events.create(state: UffizziCore::Event.state.failed)
-
-      UffizziCore::DeploymentService.disable!(deployment)
-    end
-
     def fail_deployment!(activity_item)
       deployment = activity_item.container.deployment
       last_event = activity_item.events.order_by_id.last
@@ -80,7 +72,7 @@ class UffizziCore::ActivityItemService
     def completed?(activity_item)
       return true if activity_item.nil?
 
-      last_event = activity_item.events.last
+      last_event = activity_item.events.order_by_id.last
       COMPLETED_STATES.include?(last_event.state)
     end
 

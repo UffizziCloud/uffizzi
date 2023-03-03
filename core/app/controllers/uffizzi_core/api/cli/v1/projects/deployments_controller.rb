@@ -6,7 +6,8 @@ class UffizziCore::Api::Cli::V1::Projects::DeploymentsController < UffizziCore::
   include UffizziCore::Api::Cli::V1::Projects::DeploymentsControllerModule
 
   before_action :authorize_uffizzi_core_api_cli_v1_projects_deployments
-  before_action :check_account_state, only: [:create, :update]
+  before_action :stop_if_deployment_forbidden, only: :create
+  after_action :update_show_trial_quota_exceeded_warning, only: :destroy
 
   # Get a list of active deployements for a project
   #
