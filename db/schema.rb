@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2022_09_27_113647) do
+ActiveRecord::Schema.define(version: 2023_03_02_093923) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -413,6 +413,7 @@ ActiveRecord::Schema.define(version: 2022_09_27_113647) do
     t.string "work"
     t.string "primary_location"
     t.string "creation_source"
+    t.string "username"
     t.index "lower((email)::text)", name: "index_email_on_lower_email", unique: true
   end
 
