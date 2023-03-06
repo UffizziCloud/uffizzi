@@ -19,7 +19,7 @@ class UffizziCore::Api::Cli::V1::Projects::DeploymentsControllerTest < ActionCon
       },
     }
 
-    @deployment.update!(subdomain: UffizziCore::DeploymentService.build_subdomain(@deployment))
+    @deployment.update!(subdomain: UffizziCore::Deployment::DomainService.build_subdomain(@deployment))
 
     image = generate(:image)
     image_namespace, image_name = image.split('/')

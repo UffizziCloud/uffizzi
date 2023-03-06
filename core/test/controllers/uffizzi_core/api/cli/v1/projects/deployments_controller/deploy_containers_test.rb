@@ -9,7 +9,7 @@ class UffizziCore::Api::Cli::V1::Projects::DeploymentsControllerTest < ActionCon
     @project = create(:project, :with_members, account: @admin.personal_account, members: [@admin])
     @deployment = create(:deployment, project: @project, state: UffizziCore::Deployment::STATE_ACTIVE)
 
-    @deployment.update!(subdomain: UffizziCore::DeploymentService.build_subdomain(@deployment))
+    @deployment.update!(subdomain: UffizziCore::Deployment::DomainService.build_subdomain(@deployment))
     @credential = create(:credential, :github_container_registry, account: @account)
 
     image = generate(:image)
