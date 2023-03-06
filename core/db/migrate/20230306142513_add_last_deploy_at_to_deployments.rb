@@ -4,7 +4,7 @@ class AddLastDeployAtToDeployments < ActiveRecord::Migration[6.1]
   def up
     add_column :uffizzi_core_deployments, :last_deploy_at, :datetime
 
-    UffizziCore::Deployment.update_all('last_deploy_at = updated_at')
+    UffizziCore::Deployment.where(last_deploy_at: nil).update_all('last_deploy_at = updated_at')
   end
 
   def down
