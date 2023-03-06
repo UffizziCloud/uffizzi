@@ -2,6 +2,7 @@
 
 class UffizziCore::LogsService
   NOT_ALLOWED_SYMBOLS_IN_NAME_REGEX = /[^a-zA-Z0-9-]/.freeze
+  DEFAULT_LOGS_LIMIT = 1000
 
   class << self
     def fetch_container_logs(container, query = {})
@@ -22,7 +23,7 @@ class UffizziCore::LogsService
       controller_client.deployment_container_logs(
         deployment_id: deployment.id,
         container_name: UffizziCore::ContainerService.pod_name(container),
-        limit: query[:limit],
+        limit: query[:limit] || Settings.container.default_logs_limit,
         previous: query[:previous] || false,
       )
     end
