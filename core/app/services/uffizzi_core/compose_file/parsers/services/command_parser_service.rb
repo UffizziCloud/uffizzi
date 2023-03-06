@@ -7,7 +7,7 @@ class UffizziCore::ComposeFile::Parsers::Services::CommandParserService
 
       case command_data
       when String
-        [command_data]
+        command_data.split
       when Array
         command_data
       else

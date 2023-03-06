@@ -69,4 +69,6 @@ continuous_preview:
 deployment:
   subdomain:
     length_limit: 63
+container:
+  default_logs_limit: 1000
 default_job_retry_count: 5
