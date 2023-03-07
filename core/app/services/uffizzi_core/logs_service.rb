@@ -23,7 +23,7 @@ class UffizziCore::LogsService
       controller_client.deployment_container_logs(
         deployment_id: deployment.id,
         container_name: UffizziCore::ContainerService.pod_name(container),
-        limit: query[:limit] || Settings.container.default_logs_limit,
+        limit: query[:limit] || DEFAULT_LOGS_LIMIT,
         previous: query[:previous] || false,
       )
     end
