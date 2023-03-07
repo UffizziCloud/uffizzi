@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2022_09_27_113647) do
+ActiveRecord::Schema.define(version: 2023_02_20_123146) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -164,6 +164,7 @@ ActiveRecord::Schema.define(version: 2022_09_27_113647) do
     t.jsonb "healthcheck"
     t.jsonb "volumes"
     t.string "additional_subdomains", default: [], array: true
+    t.string "version"
     t.index ["deployment_id"], name: "index_containers_on_deployment_id"
     t.index ["repo_id"], name: "index_containers_on_repo_id"
   end
