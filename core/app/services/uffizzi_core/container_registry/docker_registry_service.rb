@@ -14,6 +14,8 @@ class UffizziCore::ContainerRegistry::DockerRegistryService
       client(credential).authenticated?
     end
 
+    def digest(*); end
+
     private
 
     def client(credential)
