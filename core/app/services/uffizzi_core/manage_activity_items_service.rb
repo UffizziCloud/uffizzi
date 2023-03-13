@@ -15,10 +15,7 @@ class UffizziCore::ManageActivityItemsService
   end
 
   def container_status_items
-    network_connectivities = build_network_connectivities
-    containers_replicas = build_containers_replicas
-
-    build_container_status_items(network_connectivities, containers_replicas)
+    build_container_status_items(build_network_connectivities, build_containers_replicas)
   end
 
   private
@@ -127,7 +124,7 @@ class UffizziCore::ManageActivityItemsService
     network_connectivity = Hashie::Mash.new(JSON.parse(deployment_network_connectivity))
     containers_network_connectivity = network_connectivity&.containers
 
-    containers_network_connectivity[container.id.to_s] if !containers_network_connectivity.nil?
+    containers_network_connectivity[container.id.to_s] unless containers_network_connectivity.nil?
   end
 
   def deployment_network_connectivity

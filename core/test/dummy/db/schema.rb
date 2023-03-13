@@ -164,6 +164,7 @@ ActiveRecord::Schema.define(version: 2023_03_06_142513) do
     t.jsonb "healthcheck"
     t.jsonb "volumes"
     t.string "additional_subdomains", default: [], array: true
+    t.string "version"
     t.index ["deployment_id"], name: "index_containers_on_deployment_id"
     t.index ["repo_id"], name: "index_containers_on_repo_id"
   end

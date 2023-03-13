@@ -518,10 +518,18 @@ class UffizziCore::Api::Cli::V1::Projects::DeploymentsControllerTest < ActionCon
       ],
     }
 
+    expected_app_container = expected_default_container_params
+      .merge(expected_app_container_attrs)
+      .merge(container_app_attrs)
+
+    expected_nginx_container = expected_default_container_params
+      .merge(expected_nginx_container_attrs)
+      .merge(container_nginx_attrs)
+
     expected_request_container_to_controller = {
       containers: [
-        expected_default_container_params.merge(expected_app_container_attrs).merge(container_app_attrs),
-        expected_default_container_params.merge(expected_nginx_container_attrs).merge(container_nginx_attrs),
+        expected_app_container,
+        expected_nginx_container,
       ],
       credentials: [{ id: docker_hub_credential.id }, { id: @credential.id }],
       deployment_url: @deployment.preview_url,
