@@ -55,6 +55,10 @@ class UffizziCore::ContainerService
       end.first
     end
 
+    def ingress_container?(container)
+      container.receive_incoming_requests?
+    end
+
     private
 
     def container_status(container, pods)

@@ -55,6 +55,10 @@ class UffizziCore::ActivityItemService
         notification_module.notify_about_failed_deployment(deployment) if notification_module.present?
       end
 
+      if deployed?(status) && UffizziCore::ContainerService.ingress_container?(container)
+        deployment.update(last_deploy_at: last_event.created_at)
+      end
+
       return unless [UffizziCore::Event.state.building, UffizziCore::Event.state.deploying].include?(status)
 
       UffizziCore::Deployment::ManageDeployActivityItemJob.perform_in(5.seconds, activity_item.id)
@@ -78,6 +82,10 @@ class UffizziCore::ActivityItemService
 
     def failed?(status)
       status == UffizziCore::Event.state.failed
+    end
+
+    def deployed?(status)
+      status == UffizziCore::Event.state.deployed
     end
   end
 end
