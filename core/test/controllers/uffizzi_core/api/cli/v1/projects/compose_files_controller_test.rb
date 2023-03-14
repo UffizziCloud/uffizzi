@@ -271,6 +271,33 @@ class UffizziCore::Api::Cli::V1::Projects::ComposeFilesControllerTest < ActionCo
     assert_equal('["postgres", "-c", "jit=off"]', template.payload['containers_attributes'].first['command'])
   end
 
+  test '#create - service name does not match RFC 123' do
+    sign_in @admin
+
+    @compose_file.destroy!
+    base_attributes = attributes_for(:compose_file).slice(:source, :path)
+    file_content = File.read('test/fixtures/files/uffizzi-compose-invalid-service-name.yml')
+    encoded_content = Base64.encode64(file_content)
+    compose_file_attributes = base_attributes.merge(content: encoded_content, repository_id: nil)
+
+    params = {
+      project_slug: @project.slug,
+      compose_file: compose_file_attributes,
+      dependencies: [],
+    }
+
+    differences = {
+      -> { UffizziCore::ComposeFile.main.count } => 0,
+      -> { UffizziCore::Template.with_creation_source(UffizziCore::Template.creation_source.compose_file).count } => 0,
+    }
+
+    assert_difference differences do
+      post :create, params: params, format: :json
+    end
+
+    assert_response(:unprocessable_entity)
+  end
+
   test '#destroy - deletes compose file' do
     sign_in @admin
 

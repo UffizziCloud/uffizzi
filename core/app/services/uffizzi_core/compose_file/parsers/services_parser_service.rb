@@ -8,6 +8,11 @@ class UffizziCore::ComposeFile::Parsers::ServicesParserService
       raise UffizziCore::ComposeFile::ParseError, I18n.t('compose.no_services') if services.nil? || services.keys.empty?
 
       services.keys.map do |service|
+        unless valid_service_name?(service)
+          raise UffizziCore::ComposeFile::ParseError,
+                I18n.t('compose.invalid_service_name', value: service)
+        end
+
         service_data = prepare_service_data(service, services.fetch(service), global_configs_data,
                                             global_secrets_data, compose_payload, global_named_volume_names)
 
@@ -76,6 +81,12 @@ class UffizziCore::ComposeFile::Parsers::ServicesParserService
       return UffizziCore::ComposeFile::Parsers::Services::VolumesParserService.parse(volumes, additional_data) unless volume_parser_module
 
       volume_parser_module.parse(volumes, additional_data)
+    end
+
+    # All services are added as Additional Hosts in Kubernetes and must be RFC 123 compliant
+    def valid_service_name?(name)
+      rfc_123_pattern = /^([[:alnum:]][[:alnum:]\-]{0,61}[[:alnum:]]|[[:alpha:]])$/
+      name.match?(rfc_123_pattern)
     end
   end
 end
