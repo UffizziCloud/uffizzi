@@ -10,6 +10,8 @@ class UffizziCore::ContainerRegistry::GithubContainerRegistryService
       client(credential).authenticated?
     end
 
+    def digest(*); end
+
     private
 
     def client(c)
