@@ -85,7 +85,7 @@ class UffizziCore::ComposeFile::Parsers::ServicesParserService
 
     # All services are added as Additional Hosts in Kubernetes and must be RFC 123 compliant
     def valid_service_name?(name)
-      rfc_123_pattern = /^([[:alnum:]][[:alnum:]\-]{0,61}[[:alnum:]]|[[:alpha:]])$/
+      rfc_123_pattern = /\A(?!-)[a-z0-9-]{1,63}(?<!-)\z/
       name.match?(rfc_123_pattern)
     end
   end
