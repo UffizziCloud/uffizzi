@@ -1,12 +1,12 @@
 services:
-  webhooks_test_app:
+  webhooks-test-app:
     image: elnealo.jfrog.io/uffizzi-test-docker/webhook-test-app
     environment:
       POSTGRES_USER: postgres
       POSTGRES_PASSWORD: postgres
 
 x-uffizzi-ingress:
-  service: webhooks_test_app
+  service: webhooks-test-app
   port: 80
 
 x-uffizzi-continuous-preview:

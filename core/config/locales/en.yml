@@ -16,6 +16,7 @@ en:
     invalid_file: 'Syntax error: %{err} at line %{line} column %{column}'
     invalid_config_option: Invalid config option '%{value}' - only a-zA-Z0-9._- characters are allowed
     no_services: Service services has neither an image nor a build context specified. At least one must be provided.
+    invalid_service_name: "Invalid service name '%{value}': a service name must consist of lower case alphanumeric characters, ''-'', and must start and end with an alphanumeric character"
     no_ingress: Service ingress has not been defined.
     invalid_image_value: Invalid image value '%{value}'
     unprocessable_image: Invalid credential '%{value} or image does not exist'
