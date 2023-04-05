@@ -81,6 +81,8 @@ class UffizziCore::DeploymentService
     end
 
     def fail!(deployment)
+      return if deployment.failed?
+
       deployment.fail!
       compose_file = deployment.compose_file || deployment.template&.compose_file
       return unless compose_file&.kind&.temporary?

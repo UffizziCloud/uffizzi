@@ -65,4 +65,5 @@ module UffizziCore
   mattr_accessor :user_project_roles, default: [:admin, :developer, :viewer]
   mattr_accessor :account_sources, default: [:manual]
   mattr_accessor :compose_file_kinds, default: [:main, :temporary]
+  mattr_accessor :event_states, default: [:waiting, :queued, :successful, :deployed, :failed, :building, :timeout, :cancelled, :deploying]
 end
