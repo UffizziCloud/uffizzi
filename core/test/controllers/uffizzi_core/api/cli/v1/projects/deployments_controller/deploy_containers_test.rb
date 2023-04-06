@@ -12,31 +12,6 @@ class UffizziCore::Api::Cli::V1::Projects::DeploymentsControllerTest < ActionCon
     @deployment.update!(subdomain: UffizziCore::Deployment::DomainService.build_subdomain(@deployment))
     @credential = create(:credential, :github_container_registry, account: @account)
 
-    image = generate(:image)
-    image_namespace, image_name = image.split('/')
-    target_branch = generate(:branch)
-    repo_attributes = attributes_for(
-      :repo,
-      :docker_hub,
-      namespace: image_namespace,
-      name: image_name,
-      branch: target_branch,
-    )
-
-    container_attributes = attributes_for(
-      :container,
-      :with_public_port,
-      image: image,
-      tag: target_branch,
-      receive_incoming_requests: true,
-      repo_attributes: repo_attributes,
-    )
-    template_payload = {
-      containers_attributes: [container_attributes],
-    }
-    @template = create(:template, :compose_file_source, compose_file: @compose_file, project: @project, added_by: @admin,
-                                                        payload: template_payload)
-
     sign_in @admin
   end
 
@@ -347,8 +322,9 @@ class UffizziCore::Api::Cli::V1::Projects::DeploymentsControllerTest < ActionCon
     container_app_attrs = {
       controller_name: controller_name,
       service_name: app_name,
-      image: "#{app_namespace}/#{app_name}",
-      tag: 'latest',
+      # image: "#{app_namespace}/#{app_name}",
+      full_image_name: "#{app_namespace}/#{app_name}:latest",
+      # tag: 'latest',
       volumes: [
         host_volume_file_attrs_app_dir,
         host_volume_file_attrs_app_file,
@@ -373,6 +349,7 @@ class UffizziCore::Api::Cli::V1::Projects::DeploymentsControllerTest < ActionCon
       service_name: nginx_name,
       image: "#{nginx_namespace}/#{nginx_name}",
       tag: '1.32',
+      full_image_name: "#{nginx_namespace}/#{nginx_name}:1.32",
       public: true,
       port: 80,
       target_port: 80,

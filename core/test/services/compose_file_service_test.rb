@@ -553,11 +553,12 @@ class UffizziCore::ComposeFileServiceTest < ActiveSupport::TestCase
     tag = content_data['services']['nginx']['image'].split(':').last
     image_name = image_url.split('/').last
 
-    assert_equal(container[:image], image_name)
-    assert_equal(container[:tag], tag)
-    assert_equal(container[:repo_attributes][:name], image_name)
+    assert_equal(image_name, container[:image])
+    assert_equal("#{image_url}:latest", container[:full_image_name])
+    assert_equal(tag, container[:tag])
+    assert_equal(image_name, container[:repo_attributes][:name])
     refute(container[:repo_attributes][:namespace])
-    assert_equal(container[:repo_attributes][:type], UffizziCore::Repo::Azure.name)
+    assert_equal(UffizziCore::Repo::Azure.name, container[:repo_attributes][:type])
   end
 
   test '#build_template_attributes - check invalid azure credential' do
@@ -586,11 +587,12 @@ class UffizziCore::ComposeFileServiceTest < ActiveSupport::TestCase
     project_name = image_url.split('/').second
     image_name = image_url.split('/').last
 
-    assert_equal(container[:image], "#{project_name}/#{image_name}")
-    assert_equal(container[:tag], tag)
-    assert_equal(container[:repo_attributes][:name], image_name)
-    assert_equal(container[:repo_attributes][:namespace], project_name)
-    assert_equal(container[:repo_attributes][:type], UffizziCore::Repo::Google.name)
+    assert_equal("#{project_name}/#{image_name}", container[:image])
+    assert_equal(tag, container[:tag])
+    assert_equal("#{image_url}:latest", container[:full_image_name])
+    assert_equal(image_name, container[:repo_attributes][:name])
+    assert_equal(project_name, container[:repo_attributes][:namespace])
+    assert_equal(UffizziCore::Repo::Google.name, container[:repo_attributes][:type])
   end
 
   test '#build_template_attributes - check build of custom docker account' do
@@ -608,11 +610,11 @@ class UffizziCore::ComposeFileServiceTest < ActiveSupport::TestCase
     account_name = image_url.split('/').first
     image_name = image_url.split('/').last
 
-    assert_equal(container[:image], "#{account_name}/#{image_name}")
-    assert_equal(container[:tag], tag)
-    assert_equal(container[:repo_attributes][:name], image_name)
-    assert_equal(container[:repo_attributes][:namespace], account_name)
-    assert_equal(container[:repo_attributes][:type], UffizziCore::Repo::DockerHub.name)
+    assert_equal("#{account_name}/#{image_name}", container[:image])
+    assert_equal(tag, container[:tag])
+    assert_equal(image_name, container[:repo_attributes][:name])
+    assert_equal(account_name, container[:repo_attributes][:namespace])
+    assert_equal(UffizziCore::Repo::DockerHub.name, container[:repo_attributes][:type])
   end
 
   test '#build_template_attributes - check a command build' do

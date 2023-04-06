@@ -1,20 +1,23 @@
 # frozen_string_literal: true
 
+require 'docker_distribution'
+
 class UffizziCore::ComposeFile::Parsers::Services::ImageParserService
+  DEFAULT_TAG = Settings.compose.default_tag
   class << self
     def parse(value)
       return {} if value.blank?
 
+      full_image_name = normalize_image_name(value)
       image_path, tag = get_image_path_and_tag(value)
       raise_parse_error(value) if image_path.blank?
 
-      tag = Settings.compose.default_tag if tag.blank?
+      tag = DEFAULT_TAG if tag.blank?
 
-      formatted_image_path = image_path.downcase
-      if url?(formatted_image_path)
-        host, namespace, name = parse_image_url(formatted_image_path)
+      if url?(image_path)
+        host, namespace, name = parse_image_url(image_path)
       else
-        namespace, name = parse_docker_hub_image(formatted_image_path)
+        namespace, name = parse_docker_hub_image(image_path)
       end
 
       {
@@ -22,13 +25,25 @@ class UffizziCore::ComposeFile::Parsers::Services::ImageParserService
         namespace: namespace,
         name: name,
         tag: tag,
+        full_image_name: full_image_name,
       }
     end
 
     private
 
-    def raise_parse_error(value)
-      raise UffizziCore::ComposeFile::ParseError, I18n.t('compose.invalid_image_value', value: value)
+    def normalize_image_name(value)
+      parse_result = DockerDistribution::Reference.parse(value)
+      return value if parse_result.try(:tag).present?
+
+      "#{value}:#{DEFAULT_TAG}"
+    rescue DockerDistribution::NameContainsUppercase
+      raise_parse_error(value, I18n.t('compose.image_name_contains_uppercase_value', value: value))
+    rescue DockerDistribution::ReferenceInvalidFormat
+      raise_parse_error(value, I18n.t('compose.invalid_image_value', value: value))
+    end
+
+    def raise_parse_error(value, message)
+      raise UffizziCore::ComposeFile::ParseError, message
     end
 
     def get_image_path_and_tag(value)

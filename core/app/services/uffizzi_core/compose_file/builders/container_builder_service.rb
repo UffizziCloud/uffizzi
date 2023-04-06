@@ -33,6 +33,7 @@ class UffizziCore::ComposeFile::Builders::ContainerBuilderService
     {
       tag: tag(image_data, repo_attributes),
       port: port(container_name, ingress_data),
+      full_image_name: full_image_name(image_data, build_data),
       image: image(container_data, image_data, build_data, credentials),
       public: is_ingress,
       entrypoint: entrypoint(container_data),
@@ -132,6 +133,12 @@ class UffizziCore::ComposeFile::Builders::ContainerBuilderService
   def image_name(container_data)
     container_registry = container_registry(container_data)
     container_registry.image_name(credentials)
+  end
+
+  def full_image_name(image_data, build_data)
+    return image_data[:full_image_name] if image_data.present?
+
+    "#{build_data[:account_name]}/#{build_data[:repository_name]}"
   end
 
   def ingress_container?(container_name, ingress)
