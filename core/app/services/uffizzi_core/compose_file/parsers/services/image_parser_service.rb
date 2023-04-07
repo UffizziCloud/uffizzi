@@ -37,12 +37,12 @@ class UffizziCore::ComposeFile::Parsers::Services::ImageParserService
 
       "#{value}:#{DEFAULT_TAG}"
     rescue DockerDistribution::NameContainsUppercase
-      raise_parse_error(value, I18n.t('compose.image_name_contains_uppercase_value', value: value))
+      raise_parse_error(I18n.t('compose.image_name_contains_uppercase_value', value: value))
     rescue DockerDistribution::ReferenceInvalidFormat
-      raise_parse_error(value, I18n.t('compose.invalid_image_value', value: value))
+      raise_parse_error(I18n.t('compose.invalid_image_value', value: value))
     end
 
-    def raise_parse_error(value, message)
+    def raise_parse_error(message)
       raise UffizziCore::ComposeFile::ParseError, message
     end
 

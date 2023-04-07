@@ -322,9 +322,10 @@ class UffizziCore::Api::Cli::V1::Projects::DeploymentsControllerTest < ActionCon
     container_app_attrs = {
       controller_name: controller_name,
       service_name: app_name,
-      # image: "#{app_namespace}/#{app_name}",
+      image: "#{app_namespace}/#{app_name}",
+      tag: 'latest',
       full_image_name: "#{app_namespace}/#{app_name}:latest",
-      # tag: 'latest',
+
       volumes: [
         host_volume_file_attrs_app_dir,
         host_volume_file_attrs_app_file,
@@ -497,11 +498,11 @@ class UffizziCore::Api::Cli::V1::Projects::DeploymentsControllerTest < ActionCon
 
     expected_app_container = expected_default_container_params
       .merge(expected_app_container_attrs)
-      .merge(container_app_attrs)
+      .merge(container_app_attrs.except(:image, :tag))
 
     expected_nginx_container = expected_default_container_params
       .merge(expected_nginx_container_attrs)
-      .merge(container_nginx_attrs)
+      .merge(container_nginx_attrs.except(:image, :tag))
 
     expected_request_container_to_controller = {
       containers: [
