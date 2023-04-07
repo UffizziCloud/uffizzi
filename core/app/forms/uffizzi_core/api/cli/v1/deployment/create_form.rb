@@ -9,6 +9,7 @@ class UffizziCore::Api::Cli::V1::Deployment::CreateForm < UffizziCore::Deploymen
            :image,
            :service_name,
            :tag,
+           :full_image_name,
            :port,
            :public,
            :memory_limit,
