@@ -6,19 +6,19 @@ class UffizziCore::ImageParserServiceTest < ActiveSupport::TestCase
   test '#parse' do
     image_parser_service = UffizziCore::ComposeFile::Parsers::Services::ImageParserService
     assert_equal(
-      { registry_url: nil, namespace: 'library', name: 'redis', tag: 'latest', full_image_name: 'redis:latest' },
+      { registry_url: 'docker.io', namespace: 'library', name: 'redis', tag: 'latest', full_image_name: 'docker.io/library/redis:latest' },
       image_parser_service.parse('redis'),
     )
     assert_equal(
-      { registry_url: nil, namespace: 'library', name: 'redis', tag: '5', full_image_name: 'redis:5' },
+      { registry_url: 'docker.io', namespace: 'library', name: 'redis', tag: '5', full_image_name: 'docker.io/library/redis:5' },
       image_parser_service.parse('redis:5'),
     )
     assert_equal(
-      { registry_url: nil, namespace: 'namespace', name: 'redis', tag: 'latest', full_image_name: 'namespace/redis:latest' },
+      { registry_url: 'docker.io', namespace: 'namespace', name: 'redis', tag: 'latest', full_image_name: 'docker.io/namespace/redis:latest' },
       image_parser_service.parse('namespace/redis'),
     )
     assert_equal(
-      { registry_url: 'docker.io:443', namespace: 'namespace', name: 'redis', tag: 'latest',
+      { registry_url: 'docker.io', namespace: 'namespace', name: 'redis', tag: 'latest',
         full_image_name: 'docker.io/namespace/redis:latest' },
       image_parser_service.parse('docker.io/namespace/redis'),
     )
@@ -32,13 +32,13 @@ class UffizziCore::ImageParserServiceTest < ActiveSupport::TestCase
       image_parser_service.parse('localhost:80/redis:5.3'),
     )
     assert_equal(
-      { registry_url: nil, namespace: 'library', name: 'lower_case_name', tag: 'lower_case_tag',
-        full_image_name: 'lower_case_name:lower_case_tag' },
+      { registry_url: 'docker.io', namespace: 'library', name: 'lower_case_name', tag: 'lower_case_tag',
+        full_image_name: 'docker.io/library/lower_case_name:lower_case_tag' },
       image_parser_service.parse('lower_case_name:lower_case_tag'),
     )
     assert_equal(
-      { registry_url: nil, namespace: 'library', name: 'lower_case_name', tag: 'UPPERCASE_TAG',
-        full_image_name: 'lower_case_name:UPPERCASE_TAG' },
+      { registry_url: 'docker.io', namespace: 'library', name: 'lower_case_name', tag: 'UPPERCASE_TAG',
+        full_image_name: 'docker.io/library/lower_case_name:UPPERCASE_TAG' },
       image_parser_service.parse('lower_case_name:UPPERCASE_TAG'),
     )
   end
