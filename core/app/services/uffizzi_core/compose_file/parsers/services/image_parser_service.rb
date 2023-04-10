@@ -8,17 +8,19 @@ class UffizziCore::ComposeFile::Parsers::Services::ImageParserService
     def parse(value)
       return {} if value.blank?
 
-      parsed_image = DockerDistribution::Normalize.parse_docker_ref(value)
+      parsed_image = DockerDistribution::Normalize.parse_any_reference(value)
       image_path = parsed_image.path
       namespace, name = get_namespace_and_name(image_path)
+      tag = parsed_image.try(:tag) || DEFAULT_TAG
+      full_image_name = "#{[parsed_image.domain, parsed_image.path].compact.join('/')}:#{tag}"
 
-      full_image_name = "#{[parsed_image.domain, parsed_image.path].compact.join('/')}:#{parsed_image.tag}"
+      registry_url = parsed_image.domain == 'docker.io' ? nil : parsed_image.domain
 
       {
-        registry_url: parsed_image.domain,
+        registry_url: registry_url,
         namespace: namespace,
         name: name,
-        tag: parsed_image.tag,
+        tag: tag,
         full_image_name: full_image_name,
       }
     rescue DockerDistribution::NameContainsUppercase
