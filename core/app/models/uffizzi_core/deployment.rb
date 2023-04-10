@@ -21,4 +21,7 @@
 
 class UffizziCore::Deployment < UffizziCore::ApplicationRecord
   include UffizziCore::Concerns::Models::Deployment
+
+  const_set(:COMPOSE_FILE_MANUAL, :compose_file_manual)
+  validates :creation_source, presence: true
 end
