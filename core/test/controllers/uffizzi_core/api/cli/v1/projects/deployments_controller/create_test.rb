@@ -142,13 +142,13 @@ class UffizziCore::Api::Cli::V1::Projects::DeploymentsControllerTest < ActionCon
     deployment = compose_file.deployments.first
     assert_equal(@metadata, deployment.metadata)
     assert_equal(deployment.subdomain.downcase, deployment.subdomain)
-    assert_equal(deployment.creation_source, UffizziCore::Deployment.creation_source.compose_file_manual)
+    assert_equal(deployment.creation_source, UffizziCore::Deployment::COMPOSE_FILE_MANUAL.to_s)
 
     Sidekiq::Worker.clear_all
     Sidekiq::Testing.inline!
   end
 
-  test '#create - from the existing compose file with creation_source' do
+  test '#create - from the existing compose file with custom creation source' do
     Sidekiq::Worker.clear_all
     Sidekiq::Testing.fake!
 
@@ -177,7 +177,7 @@ class UffizziCore::Api::Cli::V1::Projects::DeploymentsControllerTest < ActionCon
     }
     create(:template, :compose_file_source, compose_file: compose_file, project: @project, added_by: @admin, payload: template_payload)
     stub_dockerhub_repository('library', 'redis')
-    creation_source = UffizziCore::Deployment.creation_source.manual
+    creation_source = 'custom_source'
 
     params = { project_slug: @project.slug, compose_file: {}, dependencies: [], creation_source: creation_source }
 
@@ -186,7 +186,7 @@ class UffizziCore::Api::Cli::V1::Projects::DeploymentsControllerTest < ActionCon
     assert_response :success
     deployment = compose_file.deployments.first
 
-    assert_equal(deployment.creation_source, creation_source)
+    assert_equal(creation_source, deployment.creation_source)
 
     Sidekiq::Worker.clear_all
     Sidekiq::Testing.inline!
