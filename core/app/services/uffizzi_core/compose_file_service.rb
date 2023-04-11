@@ -190,7 +190,7 @@ class UffizziCore::ComposeFileService
         err = [e.problem, e.context].compact.join(' ')
         raise UffizziCore::ComposeFile::ParseError, I18n.t('compose.invalid_file', err: err, line: e.line, column: e.column)
       end
-      raise UffizziCore::ComposeFile::ParseError, I18n.t('compose.unsupported_file') if compose_data.nil?
+      raise UffizziCore::ComposeFile::ParseError, I18n.t('compose.unsupported_file') if compose_data.nil? || compose_data.is_a?(String)
 
       compose_data
     end

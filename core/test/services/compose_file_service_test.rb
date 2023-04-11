@@ -734,4 +734,24 @@ class UffizziCore::ComposeFileServiceTest < ActiveSupport::TestCase
 
     assert_equal("Syntax error: could not find expected ':' while scanning a simple key at line 5 column 3", e.message)
   end
+
+  test '#parse - handle empty compose file' do
+    content = file_fixture('files/compose_files/compose_empty.yml').read
+
+    e = assert_raise(UffizziCore::ComposeFile::ParseError) do
+      UffizziCore::ComposeFileService.parse(content)
+    end
+
+    assert_equal('Unsupported compose file', e.message)
+  end
+
+  test '#parse - handle when file has just a string' do
+    content = file_fixture('files/compose_files/compose_with_only_line.yml').read
+
+    e = assert_raise(UffizziCore::ComposeFile::ParseError) do
+      UffizziCore::ComposeFileService.parse(content)
+    end
+
+    assert_equal('Unsupported compose file', e.message)
+  end
 end
