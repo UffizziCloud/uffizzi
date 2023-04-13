@@ -3,6 +3,7 @@
 FactoryBot.define do
   factory :container, class: UffizziCore::Container do
     image
+    full_image_name
     tag
     service_name
     variables { [] }

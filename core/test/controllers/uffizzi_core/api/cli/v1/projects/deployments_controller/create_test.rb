@@ -37,6 +37,7 @@ class UffizziCore::Api::Cli::V1::Projects::DeploymentsControllerTest < ActionCon
       :with_public_port,
       image: image,
       tag: target_branch,
+      full_image_name: "#{image}:#{target_branch}",
       receive_incoming_requests: true,
       repo_attributes: repo_attributes,
     )
@@ -72,6 +73,7 @@ class UffizziCore::Api::Cli::V1::Projects::DeploymentsControllerTest < ActionCon
       :with_named_volume,
       image: image,
       tag: target_branch,
+      full_image_name: "#{image}:#{target_branch}",
       healthcheck: { test: ['CMD', 'curl', '-f', 'https://localhost'] },
       receive_incoming_requests: true,
       repo_attributes: repo_attributes,
@@ -125,6 +127,7 @@ class UffizziCore::Api::Cli::V1::Projects::DeploymentsControllerTest < ActionCon
       :with_named_volume,
       image: image,
       tag: target_branch,
+      full_image_name: "#{image}:#{target_branch}",
       healthcheck: { test: ['CMD', 'curl', '-f', 'https://localhost'] },
       receive_incoming_requests: true,
       repo_attributes: repo_attributes,
@@ -169,6 +172,7 @@ class UffizziCore::Api::Cli::V1::Projects::DeploymentsControllerTest < ActionCon
       :container,
       image: image,
       tag: target_branch,
+      full_image_name: "#{image}:#{target_branch}",
       receive_incoming_requests: true,
       repo_attributes: repo_attributes,
     )
@@ -212,6 +216,7 @@ class UffizziCore::Api::Cli::V1::Projects::DeploymentsControllerTest < ActionCon
       :with_public_port,
       image: image,
       tag: target_branch,
+      full_image_name: "#{image}:#{target_branch}",
       receive_incoming_requests: true,
       repo_attributes: repo_attributes,
     )
@@ -254,6 +259,7 @@ class UffizziCore::Api::Cli::V1::Projects::DeploymentsControllerTest < ActionCon
       :with_public_port,
       image: image,
       tag: target_branch,
+      full_image_name: "#{image}:#{target_branch}",
       receive_incoming_requests: true,
       repo_attributes: repo_attributes,
     )

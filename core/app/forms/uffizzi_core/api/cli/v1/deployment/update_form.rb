@@ -9,6 +9,7 @@ class UffizziCore::Api::Cli::V1::Deployment::UpdateForm < UffizziCore::Deploymen
            :service_name,
            :tag,
            :port,
+           :full_image_name,
            :public,
            :memory_limit,
            :memory_request,

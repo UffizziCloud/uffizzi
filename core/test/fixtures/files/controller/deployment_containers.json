@@ -30,7 +30,7 @@
       "containers": [
         {
           "name": "f03d008a48",
-          "image": "uffizzitest/webhooks-test-app:latestt",
+          "image": "uffizzitest/webhooks-test-app:latest",
           "ports": [
             {
               "name": "default-port",

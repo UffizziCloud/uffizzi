@@ -3,8 +3,7 @@
 class UffizziCore::Controller::DeployContainers::ContainerSerializer < UffizziCore::BaseSerializer
   attributes :id,
              :kind,
-             :image,
-             :tag,
+             :full_image_name,
              :variables,
              :secret_variables,
              :memory_limit,
@@ -23,26 +22,6 @@ class UffizziCore::Controller::DeployContainers::ContainerSerializer < UffizziCo
 
   has_many :container_config_files
   has_many :container_host_volume_files
-
-  def image
-    repo = object.repo
-    case repo.type
-    when
-      UffizziCore::Repo::Google.name,
-      UffizziCore::Repo::Amazon.name,
-      UffizziCore::Repo::Azure.name,
-      UffizziCore::Repo::GithubContainerRegistry.name,
-      UffizziCore::Repo::DockerRegistry.name
-
-      build_registry_image(repo)
-    else
-      object.image
-    end
-  end
-
-  def tag
-    object.tag
-  end
 
   def entrypoint
     object.entrypoint.blank? ? nil : JSON.parse(object.entrypoint)
@@ -64,16 +43,5 @@ class UffizziCore::Controller::DeployContainers::ContainerSerializer < UffizziCo
     end
 
     object.healthcheck.merge('test' => new_command)
-  end
-
-  private
-
-  def build_registry_image(repo)
-    credential = UffizziCore::RepoService.credential(repo)
-    return object.image if credential.blank?
-
-    registry_host = URI.parse(credential.registry_url).host
-
-    "#{registry_host}/#{object.image}"
   end
 end
