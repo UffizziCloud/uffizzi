@@ -12,7 +12,7 @@ module UffizziCore::Concerns::Models::Deployment
 
     self.table_name = UffizziCore.table_names[:deployments]
 
-    enumerize :kind, in: [:standard, :performance, :enterprise, :free], predicates: true, default: :standard
+    enumerize :kind, in: [:standard], predicates: true, default: :standard
 
     belongs_to :project, touch: true
     belongs_to :deployed_by, class_name: UffizziCore::User.name, foreign_key: :deployed_by_id, optional: true
