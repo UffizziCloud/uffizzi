@@ -19,6 +19,7 @@ en:
     invalid_service_name: "Invalid service name '%{value}': a service name must consist of lower case alphanumeric characters, ''-'', and must start and end with an alphanumeric character"
     no_ingress: Service ingress has not been defined.
     invalid_image_value: Invalid image value '%{value}'
+    image_name_contains_uppercase_value: Image name '%{value}' contains uppercase characters
     unprocessable_image: Invalid credential '%{value} or image does not exist'
     invalid_repo_type: Unsupported repo type
     repo_not_found: The specified repository doesn't exist '%{name}'

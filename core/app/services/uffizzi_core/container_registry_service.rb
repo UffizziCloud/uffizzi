@@ -11,9 +11,8 @@ class UffizziCore::ContainerRegistryService
 
     def init_by_container(container)
       registry_url = container.dig(:image, :registry_url)
-      repository_url = container.dig(:build, :repository_url)
 
-      return new(:docker_hub, container) if registry_url.blank? && repository_url.blank?
+      return new(:docker_hub, container) if registry_url.include?('docker.io')
       return new(:azure, container) if registry_url.include?('azurecr.io')
       return new(:google, container) if registry_url.include?('gcr.io')
       return new(:amazon, container) if registry_url.include?('amazonaws.com')
@@ -71,7 +70,7 @@ class UffizziCore::ContainerRegistryService
   end
 
   def image_name(credentials)
-    if image_data[:registry_url].present? && [:google, :github_container_registry, :docker_registry].exclude?(type)
+    if image_data[:registry_url].present? && [:google, :github_container_registry, :docker_registry, :docker_hub].exclude?(type)
       return image_data[:name]
     end
 

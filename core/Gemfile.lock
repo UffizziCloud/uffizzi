@@ -11,6 +11,7 @@ PATH
       aws-sdk-ecr (~> 1.47)
       aws-sdk-eventbridge (~> 1.30)
       aws-sdk-iam (~> 1.61)
+      docker_distribution
       dotenv
       enumerize
       faraday
@@ -151,6 +152,9 @@ GEM
     deepsort (0.4.5)
     descendants_tracker (0.0.4)
       thread_safe (~> 0.3, >= 0.3.1)
+    digest (3.1.1)
+    docker_distribution (0.1.0)
+      digest (~> 3)
     dotenv (2.8.1)
     dry-configurable (0.14.0)
       concurrent-ruby (~> 1.0)

@@ -19,6 +19,10 @@ FactoryBot.define do
     "namespace/name-#{n}"
   end
 
+  sequence :full_image_name do |n|
+    "namespace/name-#{n}:latest"
+  end
+
   sequence :kubernetes_name do |n|
     "kubernetes-name-#{n}"
   end
