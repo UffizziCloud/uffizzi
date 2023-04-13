@@ -7,7 +7,7 @@ FactoryBot.define do
     created_at { DateTime.current }
     memory_limit { 1 }
     continuous_preview_payload { nil }
-    creation_source { UffizziCore::Deployment::COMPOSE_FILE_MANUAL }
+    creation_source { nil }
     metadata { {} }
 
     trait :active do
