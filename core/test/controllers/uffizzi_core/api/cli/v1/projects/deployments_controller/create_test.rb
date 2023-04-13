@@ -145,13 +145,13 @@ class UffizziCore::Api::Cli::V1::Projects::DeploymentsControllerTest < ActionCon
     deployment = compose_file.deployments.first
     assert_equal(@metadata, deployment.metadata)
     assert_equal(deployment.subdomain.downcase, deployment.subdomain)
-    assert_equal(deployment.creation_source, UffizziCore::Deployment::COMPOSE_FILE_MANUAL.to_s)
+    assert_equal(deployment.creation_source, UffizziCore::Deployment.creation_source.compose_file_manual)
 
     Sidekiq::Worker.clear_all
     Sidekiq::Testing.inline!
   end
 
-  test '#create - from the existing compose file with custom creation source' do
+  test '#create - from the existing compose file with github_actions creation source (for self-hosted version)' do
     Sidekiq::Worker.clear_all
     Sidekiq::Testing.fake!
 
@@ -181,7 +181,7 @@ class UffizziCore::Api::Cli::V1::Projects::DeploymentsControllerTest < ActionCon
     }
     create(:template, :compose_file_source, compose_file: compose_file, project: @project, added_by: @admin, payload: template_payload)
     stub_dockerhub_repository('library', 'redis')
-    creation_source = 'custom_source'
+    creation_source = UffizziCore::Deployment.creation_source.github_actions
 
     params = { project_slug: @project.slug, compose_file: {}, dependencies: [], creation_source: creation_source }
 
