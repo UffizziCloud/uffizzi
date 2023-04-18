@@ -1,9 +1,5 @@
-
-![github-banner](https://user-images.githubusercontent.com/7218230/191119628-4d39c65d-465f-4011-9370-d53d7b54d8cc.png)
-
-[![License](https://img.shields.io/badge/License-Apache%202.0-blue.svg)](https://opensource.org/licenses/Apache-2.0)
-
-<h1 align="center" style="border-bottom: none">
+<div align="center" style="border-bottom: none">
+  <h1>
     <div>
         <a href="https://www.uffizzi.com">
             <img src="misc/uffizzi-icon.png" width="80" />
@@ -12,51 +8,57 @@
         </a>
     </div>
     Environments-as-a-Service <br>
-</h1>
+    <a href="https://opensource.org/licenses/Apache-2.0">
+        <img src="https://img.shields.io/badge/License-Apache%202.0-blue.svg">
+    </a>
+  </h1>
+    <p align="center">
+        <a href="http://www.uffizzi.com"><b>Website</b></a> •
+        <a href="https://join.slack.com/t/uffizzi/shared_invite/zt-ffr4o3x0-J~0yVT6qgFV~wmGm19Ux9A"><b>Slack</b></a> •
+        <a href="https://blog.nocodb.com/"><b>Blog</b></a> •
+        <a href="https://twitter.com/_Uffizzi"><b>Twitter</b></a> •
+        <a href="https://docs.uffizzi.com/"><b>Documentation</b></a>
+    </p>
+</div align="center" style="border-bottom: none">
 
-<p align="center">
-    <a href="http://www.uffizzi.com"><b>Website</b></a> •
-    <a href="https://join.slack.com/t/uffizzi/shared_invite/zt-ffr4o3x0-J~0yVT6qgFV~wmGm19Ux9A"><b>Slack</b></a> •
-    <a href="https://blog.nocodb.com/"><b>Blog</b></a> •
-    <a href="https://twitter.com/_Uffizzi"><b>Twitter</b></a> •
-    <a href="https://docs.uffizzi.com/"><b>Documentation</b></a>
-</p>
+Uffizzi helps teams ship features faster by solving their shared test environment bottleneck. It gives every member of your team the ability to spin up fresh QA, staging, demo, or debugging environments on demand, without impacting the rest of your team. Use Uffizzi environments to preview pull requests before merging or integrate with your CI pipeline for automated, end-to-end testing against a preview URL. Teams like [Backstage](), [NocoDB](), [Meilisearch](), and [Forem]() have adopted Uffizzi because it's lightweight, fast, scalable, and more cost effective than competing solutions.
 
-Uffizzi helps teams ship features faster by solving their shared test environment bottleneck. It gives every member of your team the ability to spin up fresh QA, staging, demo, or debugging environments on demand, without impacting the rest of your team. Use Uffizzi environments to preview pull requests before merging or integrate with your CI pipeline for integration with automated testing. Teams like [Backstage](), [NocoDB](), [Meilisearch](), and [Forem]() have adopted Uffizzi because it's lightweight, fast, scalable, and more cost effective than competing solutions.
+Did you know that Spotify's Backstage team achieves rapid releases at scale using nearly 400 ephemeral environments per month? [Learn how →](https://www.uffizzi.com/ephemeral-environments)
+&nbsp;  
+&nbsp;  
 
-<p>
-  <a href="https://www.uffizzi.com/ephemeral-environments">Learn how Spotify's Backstage team achieves rapid releases at scale using nearly 400 ephemeral environments per month (Case Study)</a>
-</p>
+<hr>
 
-<h2 align="center" style="border-bottom: none">
+<h3 align="center" style="border-bottom: none">
  <div>
-   Projects using Uffizzi<br>
+   Trusted by top teams
  </div>  
-</h2>
+</h3>
    <p align="center">
     <a href="https://backstage.spotify.com"><b>Backstage</b></a> •
-    <a href="https://github.com/nocodb/nocodb"><b>NocoDB</b></a> •
-    <a href="https://blog.nocodb.com/"><b>Meilisearch</b></a> •
-    <a href="https://twitter.com/_Uffizzi"><b>Forem</b></a> •
-    <a href="https://docs.uffizzi.com/"><b>Lazygit</b></a> •
-    <a href="https://backstage.spotify.com"><b>D2IQ</b></a> •
-    <a href="https://github.com/nocodb/nocodb"><b>NocoDB</b></a> •
-    <a href="https://blog.nocodb.com/"><b>ParseDashboard</b></a> •
-    <a href="https://twitter.com/_Uffizzi"><b>Fonoster</b></a>
+    <a href="https://www.nocodb.com"><b>NocoDB</b></a> •
+    <a href="https://www.meilisearch.com"><b>Meilisearch</b></a> •
+    <a href="https://www.forem.com"><b>Forem</b></a> •
+    <a href="https://github.com/jesseduffield/lazygit"><b>Lazygit</b></a> •
+    <a href="https://d2iq.com"><b>D2IQ</b></a> •
+    <a href="https://github.com/parse-community/parse-dashboard"><b>ParseDashboard</b></a> •
+    <a href="https://fonoster.com/"><b>Fonoster</b></a>
    </p>
 
   <p align="center">
-    <a href="https://backstage.spotify.com"><b>Answer</b></a> •
-    <a href="https://github.com/nocodb/nocodb"><b>Windmill</b></a> •
-    <a href="https://blog.nocodb.com/"><b>Flagsmith</b></a> •
-    <a href="https://twitter.com/_Uffizzi"><b>Memos</b></a> •
-    <a href="https://docs.uffizzi.com/"><b>Crater</b></a> •
-    <a href="https://backstage.spotify.com"><b>Livebook</b></a> •
-    <a href="https://github.com/nocodb/nocodb"><b>OnlineGo</b></a> •
-    <a href="https://blog.nocodb.com/"><b>BoxyHQ</b></a> •
-    <a href="https://twitter.com/_Uffizzi"><b>And more</b></a>
+    <a href="https://answer.dev/"><b>Answer</b></a> •
+    <a href="https://www.windmill.dev/"><b>Windmill</b></a> •
+    <a href="https://flagsmith.com/"><b>Flagsmith</b></a> •
+    <a href="https://usememos.com/"><b>Memos</b></a> •
+    <a href="https://craterapp.com/"><b>Crater</b></a> •
+    <a href="https://livebook.dev/"><b>Livebook</b></a> •
+    <a href="https://online-go.com/"><b>OnlineGo</b></a> •
+    <a href="https://boxyhq.com/"><b>BoxyHQ</b></a>
   </p>
-  <br>
+<hr>
+
+![github-banner](https://user-images.githubusercontent.com/7218230/191119628-4d39c65d-465f-4011-9370-d53d7b54d8cc.png)
+
 
 ## Quickstart (~1 minute)
 
