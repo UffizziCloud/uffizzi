@@ -71,6 +71,63 @@ Uffizzi's modular design works with GitHub, GitLab, BitBucket, and any CI provid
 
 <img width="600" alt="preview-url" src="https://user-images.githubusercontent.com/7218230/194924634-391aff82-8adf-473b-800e-a20dcdab82dd.png">
 
+<table>
+  <tr>
+  <th align="center">
+  <p> 
+  <small>
+  GitHub Actions Example
+  </small>
+  </p>
+  </th>
+  <th align="center">
+  <p> 
+  <small>
+  Uffizzi CI Example
+  </small>
+  </p>
+  </th>
+  </tr>
+  <tr width="300">
+  <td>
+
+  ```yaml
+  deploy-uffizzi-preview:
+    name: Use Remote Workflow to Preview on Uffizzi
+    needs: render-compose-file
+    uses: UffizziCloud/preview-action/.github/workflows/reusable.yaml@v2
+    with:
+      compose-file-cache-key: ${{ needs.render-compose-file.outputs.compose-file-cache-key }}
+      compose-file-cache-path: ${{ needs.render-compose-file.outputs.compose-file-cache-path }}
+      server: https://app.uffizzi.com
+    permissions:
+      contents: read
+      pull-requests: write
+      id-token: write
+  ```
+
+  </td>
+  <td>
+
+  ```yaml
+  x-uffizzi:
+    ingress:
+      service: app
+      port: 8080
+    continuous_previews:
+      deploy_preview_when_pull_request_is_open: true
+      delete_preview_when_pull_request_is_closed: true
+  
+  service:
+    app:
+      build: https://github.com/ACCOUNT/REPO:BRANCH
+    ...
+  ```
+
+  </td>
+  </tr>
+</table>
+
 ## Give us a star ⭐️
 If you're interested in Uffizzi, give us a star. It helps others discover the project.
 
