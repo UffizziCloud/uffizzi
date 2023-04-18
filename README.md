@@ -1,24 +1,78 @@
+<div align="center" style="border-bottom: none">
+  <h1>
+    <div>
+        <a href="https://www.uffizzi.com">
+            <img src="misc/uffizzi-icon.png" width="80" />
+            <br>
+            Uffizzi
+        </a>
+    </div>
+    Environments-as-a-Service <br>
+    <a href="https://opensource.org/licenses/Apache-2.0">
+        <img src="https://img.shields.io/badge/License-Apache%202.0-blue.svg">
+    </a>
+  </h1>
+    <p align="center">
+        <a href="http://www.uffizzi.com"><b>Website</b></a> •
+        <a href="https://join.slack.com/t/uffizzi/shared_invite/zt-ffr4o3x0-J~0yVT6qgFV~wmGm19Ux9A"><b>Slack</b></a> •
+        <a href="https://blog.nocodb.com/"><b>Blog</b></a> •
+        <a href="https://twitter.com/_Uffizzi"><b>Twitter</b></a> •
+        <a href="https://docs.uffizzi.com/"><b>Documentation</b></a>
+    </p>
+</div align="center" style="border-bottom: none">
+
+Uffizzi helps teams ship features faster by solving their shared test environment bottleneck. It gives every member of your team the ability to spin up fresh QA, staging, demo, or debugging environments on demand, without impacting the rest of your team. Use Uffizzi environments to preview pull requests before merging or integrate with your CI pipeline for automated, end-to-end testing against a preview URL. Teams like [Backstage](), [NocoDB](), [Meilisearch](), and [Forem]() have adopted Uffizzi because it's lightweight, fast, scalable, and more cost effective than competing solutions.
+
+Did you know that Spotify's Backstage team achieves rapid releases at scale using nearly 400 ephemeral environments per month? [Learn how →](https://www.uffizzi.com/ephemeral-environments)
+&nbsp;  
+&nbsp;  
+
+<hr>
+
+<h3 align="center" style="border-bottom: none">
+ <div>
+   Trusted by top teams
+ </div>  
+</h3>
+   <p align="center">
+    <a href="https://backstage.spotify.com"><b>Backstage</b></a> •
+    <a href="https://www.nocodb.com"><b>NocoDB</b></a> •
+    <a href="https://www.meilisearch.com"><b>Meilisearch</b></a> •
+    <a href="https://www.forem.com"><b>Forem</b></a> •
+    <a href="https://github.com/jesseduffield/lazygit"><b>Lazygit</b></a> •
+    <a href="https://d2iq.com"><b>D2IQ</b></a> •
+    <a href="https://github.com/parse-community/parse-dashboard"><b>ParseDashboard</b></a> •
+    <a href="https://fonoster.com/"><b>Fonoster</b></a>
+   </p>
+
+  <p align="center">
+    <a href="https://answer.dev/"><b>Answer</b></a> •
+    <a href="https://www.windmill.dev/"><b>Windmill</b></a> •
+    <a href="https://flagsmith.com/"><b>Flagsmith</b></a> •
+    <a href="https://usememos.com/"><b>Memos</b></a> •
+    <a href="https://craterapp.com/"><b>Crater</b></a> •
+    <a href="https://livebook.dev/"><b>Livebook</b></a> •
+    <a href="https://online-go.com/"><b>OnlineGo</b></a> •
+    <a href="https://boxyhq.com/"><b>BoxyHQ</b></a>
+  </p>
+<hr>
 
 ![github-banner](https://user-images.githubusercontent.com/7218230/191119628-4d39c65d-465f-4011-9370-d53d7b54d8cc.png)
 
-[![License](https://img.shields.io/badge/License-Apache%202.0-blue.svg)](https://opensource.org/licenses/Apache-2.0)
 
-## Uffizzi - Open-source Preview Environments
+## Quickstart (~1 minute)
 
-#### Don't merge until you preview
+Go to the [`quickstart` repo](https://github.com/UffizziCloud/quickstart#uffizzi-quickstart--1-minute), then follow the instructions in the `README` to create a preview environment for a sample application.
 
-Uffizzi is a tool that lets you preview pull requests before merging. Create on-demand Preview Environments for APIs, frontends, backends, databases, microservices, binaries and command-line tools. Each Preview Environment gets a secure HTTPS URL that is continually refreshed when you push new commits. Uffizzi also handles clean up, so your environments last only as long as you need them.  
+## How it works
+Create on-demand preview environments for APIs, frontends, backends, databases, microservices, binaries and command-line tools. Each ephemeral environment gets a secure HTTPS URL that is continually refreshed when you push new commits. Uffizzi also handles clean up, so your environments last only as long as you need them.  
 
-Uffizzi is an open-source, off-the-shelf, cross-platform solution that works with any version control system, container registry, or CI platform.
+Uffizzi's modular design works with GitHub, GitLab, BitBucket, and any CI provider.
 
 <img width="600" alt="preview-url" src="https://user-images.githubusercontent.com/7218230/194924634-391aff82-8adf-473b-800e-a20dcdab82dd.png">
 
 ## Give us a star ⭐️
 If you're interested in Uffizzi, give us a star. It helps others discover the project.
-
-## Quickstart (~1 minute)
-
-Go to the [`quickstart` repo](https://github.com/UffizziCloud/quickstart#uffizzi-quickstart--1-minute), then follow the instructions in the `README` to create a Preview Environment for a sample application.
 
 ## Use cases
 
@@ -33,7 +87,7 @@ Uffizzi is designed to integrate with any CI platform as a step in your pipeline
 
 ## What types of apps are supported by Uffizzi?
 
-Uffizzi is designed for full-stack web applications and containerized services, including APIs, backends, frontends, databases, microservices, binaries and command line tools . Currently, application configurations must be defined via Docker Compose. Support for Helm and other configuration formats are on our [public roadmap](https://github.com/orgs/UffizziCloud/projects/2/views/1?layout=board). See [Docker Compose for Uffizzi ](https://docs.uffizzi.com/references/compose-spec/) to learn more about supported syntax.
+Uffizzi is designed for full-stack web applications and containerized services, including APIs, backends, frontends, databases, microservices, binaries and command line tools . Currently, application configurations must be defined via Docker Compose. See [Docker Compose for Uffizzi ](https://docs.uffizzi.com/references/compose-spec/) to learn more about supported syntax.
 
 ## Why Uffizzi?
 
@@ -43,7 +97,7 @@ Uffizzi helps busy project leaders approve pull requests faster. Testing a live 
 
 See our high-level [project roadmap](https://github.com/orgs/UffizziCloud/projects/2/views/1?layout=board), including already delivered milestones.
 
-## Set up Preview Environments for your application
+## Set up ephemeral environments for your application
 
 (If you haven't completed the [quickstart guide](https://github.com/UffizziCloud/quickstart), we recommend starting there to understand how Uffizzi works and how it's configured.)  
 
