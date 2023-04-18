@@ -3,22 +3,44 @@
 
 [![License](https://img.shields.io/badge/License-Apache%202.0-blue.svg)](https://opensource.org/licenses/Apache-2.0)
 
-## Uffizzi - Open-source Preview Environments
+## Uffizzi - Environments as a Service
 
-#### Don't merge until you preview
+#### [Spotify's Backstage team achieves rapid releases at scale using nearly 400 ephemeral environments per month (Case Study)](https://www.uffizzi.com/ephemeral-environments)
 
-Uffizzi is a tool that lets you preview pull requests before merging. Create on-demand Preview Environments for APIs, frontends, backends, databases, microservices, binaries and command-line tools. Each Preview Environment gets a secure HTTPS URL that is continually refreshed when you push new commits. Uffizzi also handles clean up, so your environments last only as long as you need them.  
+Uffizzi helps teams ship features faster by solving their shared test environment bottleneck. It gives every member of your team the ability to spin up fresh QA, staging, demo, or debugging environments on demand, without impacting the rest of your team work. Use Uffizzi environments to preview pull requests before merging or integrate with your CI pipeline for automated testing. Teams like [Backstage](), [NocoDB](), [Meilisearch](), and [Forem]() have adopted Uffizzi because it's lightweight, fast, scalable, and more cost effective than competing solutions.
 
-Uffizzi is an open-source, off-the-shelf, cross-platform solution that works with any version control system, container registry, or CI platform.
+## Projects using Uffizzi
+- [Backstage]()  
+- [NocoDB]()  
+- [Meilisearch]()  
+- [Forem]()  
+- [Lazygit]()  
+- [D2IQ]()  
+- [Logto]()  
+- [ParseDashboard]()  
+- [Fonoster]()  
+- [Answer]()  
+- [Windmill]()
+- [Flagsmith]()  
+- [Memos]()  
+- [Crater]()  
+- [Livebook]()  
+- [Online]()  
+- [BoxyHQ]()  
+
+## Quickstart (~1 minute)
+
+Go to the [`quickstart` repo](https://github.com/UffizziCloud/quickstart#uffizzi-quickstart--1-minute), then follow the instructions in the `README` to create a Preview Environment for a sample application.
+
+## How it works
+Create on-demand preview environments for APIs, frontends, backends, databases, microservices, binaries and command-line tools. Each ephemeral environment gets a secure HTTPS URL that is continually refreshed when you push new commits. Uffizzi also handles clean up, so your environments last only as long as you need them.  
+
+Uffizzi modular design means your team can integrate Uffizzi whether you're on GitHub, GitLab, or BitBucket. It also works with any CI provider.
 
 <img width="600" alt="preview-url" src="https://user-images.githubusercontent.com/7218230/194924634-391aff82-8adf-473b-800e-a20dcdab82dd.png">
 
 ## Give us a star ⭐️
 If you're interested in Uffizzi, give us a star. It helps others discover the project.
-
-## Quickstart (~1 minute)
-
-Go to the [`quickstart` repo](https://github.com/UffizziCloud/quickstart#uffizzi-quickstart--1-minute), then follow the instructions in the `README` to create a Preview Environment for a sample application.
 
 ## Use cases
 
@@ -33,7 +55,7 @@ Uffizzi is designed to integrate with any CI platform as a step in your pipeline
 
 ## What types of apps are supported by Uffizzi?
 
-Uffizzi is designed for full-stack web applications and containerized services, including APIs, backends, frontends, databases, microservices, binaries and command line tools . Currently, application configurations must be defined via Docker Compose. Support for Helm and other configuration formats are on our [public roadmap](https://github.com/orgs/UffizziCloud/projects/2/views/1?layout=board). See [Docker Compose for Uffizzi ](https://docs.uffizzi.com/references/compose-spec/) to learn more about supported syntax.
+Uffizzi is designed for full-stack web applications and containerized services, including APIs, backends, frontends, databases, microservices, binaries and command line tools . Currently, application configurations must be defined via Docker Compose. See [Docker Compose for Uffizzi ](https://docs.uffizzi.com/references/compose-spec/) to learn more about supported syntax.
 
 ## Why Uffizzi?
 
