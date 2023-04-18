@@ -7,7 +7,7 @@
 
 #### [Spotify's Backstage team achieves rapid releases at scale using nearly 400 ephemeral environments per month (Case Study)](https://www.uffizzi.com/ephemeral-environments)
 
-Uffizzi helps teams ship features faster by solving their shared test environment bottleneck. It gives every member of your team the ability to spin up fresh QA, staging, demo, or debugging environments on demand, without impacting the rest of your team work. Use Uffizzi environments to preview pull requests before merging or integrate with your CI pipeline for automated testing. Teams like [Backstage](), [NocoDB](), [Meilisearch](), and [Forem]() have adopted Uffizzi because it's lightweight, fast, scalable, and more cost effective than competing solutions.
+Uffizzi helps teams ship features faster by solving their shared test environment bottleneck. It gives every member of your team the ability to spin up fresh QA, staging, demo, or debugging environments on demand, without impacting the rest of your team. Use Uffizzi environments to preview pull requests before merging or integrate with your CI pipeline for integration with automated testing. Teams like [Backstage](), [NocoDB](), [Meilisearch](), and [Forem]() have adopted Uffizzi because it's lightweight, fast, scalable, and more cost effective than competing solutions.
 
 ## Projects using Uffizzi
 - [Backstage]()  
@@ -30,7 +30,7 @@ Uffizzi helps teams ship features faster by solving their shared test environmen
 
 ## Quickstart (~1 minute)
 
-Go to the [`quickstart` repo](https://github.com/UffizziCloud/quickstart#uffizzi-quickstart--1-minute), then follow the instructions in the `README` to create a Preview Environment for a sample application.
+Go to the [`quickstart` repo](https://github.com/UffizziCloud/quickstart#uffizzi-quickstart--1-minute), then follow the instructions in the `README` to create a preview environment for a sample application.
 
 ## How it works
 Create on-demand preview environments for APIs, frontends, backends, databases, microservices, binaries and command-line tools. Each ephemeral environment gets a secure HTTPS URL that is continually refreshed when you push new commits. Uffizzi also handles clean up, so your environments last only as long as you need them.  
@@ -65,7 +65,7 @@ Uffizzi helps busy project leaders approve pull requests faster. Testing a live 
 
 See our high-level [project roadmap](https://github.com/orgs/UffizziCloud/projects/2/views/1?layout=board), including already delivered milestones.
 
-## Set up Preview Environments for your application
+## Set up ephemeral environments for your application
 
 (If you haven't completed the [quickstart guide](https://github.com/UffizziCloud/quickstart), we recommend starting there to understand how Uffizzi works and how it's configured.)  
 
