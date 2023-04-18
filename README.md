@@ -27,6 +27,7 @@ Uffizzi helps teams ship features faster by solving their shared test environmen
 - [Livebook]()  
 - [Online]()  
 - [BoxyHQ]()  
+- And more
 
 ## Quickstart (~1 minute)
 
@@ -35,7 +36,7 @@ Go to the [`quickstart` repo](https://github.com/UffizziCloud/quickstart#uffizzi
 ## How it works
 Create on-demand preview environments for APIs, frontends, backends, databases, microservices, binaries and command-line tools. Each ephemeral environment gets a secure HTTPS URL that is continually refreshed when you push new commits. Uffizzi also handles clean up, so your environments last only as long as you need them.  
 
-Uffizzi modular design means your team can integrate Uffizzi whether you're on GitHub, GitLab, or BitBucket. It also works with any CI provider.
+Uffizzi's modular design works with GitHub, GitLab, BitBucket, and any CI provider.
 
 <img width="600" alt="preview-url" src="https://user-images.githubusercontent.com/7218230/194924634-391aff82-8adf-473b-800e-a20dcdab82dd.png">
 
