@@ -3,31 +3,60 @@
 
 [![License](https://img.shields.io/badge/License-Apache%202.0-blue.svg)](https://opensource.org/licenses/Apache-2.0)
 
-## Uffizzi - Environments as a Service
+<h1 align="center" style="border-bottom: none">
+    <div>
+        <a href="https://www.uffizzi.com">
+            <img src="misc/uffizzi-icon.png" width="80" />
+            <br>
+            Uffizzi
+        </a>
+    </div>
+    Environments-as-a-Service <br>
+</h1>
 
-#### [Spotify's Backstage team achieves rapid releases at scale using nearly 400 ephemeral environments per month (Case Study)](https://www.uffizzi.com/ephemeral-environments)
+<p align="center">
+    <a href="http://www.uffizzi.com"><b>Website</b></a> •
+    <a href="https://join.slack.com/t/uffizzi/shared_invite/zt-ffr4o3x0-J~0yVT6qgFV~wmGm19Ux9A"><b>Slack</b></a> •
+    <a href="https://blog.nocodb.com/"><b>Blog</b></a> •
+    <a href="https://twitter.com/_Uffizzi"><b>Twitter</b></a> •
+    <a href="https://docs.uffizzi.com/"><b>Documentation</b></a>
+</p>
 
 Uffizzi helps teams ship features faster by solving their shared test environment bottleneck. It gives every member of your team the ability to spin up fresh QA, staging, demo, or debugging environments on demand, without impacting the rest of your team. Use Uffizzi environments to preview pull requests before merging or integrate with your CI pipeline for integration with automated testing. Teams like [Backstage](), [NocoDB](), [Meilisearch](), and [Forem]() have adopted Uffizzi because it's lightweight, fast, scalable, and more cost effective than competing solutions.
 
-## Projects using Uffizzi
-- [Backstage]()  
-- [NocoDB]()  
-- [Meilisearch]()  
-- [Forem]()  
-- [Lazygit]()  
-- [D2IQ]()  
-- [Logto]()  
-- [ParseDashboard]()  
-- [Fonoster]()  
-- [Answer]()  
-- [Windmill]()
-- [Flagsmith]()  
-- [Memos]()  
-- [Crater]()  
-- [Livebook]()  
-- [Online]()  
-- [BoxyHQ]()  
-- And more
+<p>
+  <a href="https://www.uffizzi.com/ephemeral-environments">Learn how Spotify's Backstage team achieves rapid releases at scale using nearly 400 ephemeral environments per month (Case Study)</a>
+</p>
+
+<h2 align="center" style="border-bottom: none">
+ <div>
+   Projects using Uffizzi<br>
+ </div>  
+</h2>
+   <p align="center">
+    <a href="https://backstage.spotify.com"><b>Backstage</b></a> •
+    <a href="https://github.com/nocodb/nocodb"><b>NocoDB</b></a> •
+    <a href="https://blog.nocodb.com/"><b>Meilisearch</b></a> •
+    <a href="https://twitter.com/_Uffizzi"><b>Forem</b></a> •
+    <a href="https://docs.uffizzi.com/"><b>Lazygit</b></a> •
+    <a href="https://backstage.spotify.com"><b>D2IQ</b></a> •
+    <a href="https://github.com/nocodb/nocodb"><b>NocoDB</b></a> •
+    <a href="https://blog.nocodb.com/"><b>ParseDashboard</b></a> •
+    <a href="https://twitter.com/_Uffizzi"><b>Fonoster</b></a>
+   </p>
+
+  <p align="center">
+    <a href="https://backstage.spotify.com"><b>Answer</b></a> •
+    <a href="https://github.com/nocodb/nocodb"><b>Windmill</b></a> •
+    <a href="https://blog.nocodb.com/"><b>Flagsmith</b></a> •
+    <a href="https://twitter.com/_Uffizzi"><b>Memos</b></a> •
+    <a href="https://docs.uffizzi.com/"><b>Crater</b></a> •
+    <a href="https://backstage.spotify.com"><b>Livebook</b></a> •
+    <a href="https://github.com/nocodb/nocodb"><b>OnlineGo</b></a> •
+    <a href="https://blog.nocodb.com/"><b>BoxyHQ</b></a> •
+    <a href="https://twitter.com/_Uffizzi"><b>And more</b></a>
+  </p>
+  <br>
 
 ## Quickstart (~1 minute)
 
