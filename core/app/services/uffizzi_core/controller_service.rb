@@ -17,11 +17,6 @@ class UffizziCore::ControllerService
       controller_client.create_deployment(deployment_id: deployment.id, body: body)
     end
 
-    def update_deployment(deployment)
-      body = UffizziCore::Controller::UpdateDeployment::DeploymentSerializer.new(deployment).as_json
-      controller_client.update_deployment(deployment_id: deployment.id, body: body)
-    end
-
     def delete_deployment(deployment_id)
       controller_client.delete_deployment(deployment_id: deployment_id)
     end

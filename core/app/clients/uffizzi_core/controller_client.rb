@@ -19,10 +19,6 @@ class UffizziCore::ControllerClient
     connection.post("/deployments/#{deployment_id}", body)
   end
 
-  def update_deployment(deployment_id:, body:)
-    connection.put("/deployments/#{deployment_id}", body)
-  end
-
   def delete_deployment(deployment_id:)
     connection.delete("/deployments/#{deployment_id}")
   end
