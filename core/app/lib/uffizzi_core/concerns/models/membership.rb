@@ -28,7 +28,7 @@ module UffizziCore::Concerns::Models::Membership
         transitions from: [:blocked, :inactive], to: :active
       end
 
-      event :desactivate do
+      event :deactivate do
         transitions from: [:active], to: :inactive
       end
 
