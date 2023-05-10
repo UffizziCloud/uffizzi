@@ -22,9 +22,14 @@ module UffizziCore::Concerns::Models::Membership
     aasm(:state) do
       state :active, initial: true
       state :blocked
+      state :inactive
 
       event :activate do
-        transitions from: [:blocked], to: :active
+        transitions from: [:blocked, :inactive], to: :active
+      end
+
+      event :deactivate do
+        transitions from: [:active], to: :inactive
       end
 
       event :block do
