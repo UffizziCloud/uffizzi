@@ -1,6 +1,14 @@
 # frozen_string_literal: true
 
 module UffizziCore::DependencyInjectionConcern
+  extend ActiveSupport::Concern
+
+  class_methods do
+    def include_module_if_exists(module_name)
+      include(Object.const_get(module_name)) if Object.const_defined?(module_name)
+    end
+  end
+
   def user_access_module
     return unless module_exists?(:rbac)
 
