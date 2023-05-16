@@ -45,6 +45,8 @@ class UffizziCore::ActivityItemService
       deployment = container.deployment
       service = UffizziCore::ManageActivityItemsService.new(deployment)
       container_status_item = service.container_status_item(container)
+      return if container_status_item.nil?
+
       status = container_status_item[:status]
       last_event = activity_item.events.order_by_id.last
 
