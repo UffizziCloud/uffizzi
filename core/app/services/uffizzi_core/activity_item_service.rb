@@ -45,18 +45,16 @@ class UffizziCore::ActivityItemService
       deployment = container.deployment
       service = UffizziCore::ManageActivityItemsService.new(deployment)
       container_status_item = service.container_status_item(container)
+      return if container_status_item.nil?
+
       status = container_status_item[:status]
       last_event = activity_item.events.order_by_id.last
-
       activity_item.events.create(state: status) if last_event&.state != status
 
-      if failed?(status)
-        UffizziCore::ActivityItemService.fail_deployment!(activity_item)
-        notification_module.notify_about_failed_deployment(deployment) if notification_module.present?
-      end
+      return handle_failed_status(activity_item, deployment) if failed?(status)
 
       if deployed?(status) && UffizziCore::ContainerService.ingress_container?(container)
-        deployment.update(last_deploy_at: last_event.created_at)
+        return deployment.update(last_deploy_at: last_event.created_at)
       end
 
       return unless [UffizziCore::Event.state.building, UffizziCore::Event.state.deploying].include?(status)
@@ -65,6 +63,11 @@ class UffizziCore::ActivityItemService
     end
 
     private
+
+    def handle_failed_status(activity_item, deployment)
+      UffizziCore::ActivityItemService.fail_deployment!(activity_item)
+      notification_module.notify_about_failed_deployment(deployment) if notification_module.present?
+    end
 
     def create_item!(activity_item_attributes)
       activity_item = UffizziCore::ActivityItem.find_by(activity_item_attributes)
