@@ -37,6 +37,9 @@ class UffizziCore::ContainerRegistry::DockerHubService
       token = docker_hub_client.get_token(image).result.token
       response = docker_hub_client.digest(image: image, tag: tag, token: token)
       response.headers['docker-content-digest']
+      # FIXME: can't get digest for private image: {"code":"UNAUTHORIZED","message":"authentication required"...}
+    rescue UffizziCore::ContainerRegistryError
+      'unknown'
     end
 
     def credential_correct?(credential)
