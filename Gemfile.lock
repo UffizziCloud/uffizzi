@@ -1,7 +1,7 @@
 PATH
   remote: core
   specs:
-    uffizzi_core (2.1.22)
+    uffizzi_core (2.1.23)
       aasm
       actionpack (~> 6.1.0)
       active_model_serializers
@@ -110,7 +110,7 @@ GEM
     ast (2.4.2)
     awesome_print (1.9.2)
     aws-eventstream (1.2.0)
-    aws-partitions (1.762.0)
+    aws-partitions (1.765.0)
     aws-sdk-core (3.172.0)
       aws-eventstream (~> 1, >= 1.0.2)
       aws-partitions (~> 1, >= 1.651.0)
@@ -150,7 +150,7 @@ GEM
     descendants_tracker (0.0.4)
       thread_safe (~> 0.3, >= 0.3.1)
     digest (3.1.1)
-    docker_distribution (0.1.0)
+    docker_distribution (0.1.2)
       digest (~> 3)
     dotenv (2.8.1)
     dry-configurable (0.14.0)
