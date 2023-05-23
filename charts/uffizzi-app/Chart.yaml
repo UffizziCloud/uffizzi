@@ -21,7 +21,7 @@ sources:
   - https://github.com/UffizziCloud/uffizzi
 dependencies:
   - name: uffizzi-controller
-    version: "1.0.0"
+    version: "1.1.0"
     repository: https://uffizzicloud.github.io/uffizzi_controller/
   - name: postgresql
     version: "12.5.5"
