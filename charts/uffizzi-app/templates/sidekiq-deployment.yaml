@@ -6,7 +6,7 @@ metadata:
     app: uffizzi-sidekiq
 
 spec:
-  replicas: {{ .Values.sidekiq_replicas }}
+  replicas: {{ .Values.sidekiq.replicas }}
   selector:
     matchLabels:
       app: uffizzi-sidekiq
@@ -19,7 +19,7 @@ spec:
       automountServiceAccountToken: false
       containers:
       - name: uffizzi-sidekiq
-        image: {{ .Values.image }}
+        image: {{ .Values.sidekiq.image }}
         command:
         - /bin/bash
         - -c

@@ -20,15 +20,20 @@ home: https://uffizzi.com/
 sources:
   - https://github.com/UffizziCloud/uffizzi
 dependencies:
+  - name: common
+    repository: oci://registry-1.docker.io/bitnamicharts
+    tags:
+      - bitnami-common
+    version: 2.x.x
   - name: uffizzi-controller
-    version: "1.1.0"
+    version: "1.1.x"
     repository: https://uffizzicloud.github.io/uffizzi_controller/
   - name: postgresql
-    version: "12.5.5"
+    version: "12.x.x"
     repository: https://charts.bitnami.com/bitnami
     condition: postgresql.enabled
   - name: redis
-    version: "17.11.3"
+    version: "17.x.x"
     repository: https://charts.bitnami.com/bitnami
     condition: redis.enabled
 maintainers:
@@ -42,6 +47,7 @@ icon: https://app.uffizzi.com/favicon.png
 appVersion: "1.2.1"
 deprecated: false
 annotations:
-  # Use this annotation to indicate that this chart version is a pre-release.
   # https://artifacthub.io/docs/topics/annotations/helm/
   artifacthub.io/prerelease: "false"
+  artifacthub.io/category: integration-delivery
+  artifacthub.io/license: Apache-2.0

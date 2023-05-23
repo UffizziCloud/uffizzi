@@ -6,7 +6,7 @@ metadata:
     app: uffizzi-web
 
 spec:
-  replicas: {{ .Values.web_replicas }}
+  replicas: {{ .Values.web.replicas }}
   selector:
     matchLabels:
       app: uffizzi-web
@@ -19,7 +19,7 @@ spec:
       automountServiceAccountToken: false
       containers:
       - name: uffizzi-web
-        image: {{ .Values.image }}
+        image: {{ .Values.web.image }}
         command:
         - /bin/bash
         - -c

@@ -19,12 +19,34 @@ global:
       username: username
       password: ChangeMeNow
 
+  # Please note that this will override the image parameters, including dependencies, configured to use the global value.
+  # Global Docker image registry
+  imageRegistry: ""
+  # Global Docker registry secret names as an array
+  # example: `imagePullSecrets: [myRegistryKeySecretName]`
+  imagePullSecrets: []
+
+web:
+  replicas: 3
+  image:
+    registry: ""
+    repository: uffizzi/app
+    tag: latest
+    pullPolicy: Always
+    pullSecrets: []
+
+sidekiq:
+  replicas: 1
+  image:
+    registry: ""
+    repository: uffizzi/app
+    tag: latest
+    pullPolicy: Always
+    pullSecrets: []
+
 env: production
 app_url: https://uffizzi.example.com
 webHostname: uffizzi.example.com
-image: uffizzi/app
-web-replicas: 3
-sidekiq-replicas: 1
 hostname: localhost
 controller_url: ""
 allowed_hosts: ""
