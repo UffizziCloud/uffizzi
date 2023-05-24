@@ -14,7 +14,7 @@ spec:
 
   template:
     metadata:
-      labels:
+      labels: {{ include "common.labels.standard" . | nindent 8 }}
         app: uffizzi-web
     spec:
       automountServiceAccountToken: false
