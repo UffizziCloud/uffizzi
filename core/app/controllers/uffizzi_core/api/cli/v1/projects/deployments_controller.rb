@@ -51,6 +51,8 @@ class UffizziCore::Api::Cli::V1::Projects::DeploymentsController < UffizziCore::
   # @response [object<errors: object<title: string>>] 404 Not found
   # @response 401 Not authorized
   def create
+    return render_deployment_exists_error if deployments.with_labels(metadata_params).exists?
+
     compose_file, errors = find_or_create_compose_file
     return render_invalid_file if compose_file.invalid_file?
     return render_errors(errors) if errors.present?
@@ -193,6 +195,10 @@ class UffizziCore::Api::Cli::V1::Projects::DeploymentsController < UffizziCore::
   end
 
   def render_invalid_file
-    render json: { errors: { state: ['Invalid compose file'] } }, status: :unprocessable_entity
+    render json: { errors: { state: [I18n.t('compose.invalid_compose')] } }, status: :unprocessable_entity
+  end
+
+  def render_deployment_exists_error
+    render json: { errors: { state: [I18n.t('deployment.already_exists')] } }, status: :unprocessable_entity
   end
 end
