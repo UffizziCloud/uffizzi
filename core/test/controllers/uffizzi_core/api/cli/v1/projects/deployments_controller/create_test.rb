@@ -151,6 +151,16 @@ class UffizziCore::Api::Cli::V1::Projects::DeploymentsControllerTest < ActionCon
     Sidekiq::Testing.inline!
   end
 
+  test '#create - from the existing compose file with metadata when an active deployment exists - should return an eror' do
+    create(:deployment, metadata: @metadata, project: @project)
+
+    params = { project_slug: @project.slug, compose_file: {}, dependencies: [], metadata: @metadata }
+
+    post :create, params: params, format: :json
+
+    assert_response :unprocessable_entity
+  end
+
   test '#create - from the existing compose file with github_actions creation source (for self-hosted version)' do
     Sidekiq::Worker.clear_all
     Sidekiq::Testing.fake!
