@@ -51,7 +51,7 @@ class UffizziCore::Api::Cli::V1::Projects::DeploymentsController < UffizziCore::
   # @response [object<errors: object<title: string>>] 404 Not found
   # @response 401 Not authorized
   def create
-    return render_deployment_exists_error if deployments.with_labels(metadata_params).exists?
+    return render_deployment_exists_error if deployments.with_metadata.with_labels(metadata_params).exists?
 
     compose_file, errors = find_or_create_compose_file
     return render_invalid_file if compose_file.invalid_file?
