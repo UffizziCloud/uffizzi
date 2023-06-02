@@ -16,9 +16,9 @@ class UffizziCore::DockerRegistryClient
   end
 
   def authenticated?
-    @connection.head('/v2/')
+    response = @connection.head('/v2/')
 
-    true
+    [401, 400].exclude?(response.status)
   end
 
   def manifests(image:, tag:, namespace: nil)
@@ -38,7 +38,6 @@ class UffizziCore::DockerRegistryClient
       faraday.request(:json)
       faraday.response(:json)
       faraday.response(:follow_redirects)
-      faraday.response(:raise_error)
       faraday.adapter(Faraday.default_adapter)
     end
 
