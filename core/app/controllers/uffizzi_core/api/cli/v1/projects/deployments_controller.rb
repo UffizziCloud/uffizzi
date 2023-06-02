@@ -133,6 +133,7 @@ class UffizziCore::Api::Cli::V1::Projects::DeploymentsController < UffizziCore::
   # @response 401 Not authorized
   def destroy
     UffizziCore::DeploymentService.disable!(deployment)
+    deployment.deployment_events.create!(deployment_state: deployment.state, message: 'Destroyed by CLI')
 
     head :no_content
   end
