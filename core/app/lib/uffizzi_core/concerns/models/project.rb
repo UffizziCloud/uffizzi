@@ -51,6 +51,7 @@ module UffizziCore::Concerns::Models::Project
     def disable_deployments
       active_deployments.each do |deployment|
         UffizziCore::DeploymentService.disable!(deployment)
+        deployment.deployment_events.create!(deployment_state: deployment.state, message: 'Disabled after project was disabled')
       end
     end
 
