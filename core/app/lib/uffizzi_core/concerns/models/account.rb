@@ -24,25 +24,6 @@ module UffizziCore::Concerns::Models::Account
     has_many :deployments, through: :projects
     has_many :payments, dependent: :destroy
 
-    aasm(:state) do
-      state :active, initial: true
-      state :payment_issue
-      state :disabled
-      state :draft
-
-      event :activate do
-        transitions from: [:payment_issue, :disabled, :draft], to: :active
-      end
-
-      event :raise_payment_issue, before_success: :update_payment_issue_date do
-        transitions from: [:active, :disabled], to: :payment_issue
-      end
-
-      event :disable, after: :disable_projects do
-        transitions from: [:active, :payment_issue], to: :disabled
-      end
-    end
-
     aasm(:sso_state) do
       state :connection_not_configured, initial: true
       state :connection_disabled
