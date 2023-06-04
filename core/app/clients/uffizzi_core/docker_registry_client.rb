@@ -12,7 +12,7 @@ class UffizziCore::DockerRegistryClient
 
   def initialize(registry_url:, username: nil, password: nil)
     @registry_url = registry_url
-    @connection = build_connection(@registry_url, username, password)
+    @connection = build_connection(username, password)
   end
 
   def authenticated?
