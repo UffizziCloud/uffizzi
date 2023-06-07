@@ -19,7 +19,7 @@ class UffizziCore::Api::Cli::V1::ComposeFile::CheckCredentialsForm
 
     containers = compose_data[:containers]
     containers.each do |container|
-      container_registry_service = UffizziCore::ContainerRegistryService.init_by_container(container)
+      container_registry_service = UffizziCore::ContainerRegistryService.init_by_container(container, credentials)
       @type = container_registry_service.type
       next if container_registry_service.image_available?(credentials)
 

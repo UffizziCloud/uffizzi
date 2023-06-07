@@ -9,15 +9,21 @@ class UffizziCore::ContainerRegistryService
       new(type.to_sym)
     end
 
-    def init_by_container(container)
+    def init_by_container(container, credentials)
       registry_url = container.dig(:image, :registry_url)
 
       return new(:docker_hub, container) if registry_url.include?('docker.io')
       return new(:azure, container) if registry_url.include?('azurecr.io')
       return new(:google, container) if registry_url.include?('gcr.io')
-      return new(:amazon, container) if registry_url.include?('amazonaws.com')
+      return init_by_credentials(container, credentials) if registry_url.include?('amazonaws.com')
       return new(:github_container_registry, container) if registry_url.include?('ghcr.io')
       return new(:docker_registry, container) if docker_registry?(container)
+    end
+
+    def init_by_credentials(container, credentials)
+      return new(:docker_registry, container) if credentials && credentials.docker_registry.where(username: 'AWS').exists?
+
+      new(:amazon, container)
     end
 
     def docker_registry?(container)

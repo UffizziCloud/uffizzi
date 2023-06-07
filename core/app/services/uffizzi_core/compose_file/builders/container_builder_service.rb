@@ -59,7 +59,7 @@ class UffizziCore::ComposeFile::Builders::ContainerBuilderService
   private
 
   def container_registry(container_data)
-    @container_registry ||= UffizziCore::ContainerRegistryService.init_by_container(container_data)
+    @container_registry ||= UffizziCore::ContainerRegistryService.init_by_container(container_data, @credentials)
   end
 
   def repo_attributes(container_data, continuous_preview_global_data)

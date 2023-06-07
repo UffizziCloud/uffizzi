@@ -143,6 +143,24 @@ class UffizziCore::Api::Cli::V1::Accounts::CredentialsControllerTest < ActionCon
     assert_response :success
   end
 
+  test '#create docker registry credential to ecr' do
+    attributes = attributes_for(:credential, :docker_registry)
+    attributes[:registry_url] = attributes_for(:credential, :amazon)[:registry_url]
+    params = { account_id: @account.id, credential: attributes }
+
+    UffizziCore::ContainerRegistry::DockerRegistryService.expects(:credential_correct?).at_least(1).returns(true)
+
+    differences = {
+      -> { UffizziCore::Credential.count } => 1,
+    }
+
+    assert_difference differences do
+      post :create, params: params, format: :json
+    end
+
+    assert_response :success
+  end
+
   test '#update' do
     stub_dockerhub_login
 
