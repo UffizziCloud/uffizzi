@@ -16,7 +16,7 @@ class UffizziCore::DockerRegistryClient
   end
 
   def authenticated?
-    @connection.get("#{@registry_url}/v2/")
+    @connection.getgi("#{@registry_url}/v2/")
 
     true
   end
@@ -34,6 +34,7 @@ class UffizziCore::DockerRegistryClient
   def build_connection(username, password)
     # initializing Faraday with the registry_url will trim the trailing slash required for the /v2/ request
     connection = Faraday.new do |faraday|
+      faraday.headers['Accept'] = ACCEPTED_TYPES
       faraday.request(:basic_auth, username, password) if username.present? && password.present?
       faraday.request(:json)
       faraday.response(:json)
