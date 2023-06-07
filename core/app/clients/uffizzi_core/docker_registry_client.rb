@@ -16,7 +16,7 @@ class UffizziCore::DockerRegistryClient
   end
 
   def authenticated?
-    @connection.getgi("#{@registry_url}/v2/")
+    @connection.get("#{@registry_url}/v2/")
 
     true
   end
