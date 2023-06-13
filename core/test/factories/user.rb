@@ -33,6 +33,12 @@ FactoryBot.define do
       end
     end
 
+    trait :with_organizational_account do
+      after(:create) do |user, _evaluator|
+        create(:account, :with_admin, kind: UffizziCore::Account.kind.organizational, admin: user, created_at: user.created_at)
+      end
+    end
+
     trait :active do
       state { :active }
     end

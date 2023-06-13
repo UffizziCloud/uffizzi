@@ -6,6 +6,7 @@ class UffizziCore::Deployment::DeleteJob < UffizziCore::ApplicationJob
   def perform(id)
     Rails.logger.info("DEPLOYMENT_PROCESS deployment_id=#{id} DeleteJob")
 
-    UffizziCore::ControllerService.delete_deployment(id)
+    deployment = UffizziCore::Deployment.find(id)
+    UffizziCore::ControllerService.delete_namespace(deployment)
   end
 end

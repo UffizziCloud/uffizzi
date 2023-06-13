@@ -12,15 +12,6 @@ class UffizziCore::ControllerService
       controller_client.apply_config_file(deployment_id: deployment.id, config_file_id: config_file.id, body: body)
     end
 
-    def create_deployment(deployment)
-      body = UffizziCore::Controller::CreateDeployment::DeploymentSerializer.new(deployment).as_json
-      controller_client.create_deployment(deployment_id: deployment.id, body: body)
-    end
-
-    def delete_deployment(deployment_id)
-      controller_client.delete_deployment(deployment_id: deployment_id)
-    end
-
     def apply_credential(deployment, credential)
       image = if credential.github_container_registry?
         deployment.containers.by_repo_type(UffizziCore::Repo::GithubContainerRegistry.name).first&.image
@@ -83,6 +74,29 @@ class UffizziCore::ControllerService
 
     def fetch_namespace(deployment)
       controller_client.deployment(deployment_id: deployment.id).result || nil
+    end
+
+    def create_namespace(deployable)
+      # TODO: check repsonse for use present?
+      body = { namespace: deployable.namespace }
+      controller_client.create_namespace(body: body)
+    end
+
+    def delete_namespace(deployable)
+      controller_client.delete_namespace(namespace: deployable.namespace)
+    end
+
+    def create_cluster(cluster)
+      body = { cluster_name: cluster.name }
+      controller_client.create_cluster(namespace: cluster.namespace, body: body)
+    end
+
+    def show_cluster(cluster)
+      controller_client.show_cluster(namespace: cluster.namespace)
+    end
+
+    def delete_cluster(cluster)
+      controller_client.delete_cluster(namespace: cluster.namespace)
     end
 
     private
