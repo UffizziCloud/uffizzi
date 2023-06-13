@@ -27,7 +27,7 @@ class UffizziCore::Deployment::DeployContainersJob < UffizziCore::ApplicationJob
       return
     end
 
-    raise UffizziCore::DeploymentNotFoundError, id unless UffizziCore::ControllerService.deployment_exists?(deployment)
+    raise UffizziCore::DeploymentNotFoundError, id unless UffizziCore::ControllerService.namespace_exists?(deployment)
 
     UffizziCore::DeploymentService.deploy_containers(deployment, repeated)
   end

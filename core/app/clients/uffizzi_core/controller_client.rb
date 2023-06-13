@@ -11,14 +11,6 @@ class UffizziCore::ControllerClient
     connection.post("/deployments/#{deployment_id}/config_files/#{config_file_id}", body)
   end
 
-  def deployment(deployment_id:)
-    get("/deployments/#{deployment_id}")
-  end
-
-  def delete_namespace(namespace:)
-    connection.delete("/namespaces/#{namespace}")
-  end
-
   def deployment_containers(deployment_id:)
     get("/deployments/#{deployment_id}/containers")
   end
@@ -66,6 +58,14 @@ class UffizziCore::ControllerClient
 
   def create_namespace(body:)
     connection.post('/namespaces', body)
+  end
+
+  def namespace(namespace:)
+    get("/namespaces/#{namespace}")
+  end
+
+  def delete_namespace(namespace:)
+    connection.delete("/namespaces/#{namespace}")
   end
 
   def create_cluster(namespace:, body:)

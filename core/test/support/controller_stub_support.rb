@@ -13,14 +13,14 @@ module UffizziCore::ControllerStubSupport
     stub_request(:put, uri)
   end
 
-  def stub_controller_get_deployment_request(deployment, data = nil)
-    uri = "#{Settings.controller.url}/deployments/#{deployment.id}"
+  def stub_controller_get_namespace_request(deployment, data = nil)
+    uri = "#{Settings.controller.url}/namespaces/deployment-#{deployment.id}"
 
     stub_request(:get, uri).to_return(status: 200, body: data.to_json, headers: { 'Content-Type' => 'application/json' })
   end
 
-  def stub_controller_get_deployment_request_any(data = nil)
-    uri = %r{#{Regexp.quote(Settings.controller.url.to_s)}/deployments/[0-9]*}
+  def stub_controller_get_namespace_request_any(data = nil)
+    uri = %r{#{Regexp.quote(Settings.controller.url.to_s)}/namespaces/deployment-[0-9]*}
 
     stub_request(:get, uri).to_return(status: 200, body: data.to_json, headers: { 'Content-Type' => 'application/json' })
   end
