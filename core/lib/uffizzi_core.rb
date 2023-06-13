@@ -35,6 +35,7 @@ module UffizziCore
     accounts: :uffizzi_core_accounts,
     activity_items: :uffizzi_core_activity_items,
     builds: :uffizzi_core_builds,
+    clusters: :uffizzi_core_clusters,
     comments: :uffizzi_core_comments,
     compose_files: :uffizzi_core_compose_files,
     config_files: :uffizzi_core_config_files,

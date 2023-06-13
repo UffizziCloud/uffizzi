@@ -1,12 +1,6 @@
 # frozen_string_literal: true
 
 module UffizziCore::ControllerStubSupport
-  def stub_controller_create_deployment_request
-    uri = %r{#{Regexp.quote(Settings.controller.url.to_s)}/deployments/[0-9]*$}
-
-    stub_request(:post, uri)
-  end
-
   def stub_controller_apply_credential
     uri = %r{#{Regexp.quote(Settings.controller.url.to_s)}/deployments/[0-9]*/credentials}
 
@@ -31,8 +25,8 @@ module UffizziCore::ControllerStubSupport
     stub_request(:get, uri).to_return(status: 200, body: data.to_json, headers: { 'Content-Type' => 'application/json' })
   end
 
-  def stub_delete_controller_deployment_request(deployment)
-    uri = "#{Settings.controller.url}/deployments/#{deployment.id}"
+  def stub_delete_namespace_request(deployable)
+    uri = "#{Settings.controller.url}/namespaces/#{deployable.namespace}"
 
     stub_request(:delete, uri)
   end
@@ -101,5 +95,23 @@ module UffizziCore::ControllerStubSupport
 
       is_equal
     end
+  end
+
+  def stub_create_namespace_request
+    uri = %r{#{Regexp.quote(Settings.controller.url.to_s)}/namespaces}
+
+    stub_request(:post, uri).to_return(status: 200)
+  end
+
+  def stub_create_cluster_request(status = 200, data = nil)
+    uri = %r{#{Regexp.quote(Settings.controller.url.to_s)}/clusters/cluster-[0-9]*$}
+
+    stub_request(:post, uri).to_return(status: status, body: data.to_json)
+  end
+
+  def stub_delete_cluster_request
+    uri = %r{#{Regexp.quote(Settings.controller.url.to_s)}/clusters/cluster-[0-9]*$}
+
+    stub_request(:delete, uri).to_return(status: 200)
   end
 end

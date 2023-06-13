@@ -15,12 +15,8 @@ class UffizziCore::ControllerClient
     get("/deployments/#{deployment_id}")
   end
 
-  def create_deployment(deployment_id:, body:)
-    connection.post("/deployments/#{deployment_id}", body)
-  end
-
-  def delete_deployment(deployment_id:)
-    connection.delete("/deployments/#{deployment_id}")
+  def delete_namespace(namespace:)
+    connection.delete("/namespaces/#{namespace}")
   end
 
   def deployment_containers(deployment_id:)
@@ -66,6 +62,22 @@ class UffizziCore::ControllerClient
       end_at: end_at,
     }
     get('/deployments/usage_metrics/containers', query_params)
+  end
+
+  def create_namespace(body:)
+    connection.post('/namespaces', body)
+  end
+
+  def create_cluster(namespace:, body:)
+    connection.post("/clusters/#{namespace}", body)
+  end
+
+  def show_cluster(namespace:)
+    connection.get("/clusters/#{namespace}")
+  end
+
+  def delete_cluster(namespace:)
+    connection.delete("/clusters/#{namespace}")
   end
 
   private

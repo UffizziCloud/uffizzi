@@ -20,6 +20,7 @@ module UffizziCore::Concerns::Models::User
     has_many :user_projects, dependent: :destroy
     has_many :projects, through: :user_projects
     has_many :deployments, class_name: UffizziCore::Deployment.name, foreign_key: :deployed_by_id, dependent: :nullify
+    has_many :clusters, foreign_key: :deployed_by_id
 
     has_one_attached :avatar
 

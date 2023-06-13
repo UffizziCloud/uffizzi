@@ -23,6 +23,7 @@ module UffizziCore::Concerns::Models::Account
     has_many :projects, dependent: :destroy
     has_many :deployments, through: :projects
     has_many :payments, dependent: :destroy
+    has_many :clusters, through: :projects
 
     aasm(:sso_state) do
       state :connection_not_configured, initial: true
