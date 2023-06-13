@@ -38,7 +38,7 @@ class UffizziCore::Api::Cli::V1::Projects::DeploymentsControllerTest < ActionCon
   end
 
   test '#deploy_containers if deployment has not created yet' do
-    UffizziCore::ControllerService.expects(:deployment_exists?).returns(false)
+    UffizziCore::ControllerService.expects(:namespace_exists?).returns(false)
     params = { project_slug: @project.slug, id: @deployment.id }
 
     assert_raises UffizziCore::DeploymentNotFoundError do
@@ -47,14 +47,14 @@ class UffizziCore::Api::Cli::V1::Projects::DeploymentsControllerTest < ActionCon
   end
 
   test '#deploy_containers create a new docker hub activity item' do
-    UffizziCore::ControllerService.expects(:deployment_exists?).returns(true)
+    UffizziCore::ControllerService.expects(:namespace_exists?).returns(true)
 
     webhooks_data = json_fixture('files/dockerhub/webhooks/push/event_data.json')
     digest_data = json_fixture('files/dockerhub/digest.json')
     deployment_containers_data = json_fixture('files/controller/deployment_containers.json')
     deployment_data = json_fixture('files/controller/deployments.json')
 
-    stubbed_deployment_request = stub_controller_get_deployment_request(@deployment, deployment_data)
+    stubbed_namespace_request = stub_controller_get_namespace_request(@deployment, deployment_data)
     stubbed_containers_request = stub_controller_containers_request(@deployment, deployment_containers_data)
     stubbed_deploy_containers_request = stub_deploy_containers_request(@deployment)
     stubbed_dockerhub_login = stub_dockerhub_login
@@ -91,13 +91,13 @@ class UffizziCore::Api::Cli::V1::Projects::DeploymentsControllerTest < ActionCon
     assert_requested stubbed_dockerhub_login
     assert_requested stubbed_deploy_containers_request
     assert_requested stubbed_containers_request
-    assert_requested stubbed_deployment_request
+    assert_requested stubbed_namespace_request
     assert { UffizziCore::Deployment::DeployContainersJob.jobs.empty? }
     assert { UffizziCore::ActivityItem::Docker.count == 1 }
   end
 
   test '#deploy_containers skip activity item creation if existing has not finished yet' do
-    UffizziCore::ControllerService.expects(:deployment_exists?).returns(true)
+    UffizziCore::ControllerService.expects(:namespace_exists?).returns(true)
 
     webhooks_data = json_fixture('files/dockerhub/webhooks/push/event_data.json')
     digest_data = json_fixture('files/dockerhub/digest.json')
@@ -131,7 +131,7 @@ class UffizziCore::Api::Cli::V1::Projects::DeploymentsControllerTest < ActionCon
            container: container,
            deployment: @deployment)
 
-    stubbed_deployment_request = stub_controller_get_deployment_request(@deployment, deployment_data)
+    stubbed_namespace_request = stub_controller_get_namespace_request(@deployment, deployment_data)
     stubbed_containers_request = stub_controller_containers_request(@deployment, deployment_containers_data)
     stubbed_deploy_containers_request = stub_deploy_containers_request(@deployment)
     stubbed_dockerhub_login = stub_dockerhub_login
@@ -150,13 +150,13 @@ class UffizziCore::Api::Cli::V1::Projects::DeploymentsControllerTest < ActionCon
     assert_requested stubbed_dockerhub_login
     assert_requested stubbed_deploy_containers_request
     assert_requested stubbed_containers_request
-    assert_requested stubbed_deployment_request
+    assert_requested stubbed_namespace_request
     assert { UffizziCore::Deployment::DeployContainersJob.jobs.empty? }
     assert { UffizziCore::ActivityItem::Docker.count == 1 }
   end
 
   test '#deploy_containers create a new activity item creation if existing has finished' do
-    UffizziCore::ControllerService.expects(:deployment_exists?).returns(true)
+    UffizziCore::ControllerService.expects(:namespace_exists?).returns(true)
     webhooks_data = json_fixture('files/dockerhub/webhooks/push/event_data.json')
     digest_data = json_fixture('files/dockerhub/digest.json')
     deployment_containers_data = json_fixture('files/controller/deployment_containers.json')
@@ -189,7 +189,7 @@ class UffizziCore::Api::Cli::V1::Projects::DeploymentsControllerTest < ActionCon
            container: container,
            deployment: @deployment)
 
-    stubbed_deployment_request = stub_controller_get_deployment_request(@deployment, deployment_data)
+    stubbed_namespace_request = stub_controller_get_namespace_request(@deployment, deployment_data)
     stubbed_containers_request = stub_controller_containers_request(@deployment, deployment_containers_data)
     stubbed_deploy_containers_request = stub_deploy_containers_request(@deployment)
     stubbed_dockerhub_login = stub_dockerhub_login
@@ -208,13 +208,13 @@ class UffizziCore::Api::Cli::V1::Projects::DeploymentsControllerTest < ActionCon
     assert_requested stubbed_dockerhub_login
     assert_requested stubbed_deploy_containers_request
     assert_requested stubbed_containers_request
-    assert_requested stubbed_deployment_request
+    assert_requested stubbed_namespace_request
     assert { UffizziCore::Deployment::DeployContainersJob.jobs.empty? }
     assert { UffizziCore::ActivityItem::Docker.count == 2 }
   end
 
   test '#deploy_containers create a new activity item creation without credential' do
-    UffizziCore::ControllerService.expects(:deployment_exists?).returns(true)
+    UffizziCore::ControllerService.expects(:namespace_exists?).returns(true)
     webhooks_data = json_fixture('files/dockerhub/webhooks/push/event_data.json')
     deployment_containers_data = json_fixture('files/controller/deployment_containers.json')
     deployment_data = json_fixture('files/controller/deployments.json')
@@ -247,7 +247,7 @@ class UffizziCore::Api::Cli::V1::Projects::DeploymentsControllerTest < ActionCon
            container: container,
            deployment: @deployment)
 
-    stubbed_deployment_request = stub_controller_get_deployment_request(@deployment, deployment_data)
+    stubbed_namespace_request = stub_controller_get_namespace_request(@deployment, deployment_data)
     stubbed_containers_request = stub_controller_containers_request(@deployment, deployment_containers_data)
     stubbed_deploy_containers_request = stub_deploy_containers_request(@deployment)
 
@@ -258,7 +258,7 @@ class UffizziCore::Api::Cli::V1::Projects::DeploymentsControllerTest < ActionCon
     assert { UffizziCore::ActivityItem.last.digest.nil? }
     assert_requested stubbed_deploy_containers_request
     assert_requested stubbed_containers_request
-    assert_requested stubbed_deployment_request
+    assert_requested stubbed_namespace_request
     assert { UffizziCore::Deployment::DeployContainersJob.jobs.empty? }
     assert { UffizziCore::ActivityItem::Docker.count == 2 }
   end
@@ -276,13 +276,13 @@ class UffizziCore::Api::Cli::V1::Projects::DeploymentsControllerTest < ActionCon
     }
     @deployment.update!(metadata: metadata)
 
-    UffizziCore::ControllerService.expects(:deployment_exists?).at_least(1).returns(true)
+    UffizziCore::ControllerService.expects(:namespace_exists?).at_least(1).returns(true)
 
     digest_data = json_fixture('files/dockerhub/digest.json')
     deployment_containers_data = json_fixture('files/controller/deployment_containers.json')
     deployment_data = json_fixture('files/controller/deployments.json')
 
-    stubbed_deployment_request = stub_controller_get_deployment_request(@deployment, deployment_data)
+    stubbed_namespace_request = stub_controller_get_namespace_request(@deployment, deployment_data)
     stubbed_containers_request = stub_controller_containers_request(@deployment, deployment_containers_data)
     stubbed_dockerhub_login = stub_dockerhub_login
 
@@ -560,7 +560,7 @@ class UffizziCore::Api::Cli::V1::Projects::DeploymentsControllerTest < ActionCon
     assert_requested stubbed_digest_auth_nginx
     assert_requested stubbed_dockerhub_login, times: 2
     assert_requested stubbed_containers_request, times: 2
-    assert_requested stubbed_deployment_request, times: 2
+    assert_requested stubbed_namespace_request, times: 2
     assert { UffizziCore::Deployment::DeployContainersJob.jobs.empty? }
     assert { UffizziCore::ActivityItem::Docker.count == 2 }
   end

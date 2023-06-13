@@ -59,8 +59,8 @@ class UffizziCore::ControllerService
       controller_client.deploy_containers(deployment_id: deployment.id, body: body)
     end
 
-    def deployment_exists?(deployment)
-      controller_client.deployment(deployment_id: deployment.id).code == 200
+    def namespace_exists?(deployable)
+      controller_client.namespace(namespace: deployable.namespace).code == 200
     end
 
     def fetch_deployment_events(deployment)
@@ -72,8 +72,8 @@ class UffizziCore::ControllerService
       pods.filter { |pod| pod.metadata.name.start_with?(Settings.controller.namespace_prefix) }
     end
 
-    def fetch_namespace(deployment)
-      controller_client.deployment(deployment_id: deployment.id).result || nil
+    def fetch_namespace(deployable)
+      controller_client.namespace(namespace: deployable.namespace).result || nil
     end
 
     def create_namespace(deployable)

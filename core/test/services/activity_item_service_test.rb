@@ -48,7 +48,7 @@ class UffizziCore::ActivityItemServiceTest < ActiveSupport::TestCase
       },
     )
 
-    stubbed_controller_get_deployment_request = stub_controller_get_deployment_request(@deployment, namespace)
+    stubbed_controller_get_namespace_request = stub_controller_get_namespace_request(@deployment, namespace)
 
     pod_name = generate(:name)
     deployed_at = Time.current
@@ -94,7 +94,7 @@ class UffizziCore::ActivityItemServiceTest < ActiveSupport::TestCase
     assert_difference differences do
       UffizziCore::ActivityItemService.manage_deploy_activity_item(activity_item)
 
-      assert_requested stubbed_controller_get_deployment_request
+      assert_requested stubbed_controller_get_namespace_request
       assert_requested stubbed_controller_containers_request
     end
   end
@@ -135,7 +135,7 @@ class UffizziCore::ActivityItemServiceTest < ActiveSupport::TestCase
       },
     )
 
-    stubbed_controller_get_deployment_request = stub_controller_get_deployment_request(@deployment, namespace)
+    stubbed_controller_get_namespace_request = stub_controller_get_namespace_request(@deployment, namespace)
 
     pod_name = generate(:name)
     deployed_at = Time.current
@@ -180,7 +180,7 @@ class UffizziCore::ActivityItemServiceTest < ActiveSupport::TestCase
     assert_difference differences do
       UffizziCore::ActivityItemService.manage_deploy_activity_item(activity_item)
 
-      assert_requested stubbed_controller_get_deployment_request
+      assert_requested stubbed_controller_get_namespace_request
       assert_requested stubbed_controller_containers_request
     end
   end
@@ -221,7 +221,7 @@ class UffizziCore::ActivityItemServiceTest < ActiveSupport::TestCase
       },
     )
 
-    stubbed_controller_get_deployment_request = stub_controller_get_deployment_request(@deployment, namespace)
+    stubbed_controller_get_namespace_request = stub_controller_get_namespace_request(@deployment, namespace)
 
     pod_name = generate(:name)
     deployed_at = Time.current
@@ -267,7 +267,7 @@ class UffizziCore::ActivityItemServiceTest < ActiveSupport::TestCase
 
     assert_difference differences do
       UffizziCore::ActivityItemService.manage_deploy_activity_item(activity_item)
-      assert_requested stubbed_controller_get_deployment_request
+      assert_requested stubbed_controller_get_namespace_request
       assert_requested stubbed_controller_containers_request
     end
   end

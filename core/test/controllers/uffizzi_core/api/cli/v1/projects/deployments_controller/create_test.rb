@@ -349,7 +349,7 @@ class UffizziCore::Api::Cli::V1::Projects::DeploymentsControllerTest < ActionCon
 
   test '#create - with content when compose file does not exist' do
     deployment_data = json_fixture('files/controller/deployments.json')
-    stubbed_deployment_request = stub_controller_get_deployment_request_any(deployment_data)
+    stubbed_namespace_request = stub_controller_get_namespace_request_any(deployment_data)
     stubbed_controller_create_name_request = stub_create_namespace_request
     stub_controller_apply_credential
 
@@ -447,7 +447,7 @@ class UffizziCore::Api::Cli::V1::Projects::DeploymentsControllerTest < ActionCon
 
     assert_response :success
     assert_requested(stubbed_controller_create_name_request)
-    assert_requested(stubbed_deployment_request)
+    assert_requested(stubbed_namespace_request)
 
     default_container_attributes = {
       image: nil,
