@@ -13,8 +13,8 @@ module UffizziCore::ControllerStubSupport
     stub_request(:put, uri)
   end
 
-  def stub_controller_get_namespace_request(deployment, data = nil)
-    uri = "#{Settings.controller.url}/namespaces/deployment-#{deployment.id}"
+  def stub_controller_get_namespace_request(deployable, data = nil)
+    uri = "#{Settings.controller.url}/namespaces/#{deployable.namespace}"
 
     stub_request(:get, uri).to_return(status: 200, body: data.to_json, headers: { 'Content-Type' => 'application/json' })
   end
