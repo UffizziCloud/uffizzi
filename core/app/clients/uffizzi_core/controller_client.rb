@@ -69,7 +69,7 @@ class UffizziCore::ControllerClient
   end
 
   def create_cluster(namespace:, body:)
-    connection.post("/namespaces/#{namespace}/clusters", body)
+    connection.post("/namespaces/#{namespace}/cluster", body)
   end
 
   def show_cluster(namespace:)
