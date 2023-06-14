@@ -37,10 +37,10 @@ class UffizziCore::Api::Cli::V1::Projects::ClustersControllerTest < ActionContro
       },
     }
 
-    stubbed_create_namespace_request = stub_create_namespace_request
     # TODO add response fixture
     data = ''
     stubbed_create_cluster_request = stub_create_cluster_request(data)
+    stubbed_create_namespace_request = stub_create_namespace_request
 
     differences = {
       -> { UffizziCore::Cluster.count } => 1,
@@ -51,8 +51,8 @@ class UffizziCore::Api::Cli::V1::Projects::ClustersControllerTest < ActionContro
     end
 
     assert_response(:success)
-    assert_requested(stubbed_create_namespace_request)
     assert_requested(stubbed_create_cluster_request)
+    assert_requested(stubbed_create_namespace_request)
   end
 
   test '#show' do
@@ -70,7 +70,7 @@ class UffizziCore::Api::Cli::V1::Projects::ClustersControllerTest < ActionContro
 
   test '#destroy' do
     cluster = create(:cluster, :deployed, project: @project, deployed_by: @user)
-    stubbed_delete_cluster_request = stub_delete_cluster_request
+    stubbed_delete_namespace_request = stub_delete_namespace_request(cluster)
 
     params = {
       project_slug: @project.slug,
@@ -81,6 +81,6 @@ class UffizziCore::Api::Cli::V1::Projects::ClustersControllerTest < ActionContro
 
     assert_response(:success)
     assert(cluster.reload.disabled?)
-    assert_requested(stubbed_delete_cluster_request)
+    assert_requested(stubbed_delete_namespace_request)
   end
 end

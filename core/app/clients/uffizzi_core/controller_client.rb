@@ -69,15 +69,11 @@ class UffizziCore::ControllerClient
   end
 
   def create_cluster(namespace:, body:)
-    connection.post("/clusters/#{namespace}", body)
+    connection.post("/namespaces/#{namespace}/clusters", body)
   end
 
   def show_cluster(namespace:)
-    connection.get("/clusters/#{namespace}")
-  end
-
-  def delete_cluster(namespace:)
-    connection.delete("/clusters/#{namespace}")
+    connection.get("/namespaces/#{namespace}/cluster")
   end
 
   private

@@ -23,7 +23,7 @@ class UffizziCore::Api::Cli::V1::Projects::ClustersController < UffizziCore::Api
   end
 
   def destroy
-    UffizziCore::ControllerService.delete_cluster(resource_cluster)
+    UffizziCore::ControllerService.delete_namespace(resource_cluster)
     resource_cluster.disable!
 
     head(:ok)

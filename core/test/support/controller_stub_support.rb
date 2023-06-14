@@ -98,20 +98,14 @@ module UffizziCore::ControllerStubSupport
   end
 
   def stub_create_namespace_request
-    uri = %r{#{Regexp.quote(Settings.controller.url.to_s)}/namespaces}
+    uri = %r{#{Regexp.quote(Settings.controller.url.to_s)}/namespaces$}
 
     stub_request(:post, uri).to_return(status: 200)
   end
 
   def stub_create_cluster_request(status = 200, data = nil)
-    uri = %r{#{Regexp.quote(Settings.controller.url.to_s)}/clusters/cluster-[0-9]*$}
+    uri = %r{#{Regexp.quote(Settings.controller.url.to_s)}/namespaces/cluster-[0-9]*/clusters}
 
     stub_request(:post, uri).to_return(status: status, body: data.to_json)
-  end
-
-  def stub_delete_cluster_request
-    uri = %r{#{Regexp.quote(Settings.controller.url.to_s)}/clusters/cluster-[0-9]*$}
-
-    stub_request(:delete, uri).to_return(status: 200)
   end
 end
