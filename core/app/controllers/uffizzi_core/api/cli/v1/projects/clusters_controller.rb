@@ -13,9 +13,14 @@ class UffizziCore::Api::Cli::V1::Projects::ClustersController < UffizziCore::Api
   end
 
   def create
-    cluster = UffizziCore::ClusterService.create_empty(resource_project, current_user, cluster_params[:name])
+    cluster_form = UffizziCore::Api::Cli::V1::Cluster::CreateForm.new(cluster_params)
+    cluster_form.project = resource_project
+    cluster_form.deployed_by = current_user
+    return respond_with cluster_form unless cluster_form.save
 
-    respond_with cluster
+    kubeconfig_content = UffizziCore::ClusterService.create_empty(cluster_form)
+
+    respond_with cluster_form, serializer: UffizziCore::Api::Cli::V1::Projects::ClusterSerializer, kubeconfig_content: kubeconfig_content
   end
 
   def show
@@ -26,13 +31,13 @@ class UffizziCore::Api::Cli::V1::Projects::ClustersController < UffizziCore::Api
     UffizziCore::ControllerService.delete_namespace(resource_cluster)
     resource_cluster.disable!
 
-    head(:ok)
+    head(:no_content)
   end
 
   private
 
   def resource_cluster
-    @resource_cluster ||= resource_project.clusters.find(params[:id])
+    @resource_cluster ||= resource_project.clusters.find_by!(name: params[:name])
   end
 
   def cluster_params

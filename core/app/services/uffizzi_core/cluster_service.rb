@@ -2,10 +2,7 @@
 
 class UffizziCore::ClusterService
   class << self
-    def create_empty(project, user, name = nil)
-      cluster_name = name || Faker::Lorem.slug
-      cluster = UffizziCore::Cluster.create!(project: project, deployed_by: user, name: cluster_name)
-
+    def create_empty(cluster)
       namespace = UffizziCore::ControllerService.create_namespace(cluster)
       return cluster.fail_deploy_namespace! if namespace.blank?
 

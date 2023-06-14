@@ -56,11 +56,11 @@ class UffizziCore::Api::Cli::V1::Projects::ClustersControllerTest < ActionContro
   end
 
   test '#show' do
-    cluster = create(:cluster, project: @project, deployed_by: @user)
+    cluster = create(:cluster, project: @project, deployed_by: @user, name: 'test')
 
     params = {
       project_slug: @project.slug,
-      id: cluster.id,
+      name: cluster.name,
     }
 
     get :show, params: params, format: :json
@@ -69,12 +69,12 @@ class UffizziCore::Api::Cli::V1::Projects::ClustersControllerTest < ActionContro
   end
 
   test '#destroy' do
-    cluster = create(:cluster, :deployed, project: @project, deployed_by: @user)
+    cluster = create(:cluster, :deployed, project: @project, deployed_by: @user, name: 'test')
     stubbed_delete_namespace_request = stub_delete_namespace_request(cluster)
 
     params = {
       project_slug: @project.slug,
-      id: cluster.id,
+      name: cluster.name,
     }
 
     delete :destroy, params: params, format: :json

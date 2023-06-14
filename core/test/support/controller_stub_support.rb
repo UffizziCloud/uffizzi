@@ -104,7 +104,7 @@ module UffizziCore::ControllerStubSupport
   end
 
   def stub_create_cluster_request(status = 200, data = nil)
-    uri = %r{#{Regexp.quote(Settings.controller.url.to_s)}/namespaces/cluster-[0-9]*/clusters}
+    uri = %r{#{Regexp.quote(Settings.controller.url.to_s)}/namespaces/([A-Za-z0-9\-_]+)/cluster}
 
     stub_request(:post, uri).to_return(status: status, body: data.to_json)
   end
