@@ -100,12 +100,19 @@ module UffizziCore::ControllerStubSupport
   def stub_create_namespace_request
     uri = %r{#{Regexp.quote(Settings.controller.url.to_s)}/namespaces$}
 
-    stub_request(:post, uri).to_return(status: 200)
+    stub_request(:post, uri).to_return(status: 200, body: { namespace: 'namespace' }.to_json,
+                                       headers: { 'Content-Type' => 'application/json' })
   end
 
-  def stub_create_cluster_request(status = 200, data = nil)
+  def stub_get_cluster_request(data = {}, _status = 200)
     uri = %r{#{Regexp.quote(Settings.controller.url.to_s)}/namespaces/([A-Za-z0-9\-_]+)/cluster}
 
-    stub_request(:post, uri).to_return(status: status, body: data.to_json)
+    stub_request(:get, uri).to_return(status: 200, body: data.to_json, headers: { 'Content-Type' => 'application/json' })
+  end
+
+  def stub_create_cluster_request(data = {}, status = 200)
+    uri = %r{#{Regexp.quote(Settings.controller.url.to_s)}/namespaces/([A-Za-z0-9\-_]+)/cluster}
+
+    stub_request(:post, uri).to_return(status: status, body: data.to_json, headers: { 'Content-Type' => 'application/json' })
   end
 end

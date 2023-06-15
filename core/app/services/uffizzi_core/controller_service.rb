@@ -88,11 +88,11 @@ class UffizziCore::ControllerService
 
     def create_cluster(cluster)
       body = { cluster_name: cluster.name }
-      controller_client.create_cluster(namespace: cluster.namespace, body: body)
+      controller_client.create_cluster(namespace: cluster.namespace, body: body).result
     end
 
     def show_cluster(cluster)
-      controller_client.show_cluster(namespace: cluster.namespace)
+      controller_client.show_cluster(namespace: cluster.namespace).result
     end
 
     def delete_cluster(cluster)

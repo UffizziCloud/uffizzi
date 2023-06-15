@@ -37,8 +37,7 @@ class UffizziCore::Api::Cli::V1::Projects::ClustersControllerTest < ActionContro
       },
     }
 
-    # TODO add response fixture
-    data = ''
+    data = json_fixture('files/controller/cluster_not_ready.json')
     stubbed_create_cluster_request = stub_create_cluster_request(data)
     stubbed_create_namespace_request = stub_create_namespace_request
 
@@ -57,6 +56,8 @@ class UffizziCore::Api::Cli::V1::Projects::ClustersControllerTest < ActionContro
 
   test '#show' do
     cluster = create(:cluster, project: @project, deployed_by: @user, name: 'test')
+    data = json_fixture('files/controller/cluster_ready.json')
+    stubbed_cluster_request = stub_get_cluster_request(data)
 
     params = {
       project_slug: @project.slug,
@@ -66,6 +67,7 @@ class UffizziCore::Api::Cli::V1::Projects::ClustersControllerTest < ActionContro
     get :show, params: params, format: :json
 
     assert_response(:success)
+    assert_requested(stubbed_cluster_request)
   end
 
   test '#destroy' do

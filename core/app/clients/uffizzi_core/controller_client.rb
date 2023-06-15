@@ -69,17 +69,25 @@ class UffizziCore::ControllerClient
   end
 
   def create_cluster(namespace:, body:)
-    connection.post("/namespaces/#{namespace}/cluster", body)
+    post("/namespaces/#{namespace}/cluster", body)
   end
 
   def show_cluster(namespace:)
-    connection.get("/namespaces/#{namespace}/cluster")
+    get("/namespaces/#{namespace}/cluster")
   end
 
   private
 
   def get(url, params = {})
-    response = connection.get(url, params)
+    make_request(:get, url, params)
+  end
+
+  def post(url, params = {})
+    make_request(:post, url, params)
+  end
+
+  def make_request(method, url, params)
+    response = connection.send(method, url, params)
     body = response.body
     underscored_body = UffizziCore::Converters.deep_underscore_keys(body)
 
