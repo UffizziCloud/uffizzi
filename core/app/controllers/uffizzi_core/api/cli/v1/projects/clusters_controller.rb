@@ -18,13 +18,15 @@ class UffizziCore::Api::Cli::V1::Projects::ClustersController < UffizziCore::Api
     cluster_form.deployed_by = current_user
     return respond_with cluster_form unless cluster_form.save
 
-    kubeconfig_content = UffizziCore::ClusterService.create_empty(cluster_form)
+    cluster_data = UffizziCore::ClusterService.create_empty(cluster_form)
 
-    respond_with cluster_form, serializer: UffizziCore::Api::Cli::V1::Projects::ClusterSerializer, kubeconfig_content: kubeconfig_content
+    render json: { cluster: cluster_data }, status: :created
   end
 
   def show
-    respond_with resource_cluster
+    cluster_data = UffizziCore::ControllerService.show_cluster(resource_cluster)
+
+    render json: { cluster: cluster_data }, status: :ok
   end
 
   def destroy
