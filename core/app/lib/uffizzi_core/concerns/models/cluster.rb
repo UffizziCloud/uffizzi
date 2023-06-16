@@ -44,7 +44,7 @@ module UffizziCore::Concerns::Models::Cluster
       end
 
       event :disable do
-        transitions from: [:finish_deploy_namespace, :fail_deploy_namespace, :deploying, :deployed, :failed], to: :disabled
+        transitions from: [:finished_deploy_namespace, :fail_deploy_namespace, :deploying, :deployed, :failed], to: :disabled
       end
     end
 
