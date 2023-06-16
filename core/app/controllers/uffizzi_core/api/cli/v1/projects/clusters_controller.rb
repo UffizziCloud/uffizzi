@@ -4,6 +4,7 @@ class UffizziCore::Api::Cli::V1::Projects::ClustersController < UffizziCore::Api
   include UffizziCore::Api::Cli::V1::Projects::ClustersControllerModule
 
   before_action :authorize_uffizzi_core_api_cli_v1_projects_clusters
+  before_action :stop_if_deployment_forbidden, only: [:create]
   after_action :update_show_trial_quota_exceeded_warning, only: [:create, :destroy]
 
   def index
@@ -38,7 +39,7 @@ class UffizziCore::Api::Cli::V1::Projects::ClustersController < UffizziCore::Api
   private
 
   def resource_cluster
-    @resource_cluster ||= resource_project.clusters.find_by!(name: params[:name])
+    @resource_cluster ||= resource_project.clusters.enabled.find_by!(name: params[:name])
   end
 
   def cluster_params
