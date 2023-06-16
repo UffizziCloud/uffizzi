@@ -6,7 +6,10 @@ class UffizziCore::ClusterService
       namespace = UffizziCore::ControllerService.create_namespace(cluster)
       return cluster.fail_deploy_namespace! if namespace.blank?
 
-      UffizziCore::ControllerService.create_cluster(cluster)
+      cluster_data = UffizziCore::ControllerService.create_cluster(cluster)
+      cluster.finish_deploy_namespace!
+
+      cluster_data
     end
 
     def deploy_cluster(cluster)

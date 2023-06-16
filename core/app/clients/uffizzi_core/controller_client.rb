@@ -57,7 +57,7 @@ class UffizziCore::ControllerClient
   end
 
   def create_namespace(body:)
-    connection.post('/namespaces', body)
+    post('/namespaces', body)
   end
 
   def namespace(namespace:)

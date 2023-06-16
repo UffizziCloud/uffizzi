@@ -77,7 +77,6 @@ class UffizziCore::ControllerService
     end
 
     def create_namespace(deployable)
-      # TODO: check repsonse for use present?
       body = { namespace: deployable.namespace }
       controller_client.create_namespace(body: body)
     end
