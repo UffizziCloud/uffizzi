@@ -52,6 +52,28 @@ class UffizziCore::Api::Cli::V1::Projects::ClustersControllerTest < ActionContro
     assert_requested(stubbed_create_namespace_request)
   end
 
+  test '#create when enabled cluster with the same name exists' do
+    name = 'test'
+    create(:cluster, project: @project, deployed_by: @user, name: name)
+
+    params = {
+      project_slug: @project.slug,
+      cluster: {
+        name: name,
+      },
+    }
+
+    differences = {
+      -> { UffizziCore::Cluster.count } => 0,
+    }
+
+    assert_difference differences do
+      post :create, params: params, format: :json
+    end
+
+    assert_response(:unprocessable_entity)
+  end
+
   test '#show' do
     cluster = create(:cluster, project: @project, deployed_by: @user, name: 'test')
     data = json_fixture('files/controller/cluster_ready.json')

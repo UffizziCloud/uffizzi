@@ -11,7 +11,7 @@ module UffizziCore::Concerns::Models::Cluster
 
     belongs_to :project, class_name: UffizziCore::Project.name
     belongs_to :deployed_by, class_name: UffizziCore::User.name, foreign_key: :deployed_by_id, optional: true
-    validates :name, uniqueness: true, unless: -> { disabled? || failed_deploy_namespace? }
+    validates_uniqueness_of :name, conditions: -> { enabled }
     validates :name, presence: true, format: { with: /([A-Za-z0-9\-_]+)/ }
 
     aasm(:state) do
