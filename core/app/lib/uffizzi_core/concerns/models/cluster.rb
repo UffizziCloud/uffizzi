@@ -43,9 +43,13 @@ module UffizziCore::Concerns::Models::Cluster
         transitions from: [:deploying], to: :failed
       end
 
-      event :disable do
+      event :disable, after: :after_disable do
         transitions from: [:finished_deploy_namespace, :fail_deploy_namespace, :deploying, :deployed, :failed], to: :disabled
       end
+    end
+
+    def after_disable
+      UffizziCore::Cluster::DeleteJob.perform_async(id)
     end
 
     def namespace
