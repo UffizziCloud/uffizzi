@@ -4,8 +4,6 @@ require 'test_helper'
 
 class UffizziCore::Api::Cli::V1::Projects::ClustersControllerTest < ActionController::TestCase
   setup do
-    Sidekiq::Worker.clear_all
-    Sidekiq::Testing.fake!
     @user = create(:user, :with_organizational_account)
     account = @user.accounts.organizational.first
     @project = create(:project, :with_members, members: [@user], account: account)
