@@ -11,12 +11,13 @@ module UffizziCore::Concerns::Models::Cluster
 
     belongs_to :project, class_name: UffizziCore::Project.name
     belongs_to :deployed_by, class_name: UffizziCore::User.name, foreign_key: :deployed_by_id, optional: true
-    validates :name, uniqueness: true, if: -> { deployed? }
+    validates :name, uniqueness: true, unless: -> { disabled? }
     validates :name, presence: true, format: { with: /([A-Za-z0-9\-_]+)/ }
 
     aasm(:state) do
       state :deploying_namespace, initial: true
       state :failed_deploy_namespace
+      state :finished_deploy_namespace
       state :deploying
       state :deployed
       state :failed
@@ -30,8 +31,12 @@ module UffizziCore::Concerns::Models::Cluster
         transitions from: [:deploying_namespace], to: :failed_deploy_namespace
       end
 
+      event :finish_deploy_namespace do
+        transitions from: [:deploying_namespace], to: :finished_deploy_namespace
+      end
+
       event :finish_deploy do
-        transitions from: [:deploying], to: :deploying_namespace
+        transitions from: [:deploying], to: :deployed
       end
 
       event :fail do
@@ -39,7 +44,7 @@ module UffizziCore::Concerns::Models::Cluster
       end
 
       event :disable do
-        transitions from: [:deploying, :deployed, :failed], to: :disabled
+        transitions from: [:finish_deploy_namespace, :fail_deploy_namespace, :deploying, :deployed, :failed], to: :disabled
       end
     end
 
