@@ -78,7 +78,7 @@ class UffizziCore::ControllerService
 
     def create_namespace(deployable)
       body = { namespace: deployable.namespace }
-      controller_client.create_namespace(body: body)
+      controller_client.create_namespace(body: body).result || nil
     end
 
     def delete_namespace(deployable)
