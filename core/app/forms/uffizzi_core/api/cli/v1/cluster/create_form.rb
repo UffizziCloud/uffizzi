@@ -3,5 +3,17 @@
 class UffizziCore::Api::Cli::V1::Cluster::CreateForm < UffizziCore::Cluster
   include UffizziCore::ApplicationForm
 
-  permit :name
+  permit :name, :manifest
+
+  validate :check_manifest, if: -> { manifest.present? }
+
+  private
+
+  def check_manifest
+    YAML.load_stream(manifest)
+  rescue Psych::SyntaxError => e
+    err = [e.problem, e.context].compact.join(' ')
+
+    errors.add(:manifest, err)
+  end
 end

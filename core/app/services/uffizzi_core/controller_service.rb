@@ -86,7 +86,7 @@ class UffizziCore::ControllerService
     end
 
     def create_cluster(cluster)
-      body = { cluster_name: cluster.name }
+      body = UffizziCore::Controller::CreateCluster::ClusterSerializer.new(cluster).as_json
       controller_client.create_cluster(namespace: cluster.namespace, body: body).result
     end
 

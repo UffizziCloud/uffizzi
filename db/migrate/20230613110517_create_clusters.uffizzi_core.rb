@@ -11,6 +11,7 @@ class CreateClusters < ActiveRecord::Migration[6.1]
       t.bigint 'deployed_by_id', foreign_key: true
       t.string 'state'
       t.string 'name'
+      t.string 'manifest'
 
       t.timestamps
     end
