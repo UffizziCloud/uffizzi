@@ -19,7 +19,8 @@ class UffizziCore::Api::Cli::V1::Projects::ClustersController < UffizziCore::Api
     cluster_form.deployed_by = current_user
     return respond_with cluster_form unless cluster_form.save
 
-    cluster_data = UffizziCore::ClusterService.create_empty(cluster_form)
+    cluster = cluster_form.becomes(UffizziCore::Cluster)
+    cluster_data = UffizziCore::ClusterService.create_empty(cluster)
 
     render json: { cluster: cluster_data }, status: :created
   end

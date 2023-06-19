@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2023_03_02_093923) do
+ActiveRecord::Schema.define(version: 2023_06_13_110517) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -71,6 +71,17 @@ ActiveRecord::Schema.define(version: 2023_03_02_093923) do
     t.boolean "deployed"
     t.index ["build_id"], name: "index_builds_on_build_id", unique: true
     t.index ["repo_id"], name: "index_builds_on_repo_id"
+  end
+
+  create_table "uffizzi_core_clusters", force: :cascade do |t|
+    t.bigint "project_id", null: false
+    t.bigint "deployed_by_id"
+    t.string "state"
+    t.string "name"
+    t.string "manifest"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["project_id"], name: "index_cluster_on_project_id"
   end
 
   create_table "uffizzi_core_comments", force: :cascade do |t|
@@ -164,6 +175,7 @@ ActiveRecord::Schema.define(version: 2023_03_02_093923) do
     t.jsonb "healthcheck"
     t.jsonb "volumes"
     t.string "additional_subdomains", default: [], array: true
+    t.string "full_image_name"
     t.index ["deployment_id"], name: "index_containers_on_deployment_id"
     t.index ["repo_id"], name: "index_containers_on_repo_id"
   end
@@ -211,6 +223,7 @@ ActiveRecord::Schema.define(version: 2023_03_02_093923) do
     t.bigint "template_id"
     t.datetime "disabled_at"
     t.jsonb "metadata", default: {}
+    t.datetime "last_deploy_at"
     t.index ["compose_file_id"], name: "index_deployments_on_compose_file_id"
     t.index ["project_id"], name: "index_deployments_on_project_id"
     t.index ["template_id"], name: "index_deployments_on_template_id"
@@ -258,6 +271,7 @@ ActiveRecord::Schema.define(version: 2023_03_02_093923) do
     t.text "role", null: false
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
+    t.string "state"
     t.index ["account_id"], name: "index_memberships_on_account_id"
     t.index ["user_id", "account_id"], name: "index_memberships_on_user_id_and_account_id"
     t.index ["user_id"], name: "index_memberships_on_user_id"
@@ -413,7 +427,6 @@ ActiveRecord::Schema.define(version: 2023_03_02_093923) do
     t.string "work"
     t.string "primary_location"
     t.string "creation_source"
-    t.string "username"
     t.index "lower((email)::text)", name: "index_email_on_lower_email", unique: true
   end
 
@@ -425,6 +438,7 @@ ActiveRecord::Schema.define(version: 2023_03_02_093923) do
     t.index ["user_id"], name: "index_users_roles_on_user_id"
   end
 
+  add_foreign_key "uffizzi_core_clusters", "uffizzi_core_projects", column: "project_id"
   add_foreign_key "uffizzi_core_container_host_volume_files", "uffizzi_core_containers", column: "container_id"
   add_foreign_key "uffizzi_core_container_host_volume_files", "uffizzi_core_host_volume_files", column: "host_volume_file_id"
   add_foreign_key "uffizzi_core_host_volume_files", "uffizzi_core_compose_files", column: "compose_file_id"

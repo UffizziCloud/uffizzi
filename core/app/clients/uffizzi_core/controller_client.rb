@@ -102,7 +102,7 @@ class UffizziCore::ControllerClient
     connection = controller.connection
     handled_exceptions = Faraday::Request::Retry::DEFAULT_EXCEPTIONS + [Faraday::ConnectionFailed]
 
-    Faraday.new(url) do |conn|
+    connection = Faraday.new(url) do |conn|
       conn.options.timeout = connection.timeout
       conn.options.open_timeout = connection.open_timeout
       conn.request(:basic_auth, login, password)
@@ -112,7 +112,11 @@ class UffizziCore::ControllerClient
                    interval: connection.next_retry_timeout_seconds,
                    exceptions: handled_exceptions)
       conn.response(:json)
+      conn.response(:raise_error)
       conn.adapter(Faraday.default_adapter)
     end
+
+    # connection.extend(UffizziCore::ContainerRegistryRequestDecorator)
+    connection
   end
 end
