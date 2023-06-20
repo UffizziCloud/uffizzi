@@ -21,7 +21,6 @@ class UffizziCore::ClusterService
         return cluster.fail!
       end
 
-
       UffizziCore::Cluster::ManageDeployingJob.perform_in(5.seconds, cluster.id)
     end
 
@@ -33,7 +32,7 @@ class UffizziCore::ClusterService
 
       if deployed_cluster.status.ready
         cluster.finish_deploy
-        cluster.kube_config = deployed_cluster.status.kube_config
+        cluster.kubeconfig = deployed_cluster.status.kube_config
         cluster.save!
 
         return

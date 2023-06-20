@@ -35,9 +35,11 @@ class UffizziCore::Api::Cli::V1::Projects::ClustersControllerTest < ActionContro
       },
     }
 
-    data = json_fixture('files/controller/cluster_not_ready.json')
-    stubbed_create_cluster_request = stub_create_cluster_request(data)
+    cluster_creation_data = json_fixture('files/controller/cluster_not_ready.json')
     stubbed_create_namespace_request = stub_create_namespace_request
+    stubbed_create_cluster_request = stub_create_cluster_request(cluster_creation_data)
+    cluster_show_data = json_fixture('files/controller/cluster_ready.json')
+    stubbed_cluster_request = stub_get_cluster_request(cluster_show_data)
 
     differences = {
       -> { UffizziCore::Cluster.count } => 1,
@@ -50,6 +52,7 @@ class UffizziCore::Api::Cli::V1::Projects::ClustersControllerTest < ActionContro
     assert_response(:success)
     assert_requested(stubbed_create_cluster_request)
     assert_requested(stubbed_create_namespace_request)
+    assert_requested(stubbed_cluster_request)
   end
 
   test '#create when enabled cluster with the same name exists' do
@@ -85,9 +88,11 @@ class UffizziCore::Api::Cli::V1::Projects::ClustersControllerTest < ActionContro
       },
     }
 
-    data = json_fixture('files/controller/cluster_not_ready.json')
-    stubbed_create_cluster_request = stub_create_cluster_request(data)
+    cluster_creation_data = json_fixture('files/controller/cluster_not_ready.json')
     stubbed_create_namespace_request = stub_create_namespace_request
+    stubbed_create_cluster_request = stub_create_cluster_request(cluster_creation_data)
+    cluster_show_data = json_fixture('files/controller/cluster_ready.json')
+    stubbed_cluster_request = stub_get_cluster_request(cluster_show_data)
 
     differences = {
       -> { UffizziCore::Cluster.count } => 1,
@@ -100,12 +105,11 @@ class UffizziCore::Api::Cli::V1::Projects::ClustersControllerTest < ActionContro
     assert_response(:success)
     assert_requested(stubbed_create_cluster_request)
     assert_requested(stubbed_create_namespace_request)
+    assert_requested(stubbed_cluster_request)
   end
 
   test '#show' do
     cluster = create(:cluster, project: @project, deployed_by: @user, name: 'test')
-    data = json_fixture('files/controller/cluster_ready.json')
-    stubbed_cluster_request = stub_get_cluster_request(data)
 
     params = {
       project_slug: @project.slug,
@@ -115,7 +119,6 @@ class UffizziCore::Api::Cli::V1::Projects::ClustersControllerTest < ActionContro
     get :show, params: params, format: :json
 
     assert_response(:success)
-    assert_requested(stubbed_cluster_request)
   end
 
   test '#destroy' do
