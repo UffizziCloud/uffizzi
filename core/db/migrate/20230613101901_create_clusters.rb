@@ -11,7 +11,7 @@ class CreateClusters < ActiveRecord::Migration[6.1]
       t.string 'state'
       t.string 'name'
       t.text 'manifest'
-      t.text 'kube_config'
+      t.text 'kubeconfig'
 
       t.timestamps
     end
