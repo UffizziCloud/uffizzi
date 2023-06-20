@@ -70,3 +70,5 @@ deployment:
   subdomain:
     length_limit: 63
 default_job_retry_count: 5
+vcluster:
+  max_creation_retry_count: 5

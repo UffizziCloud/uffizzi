@@ -3,5 +3,5 @@
 class UffizziCore::Api::Cli::V1::Projects::ClusterSerializer < UffizziCore::BaseSerializer
   type :cluster
 
-  attributes :name
+  attributes :name, :state, :kube_config
 end
