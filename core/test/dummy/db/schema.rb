@@ -78,7 +78,8 @@ ActiveRecord::Schema.define(version: 2023_06_13_101901) do
     t.bigint "deployed_by_id"
     t.string "state"
     t.string "name"
-    t.string "manifest"
+    t.text "manifest"
+    t.text "kube_config"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
     t.index ["project_id"], name: "index_cluster_on_project_id"

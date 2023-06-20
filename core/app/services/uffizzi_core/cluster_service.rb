@@ -2,37 +2,44 @@
 
 class UffizziCore::ClusterService
   class << self
-    def create_empty(cluster)
-      namespace = UffizziCore::ControllerService.create_namespace(cluster)
-      return cluster.fail_deploy_namespace! if namespace.blank?
-
-      cluster_data = UffizziCore::ControllerService.create_cluster(cluster)
-      cluster.finish_deploy_namespace!
-
-      cluster_data
+    def start_deploy(cluster)
+      UffizziCore::Cluster::DeployJob.perform_async(cluster.id)
     end
 
     def deploy_cluster(cluster)
-      namespace = ControllerService.create_cluster_namespace(cluster)
-      return cluster.fail_deploy_namespace! if namespace.blank?
+      begin
+        UffizziCore::ControllerService.create_namespace(cluster)
+      rescue UffizziCore::ControllerClient::ConnectionError
+        return cluster.fail_deploy_namespace!
+      end
 
       cluster.start_deploying!
-      deployed_cluster = ControllerService.create_cluster(cluster)
 
-      return cluster.fail! if deployed_cluster.blank?
+      begin
+        UffizziCore::ControllerService.create_cluster(cluster)
+      rescue UffizziCore::ControllerClient::ConnectionError
+        return cluster.fail!
+      end
+
 
       UffizziCore::Cluster::ManageDeployingJob.perform_in(5.seconds, cluster.id)
     end
 
-    def manage_deploying(cluster)
+    def manage_deploying(cluster, try)
       return if cluster.disabled?
+      return cluster.fail! if try > Settings.vcluster.max_creation_retry_count
 
-      deployed_cluster = ControllerService.show_cluster(cluster)
+      deployed_cluster = UffizziCore::ControllerService.show_cluster(cluster)
 
-      return deployed_cluster.finish_deploy! if deployed_cluster.ready?
-      return deployed_cluster.fail! if deployed_cluster.failed?
+      if deployed_cluster.status.ready
+        cluster.finish_deploy
+        cluster.kube_config = deployed_cluster.status.kube_config
+        cluster.save!
 
-      UffizziCore::Cluster::ManageDeployingJob.perform_in(5.seconds, cluster.id)
+        return
+      end
+
+      UffizziCore::Cluster::ManageDeployingJob.perform_in(5.seconds, cluster.id, ++try)
     end
   end
 end

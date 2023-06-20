@@ -17,7 +17,6 @@ module UffizziCore::Concerns::Models::Cluster
     aasm(:state) do
       state :deploying_namespace, initial: true
       state :failed_deploy_namespace
-      state :finished_deploy_namespace
       state :deploying
       state :deployed
       state :failed
@@ -31,10 +30,6 @@ module UffizziCore::Concerns::Models::Cluster
         transitions from: [:deploying_namespace], to: :failed_deploy_namespace
       end
 
-      event :finish_deploy_namespace do
-        transitions from: [:deploying_namespace], to: :finished_deploy_namespace
-      end
-
       event :finish_deploy do
         transitions from: [:deploying], to: :deployed
       end
@@ -44,7 +39,7 @@ module UffizziCore::Concerns::Models::Cluster
       end
 
       event :disable, after: :after_disable do
-        transitions from: [:finished_deploy_namespace, :fail_deploy_namespace, :deploying, :deployed, :failed], to: :disabled
+        transitions from: [:fail_deploy_namespace, :deploying, :deployed, :failed], to: :disabled
       end
     end
 

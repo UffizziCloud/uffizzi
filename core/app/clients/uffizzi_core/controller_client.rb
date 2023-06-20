@@ -1,6 +1,8 @@
 # frozen_string_literal: true
 
 class UffizziCore::ControllerClient
+  class ConnectionError < StandardError; end
+
   attr_accessor :connection
 
   def initialize
@@ -92,6 +94,8 @@ class UffizziCore::ControllerClient
     underscored_body = UffizziCore::Converters.deep_underscore_keys(body)
 
     RequestResult.quiet.new(code: response.status, result: underscored_body)
+  rescue Faraday::ServerError
+    raise ConnectionError
   end
 
   def build_connection
@@ -102,7 +106,7 @@ class UffizziCore::ControllerClient
     connection = controller.connection
     handled_exceptions = Faraday::Request::Retry::DEFAULT_EXCEPTIONS + [Faraday::ConnectionFailed]
 
-    connection = Faraday.new(url) do |conn|
+    Faraday.new(url) do |conn|
       conn.options.timeout = connection.timeout
       conn.options.open_timeout = connection.open_timeout
       conn.request(:basic_auth, login, password)
@@ -115,8 +119,5 @@ class UffizziCore::ControllerClient
       conn.response(:raise_error)
       conn.adapter(Faraday.default_adapter)
     end
-
-    # connection.extend(UffizziCore::ContainerRegistryRequestDecorator)
-    connection
   end
 end
