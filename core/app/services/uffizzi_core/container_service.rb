@@ -64,6 +64,7 @@ class UffizziCore::ContainerService
     def container_status(container, pods)
       pods
         .flat_map { |pod| pod&.status&.container_statuses }
+        .compact
         .detect { |cs| cs.name.include?(container.controller_name) }
     end
 
