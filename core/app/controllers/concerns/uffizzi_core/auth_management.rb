@@ -14,7 +14,18 @@ module UffizziCore::AuthManagement
   end
 
   def current_user
-    @current_user ||= UffizziCore::User.find_by(id: session[:user_id])
+    @current_user ||= UffizziCore::User.find_by(id: current_user_id)
+  end
+
+  def auth_token
+    @auth_token ||= request.headers['Authorization']
+  end
+
+  def current_user_id
+    return session[:user_id] if session[:user_id].present?
+    return unless auth_token.present?
+
+    UffizziCore::TokenService.decode(auth_token)[:user_id]
   end
 
   def authenticate_request!
