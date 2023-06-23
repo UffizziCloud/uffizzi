@@ -30,7 +30,6 @@ require 'faraday/follow_redirects'
 module UffizziCore
   mattr_accessor :dependencies, default: {
     rbac: 'UffizziCore::Rbac::UserAccessService',
-    token_module: 'UffizziCore::TokenService',
   }
   mattr_accessor :table_names, default: {
     accounts: :uffizzi_core_accounts,
