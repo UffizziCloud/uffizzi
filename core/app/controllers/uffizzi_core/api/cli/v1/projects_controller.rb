@@ -15,7 +15,7 @@ class UffizziCore::Api::Cli::V1::ProjectsController < UffizziCore::Api::Cli::V1:
   # @response [object<projects: Array<object<slug: string, name: string>> >] 200 OK
   # @response 401 Not authorized
   def index
-    projects = current_user.projects.active.includes([:secrets, :account]).order(updated_at: :desc)
+    projects = current_user.projects.active.order(updated_at: :desc)
 
     respond_with projects, each_serializer: UffizziCore::Api::Cli::V1::ShortProjectSerializer
   end
