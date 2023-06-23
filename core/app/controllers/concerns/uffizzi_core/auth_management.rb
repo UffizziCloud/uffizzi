@@ -1,6 +1,8 @@
 # frozen_string_literal: true
 
 module UffizziCore::AuthManagement
+  include UffizziCore::DependencyInjectionConcern
+
   def sign_in(user)
     session[:user_id] = user.id
   end
@@ -25,7 +27,8 @@ module UffizziCore::AuthManagement
     return session[:user_id] if session[:user_id].present?
     return unless auth_token.present?
 
-    UffizziCore::TokenService.decode(auth_token)[:user_id]
+    decoded_token = access_token_module.decode(auth_token)
+    decoded_token&.dig(:user_id)
   end
 
   def authenticate_request!
