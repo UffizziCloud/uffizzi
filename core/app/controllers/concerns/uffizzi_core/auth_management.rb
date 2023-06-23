@@ -18,7 +18,8 @@ module UffizziCore::AuthManagement
   end
 
   def auth_token
-    @auth_token ||= request.headers['Authorization']
+    header = request.headers['Authorization']
+    header&.split(' ')&.last
   end
 
   def current_user_id
