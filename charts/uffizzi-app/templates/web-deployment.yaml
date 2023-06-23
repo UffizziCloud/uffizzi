@@ -1,25 +1,28 @@
-apiVersion: apps/v1
+apiVersion: {{ include "common.capabilities.deployment.apiVersion" . }}
 kind: Deployment
 metadata:
-  name: {{ .Release.Name }}-web
-  labels:
+  name: {{ include "common.names.fullname" . }}-web
+  namespace: {{ .Release.Namespace | quote }}
+  labels: {{ include "common.labels.standard" . | nindent 4 }}
     app: uffizzi-web
 
 spec:
-  replicas: {{ .Values.web_replicas }}
+  replicas: {{ .Values.web.replicas }}
   selector:
     matchLabels:
       app: uffizzi-web
 
   template:
     metadata:
-      labels:
+      labels: {{ include "common.labels.standard" . | nindent 8 }}
         app: uffizzi-web
     spec:
       automountServiceAccountToken: false
+      {{- include "web.renderImagePullSecrets" . | nindent 6 }}
       containers:
       - name: uffizzi-web
-        image: {{ .Values.image }}
+        image: {{ include "web.image" . }}
+        imagePullPolicy: {{ .Values.web.image.pullPolicy }}
         command:
         - /bin/bash
         - -c

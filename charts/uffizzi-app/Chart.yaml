@@ -1,6 +1,6 @@
 apiVersion: v2
 name: uffizzi-app
-version: 1.2.1
+version: "2.0.0"
 kubeVersion: ">= 1.21.0-0" # https://issuetracker.google.com/issues/77503699
 description: "Uffizzi is an open-source engine for creating lightweight, ephemeral test environments for APIs and full-stack applications. Uffizzi enables teams to preview new features before merging."
 type: application
@@ -20,15 +20,20 @@ home: https://uffizzi.com/
 sources:
   - https://github.com/UffizziCloud/uffizzi
 dependencies:
+  - name: common
+    repository: https://charts.bitnami.com/bitnami
+    tags:
+      - bitnami-common
+    version: 2.x.x
   - name: uffizzi-controller
-    version: "1.0.0"
+    version: "2.x.x"
     repository: https://uffizzicloud.github.io/uffizzi_controller/
   - name: postgresql
-    version: "12.1.11"
+    version: "12.x.x"
     repository: https://charts.bitnami.com/bitnami
     condition: postgresql.enabled
   - name: redis
-    version: "17.6.0"
+    version: "17.x.x"
     repository: https://charts.bitnami.com/bitnami
     condition: redis.enabled
 maintainers:
@@ -39,9 +44,10 @@ maintainers:
     email: adam.vollrath@uffizzi.com
     url: https://github.com/axisofentropy
 icon: https://app.uffizzi.com/favicon.png
-appVersion: "1.0.0"
+appVersion: "1.2.1"
 deprecated: false
 annotations:
-  # Use this annotation to indicate that this chart version is a pre-release.
   # https://artifacthub.io/docs/topics/annotations/helm/
   artifacthub.io/prerelease: "false"
+  artifacthub.io/category: integration-delivery
+  artifacthub.io/license: Apache-2.0

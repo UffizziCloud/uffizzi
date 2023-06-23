@@ -4,7 +4,7 @@ This chart installs Uffizzi.
 
 ## Requirements
 
-This chart requires a Kubernetes Cluster. While it will likely function on k8s >= 1.19, we have only tested upon k8s 1.21 - 1.23.
+This chart requires a Kubernetes Cluster. While it will likely function on k8s >= 1.19, we have only tested upon k8s 1.21 - 1.26.
 
 The Cluster must be capable of provisioning `Ingress` resources that obtain public IP addresses and/or hostnames.
 

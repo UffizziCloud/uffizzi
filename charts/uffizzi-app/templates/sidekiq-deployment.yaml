@@ -1,25 +1,28 @@
-apiVersion: apps/v1
+apiVersion: {{ include "common.capabilities.deployment.apiVersion" . }}
 kind: Deployment
 metadata:
-  name: {{ .Release.Name }}-sidekiq
-  labels:
+  name: {{ include "common.names.fullname" . }}-sidekiq
+  namespace: {{ .Release.Namespace | quote }}
+  labels: {{ include "common.labels.standard" . | nindent 4 }}
     app: uffizzi-sidekiq
 
 spec:
-  replicas: {{ .Values.sidekiq_replicas }}
+  replicas: {{ .Values.sidekiq.replicas }}
   selector:
     matchLabels:
       app: uffizzi-sidekiq
 
   template:
     metadata:
-      labels:
+      labels: {{ include "common.labels.standard" . | nindent 8 }}
         app: uffizzi-sidekiq
     spec:
       automountServiceAccountToken: false
+      {{- include "sidekiq.renderImagePullSecrets" . | nindent 6 }}
       containers:
       - name: uffizzi-sidekiq
-        image: {{ .Values.image }}
+        image: {{ include "sidekiq.image" . }}
+        imagePullPolicy: {{ .Values.sidekiq.image.pullPolicy }}
         command:
         - /bin/bash
         - -c
