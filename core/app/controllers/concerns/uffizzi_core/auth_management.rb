@@ -26,7 +26,7 @@ module UffizziCore::AuthManagement
     return unless auth_token.present?
 
     decoded_token = UffizziCore::TokenService.decode(auth_token)
-    decoded_token&.dig(:user_id)
+    decoded_token&.first.&dig(:user_id)
   end
 
   def authenticate_request!
