@@ -6,6 +6,6 @@ class UffizziCore::Api::Cli::V1::AccountsPolicy < UffizziCore::ApplicationPolicy
   end
 
   def show?
-    context.user.present?
+    context.user_access_module.any_access_to_account?(context.user, context.account)
   end
 end
