@@ -5,7 +5,16 @@ require 'test_helper'
 class UffizziCore::Api::Cli::V1::Accounts::ProjectsControllerTest < ActionController::TestCase
   setup do
     @user = create(:user, :with_personal_account)
+    @account = @user.personal_account
     sign_in @user
+  end
+
+  test '#index' do
+    create(:project, :with_members, account: @account, members: [@user])
+
+    get :index, params: { account_id: @account.id }, format: :json
+
+    assert_response(:success)
   end
 
   test '#create' do
@@ -17,9 +26,9 @@ class UffizziCore::Api::Cli::V1::Accounts::ProjectsControllerTest < ActionContro
     }
 
     assert_difference differences do
-      post :create, params: { account_id: @user.personal_account.id, project: attributes }, format: :json
+      post :create, params: { account_id: @account.id, project: attributes }, format: :json
     end
 
-    assert_response :success
+    assert_response(:success)
   end
 end
