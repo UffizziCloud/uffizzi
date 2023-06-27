@@ -51,12 +51,6 @@ module UffizziCore::DependencyInjectionConcern
     module_class(:domain_module)
   end
 
-  def access_token_module
-    return unless module_exists?(:token_module)
-
-    module_class(:token_module)
-  end
-
   private
 
   def module_exists?(module_name)
