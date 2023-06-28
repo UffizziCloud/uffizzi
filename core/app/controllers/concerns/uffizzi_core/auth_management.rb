@@ -27,7 +27,10 @@ module UffizziCore::AuthManagement
     return unless auth_token.present?
 
     decoded_token = UffizziCore::TokenService.decode(auth_token)
-    decoded_token&.first&.dig('user_id')
+    return unless decoded_token
+    return if decoded_token.first['expires_at'] < DateTime.now
+
+    decoded_token.first['user_id']
   end
 
   def authenticate_request!
