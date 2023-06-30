@@ -30,7 +30,7 @@ class UffizziCore::ClusterService
 
       deployed_cluster = UffizziCore::ControllerService.show_cluster(cluster)
 
-      if deployed_cluster.status.ready
+      if deployed_cluster.status.ready && deployed_cluster.status.kube_config.present?
         cluster.finish_deploy
         cluster.kubeconfig = deployed_cluster.status.kube_config
         cluster.save!
