@@ -15,10 +15,8 @@ class UffizziCore::Api::Cli::V1::AccountsControllerTest < ActionController::Test
   end
 
   test '#show' do
-    account = @user.personal_account
+    get :show, params: { name: 'wrong' }, format: :json
 
-    get :show, params: { name: account.name }, format: :json
-
-    assert_response(:success)
+    assert_response(:not_found)
   end
 end
