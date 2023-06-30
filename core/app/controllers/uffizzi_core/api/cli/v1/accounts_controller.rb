@@ -24,8 +24,6 @@ class UffizziCore::Api::Cli::V1::AccountsController < UffizziCore::Api::Cli::V1:
   # @response [object<account: <object<id: integer, name: string, projects: Array<object<id: integer, slug: string>>>> >] 200 OK
   # @response 401 Not authorized
   def show
-    raise ActiveRecord::NotFound if resource_account.blank?
-
     respond_with resource_account
   end
 
@@ -38,6 +36,10 @@ class UffizziCore::Api::Cli::V1::AccountsController < UffizziCore::Api::Cli::V1:
   end
 
   def resource_account
-    @resource_account ||= current_user.accounts.find_by(name: params[:name])
+    @resource_account ||= if params[:name]
+      current_user.accounts.find_by!(name: params[:name])
+    else
+      current_user.default_account
+    end
   end
 end
