@@ -1,6 +1,8 @@
 # frozen_string_literal: true
 
 class UffizziCore::ControllerClient
+  class ConnectionError < StandardError; end
+
   attr_accessor :connection
 
   def initialize
@@ -9,18 +11,6 @@ class UffizziCore::ControllerClient
 
   def apply_config_file(deployment_id:, config_file_id:, body:)
     connection.post("/deployments/#{deployment_id}/config_files/#{config_file_id}", body)
-  end
-
-  def deployment(deployment_id:)
-    get("/deployments/#{deployment_id}")
-  end
-
-  def create_deployment(deployment_id:, body:)
-    connection.post("/deployments/#{deployment_id}", body)
-  end
-
-  def delete_deployment(deployment_id:)
-    connection.delete("/deployments/#{deployment_id}")
   end
 
   def deployment_containers(deployment_id:)
@@ -68,14 +58,44 @@ class UffizziCore::ControllerClient
     get('/deployments/usage_metrics/containers', query_params)
   end
 
+  def create_namespace(body:)
+    post('/namespaces', body)
+  end
+
+  def namespace(namespace:)
+    get("/namespaces/#{namespace}")
+  end
+
+  def delete_namespace(namespace:)
+    connection.delete("/namespaces/#{namespace}")
+  end
+
+  def create_cluster(namespace:, body:)
+    post("/namespaces/#{namespace}/cluster", body)
+  end
+
+  def show_cluster(namespace:)
+    get("/namespaces/#{namespace}/cluster")
+  end
+
   private
 
   def get(url, params = {})
-    response = connection.get(url, params)
+    make_request(:get, url, params)
+  end
+
+  def post(url, params = {})
+    make_request(:post, url, params)
+  end
+
+  def make_request(method, url, params)
+    response = connection.send(method, url, params)
     body = response.body
     underscored_body = UffizziCore::Converters.deep_underscore_keys(body)
 
     RequestResult.quiet.new(code: response.status, result: underscored_body)
+  rescue Faraday::ServerError
+    raise ConnectionError
   end
 
   def build_connection
@@ -96,6 +116,7 @@ class UffizziCore::ControllerClient
                    interval: connection.next_retry_timeout_seconds,
                    exceptions: handled_exceptions)
       conn.response(:json)
+      conn.response(:raise_error)
       conn.adapter(Faraday.default_adapter)
     end
   end

@@ -66,3 +66,5 @@ continuous_preview:
 deployment:
   subdomain:
     length_limit: 63
+vcluster:
+  max_creation_retry_count: 5

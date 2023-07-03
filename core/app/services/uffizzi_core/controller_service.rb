@@ -12,15 +12,6 @@ class UffizziCore::ControllerService
       controller_client.apply_config_file(deployment_id: deployment.id, config_file_id: config_file.id, body: body)
     end
 
-    def create_deployment(deployment)
-      body = UffizziCore::Controller::CreateDeployment::DeploymentSerializer.new(deployment).as_json
-      controller_client.create_deployment(deployment_id: deployment.id, body: body)
-    end
-
-    def delete_deployment(deployment_id)
-      controller_client.delete_deployment(deployment_id: deployment_id)
-    end
-
     def apply_credential(deployment, credential)
       image = if credential.github_container_registry?
         deployment.containers.by_repo_type(UffizziCore::Repo::GithubContainerRegistry.name).first&.image
@@ -68,8 +59,8 @@ class UffizziCore::ControllerService
       controller_client.deploy_containers(deployment_id: deployment.id, body: body)
     end
 
-    def deployment_exists?(deployment)
-      controller_client.deployment(deployment_id: deployment.id).code == 200
+    def namespace_exists?(deployable)
+      controller_client.namespace(namespace: deployable.namespace).code == 200
     end
 
     def fetch_deployment_events(deployment)
@@ -81,8 +72,30 @@ class UffizziCore::ControllerService
       pods.filter { |pod| pod.metadata.name.start_with?(Settings.controller.namespace_prefix) }
     end
 
-    def fetch_namespace(deployment)
-      controller_client.deployment(deployment_id: deployment.id).result || nil
+    def fetch_namespace(deployable)
+      controller_client.namespace(namespace: deployable.namespace).result || nil
+    end
+
+    def create_namespace(deployable)
+      body = { namespace: deployable.namespace }
+      controller_client.create_namespace(body: body).result || nil
+    end
+
+    def delete_namespace(deployable)
+      controller_client.delete_namespace(namespace: deployable.namespace)
+    end
+
+    def create_cluster(cluster)
+      body = UffizziCore::Controller::CreateCluster::ClusterSerializer.new(cluster).as_json
+      controller_client.create_cluster(namespace: cluster.namespace, body: body).result
+    end
+
+    def show_cluster(cluster)
+      controller_client.show_cluster(namespace: cluster.namespace).result
+    end
+
+    def delete_cluster(cluster)
+      controller_client.delete_cluster(namespace: cluster.namespace)
     end
 
     private

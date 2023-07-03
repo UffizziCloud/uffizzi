@@ -72,6 +72,10 @@ module UffizziCore::Concerns::Models::Deployment
     def preview_url
       "#{subdomain}.#{Settings.app.managed_dns_zone}"
     end
+
+    def namespace
+      "deployment-#{id}"
+    end
   end
   # rubocop:enable Metrics/BlockLength
 end

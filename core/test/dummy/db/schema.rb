@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2023_04_06_154451) do
+ActiveRecord::Schema.define(version: 2023_06_13_101901) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -71,6 +71,18 @@ ActiveRecord::Schema.define(version: 2023_04_06_154451) do
     t.boolean "deployed"
     t.index ["build_id"], name: "index_builds_on_build_id", unique: true
     t.index ["repo_id"], name: "index_builds_on_repo_id"
+  end
+
+  create_table "uffizzi_core_clusters", force: :cascade do |t|
+    t.bigint "project_id", null: false
+    t.bigint "deployed_by_id"
+    t.string "state"
+    t.string "name"
+    t.text "manifest"
+    t.text "kubeconfig"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["project_id"], name: "index_cluster_on_project_id"
   end
 
   create_table "uffizzi_core_comments", force: :cascade do |t|
@@ -427,6 +439,7 @@ ActiveRecord::Schema.define(version: 2023_04_06_154451) do
     t.index ["user_id"], name: "index_users_roles_on_user_id"
   end
 
+  add_foreign_key "uffizzi_core_clusters", "uffizzi_core_projects", column: "project_id"
   add_foreign_key "uffizzi_core_container_host_volume_files", "uffizzi_core_containers", column: "container_id"
   add_foreign_key "uffizzi_core_container_host_volume_files", "uffizzi_core_host_volume_files", column: "host_volume_file_id"
   add_foreign_key "uffizzi_core_host_volume_files", "uffizzi_core_compose_files", column: "compose_file_id"
