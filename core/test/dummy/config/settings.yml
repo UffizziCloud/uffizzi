@@ -38,6 +38,15 @@ controller:
   namespace_prefix: 'app-'
   resource_create_retry_time: 15.seconds
   resource_create_retry_count: 60
+vcluster_controller:
+  url: http://controller:8080
+  login: ''
+  password: ''
+  connection:
+    retires_count: 1
+    next_retry_timeout_seconds: 1
+    timeout: 7
+    open_timeout: 5
 allowed_hosts: []
 domain: http://lvh.me
 features:
