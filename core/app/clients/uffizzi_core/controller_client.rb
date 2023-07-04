@@ -74,8 +74,8 @@ class UffizziCore::ControllerClient
     post("/namespaces/#{namespace}/cluster", body)
   end
 
-  def show_cluster(namespace:)
-    get("/namespaces/#{namespace}/cluster")
+  def show_cluster(namespace:, name:)
+    get("/namespaces/#{namespace}/cluster/#{name}")
   end
 
   private
