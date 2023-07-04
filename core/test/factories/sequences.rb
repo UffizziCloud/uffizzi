@@ -117,4 +117,8 @@ FactoryBot.define do
   sequence :created_at, aliases: ['updated_at'] do
     DateTime.now
   end
+
+  sequence :cluster_name do |n|
+    "cluster-name-#{n}"
+  end
 end

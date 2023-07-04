@@ -2,7 +2,7 @@
 
 FactoryBot.define do
   factory :cluster, class: UffizziCore::Cluster do
-    name
+    name { generate(:cluster_name) }
 
     trait :deployed do
       state { :deployed }
