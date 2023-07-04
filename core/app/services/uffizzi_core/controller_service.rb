@@ -91,7 +91,7 @@ class UffizziCore::ControllerService
     end
 
     def show_cluster(cluster)
-      controller_client(cluster).show_cluster(namespace: cluster.namespace).result
+      controller_client(cluster).show_cluster(namespace: cluster.namespace, name: cluster.name).result
     end
 
     def delete_cluster(cluster)

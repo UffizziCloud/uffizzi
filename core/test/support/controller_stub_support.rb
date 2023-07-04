@@ -105,13 +105,13 @@ module UffizziCore::ControllerStubSupport
   end
 
   def stub_get_cluster_request(data = {}, _status = 200)
-    uri = %r{#{Regexp.quote(Settings.controller.url.to_s)}/namespaces/([A-Za-z0-9\-_]+)/cluster}
+    uri = %r{#{Regexp.quote(Settings.controller.url.to_s)}/namespaces/([A-Za-z0-9\-]+)/cluster/([A-Za-z0-9\-]+)}
 
     stub_request(:get, uri).to_return(status: 200, body: data.to_json, headers: { 'Content-Type' => 'application/json' })
   end
 
   def stub_create_cluster_request(data = {}, status = 200)
-    uri = %r{#{Regexp.quote(Settings.controller.url.to_s)}/namespaces/([A-Za-z0-9\-_]+)/cluster}
+    uri = %r{#{Regexp.quote(Settings.controller.url.to_s)}/namespaces/([A-Za-z0-9\-]+)/cluster}
 
     stub_request(:post, uri).to_return(status: status, body: data.to_json, headers: { 'Content-Type' => 'application/json' })
   end
