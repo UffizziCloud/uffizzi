@@ -33,6 +33,15 @@ controller:
   namespace_prefix: 'app-'
   resource_create_retry_time: <%= 15.seconds %>
   resource_update_retry_count: 60
+vcluster_controller:
+  url:  <%= ENV['VCLUSTER_CONTROLLER_URL'] || 'http://controller:8080' %>
+  login:  <%= ENV['VCLUSTER_CONTROLLER_LOGIN'] || '' %>
+  password:  <%= ENV['VCLUSTER_CONTROLLER_PASSWORD'] || '' %>
+  connection:
+    retires_count: 1
+    next_retry_timeout_seconds: 1
+    timeout: 15
+    open_timeout: 10
 billing_cycle:
   hours_count: 720
 slack:
@@ -70,3 +79,5 @@ deployment:
   subdomain:
     length_limit: 63
 default_job_retry_count: 5
+vcluster:
+  max_creation_retry_count: 5

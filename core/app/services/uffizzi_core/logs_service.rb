@@ -37,7 +37,7 @@ class UffizziCore::LogsService
     end
 
     def controller_client
-      UffizziCore::ControllerClient.new
+      UffizziCore::ControllerClient.new(Settings.controller)
     end
   end
 end

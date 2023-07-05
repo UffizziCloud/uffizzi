@@ -207,7 +207,7 @@ class UffizziCore::Api::Cli::V1::Projects::DeploymentsControllerTest < ActionCon
   end
 
   test '#create - from the existing compose file when credentials are removed' do
-    create_deployment_request = stub_controller_create_deployment_request
+    create_namespace_request = stub_create_namespace_request
     file_content = File.read('test/fixtures/files/uffizzi-compose-vote-app-docker.yml')
     encoded_content = Base64.encode64(file_content)
     compose_file = create(:compose_file, project: @project, added_by: @admin, content: encoded_content)
@@ -248,7 +248,7 @@ class UffizziCore::Api::Cli::V1::Projects::DeploymentsControllerTest < ActionCon
     end
 
     assert_response :unprocessable_entity
-    assert_not_requested(create_deployment_request)
+    assert_not_requested(create_namespace_request)
   end
 
   test '#create - from the existing compose file - when the file is invalid' do
@@ -349,8 +349,8 @@ class UffizziCore::Api::Cli::V1::Projects::DeploymentsControllerTest < ActionCon
 
   test '#create - with content when compose file does not exist' do
     deployment_data = json_fixture('files/controller/deployments.json')
-    stubbed_deployment_request = stub_controller_get_deployment_request_any(deployment_data)
-    stubbed_controller_create_deployment_request = stub_controller_create_deployment_request
+    stubbed_namespace_request = stub_controller_get_namespace_request_any(deployment_data)
+    stubbed_controller_create_name_request = stub_create_namespace_request
     stub_controller_apply_credential
 
     compose_file_name = 'test-compose-full.yml'
@@ -446,8 +446,8 @@ class UffizziCore::Api::Cli::V1::Projects::DeploymentsControllerTest < ActionCon
     end
 
     assert_response :success
-    assert_requested stubbed_controller_create_deployment_request
-    assert_requested stubbed_deployment_request
+    assert_requested(stubbed_controller_create_name_request)
+    assert_requested(stubbed_namespace_request)
 
     default_container_attributes = {
       image: nil,

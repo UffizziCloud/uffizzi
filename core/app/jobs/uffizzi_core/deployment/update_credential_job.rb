@@ -29,7 +29,7 @@ class UffizziCore::Deployment::UpdateCredentialJob < UffizziCore::ApplicationJob
       return
     end
 
-    unless UffizziCore::ControllerService.deployment_exists?(deployment)
+    unless UffizziCore::ControllerService.namespace_exists?(deployment)
       raise UffizziCore::DeploymentNotFoundError,
             deployment_id
     end

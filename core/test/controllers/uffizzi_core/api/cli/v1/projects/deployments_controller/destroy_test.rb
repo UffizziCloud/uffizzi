@@ -53,7 +53,7 @@ class UffizziCore::Api::Cli::V1::Projects::DeploymentsControllerTest < ActionCon
   test '#destroy' do
     Sidekiq::Worker.clear_all
     Sidekiq::Testing.inline!
-    stubbed_request = stub_delete_controller_deployment_request(@deployment)
+    stubbed_request = stub_delete_namespace_request(@deployment)
     container = create(:container, :with_public_port, deployment: @deployment)
 
     differences = {
@@ -69,7 +69,7 @@ class UffizziCore::Api::Cli::V1::Projects::DeploymentsControllerTest < ActionCon
       delete :destroy, params: params, format: :json
     end
 
-    assert_requested stubbed_request
+    assert_requested(stubbed_request)
     assert { container.reload.disabled? }
 
     assert_response :success

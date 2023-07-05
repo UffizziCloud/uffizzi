@@ -8,7 +8,7 @@ class UffizziCore::Deployment::CreateJob < UffizziCore::ApplicationJob
 
     deployment = UffizziCore::Deployment.find(id)
 
-    UffizziCore::ControllerService.create_deployment(deployment)
+    UffizziCore::ControllerService.create_namespace(deployment)
 
     UffizziCore::Deployment::CreateCredentialsJob.perform_async(deployment.id)
   end

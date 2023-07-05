@@ -5,6 +5,12 @@
 class UffizziCore::Api::Cli::V1::Accounts::ProjectsController < UffizziCore::Api::Cli::V1::Accounts::ApplicationController
   before_action :authorize_uffizzi_core_api_cli_v1_accounts_projects
 
+  def index
+    projects = resource_account.projects.active
+
+    respond_with projects, each_serializer: UffizziCore::Api::Cli::V1::ShortProjectSerializer
+  end
+
   # Create a project
   #
   # @path [POST] /api/cli/v1/accounts/{account_id}/projects
@@ -17,7 +23,7 @@ class UffizziCore::Api::Cli::V1::Accounts::ProjectsController < UffizziCore::Api
 
   def create
     project_form = UffizziCore::Api::Cli::V1::Project::CreateForm.new(project_params)
-    project_form.account = current_user.accounts.find(params[:account_id])
+    project_form.account = resource_account
     UffizziCore::ProjectService.add_users_to_project!(project_form, project_form.account) if project_form.save
 
     respond_with project_form

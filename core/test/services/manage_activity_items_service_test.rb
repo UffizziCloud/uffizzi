@@ -23,7 +23,7 @@ class UffizziCore::ManageActivityItemsServiceTest < ActiveSupport::TestCase
     )
 
     stub_controller_containers = stub_controller_containers_request(deployment, stubbed_response_containers)
-    stub_get_controller_deployment = stub_controller_get_deployment_request(deployment, namespace)
+    stub_get_controller_deployment = stub_controller_get_namespace_request(deployment, namespace)
 
     service = UffizziCore::ManageActivityItemsService.new(deployment)
     container_status_items = service.container_status_items

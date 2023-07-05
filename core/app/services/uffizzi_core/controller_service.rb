@@ -9,16 +9,7 @@ class UffizziCore::ControllerService
         config_file: UffizziCore::Controller::ApplyConfigFile::ConfigFileSerializer.new(config_file).as_json,
       }
 
-      controller_client.apply_config_file(deployment_id: deployment.id, config_file_id: config_file.id, body: body)
-    end
-
-    def create_deployment(deployment)
-      body = UffizziCore::Controller::CreateDeployment::DeploymentSerializer.new(deployment).as_json
-      controller_client.create_deployment(deployment_id: deployment.id, body: body)
-    end
-
-    def delete_deployment(deployment_id)
-      controller_client.delete_deployment(deployment_id: deployment_id)
+      controller_client(deployment).apply_config_file(deployment_id: deployment.id, config_file_id: config_file.id, body: body)
     end
 
     def apply_credential(deployment, credential)
@@ -29,11 +20,11 @@ class UffizziCore::ControllerService
       options = { image: image }
 
       body = UffizziCore::Controller::CreateCredential::CredentialSerializer.new(credential, options).as_json
-      controller_client.apply_credential(deployment_id: deployment.id, body: body)
+      controller_client(deployment).apply_credential(deployment_id: deployment.id, body: body)
     end
 
     def delete_credential(deployment, credential)
-      controller_client.delete_credential(deployment_id: deployment.id, credential_id: credential.id)
+      controller_client(deployment).delete_credential(deployment_id: deployment.id, credential_id: credential.id)
     end
 
     def deploy_containers(deployment, containers)
@@ -65,11 +56,11 @@ class UffizziCore::ControllerService
         body = password_protection_module.add_password_configuration(body, deployment.project_id)
       end
 
-      controller_client.deploy_containers(deployment_id: deployment.id, body: body)
+      controller_client(deployment).deploy_containers(deployment_id: deployment.id, body: body)
     end
 
-    def deployment_exists?(deployment)
-      controller_client.deployment(deployment_id: deployment.id).code == 200
+    def namespace_exists?(deployable)
+      controller_client(deployable).namespace(namespace: deployable.namespace).code == 200
     end
 
     def fetch_deployment_events(deployment)
@@ -77,22 +68,53 @@ class UffizziCore::ControllerService
     end
 
     def fetch_pods(deployment)
-      pods = controller_client.deployment_containers(deployment_id: deployment.id).result || []
+      pods = controller_client(deployment).deployment_containers(deployment_id: deployment.id).result || []
       pods.filter { |pod| pod.metadata.name.start_with?(Settings.controller.namespace_prefix) }
     end
 
-    def fetch_namespace(deployment)
-      controller_client.deployment(deployment_id: deployment.id).result || nil
+    def fetch_namespace(deployable)
+      controller_client(deployable).namespace(namespace: deployable.namespace).result || nil
+    end
+
+    def create_namespace(deployable)
+      body = { namespace: deployable.namespace }
+      controller_client(deployable).create_namespace(body: body).result || nil
+    end
+
+    def delete_namespace(deployable)
+      controller_client(deployable).delete_namespace(namespace: deployable.namespace)
+    end
+
+    def create_cluster(cluster)
+      body = UffizziCore::Controller::CreateCluster::ClusterSerializer.new(cluster).as_json
+      controller_client(cluster).create_cluster(namespace: cluster.namespace, body: body).result
+    end
+
+    def show_cluster(cluster)
+      controller_client(cluster).show_cluster(namespace: cluster.namespace, name: cluster.name).result
+    end
+
+    def delete_cluster(cluster)
+      controller_client(cluster).delete_cluster(namespace: cluster.namespace)
     end
 
     private
 
     def request_events(deployment)
-      controller_client.deployment_containers_events(deployment_id: deployment.id)
+      controller_client(deployment).deployment_containers_events(deployment_id: deployment.id)
     end
 
-    def controller_client
-      UffizziCore::ControllerClient.new
+    def controller_client(deployable)
+      settings = case deployable
+                 when UffizziCore::Deployment
+                   Settings.controller
+                 when UffizziCore::Cluster
+                   Settings.vcluster_controller
+                 else
+                   raise StandardError, "Deployable #{deployable.class.name} undefined"
+      end
+
+      UffizziCore::ControllerClient.new(settings)
     end
   end
 end
