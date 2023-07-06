@@ -1,6 +1,9 @@
 # frozen_string_literal: true
 
 class UffizziCore::DeploymentService
+  include UffizziCore::DependencyInjectionConcern
+  prepend_module_if_exists('UffizziCore::DeploymentServiceModule')
+
   MIN_TARGET_PORT_RANGE = 37_000
   MAX_TARGET_PORT_RANGE = 39_999
 
@@ -39,12 +42,8 @@ class UffizziCore::DeploymentService
         deployment.containers.destroy_all
         deployment.compose_file.destroy! if deployment.compose_file&.kind&.temporary?
         deployment.activate unless deployment.active?
-        params = {
-          containers: deployment_form.containers,
-          compose_file_id: compose_file.id,
-          metadata: deployment_form.metadata,
-        }
-        deployment.update!(params)
+        new_params = params_for_update_deployment(deployment_form, compose_file)
+        deployment.update!(new_params)
       end
 
       deployment
@@ -236,6 +235,14 @@ class UffizziCore::DeploymentService
 
         container.variables.push(*envs)
       end
+    end
+
+    def params_for_update_deployment(deployment_form, compose_file)
+      {
+        containers: deployment_form.containers,
+        compose_file_id: compose_file.id,
+        metadata: deployment_form.metadata,
+      }
     end
   end
 end
