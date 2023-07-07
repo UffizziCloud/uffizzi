@@ -4,6 +4,6 @@ class UffizziCore::Controller::CreateCluster::ClusterSerializer < UffizziCore::B
   attributes :name, :manifest, :base_ingress_host
 
   def base_ingress_host
-    Settings.app.vcluster_managed_dns_zone
+    [object.namespace, Settings.app.vcluster_managed_dns_zone].join('.')
   end
 end
