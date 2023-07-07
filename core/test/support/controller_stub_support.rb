@@ -115,4 +115,31 @@ module UffizziCore::ControllerStubSupport
 
     stub_request(:post, uri).to_return(status: status, body: data.to_json, headers: { 'Content-Type' => 'application/json' })
   end
+
+  def stub_create_cluster_request_with_expected(returned_data = {}, expected_request = {}, status = 200)
+    uri = %r{#{Regexp.quote(Settings.controller.url.to_s)}/namespaces/([A-Za-z0-9\-]+)/cluster}
+
+    stub_request(:post, uri).with do |req|
+      actual_body = JSON.parse(req.body).deep_symbolize_keys.deep_sort
+      expected_body = expected_request.deep_symbolize_keys.deep_sort
+
+      is_equal = equal_hashes?(expected_body, actual_body)
+      ap(HashDiff.diff(actual_body, expected_body)) unless is_equal
+
+      is_equal
+    end.to_return(status: status, body: returned_data.to_json, headers: { 'Content-Type' => 'application/json' })
+  end
+
+  private
+
+  def equal_hashes?(expected, actual)
+    actual = actual.deep_symbolize_keys
+    expected.deep_symbolize_keys.all? do |k, v|
+      if v.is_a?(Regexp)
+        v.match?(actual[k])
+      else
+        v == actual[k]
+      end
+    end
+  end
 end

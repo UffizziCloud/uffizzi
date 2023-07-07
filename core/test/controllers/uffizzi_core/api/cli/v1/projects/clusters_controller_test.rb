@@ -28,16 +28,21 @@ class UffizziCore::Api::Cli::V1::Projects::ClustersControllerTest < ActionContro
   end
 
   test '#create' do
+    cluster_creation_data = json_fixture('files/controller/cluster_not_ready.json')
     params = {
       project_slug: @project.slug,
       cluster: {
-        name: 'test',
+        name: cluster_creation_data[:name],
       },
     }
 
-    cluster_creation_data = json_fixture('files/controller/cluster_not_ready.json')
+    expected_request = {
+      name: cluster_creation_data[:name],
+      manifest: nil,
+      base_ingress_host: /#{UffizziCore::Cluster::NAMESPACE_PREFIX}-\d/,
+    }
+    stubbed_create_cluster_request = stub_create_cluster_request_with_expected(cluster_creation_data, expected_request)
     stubbed_create_namespace_request = stub_create_namespace_request
-    stubbed_create_cluster_request = stub_create_cluster_request(cluster_creation_data)
     cluster_show_data = json_fixture('files/controller/cluster_ready.json')
     stubbed_cluster_request = stub_get_cluster_request(cluster_show_data)
 
@@ -79,20 +84,25 @@ class UffizziCore::Api::Cli::V1::Projects::ClustersControllerTest < ActionContro
 
   test '#create with manifest' do
     manifest = File.read('test/fixtures/files/cluster/manifest.yml')
+    cluster_creation_data = json_fixture('files/controller/cluster_not_ready.json')
+    cluster_show_data = json_fixture('files/controller/cluster_ready.json')
 
     params = {
       project_slug: @project.slug,
       cluster: {
-        name: 'test',
+        name: cluster_creation_data[:name],
         manifest: manifest,
       },
     }
 
-    cluster_creation_data = json_fixture('files/controller/cluster_not_ready.json')
     stubbed_create_namespace_request = stub_create_namespace_request
-    stubbed_create_cluster_request = stub_create_cluster_request(cluster_creation_data)
-    cluster_show_data = json_fixture('files/controller/cluster_ready.json')
-    stubbed_cluster_request = stub_get_cluster_request(cluster_show_data)
+    expected_request = {
+      name: cluster_creation_data[:name],
+      manifest: manifest,
+      base_ingress_host: /#{UffizziCore::Cluster::NAMESPACE_PREFIX}-\d/,
+    }
+    stubbed_create_cluster_request = stub_create_cluster_request_with_expected(cluster_creation_data, expected_request)
+    stubbed_get_cluster_request = stub_get_cluster_request(cluster_show_data)
 
     differences = {
       -> { UffizziCore::Cluster.count } => 1,
@@ -105,7 +115,7 @@ class UffizziCore::Api::Cli::V1::Projects::ClustersControllerTest < ActionContro
     assert_response(:success)
     assert_requested(stubbed_create_cluster_request)
     assert_requested(stubbed_create_namespace_request)
-    assert_requested(stubbed_cluster_request)
+    assert_requested(stubbed_get_cluster_request)
   end
 
   test '#show' do
