@@ -4,6 +4,8 @@ module UffizziCore::Concerns::Models::Cluster
   extend ActiveSupport::Concern
   include UffizziCore::ClusterRepo
 
+  NAMESPACE_PREFIX = 'cluster'
+
   included do
     include AASM
 
@@ -48,7 +50,7 @@ module UffizziCore::Concerns::Models::Cluster
     end
 
     def namespace
-      "cluster-#{id}"
+      [NAMESPACE_PREFIX, id].join('-')
     end
   end
 end
