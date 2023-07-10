@@ -90,13 +90,13 @@ class UffizziCore::Api::Cli::V1::Deployment::CreateForm < UffizziCore::Deploymen
   def check_max_memory_limit
     return if UffizziCore::DeploymentService.valid_containers_memory_limit?(self)
 
-    errors.add(:containers, :max_memory_limit_error, max: project.account.container_memory_limit)
+    errors.add(:containers, :max_memory_limit_error, max: Settings.deployment.max_memory_limit)
   end
 
   def check_max_memory_request
     return if UffizziCore::DeploymentService.valid_containers_memory_request?(self)
 
-    errors.add(:containers, :max_memory_request_error, max: project.account.container_memory_limit)
+    errors.add(:containers, :max_memory_request_error, max: Settings.deployment.max_memory_limit)
   end
 
   def check_secrets_exist_in_database

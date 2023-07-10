@@ -102,19 +102,15 @@ class UffizziCore::DeploymentService
     end
 
     def valid_containers_memory_limit?(deployment)
-      containers = deployment.containers
-      container_memory_limit = deployment.project.account.container_memory_limit
-      return true if container_memory_limit.nil?
+      total_memory_limit = deployment.containers.collect(&:memory_limit).sum
 
-      containers.all? { |container| container.memory_limit <= container_memory_limit }
+      total_memory_limit <= Settings.deployment.max_memory_limit
     end
 
     def valid_containers_memory_request?(deployment)
-      containers = deployment.containers
-      container_memory_limit = deployment.project.account.container_memory_limit
-      return true if container_memory_limit.nil?
+      total_memory_request = deployment.containers.collect(&:memory_request).sum
 
-      containers.all? { |container| container.memory_request <= container_memory_limit }
+      total_memory_request <= Settings.deployment.max_memory_limit
     end
 
     def ingress_container?(containers)
