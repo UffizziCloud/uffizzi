@@ -102,15 +102,11 @@ class UffizziCore::DeploymentService
     end
 
     def valid_containers_memory_limit?(deployment)
-      total_memory_limit = deployment.containers.map(&:memory_limit).sum
-
-      total_memory_limit <= Settings.deployment.max_memory_limit
+      deployment_memory_module.valid_containers_memory_limit?(deployment)
     end
 
     def valid_containers_memory_request?(deployment)
-      total_memory_request = deployment.containers.map(&:memory_request).sum
-
-      total_memory_request <= Settings.deployment.max_memory_limit
+      deployment_memory_module.valid_containers_memory_request?(deployment)
     end
 
     def ingress_container?(containers)

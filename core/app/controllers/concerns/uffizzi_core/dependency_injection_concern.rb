@@ -55,6 +55,12 @@ module UffizziCore::DependencyInjectionConcern
     module_class(:domain_module)
   end
 
+  def deployment_memory_module
+    return unless module_exists?(:deployment_memory_module)
+
+    module_class(:deployment_memory_module)
+  end
+
   private
 
   def module_exists?(module_name)

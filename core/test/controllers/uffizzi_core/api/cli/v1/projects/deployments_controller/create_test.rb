@@ -892,27 +892,4 @@ class UffizziCore::Api::Cli::V1::Projects::DeploymentsControllerTest < ActionCon
     Sidekiq::Worker.clear_all
     Sidekiq::Testing.inline!
   end
-
-  test '#create - overall requested memory more than the limit' do
-    create_namespace_request = stub_create_namespace_request
-    file_content = File.read('test/fixtures/files/uffizzi-compose-vote-app-docker-with-memory-request.yml')
-    encoded_content = Base64.encode64(file_content)
-    base_attributes = attributes_for(:compose_file).slice(:source, :path)
-    compose_file_attributes = base_attributes.merge(content: encoded_content, repository_id: nil)
-    stub_dockerhub_private_repository('library', 'redis')
-
-    params = { project_slug: @project.slug, compose_file: compose_file_attributes, dependencies: [], metadata: {} }
-
-    differences = {
-      -> { UffizziCore::Deployment.active.count } => 0,
-      -> { UffizziCore::Repo::DockerHub.count } => 0,
-    }
-
-    assert_difference differences do
-      post :create, params: params, format: :json
-    end
-
-    assert_response :unprocessable_entity
-    assert_not_requested(create_namespace_request)
-  end
 end
