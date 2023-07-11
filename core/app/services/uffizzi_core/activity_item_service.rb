@@ -54,7 +54,10 @@ class UffizziCore::ActivityItemService
       return handle_failed_status(activity_item, deployment) if failed?(status)
 
       if deployed?(status) && UffizziCore::ContainerService.ingress_container?(container)
-        return deployment.update(last_deploy_at: last_event.created_at)
+        deployment.update!(last_deploy_at: last_event.created_at)
+        deployment.deployment_events.create!(deployment_state: status)
+
+        return
       end
 
       return unless [UffizziCore::Event.state.building, UffizziCore::Event.state.deploying].include?(status)

@@ -37,4 +37,4 @@ test:
 	docker-compose run --rm core bash -c "bundle exec rails test"
 
 lint:
-	docker-compose run --rm web bash -c "bundle exec rubocop --auto-correct"
+	docker-compose run --rm web bash -c "bundle exec rubocop -A"

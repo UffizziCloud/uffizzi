@@ -7,6 +7,10 @@ module UffizziCore::DependencyInjectionConcern
     def include_module_if_exists(module_name)
       include(Object.const_get(module_name)) if Object.const_defined?(module_name)
     end
+
+    def prepend_module_if_exists(module_name)
+      prepend(Object.const_get(module_name)) if Object.const_defined?(module_name)
+    end
   end
 
   def user_access_module

@@ -22,6 +22,7 @@ module UffizziCore::Concerns::Models::Deployment
     has_many :credentials, through: :project
     has_many :containers, dependent: :destroy, index_errors: true
     has_many :activity_items, dependent: :destroy
+    has_many :deployment_events, dependent: :destroy
 
     has_one :ingress_container, -> { where(receive_incoming_requests: true) }, class_name: UffizziCore::Container.name
     validates :kind, presence: true

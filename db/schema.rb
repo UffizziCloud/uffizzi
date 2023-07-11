@@ -207,6 +207,15 @@ ActiveRecord::Schema.define(version: 2023_06_13_110517) do
     t.index ["provider_ref"], name: "index_credentials_on_provider_ref"
   end
 
+  create_table "uffizzi_core_deployment_events", force: :cascade do |t|
+    t.string "deployment_state"
+    t.string "message"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.bigint "deployment_id", null: false
+    t.index ["deployment_id"], name: "uf_core_dep_events_on_dep"
+  end
+
   create_table "uffizzi_core_deployments", force: :cascade do |t|
     t.bigint "project_id", null: false
     t.text "kind", null: false
@@ -442,6 +451,7 @@ ActiveRecord::Schema.define(version: 2023_06_13_110517) do
   add_foreign_key "uffizzi_core_clusters", "uffizzi_core_projects", column: "project_id"
   add_foreign_key "uffizzi_core_container_host_volume_files", "uffizzi_core_containers", column: "container_id"
   add_foreign_key "uffizzi_core_container_host_volume_files", "uffizzi_core_host_volume_files", column: "host_volume_file_id"
+  add_foreign_key "uffizzi_core_deployment_events", "uffizzi_core_deployments", column: "deployment_id"
   add_foreign_key "uffizzi_core_host_volume_files", "uffizzi_core_compose_files", column: "compose_file_id"
   add_foreign_key "uffizzi_core_host_volume_files", "uffizzi_core_projects", column: "project_id"
 end

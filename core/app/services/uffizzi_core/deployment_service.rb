@@ -1,6 +1,9 @@
 # frozen_string_literal: true
 
 class UffizziCore::DeploymentService
+  include UffizziCore::DependencyInjectionConcern
+  prepend_module_if_exists('UffizziCore::DeploymentServiceModule')
+
   MIN_TARGET_PORT_RANGE = 37_000
   MAX_TARGET_PORT_RANGE = 39_999
 
@@ -39,12 +42,8 @@ class UffizziCore::DeploymentService
         deployment.containers.destroy_all
         deployment.compose_file.destroy! if deployment.compose_file&.kind&.temporary?
         deployment.activate unless deployment.active?
-        params = {
-          containers: deployment_form.containers,
-          compose_file_id: compose_file.id,
-          metadata: deployment_form.metadata,
-        }
-        deployment.update!(params)
+        new_params = params_for_update_deployment(deployment_form, compose_file)
+        deployment.update!(new_params)
       end
 
       deployment
@@ -56,10 +55,15 @@ class UffizziCore::DeploymentService
         update_controller_container_names(deployment)
       end
 
-      case deployment_process_status(deployment)
+      status = deployment_process_status(deployment)
+
+      case status
       when DEPLOYMENT_PROCESS_STATUSES[:building]
         Rails.logger.info("DEPLOYMENT_PROCESS deployment_id=#{deployment.id} repeat deploy_containers")
         UffizziCore::Deployment::DeployContainersJob.perform_in(1.minute, deployment.id, true)
+        unless repeated
+          deployment.deployment_events.create!(deployment_state: status)
+        end
       when DEPLOYMENT_PROCESS_STATUSES[:deploying]
         Rails.logger.info("DEPLOYMENT_PROCESS deployment_id=#{deployment.id} start deploying into controller")
 
@@ -67,6 +71,7 @@ class UffizziCore::DeploymentService
         containers_with_variables = add_default_deployment_variables!(containers, deployment)
 
         UffizziCore::ControllerService.deploy_containers(deployment, containers_with_variables)
+        deployment.deployment_events.create!(deployment_state: status)
       else
         Rails.logger.info("DEPLOYMENT_PROCESS deployment_id=#{deployment.id} deployment has builds errors, stopping")
       end
@@ -84,6 +89,7 @@ class UffizziCore::DeploymentService
       return if deployment.failed?
 
       deployment.fail!
+      deployment.deployment_events.create!(deployment_state: deployment.state)
       compose_file = deployment.compose_file || deployment.template&.compose_file
       return unless compose_file&.kind&.temporary?
 
@@ -229,6 +235,14 @@ class UffizziCore::DeploymentService
 
         container.variables.push(*envs)
       end
+    end
+
+    def params_for_update_deployment(deployment_form, compose_file)
+      {
+        containers: deployment_form.containers,
+        compose_file_id: compose_file.id,
+        metadata: deployment_form.metadata,
+      }
     end
   end
 end
