@@ -2,11 +2,11 @@
 
 class UffizziCore::Deployment::MemoryService
   class << self
-    def valid_containers_memory_limit?(_total_memory_limit)
+    def valid_memory_limit?(_total_memory_limit)
       true
     end
 
-    def valid_containers_memory_request?(_total_requested_memory)
+    def valid_memory_request?(_total_requested_memory)
       true
     end
   end

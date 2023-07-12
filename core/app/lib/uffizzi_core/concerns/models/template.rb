@@ -19,12 +19,12 @@ module UffizziCore::Concerns::Models::Template
 
     validates :name, presence: true
 
-    def valid_containers_memory_limit?
-      UffizziCore::TemplateService.valid_containers_memory_limit?(self)
+    def valid_memory_limit?
+      UffizziCore::TemplateService.valid_memory_limit?(self)
     end
 
-    def valid_containers_memory_request?
-      UffizziCore::TemplateService.valid_containers_memory_request?(self)
+    def valid_memory_request?
+      UffizziCore::TemplateService.valid_memory_request?(self)
     end
   end
 end
