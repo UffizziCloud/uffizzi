@@ -5,6 +5,56 @@ entries:
       artifacthub.io/prerelease: "false"
     apiVersion: v2
     appVersion: 1.0.0
+    created: "2023-07-12T16:00:39.964316248Z"
+    dependencies:
+    - name: uffizzi-controller
+      repository: https://uffizzicloud.github.io/uffizzi_controller/
+      version: ^2
+    - condition: postgresql.enabled
+      name: postgresql
+      repository: https://charts.bitnami.com/bitnami
+      version: 12.1.11
+    - condition: redis.enabled
+      name: redis
+      repository: https://charts.bitnami.com/bitnami
+      version: 17.6.0
+    description: Uffizzi is an open-source engine for creating lightweight, ephemeral
+      test environments for APIs and full-stack applications. Uffizzi enables teams
+      to preview new features before merging.
+    digest: bc31d175175a166dd6deec0797340818976bf31c44464caaf41db4759bc08c17
+    home: https://uffizzi.com/
+    icon: https://app.uffizzi.com/favicon.png
+    keywords:
+    - devops
+    - uffizzi
+    - continuous-previews
+    - ephemeral
+    - environments
+    - pull-request
+    - merge-request
+    - on-demand
+    - ci
+    - cd
+    - cp
+    kubeVersion: '>= 1.21.0-0'
+    maintainers:
+    - email: info@uffizzi.com
+      name: Uffizzi
+      url: https://uffizzi.com
+    - email: adam.vollrath@uffizzi.com
+      name: Adam Vollrath
+      url: https://github.com/axisofentropy
+    name: uffizzi-app
+    sources:
+    - https://github.com/UffizziCloud/uffizzi
+    type: application
+    urls:
+    - https://github.com/UffizziCloud/uffizzi/releases/download/uffizzi-app-1.2.4/uffizzi-app-1.2.4.tgz
+    version: 1.2.4
+  - annotations:
+      artifacthub.io/prerelease: "false"
+    apiVersion: v2
+    appVersion: 1.0.0
     created: "2023-07-12T14:28:17.824556553Z"
     dependencies:
     - name: uffizzi-controller
@@ -504,4 +554,4 @@ entries:
     urls:
     - https://github.com/UffizziCloud/uffizzi_app/releases/download/uffizzi-app-1.0.1/uffizzi-app-1.0.1.tgz
     version: 1.0.1
-generated: "2023-07-12T14:28:17.824601853Z"
+generated: "2023-07-12T16:00:39.96446395Z"
