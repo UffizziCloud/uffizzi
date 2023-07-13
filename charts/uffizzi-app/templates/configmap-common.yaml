@@ -9,6 +9,7 @@ data:
   RAILS_ENV: {{ .Values.env | quote }}
   APP_URL: {{ .Values.app_url }}
   CONTROLLER_URL: {{ default (print "http://" .Release.Name "-controller:8080") .Values.controller_url }}
+  VCLUSTER_CONTROLLER_URL: {{ default (print "http://" .Release.Name "-controller:8080") .Values.vcluster_controller_url }}
   EMAIL_DELIVERY_ENABLED: {{ .Values.feature_email_delivery | quote }}
   MANAGED_DNS_ZONE_DNS_NAME: {{ .Values.managed_dns_zone_dns_name | quote }}
   UFFIZZI_USER_EMAIL: {{ .Values.global.uffizzi.firstUser.email }}

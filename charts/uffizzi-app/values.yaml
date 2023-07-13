@@ -27,6 +27,7 @@ web-replicas: 3
 sidekiq-replicas: 1
 hostname: localhost
 controller_url: ""
+vcluster_controller_url: ""
 allowed_hosts: ""
 db_host: "" # default to dependent postgresql
 rails_secret_key_base: "" # default to half-random string
