@@ -61,6 +61,12 @@ module UffizziCore::DependencyInjectionConcern
     module_class(:deployment_memory_module)
   end
 
+  def template_memory_module
+    return unless module_exists?(:template_memory_module)
+
+    module_class(:template_memory_module)
+  end
+
   private
 
   def module_exists?(module_name)

@@ -18,13 +18,5 @@ module UffizziCore::Concerns::Models::Template
     enumerize :creation_source, in: [:manual, :compose_file, :system], predicates: true, scope: true
 
     validates :name, presence: true
-
-    def valid_memory_limit?
-      UffizziCore::TemplateService.valid_memory_limit?(self)
-    end
-
-    def valid_memory_request?
-      UffizziCore::TemplateService.valid_memory_request?(self)
-    end
   end
 end

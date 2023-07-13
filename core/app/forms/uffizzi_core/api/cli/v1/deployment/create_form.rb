@@ -87,18 +87,6 @@ class UffizziCore::Api::Cli::V1::Deployment::CreateForm < UffizziCore::Deploymen
     errors.add(:containers, :incorrect_ingress_container) unless UffizziCore::DeploymentService.ingress_container?(active_containers)
   end
 
-  def check_max_memory_limit
-    return if UffizziCore::DeploymentService.valid_memory_limit?(self)
-
-    errors.add(:containers, :max_memory_limit_error, max: Settings.deployment.max_memory_limit)
-  end
-
-  def check_max_memory_request
-    return if UffizziCore::DeploymentService.valid_memory_request?(self)
-
-    errors.add(:containers, :max_memory_request_error, max: Settings.deployment.max_memory_limit)
-  end
-
   def check_secrets_exist_in_database
     return if compose_file.nil?
 
