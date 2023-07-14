@@ -14,6 +14,8 @@ class UffizziCore::Api::Cli::V1::Accounts::ProjectsControllerTest < ActionContro
 
     get :index, params: { account_id: @account.id }, format: :json
 
+    data = JSON.parse(response.body)
+    assert(data['projects'].first['account'].present?)
     assert_response(:success)
   end
 
