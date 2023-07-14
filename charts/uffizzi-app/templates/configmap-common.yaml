@@ -12,6 +12,7 @@ data:
   VCLUSTER_CONTROLLER_URL: {{ default (print "http://" .Release.Name "-controller:8080") .Values.vcluster_controller_url }}
   EMAIL_DELIVERY_ENABLED: {{ .Values.feature_email_delivery | quote }}
   MANAGED_DNS_ZONE_DNS_NAME: {{ .Values.managed_dns_zone_dns_name | quote }}
+  VCLUSTER_MANAGED_DNS_ZONE_DNS_NAME: {{ .Values.managed_dns_zone_dns_name | quote }}
   UFFIZZI_USER_EMAIL: {{ .Values.global.uffizzi.firstUser.email }}
   UFFIZZI_USER_PASSWORD: {{ .Values.global.uffizzi.firstUser.password | quote }}
   UFFIZZI_PROJECT_NAME: {{ .Values.global.uffizzi.firstUser.projectName | quote }}
