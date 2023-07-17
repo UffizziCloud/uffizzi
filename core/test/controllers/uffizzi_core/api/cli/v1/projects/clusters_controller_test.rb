@@ -131,6 +131,19 @@ class UffizziCore::Api::Cli::V1::Projects::ClustersControllerTest < ActionContro
     assert_response(:success)
   end
 
+  test '#update_kubeconfig' do
+    cluster = create(:cluster, project: @project, deployed_by: @user, name: 'test')
+
+    params = {
+      project_slug: @project.slug,
+      name: cluster.name,
+    }
+
+    get :update_kubeconfig, params: params, format: :json
+
+    assert_response(:success)
+  end
+
   test '#destroy' do
     cluster = create(:cluster, :deployed, project: @project, deployed_by: @user, name: 'test')
     stubbed_delete_namespace_request = stub_delete_namespace_request(cluster)

@@ -25,6 +25,10 @@ class UffizziCore::Api::Cli::V1::Projects::ClustersController < UffizziCore::Api
   end
 
   def show
+    respond_with resource_cluster, serializer: UffizziCore::Api::Cli::V1::Projects::ShortClusterSerializer
+  end
+
+  def update_kubeconfig
     respond_with resource_cluster
   end
 
