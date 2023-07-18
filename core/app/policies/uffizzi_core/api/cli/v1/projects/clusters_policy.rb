@@ -9,7 +9,7 @@ class UffizziCore::Api::Cli::V1::Projects::ClustersPolicy < UffizziCore::Applica
     context.user_access_module.any_access_to_project?(context.user, context.project)
   end
 
-  def update_kubeconfig?
+  def kubeconfig?
     context.user_access_module.admin_or_developer_access_to_project?(context.user, context.project)
   end
 

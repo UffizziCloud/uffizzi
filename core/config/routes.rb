@@ -12,7 +12,7 @@ UffizziCore::Engine.routes.draw do
             resource :compose_file, only: ['show', 'create', 'destroy']
             resources :clusters, only: [:index, :create, :show, :destroy], param: :name do
               member do
-                get :update_kubeconfig
+                get :kubeconfig
               end
             end
             resources :deployments, only: ['index', 'show', 'create', 'destroy', 'update'] do

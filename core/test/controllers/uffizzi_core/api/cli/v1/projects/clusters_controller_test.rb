@@ -131,7 +131,7 @@ class UffizziCore::Api::Cli::V1::Projects::ClustersControllerTest < ActionContro
     assert_response(:success)
   end
 
-  test '#update_kubeconfig' do
+  test '#kubeconfig' do
     cluster = create(:cluster, project: @project, deployed_by: @user, name: 'test')
 
     params = {
@@ -139,7 +139,7 @@ class UffizziCore::Api::Cli::V1::Projects::ClustersControllerTest < ActionContro
       name: cluster.name,
     }
 
-    get :update_kubeconfig, params: params, format: :json
+    get :kubeconfig, params: params, format: :json
 
     assert_response(:success)
   end
