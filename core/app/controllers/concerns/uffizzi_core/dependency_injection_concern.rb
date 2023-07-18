@@ -67,6 +67,12 @@ module UffizziCore::DependencyInjectionConcern
     module_class(:template_memory_module)
   end
 
+  def controller_settings_service
+    return unless module_exists?(:controller_settings)
+
+    module_class(:controller_settings)
+  end
+
   private
 
   def module_exists?(module_name)
