@@ -87,8 +87,6 @@ class UffizziCore::ComposeFile::Builders::ContainerBuilderService
 
   def set_continuous_preview_attributes_to_repo(repo_attributes, global_data, container_data)
     condition_attributes = [
-      :deploy_preview_when_pull_request_is_opened,
-      :delete_preview_when_pull_request_is_closed,
       :deploy_preview_when_image_tag_is_created,
       :delete_preview_when_image_tag_is_updated,
       :share_to_github,

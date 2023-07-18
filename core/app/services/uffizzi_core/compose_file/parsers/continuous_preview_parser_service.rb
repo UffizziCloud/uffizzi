@@ -6,8 +6,6 @@ class UffizziCore::ComposeFile::Parsers::ContinuousPreviewParserService
       return {} if continuous_preview_data.nil?
 
       {
-        deploy_preview_when_pull_request_is_opened: trigger_value(continuous_preview_data, 'deploy_preview_when_pull_request_is_opened'),
-        delete_preview_when_pull_request_is_closed: trigger_value(continuous_preview_data, 'delete_preview_when_pull_request_is_closed'),
         deploy_preview_when_image_tag_is_created: trigger_value(continuous_preview_data, 'deploy_preview_when_image_tag_is_created'),
         delete_preview_when_image_tag_is_updated: trigger_value(continuous_preview_data, 'delete_preview_when_image_tag_is_updated'),
         delete_preview_after: delete_preview_after_value(continuous_preview_data['delete_preview_after']),
