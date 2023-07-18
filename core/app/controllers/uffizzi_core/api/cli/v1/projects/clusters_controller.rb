@@ -8,7 +8,7 @@ class UffizziCore::Api::Cli::V1::Projects::ClustersController < UffizziCore::Api
   after_action :update_show_trial_quota_exceeded_warning, only: [:create, :destroy]
 
   def index
-    clusters = resource_project.clusters.enabled
+    clusters = resource_project.clusters.enabled.deployed_by_user(current_user)
 
     respond_with clusters
   end

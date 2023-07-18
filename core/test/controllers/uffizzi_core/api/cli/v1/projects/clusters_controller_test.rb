@@ -5,8 +5,8 @@ require 'test_helper'
 class UffizziCore::Api::Cli::V1::Projects::ClustersControllerTest < ActionController::TestCase
   setup do
     @user = create(:user, :with_organizational_account)
-    account = @user.accounts.organizational.first
-    @project = create(:project, :with_members, members: [@user], account: account)
+    @account = @user.accounts.organizational.first
+    @project = create(:project, :with_members, members: [@user], account: @account)
 
     sign_in(@user)
   end
@@ -16,7 +16,7 @@ class UffizziCore::Api::Cli::V1::Projects::ClustersControllerTest < ActionContro
     Sidekiq::Testing.inline!
   end
 
-  test '#index' do
+  test '#index lists clusters created by the same user' do
     create(:cluster, project: @project, deployed_by: @user)
 
     params = {
@@ -25,6 +25,26 @@ class UffizziCore::Api::Cli::V1::Projects::ClustersControllerTest < ActionContro
     get :index, params: params, format: :json
 
     assert_response(:success)
+    data = JSON.parse(response.body)
+    assert_equal(1, data['clusters'].count)
+  end
+
+  test '#index only shows clusters deployed by the same user' do
+    user2 = create(:user)
+    create(:membership, :developer, account: @account, user: user2)
+    create(:user_project, :developer, project: @project, user: user2)
+    create(:cluster, project: @project, deployed_by: @user)
+
+    sign_in(user2)
+
+    params = {
+      project_slug: @project.slug,
+    }
+    get :index, params: params, format: :json
+
+    assert_response(:success)
+    data = JSON.parse(response.body)
+    assert_nil(data['clusters'])
   end
 
   test '#create' do
