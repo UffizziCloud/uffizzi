@@ -6,12 +6,6 @@ class UffizziCore::Deployment::MemoryService
       true
     end
 
-    def valid_memory_request?(_deployment)
-      true
-    end
-
     def memory_limit_error_message(_deployment); end
-
-    def memory_request_error_message(_deployment); end
   end
 end

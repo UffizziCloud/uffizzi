@@ -20,7 +20,6 @@ en:
           attributes:
             containers:
               max_memory_limit_error: "Total memory limit of containers must be less than %{max}"
-              max_memory_request_error: "Total memory request of containers must be less than %{max}"
         uffizzi_core/user:
           attributes:
             email:
