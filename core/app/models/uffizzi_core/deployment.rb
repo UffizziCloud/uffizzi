@@ -24,19 +24,11 @@ class UffizziCore::Deployment < UffizziCore::ApplicationRecord
   include UffizziCore::DependencyInjectionConcern
 
   validate :check_max_memory_limit
-  validate :check_max_memory_request
 
   def check_max_memory_limit
     return if deployment_memory_module.valid_memory_limit?(self)
 
     deployment_memory_module.memory_limit_error_message(self)
-    errors.add(:containers, message)
-  end
-
-  def check_max_memory_request
-    return if deployment_memory_module.valid_memory_request?(self)
-
-    deployment_memory_module.memory_request_error_message(self)
     errors.add(:containers, message)
   end
 end

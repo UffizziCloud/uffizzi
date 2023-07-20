@@ -54,8 +54,6 @@ class UffizziCore::Api::Cli::V1::Deployment::UpdateForm < UffizziCore::Deploymen
 
   validate :check_all_containers_have_unique_ports
   validate :check_exists_ingress_container
-  validate :check_max_memory_limit
-  validate :check_max_memory_request
 
   def assign_dependences!(project, user)
     self.project = project
