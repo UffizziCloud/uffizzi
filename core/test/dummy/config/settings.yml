@@ -73,6 +73,7 @@ compose:
 continuous_preview:
   default_delete_preview_after: 72
 deployment:
+  max_memory_limit: 8000
   subdomain:
     length_limit: 63
 vcluster:
