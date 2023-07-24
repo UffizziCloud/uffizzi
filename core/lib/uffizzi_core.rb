@@ -32,6 +32,7 @@ module UffizziCore
     rbac: 'UffizziCore::Rbac::UserAccessService',
     deployment_memory_module: 'UffizziCore::Deployment::MemoryService',
     template_memory_module: 'UffizziCore::Template::MemoryService',
+    controller_settings: 'UffizziCore::ControllerSettingsService',
   }
   mattr_accessor :table_names, default: {
     accounts: :uffizzi_core_accounts,
