@@ -414,8 +414,8 @@ class UffizziCore::Api::Cli::V1::Projects::DeploymentsControllerTest < ActionCon
 
     expected_default_container_params = {
       secret_variables: [],
-      memory_limit: nil,
-      memory_request: nil,
+      memory_limit: Settings.compose.default_memory,
+      memory_request: Settings.compose.default_memory,
       entrypoint: nil,
       command: nil,
       port: nil,

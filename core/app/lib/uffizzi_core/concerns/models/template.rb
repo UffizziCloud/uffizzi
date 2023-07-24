@@ -18,21 +18,5 @@ module UffizziCore::Concerns::Models::Template
     enumerize :creation_source, in: [:manual, :compose_file, :system], predicates: true, scope: true
 
     validates :name, presence: true
-
-    def valid_containers_memory_limit?
-      containers_attributes = payload['containers_attributes']
-      container_memory_limit = project.account.container_memory_limit
-      return true if container_memory_limit.nil?
-
-      containers_attributes.all? { |container| container['memory_limit'].to_i <= container_memory_limit }
-    end
-
-    def valid_containers_memory_request?
-      containers_attributes = payload['containers_attributes']
-      container_memory_limit = project.account.container_memory_limit
-      return true if container_memory_limit.nil?
-
-      containers_attributes.all? { |container| container['memory_request'].to_i <= container_memory_limit }
-    end
   end
 end
