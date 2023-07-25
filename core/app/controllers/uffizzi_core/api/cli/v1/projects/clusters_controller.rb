@@ -8,9 +8,10 @@ class UffizziCore::Api::Cli::V1::Projects::ClustersController < UffizziCore::Api
   after_action :update_show_trial_quota_exceeded_warning, only: [:create, :destroy]
 
   def index
-    clusters = resource_project.clusters.enabled.deployed_by_user(current_user)
+    clusters = resource_project.clusters.enabled
+    return respond_with clusters if request_by_admin?
 
-    respond_with clusters
+    respond_with clusters.deployed_by_user(current_user)
   end
 
   def create
@@ -37,7 +38,16 @@ class UffizziCore::Api::Cli::V1::Projects::ClustersController < UffizziCore::Api
   private
 
   def resource_cluster
-    @resource_cluster ||= resource_project.clusters.enabled.find_by!(name: params[:name])
+    active_project_clusters = resource_project.clusters.enabled
+    @resource_cluster ||= if request_by_admin?
+      active_project_clusters.find_by!(name: params[:name])
+    else
+      active_project_clusters.deployed_by_user(current_user).find_by!(name: params[:name])
+    end
+  end
+
+  def request_by_admin?
+    current_user.admin_access_to_project?(resource_project)
   end
 
   def cluster_params

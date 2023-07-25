@@ -4,11 +4,13 @@ require 'test_helper'
 
 class UffizziCore::Api::Cli::V1::Projects::ClustersControllerTest < ActionController::TestCase
   setup do
-    @user = create(:user, :with_organizational_account)
-    @account = @user.accounts.organizational.first
-    @project = create(:project, :with_members, members: [@user], account: @account)
+    @admin = create(:user, :with_organizational_account)
+    @account = @admin.accounts.organizational.first
+    @project = create(:project, :with_members, members: [@admin], account: @account)
 
-    sign_in(@user)
+    @developer = create(:user)
+    create(:membership, :developer, account: @account, user: @developer)
+    create(:user_project, :developer, project: @project, user: @developer)
   end
 
   teardown do
@@ -16,8 +18,10 @@ class UffizziCore::Api::Cli::V1::Projects::ClustersControllerTest < ActionContro
     Sidekiq::Testing.inline!
   end
 
-  test '#index lists clusters created by the same user' do
-    create(:cluster, project: @project, deployed_by: @user)
+  test '#index lists all clusters to admins' do
+    sign_in(@admin)
+
+    create(:cluster, project: @project, deployed_by: @developer)
 
     params = {
       project_slug: @project.slug,
@@ -29,13 +33,10 @@ class UffizziCore::Api::Cli::V1::Projects::ClustersControllerTest < ActionContro
     assert_equal(1, data['clusters'].count)
   end
 
-  test '#index only shows clusters deployed by the same user' do
-    user2 = create(:user)
-    create(:membership, :developer, account: @account, user: user2)
-    create(:user_project, :developer, project: @project, user: user2)
-    create(:cluster, project: @project, deployed_by: @user)
-
-    sign_in(user2)
+  test '#index only shows clusters deployed by the same user for non-adminss' do
+    create(:cluster, project: @project, deployed_by: @admin)
+    create(:cluster, project: @project, deployed_by: @developer)
+    sign_in(@developer)
 
     params = {
       project_slug: @project.slug,
@@ -44,10 +45,11 @@ class UffizziCore::Api::Cli::V1::Projects::ClustersControllerTest < ActionContro
 
     assert_response(:success)
     data = JSON.parse(response.body)
-    assert_nil(data['clusters'])
+    assert_equal(1, data['clusters'].count)
   end
 
   test '#create' do
+    sign_in(@admin)
     cluster_creation_data = json_fixture('files/controller/cluster_not_ready.json')
     params = {
       project_slug: @project.slug,
@@ -81,8 +83,9 @@ class UffizziCore::Api::Cli::V1::Projects::ClustersControllerTest < ActionContro
   end
 
   test '#create when enabled cluster with the same name exists' do
+    sign_in(@admin)
     name = 'test'
-    create(:cluster, project: @project, deployed_by: @user, name: name)
+    create(:cluster, project: @project, deployed_by: @admin, name: name)
 
     params = {
       project_slug: @project.slug,
@@ -103,6 +106,7 @@ class UffizziCore::Api::Cli::V1::Projects::ClustersControllerTest < ActionContro
   end
 
   test '#create with manifest' do
+    sign_in(@admin)
     manifest = File.read('test/fixtures/files/cluster/manifest.yml')
     cluster_creation_data = json_fixture('files/controller/cluster_not_ready.json')
     cluster_show_data = json_fixture('files/controller/cluster_ready.json')
@@ -138,8 +142,9 @@ class UffizziCore::Api::Cli::V1::Projects::ClustersControllerTest < ActionContro
     assert_requested(stubbed_get_cluster_request)
   end
 
-  test '#show' do
-    cluster = create(:cluster, project: @project, deployed_by: @user, name: 'test')
+  test '#show shows cluster created by the same developer' do
+    cluster = create(:cluster, project: @project, deployed_by: @developer, name: 'test')
+    sign_in(@developer)
 
     params = {
       project_slug: @project.slug,
@@ -151,8 +156,75 @@ class UffizziCore::Api::Cli::V1::Projects::ClustersControllerTest < ActionContro
     assert_response(:success)
   end
 
-  test '#destroy' do
-    cluster = create(:cluster, :deployed, project: @project, deployed_by: @user, name: 'test')
+  test '#show does not show cluster created by a different user to developer' do
+    sign_in(@developer)
+
+    cluster = create(:cluster, project: @project, deployed_by: @admin, name: 'test')
+
+    params = {
+      project_slug: @project.slug,
+      name: cluster.name,
+    }
+
+    get :show, params: params, format: :json
+
+    assert_response(:not_found)
+  end
+
+  test '#show shows clusters created by a different user to admin' do
+    sign_in(@admin)
+
+    cluster = create(:cluster, project: @project, deployed_by: @developer, name: 'test')
+
+    params = {
+      project_slug: @project.slug,
+      name: cluster.name,
+    }
+
+    get :show, params: params, format: :json
+
+    assert_response(:success)
+  end
+
+  test '#destroy developer can destroy a cluster created by him' do
+    sign_in(@developer)
+
+    cluster = create(:cluster, :deployed, project: @project, deployed_by: @developer, name: 'test')
+    stubbed_delete_namespace_request = stub_delete_namespace_request(cluster)
+
+    params = {
+      project_slug: @project.slug,
+      name: cluster.name,
+    }
+
+    delete :destroy, params: params, format: :json
+
+    assert_response(:success)
+    assert(cluster.reload.disabled?)
+    assert_requested(stubbed_delete_namespace_request)
+  end
+
+  test '#destroy developer cannot destroy a cluster created by other user' do
+    sign_in(@developer)
+
+    cluster = create(:cluster, :deployed, project: @project, deployed_by: @admin, name: 'test')
+    stubbed_delete_namespace_request = stub_delete_namespace_request(cluster)
+
+    params = {
+      project_slug: @project.slug,
+      name: cluster.name,
+    }
+
+    delete :destroy, params: params, format: :json
+
+    assert_response(:not_found)
+    refute_requested(stubbed_delete_namespace_request)
+  end
+
+  test '#destroy admin can destroy a cluster created by other user' do
+    sign_in(@admin)
+
+    cluster = create(:cluster, :deployed, project: @project, deployed_by: @developer, name: 'test')
     stubbed_delete_namespace_request = stub_delete_namespace_request(cluster)
 
     params = {
