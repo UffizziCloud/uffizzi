@@ -73,6 +73,12 @@ module UffizziCore::DependencyInjectionConcern
     module_class(:controller_settings)
   end
 
+  def ci_module
+    return unless module_exists?(:ci_module)
+
+    module_class(:ci_module)
+  end
+
   private
 
   def module_exists?(module_name)
