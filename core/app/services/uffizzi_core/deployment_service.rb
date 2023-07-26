@@ -78,7 +78,7 @@ class UffizziCore::DeploymentService
     end
 
     def disable!(deployment)
-      deployment.disable_without_validation!
+      deployment.disable!
       compose_file = deployment.compose_file || deployment.template&.compose_file
       return unless compose_file&.kind&.temporary?
 
