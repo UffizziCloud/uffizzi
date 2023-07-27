@@ -42,6 +42,7 @@ vcluster_controller:
   url: http://controller:8080
   login: ''
   password: ''
+  managed_dns_zone: ''
   connection:
     retires_count: 1
     next_retry_timeout_seconds: 1
