@@ -6,7 +6,6 @@ app:
   login:  <%= ENV['APP_LOGIN'] || '' %>
   password:  <%= ENV['APP_PASSWORD'] || '' %>
   managed_dns_zone: <%= ENV['MANAGED_DNS_ZONE_DNS_NAME'] %>
-  vcluster_managed_dns_zone: <%= ENV['VCLUSTER_MANAGED_DNS_ZONE_DNS_NAME'] %>
 github:
   app_id: <%= ENV['GITHUB_APP_ID'] %>
   app_slug: <%= ENV['GITHUB_APP_SLUG'] %>
@@ -38,6 +37,7 @@ vcluster_controller:
   url:  <%= ENV['VCLUSTER_CONTROLLER_URL'] || 'http://controller:8080' %>
   login:  <%= ENV['VCLUSTER_CONTROLLER_LOGIN'] || '' %>
   password:  <%= ENV['VCLUSTER_CONTROLLER_PASSWORD'] || '' %>
+  managed_dns_zone: <%= ENV['VCLUSTER_MANAGED_DNS_ZONE_DNS_NAME'] %>
   connection:
     retires_count: 1
     next_retry_timeout_seconds: 1
