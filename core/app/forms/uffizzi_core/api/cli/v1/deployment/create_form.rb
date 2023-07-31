@@ -2,6 +2,7 @@
 
 class UffizziCore::Api::Cli::V1::Deployment::CreateForm < UffizziCore::Deployment
   include UffizziCore::ApplicationForm
+  include UffizziCore::DependencyInjectionConcern
 
   permit :creation_source,
          :metadata,
@@ -55,9 +56,8 @@ class UffizziCore::Api::Cli::V1::Deployment::CreateForm < UffizziCore::Deploymen
 
   validate :check_all_containers_have_unique_ports
   validate :check_exists_ingress_container
-  validate :check_max_memory_limit
-  validate :check_max_memory_request
   validate :check_secrets_exist_in_database
+  validate :check_max_memory_limit
 
   def assign_dependences!(project, user)
     self.project = project
@@ -87,18 +87,6 @@ class UffizziCore::Api::Cli::V1::Deployment::CreateForm < UffizziCore::Deploymen
     errors.add(:containers, :incorrect_ingress_container) unless UffizziCore::DeploymentService.ingress_container?(active_containers)
   end
 
-  def check_max_memory_limit
-    return if UffizziCore::DeploymentService.valid_containers_memory_limit?(self)
-
-    errors.add(:containers, :max_memory_limit_error, max: project.account.container_memory_limit)
-  end
-
-  def check_max_memory_request
-    return if UffizziCore::DeploymentService.valid_containers_memory_request?(self)
-
-    errors.add(:containers, :max_memory_request_error, max: project.account.container_memory_limit)
-  end
-
   def check_secrets_exist_in_database
     return if compose_file.nil?
 
@@ -110,5 +98,12 @@ class UffizziCore::Api::Cli::V1::Deployment::CreateForm < UffizziCore::Deploymen
       error_message = I18n.t('compose.project_secret_not_found', secret: secret)
       errors.add(:secret_variables, error_message)
     end
+  end
+
+  def check_max_memory_limit
+    return if deployment_memory_module.valid_memory_limit?(self)
+
+    deployment_memory_module.memory_limit_error_message(self)
+    errors.add(:containers, message)
   end
 end

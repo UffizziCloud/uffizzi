@@ -23,22 +23,6 @@ class UffizziCore::ContainerService
       container.aasm(:continuously_deploy).current_state == UffizziCore::Container::STATE_CD_ENABLED
     end
 
-    def valid_memory_limit?(container)
-      max_memory_limit = container.deployment.project.account.container_memory_limit
-      container_memory_limit = container.memory_limit
-      return true if max_memory_limit.nil? || container_memory_limit.nil?
-
-      container_memory_limit <= max_memory_limit
-    end
-
-    def valid_memory_request?(container)
-      max_memory_limit = container.deployment.project.account.container_memory_limit
-      container_memory_request = container.memory_request
-      return true if max_memory_limit.nil? || container_memory_request.nil?
-
-      container_memory_request <= max_memory_limit
-    end
-
     def last_state(container)
       pods = pods_by_container(container)
       container_status = container_status(container, pods)

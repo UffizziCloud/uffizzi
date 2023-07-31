@@ -4,13 +4,13 @@ require 'test_helper'
 
 class UffizziCore::Api::Cli::V1::Accounts::ProjectsControllerTest < ActionController::TestCase
   setup do
-    @user = create(:user, :with_personal_account)
-    @account = @user.personal_account
-    sign_in @user
+    @admin = create(:user, :with_organizational_account)
+    @account = @admin.accounts.organizational.first
+    sign_in(@admin)
   end
 
   test '#index' do
-    create(:project, :with_members, account: @account, members: [@user])
+    create(:project, :with_members, account: @account, members: [@admin])
 
     get :index, params: { account_id: @account.id }, format: :json
 
@@ -21,10 +21,11 @@ class UffizziCore::Api::Cli::V1::Accounts::ProjectsControllerTest < ActionContro
 
   test '#create' do
     attributes = attributes_for(:project)
+    create(:user, :developer_in_organization, organization: @account)
 
     differences = {
       -> { UffizziCore::Project.count } => 1,
-      -> { UffizziCore::UserProject.count } => 1,
+      -> { UffizziCore::UserProject.count } => 2,
     }
 
     assert_difference differences do

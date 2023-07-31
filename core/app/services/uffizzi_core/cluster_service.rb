@@ -33,6 +33,7 @@ class UffizziCore::ClusterService
       if deployed_cluster.status.ready && deployed_cluster.status.kube_config.present?
         cluster.finish_deploy
         cluster.kubeconfig = deployed_cluster.status.kube_config
+        cluster.host = deployed_cluster.status.host
         cluster.save!
 
         return

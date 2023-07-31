@@ -2,6 +2,7 @@
 
 class UffizziCore::Api::Cli::V1::Deployment::UpdateForm < UffizziCore::Deployment
   include UffizziCore::ApplicationForm
+  include UffizziCore::DependencyInjectionConcern
 
   permit :metadata,
          containers_attributes: [
@@ -55,7 +56,6 @@ class UffizziCore::Api::Cli::V1::Deployment::UpdateForm < UffizziCore::Deploymen
   validate :check_all_containers_have_unique_ports
   validate :check_exists_ingress_container
   validate :check_max_memory_limit
-  validate :check_max_memory_request
 
   def assign_dependences!(project, user)
     self.project = project
@@ -86,14 +86,9 @@ class UffizziCore::Api::Cli::V1::Deployment::UpdateForm < UffizziCore::Deploymen
   end
 
   def check_max_memory_limit
-    return if UffizziCore::DeploymentService.valid_containers_memory_limit?(self)
+    return if deployment_memory_module.valid_memory_limit?(self)
 
-    errors.add(:containers, :max_memory_limit_error, max: project.account.container_memory_limit)
-  end
-
-  def check_max_memory_request
-    return if UffizziCore::DeploymentService.valid_containers_memory_request?(self)
-
-    errors.add(:containers, :max_memory_request_error, max: project.account.container_memory_limit)
+    deployment_memory_module.memory_limit_error_message(self)
+    errors.add(:containers, message)
   end
 end

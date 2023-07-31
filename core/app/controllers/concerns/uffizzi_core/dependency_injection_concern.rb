@@ -55,6 +55,24 @@ module UffizziCore::DependencyInjectionConcern
     module_class(:domain_module)
   end
 
+  def deployment_memory_module
+    return unless module_exists?(:deployment_memory_module)
+
+    module_class(:deployment_memory_module)
+  end
+
+  def template_memory_module
+    return unless module_exists?(:template_memory_module)
+
+    module_class(:template_memory_module)
+  end
+
+  def controller_settings_service
+    return unless module_exists?(:controller_settings)
+
+    module_class(:controller_settings)
+  end
+
   private
 
   def module_exists?(module_name)

@@ -109,7 +109,7 @@ class UffizziCore::ControllerService
                  when UffizziCore::Deployment
                    Settings.controller
                  when UffizziCore::Cluster
-                   Settings.vcluster_controller
+                   controller_settings_service.vcluster(deployable)
                  else
                    raise StandardError, "Deployable #{deployable.class.name} undefined"
       end

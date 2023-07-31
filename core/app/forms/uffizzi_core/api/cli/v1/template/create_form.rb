@@ -1,20 +1,14 @@
 # frozen_string_literal: true
 
 class UffizziCore::Api::Cli::V1::Template::CreateForm < UffizziCore::Template
-  validate :check_max_memory_limit
-  validate :check_max_memory_request
+  include UffizziCore::DependencyInjectionConcern
 
-  private
+  validate :check_max_memory_limit
 
   def check_max_memory_limit
-    return if valid_containers_memory_limit?
+    return if template_memory_module.valid_memory_limit?(self)
 
-    errors.add(:payload, :max_memory_limit_error, max: project.account.container_memory_limit)
-  end
-
-  def check_max_memory_request
-    return if valid_containers_memory_request?
-
-    errors.add(:payload, :max_memory_request_error, max: project.account.container_memory_limit)
+    message = template_memory_module.memory_limit_error_message(self)
+    errors.add(:payload, message)
   end
 end
