@@ -1,7 +1,7 @@
 PATH
   remote: core
   specs:
-    uffizzi_core (2.2.8)
+    uffizzi_core (2.2.9)
       aasm
       actionpack (~> 6.1.0)
       active_model_serializers
@@ -103,15 +103,15 @@ GEM
       minitest (>= 5.1)
       tzinfo (~> 2.0)
       zeitwerk (~> 2.3)
-    addressable (2.8.4)
+    addressable (2.8.5)
       public_suffix (>= 2.0.2, < 6.0)
     ancestry (4.3.3)
       activerecord (>= 5.2.6)
     ast (2.4.2)
     awesome_print (1.9.2)
     aws-eventstream (1.2.0)
-    aws-partitions (1.794.0)
-    aws-sdk-core (3.180.0)
+    aws-partitions (1.798.0)
+    aws-sdk-core (3.180.1)
       aws-eventstream (~> 1, >= 1.0.2)
       aws-partitions (~> 1, >= 1.651.0)
       aws-sigv4 (~> 1.5)
