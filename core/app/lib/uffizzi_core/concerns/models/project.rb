@@ -24,8 +24,8 @@ module UffizziCore::Concerns::Models::Project
     has_many :host_volume_files, dependent: :destroy
     has_many :clusters, dependent: :destroy
 
-    validates :name, presence: true, uniqueness: { scope: :account, message: 'Name already exists' }
-    validates :slug, presence: true, uniqueness: { message: 'Project slug already taken' }
+    validates :name, presence: true, uniqueness: { scope: :account }
+    validates :slug, presence: true, uniqueness: true
 
     aasm(:state) do
       state :active, initial: true
