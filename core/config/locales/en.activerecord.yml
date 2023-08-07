@@ -6,6 +6,10 @@ en:
           attributes:
             secret:
               not_found: There is no secret with name %{name}
+            name:
+              taken: "A project with the name '%{value}' already exists."
+            slug:
+              taken: "A project slug '%{value}' already taken."
         uffizzi_core/credential:
           attributes:
             registry_url:
