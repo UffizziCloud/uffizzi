@@ -9,8 +9,9 @@ class UffizziCore::Api::Cli::V1::Projects::ClustersController < UffizziCore::Api
 
   def index
     clusters = resource_project.clusters.enabled
+    return respond_with clusters if request_by_admin? || valid_request_from_ci_workflow?
 
-    respond_with clusters
+    respond_with clusters.deployed_by_user(current_user)
   end
 
   def create
@@ -37,7 +38,20 @@ class UffizziCore::Api::Cli::V1::Projects::ClustersController < UffizziCore::Api
   private
 
   def resource_cluster
-    @resource_cluster ||= resource_project.clusters.enabled.find_by!(name: params[:name])
+    active_project_clusters = resource_project.clusters.enabled
+    @resource_cluster ||= if request_by_admin? || valid_request_from_ci_workflow?
+      active_project_clusters.find_by!(name: params[:name])
+    else
+      active_project_clusters.deployed_by_user(current_user).find_by!(name: params[:name])
+    end
+  end
+
+  def request_by_admin?
+    current_user.admin_access_to_project?(resource_project)
+  end
+
+  def valid_request_from_ci_workflow?
+    ci_module.valid_request_from_ci_workflow?(params)
   end
 
   def cluster_params

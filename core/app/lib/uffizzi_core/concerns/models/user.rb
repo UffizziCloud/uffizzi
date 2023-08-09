@@ -53,7 +53,7 @@ module UffizziCore::Concerns::Models::User
     end
 
     def admin_access_to_project?(project)
-      projects.by_ids(project).by_accounts(memberships.by_role_admin.select(:account_id)).exists?
+      project.user_projects.where(user_id: id, role: UffizziCore::UserProject.role.admin).exists?
     end
   end
 end
