@@ -49,6 +49,7 @@ Gem::Specification.new do |spec|
   spec.add_dependency 'rswag-api'
   spec.add_dependency 'rswag-ui'
   spec.add_dependency 'sidekiq'
+  spec.add_dependency 'sidekiq-unique-jobs'
   spec.add_dependency 'swagger_yard'
   spec.add_dependency 'virtus'
 
