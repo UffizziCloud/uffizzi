@@ -1,7 +1,7 @@
 PATH
   remote: .
   specs:
-    uffizzi_core (2.2.9)
+    uffizzi_core (2.2.10)
       aasm
       actionpack (~> 6.1.0)
       active_model_serializers
@@ -110,8 +110,8 @@ GEM
       activerecord (>= 5.2.6)
     awesome_print (1.9.2)
     aws-eventstream (1.2.0)
-    aws-partitions (1.798.0)
-    aws-sdk-core (3.180.1)
+    aws-partitions (1.800.0)
+    aws-sdk-core (3.180.2)
       aws-eventstream (~> 1, >= 1.0.2)
       aws-partitions (~> 1, >= 1.651.0)
       aws-sigv4 (~> 1.5)
@@ -262,7 +262,7 @@ GEM
       net-smtp
     marcel (1.0.2)
     method_source (1.0.0)
-    mini_mime (1.1.2)
+    mini_mime (1.1.5)
     minitest (5.15.0)
     minitest-hooks (1.5.0)
       minitest (> 5.3)
