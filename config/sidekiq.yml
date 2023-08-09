@@ -16,3 +16,5 @@
   - [accounts, 10]
   - [containers, 10]
   - [github, 10]
+  - [disable_deployments, 5]
+  - [clusters, 10]

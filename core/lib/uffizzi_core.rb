@@ -33,6 +33,7 @@ module UffizziCore
     deployment_memory_module: 'UffizziCore::Deployment::MemoryService',
     template_memory_module: 'UffizziCore::Template::MemoryService',
     controller_settings: 'UffizziCore::ControllerSettingsService',
+    ci_module: 'UffizziCore::CiService',
   }
   mattr_accessor :table_names, default: {
     accounts: :uffizzi_core_accounts,
