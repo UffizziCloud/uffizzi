@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2023_07_11_101901) do
+ActiveRecord::Schema.define(version: 2023_08_10_140316) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -30,8 +30,10 @@ ActiveRecord::Schema.define(version: 2023_07_11_101901) do
     t.integer "container_memory_limit"
     t.string "workos_organization_id"
     t.string "sso_state"
+    t.string "slug"
     t.index ["customer_token"], name: "index_accounts_on_customer_token", unique: true
     t.index ["domain"], name: "index_accounts_on_domain", unique: true
+    t.index ["slug"], name: "index_uffizzi_core_accounts_on_slug", unique: true
     t.index ["subscription_token"], name: "index_accounts_on_subscription_token", unique: true
   end
 
@@ -83,6 +85,7 @@ ActiveRecord::Schema.define(version: 2023_07_11_101901) do
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
     t.string "host"
+    t.string "source"
     t.index ["project_id"], name: "index_cluster_on_project_id"
   end
 

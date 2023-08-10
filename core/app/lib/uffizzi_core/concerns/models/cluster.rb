@@ -3,6 +3,7 @@
 module UffizziCore::Concerns::Models::Cluster
   extend ActiveSupport::Concern
   include UffizziCore::ClusterRepo
+  extend Enumerize
 
   NAMESPACE_PREFIX = 'cluster'
 
@@ -15,6 +16,11 @@ module UffizziCore::Concerns::Models::Cluster
     belongs_to :deployed_by, class_name: UffizziCore::User.name, foreign_key: :deployed_by_id, optional: true
     validates_uniqueness_of :name, conditions: -> { enabled }, scope: :project_id
     validates :name, presence: true, format: { with: /\A[a-zA-Z0-9-]*\z/ }
+
+
+    enumerize :source, in: UffizziCore.cluster_sources, scope: true, predicates: true
+    attribute :source, :string, default: :manual
+    validates :source, presence: true
 
     aasm(:state) do
       state :deploying_namespace, initial: true

@@ -72,4 +72,5 @@ module UffizziCore
   mattr_accessor :account_sources, default: [:manual]
   mattr_accessor :compose_file_kinds, default: [:main, :temporary]
   mattr_accessor :event_states, default: [:waiting, :queued, :successful, :deployed, :failed, :building, :timeout, :cancelled, :deploying]
+  mattr_accessor :cluster_sources, default: [:manual]
 end
