@@ -17,7 +17,7 @@ module UffizziCore::Concerns::Models::Cluster
     validates_uniqueness_of :name, conditions: -> { enabled }, scope: :project_id
     validates :name, presence: true, format: { with: /\A[a-zA-Z0-9-]*\z/ }
 
-    enumerize :creation_source, in: UffizziCore.cluster_sources, scope: true, predicates: true
+    enumerize :creation_source, in: UffizziCore.cluster_creation_sources, scope: true, predicates: true
     attribute :creation_source, :string, default: :manual
     validates :creation_source, presence: true
 
