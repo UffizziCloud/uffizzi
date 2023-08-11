@@ -1,6 +1,14 @@
 # frozen_string_literal: true
 
 class UffizziCore::ControllerService
+  class InvalidPublicPort < StandardError
+    def initialize(containers)
+      msg = "Deployment with ID #{containers.first.deployment.id} does not have any public port"
+
+      super(msg)
+    end
+  end
+
   class << self
     include UffizziCore::DependencyInjectionConcern
 
@@ -28,6 +36,10 @@ class UffizziCore::ControllerService
     end
 
     def deploy_containers(deployment, containers)
+      check_any_container_has_public_port(containers) do |exists|
+        UffizziCore::DeploymentService.disable!(deployment) unless exists
+      end
+
       containers = containers.map do |container|
         UffizziCore::Controller::DeployContainers::ContainerSerializer.new(container).as_json(include: '**')
       end
@@ -99,6 +111,15 @@ class UffizziCore::ControllerService
     end
 
     private
+
+    def check_any_container_has_public_port(containers)
+      exists = containers.any? { |c| c.port.present? && c.public }
+      yield(exists) if block_given?
+
+      return if exists
+
+      raise InvalidPublicPort.new(containers)
+    end
 
     def request_events(deployment)
       controller_client(deployment).deployment_containers_events(deployment_id: deployment.id)

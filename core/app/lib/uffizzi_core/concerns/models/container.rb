@@ -61,7 +61,7 @@ module UffizziCore::Concerns::Models::Container
         transitions from: [:disabled], to: :active
       end
 
-      event :disable, after: :clean do
+      event :disable do
         transitions from: [:active], to: :disabled
       end
     end
@@ -74,10 +74,6 @@ module UffizziCore::Concerns::Models::Container
 
     def should_check_port
       public && active?
-    end
-
-    def clean
-      update(public: false, port: nil)
     end
 
     def set_defaults
