@@ -19,10 +19,6 @@ FactoryBot.define do
     memory_limit { Settings.compose.default_memory }
     memory_request { Settings.compose.default_memory }
 
-    trait :continuously_deploy_enabled do
-      continuously_deploy { UffizziCore::Container::STATE_CD_ENABLED }
-    end
-
     trait :with_public_port do
       public { true }
 

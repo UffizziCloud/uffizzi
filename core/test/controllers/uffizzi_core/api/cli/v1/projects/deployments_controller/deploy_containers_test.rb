@@ -71,6 +71,7 @@ class UffizziCore::Api::Cli::V1::Projects::DeploymentsControllerTest < ActionCon
 
     container = create(
       :container,
+      :with_public_port,
       :continuously_deploy_enabled,
       deployment: @deployment,
       repo: repo,
@@ -114,6 +115,7 @@ class UffizziCore::Api::Cli::V1::Projects::DeploymentsControllerTest < ActionCon
 
     container = create(
       :container,
+      :with_public_port,
       :continuously_deploy_enabled,
       deployment: @deployment,
       repo: repo,
@@ -172,6 +174,7 @@ class UffizziCore::Api::Cli::V1::Projects::DeploymentsControllerTest < ActionCon
 
     container = create(
       :container,
+      :with_public_port,
       :continuously_deploy_enabled,
       deployment: @deployment,
       repo: repo,
@@ -230,6 +233,7 @@ class UffizziCore::Api::Cli::V1::Projects::DeploymentsControllerTest < ActionCon
     container = create(
       :container,
       :continuously_deploy_enabled,
+      :with_public_port,
       :with_named_volume,
       deployment: @deployment,
       repo: repo,
@@ -391,7 +395,7 @@ class UffizziCore::Api::Cli::V1::Projects::DeploymentsControllerTest < ActionCon
     host_volume_file_app_file = create(:host_volume_file, **host_volume_file_app_file_params)
     app_container = create(:container, :continuously_deploy_enabled,
                            **{ deployment: @deployment, repo: app_repo }.merge(container_app_attrs))
-    nginx_container = create(:container, :continuously_deploy_enabled,
+    nginx_container = create(:container, :with_public_port, :continuously_deploy_enabled,
                              **{ deployment: @deployment, repo: nginx_repo }.merge(container_nginx_attrs))
 
     container_host_volume_files_app_dir = create(:container_host_volume_file, container: app_container,
