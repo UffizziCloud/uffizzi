@@ -18,7 +18,7 @@ class UffizziCore::DeploymentServiceTest < ActiveSupport::TestCase
 
   test '#deploy_containers - start to deploy dockerhub container' do
     repo = create(:repo, :docker_hub, project: @project)
-    create(:container, :active, deployment: @deployment, repo: repo)
+    create(:container, :with_public_port, :active, deployment: @deployment, repo: repo)
 
     stubbed_deploy_containers_request = stub_request(:post, "#{Settings.controller.url}/deployments/#{@deployment.id}/containers")
 
