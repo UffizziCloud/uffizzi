@@ -1,7 +1,7 @@
 PATH
   remote: .
   specs:
-    uffizzi_core (2.2.10)
+    uffizzi_core (2.2.11)
       aasm
       actionpack (~> 6.1.0)
       active_model_serializers
@@ -110,8 +110,8 @@ GEM
       activerecord (>= 5.2.6)
     awesome_print (1.9.2)
     aws-eventstream (1.2.0)
-    aws-partitions (1.800.0)
-    aws-sdk-core (3.180.2)
+    aws-partitions (1.803.0)
+    aws-sdk-core (3.180.3)
       aws-eventstream (~> 1, >= 1.0.2)
       aws-partitions (~> 1, >= 1.651.0)
       aws-sigv4 (~> 1.5)
@@ -281,7 +281,7 @@ GEM
     net-smtp (0.3.3)
       net-protocol
     nio4r (2.5.8)
-    nokogiri (1.15.3-x86_64-linux)
+    nokogiri (1.15.4-x86_64-linux)
       racc (~> 1.4)
     octokit (7.0.0)
       faraday (>= 1, < 3)
