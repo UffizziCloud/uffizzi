@@ -77,6 +77,7 @@ class UffizziCore::Api::Cli::V1::Projects::ClustersControllerTest < ActionContro
     end
 
     assert_response(:success)
+    assert(UffizziCore::Cluster.find_by(name: cluster_creation_data[:name]).creation_source.manual?)
     assert_requested(stubbed_create_cluster_request)
     assert_requested(stubbed_create_namespace_request)
     assert_requested(stubbed_cluster_request)

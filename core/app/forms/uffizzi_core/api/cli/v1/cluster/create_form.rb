@@ -3,7 +3,7 @@
 class UffizziCore::Api::Cli::V1::Cluster::CreateForm < UffizziCore::Cluster
   include UffizziCore::ApplicationForm
 
-  permit :name, :manifest
+  permit :name, :manifest, :creation_source
 
   validate :check_manifest, if: -> { manifest.present? }
 
