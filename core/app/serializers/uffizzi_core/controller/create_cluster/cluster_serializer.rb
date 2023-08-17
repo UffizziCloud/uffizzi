@@ -2,6 +2,7 @@
 
 class UffizziCore::Controller::CreateCluster::ClusterSerializer < UffizziCore::BaseSerializer
   include UffizziCore::DependencyInjectionConcern
+  include_module_if_exists('UffizziCore::Controller::CreateCluster::ClusterSerializerModule')
 
   attributes :name, :manifest, :base_ingress_host
 
