@@ -161,18 +161,45 @@ class UffizziCore::Api::Cli::V1::Accounts::CredentialsControllerTest < ActionCon
     assert_response :success
   end
 
-  test '#update' do
-    stub_dockerhub_login
+  test '#update when data changed' do
+    stubbed_dockerhub_login = stub_dockerhub_login
 
-    create(:credential, :docker_hub, account: @account)
-    credential_attributes = attributes_for(:credential, :docker_hub, account: @account)
+    credential = create(:credential, :docker_hub, account: @account)
+    new_username = 'new username'
+    credential_attributes = attributes_for(:credential, :docker_hub, account: @account).merge(username: new_username)
 
     params = { account_id: @account.id, credential: credential_attributes, type: credential_attributes[:type] }
+    differences = {
+      -> { UffizziCore::Credential.count } => 0,
+    }
+
+    assert_difference(differences) do
+      put :update, params: params, format: :json
+    end
+    assert_response(:success)
+    assert_equal(credential.reload.username, new_username)
+    assert_requested(stubbed_dockerhub_login)
+  end
+
+  test '#update when credential is the same' do
+    stubbed_dockerhub_login = stub_dockerhub_login
+
+    credential = create(:credential, :docker_hub, account: @account)
+
+    params = {
+      account_id: @account.id,
+      credential: {
+        password: credential.password,
+        username: credential.username,
+        registry_url: credential.registry_url,
+      },
+      type: credential.type,
+    }
 
     put :update, params: params, format: :json
-    assert_response :success
-    assert { UffizziCore::Credential.one? }
-    assert { UffizziCore::Credential.first.username == credential_attributes[:username] }
+
+    assert_response(:success)
+    refute_requested(stubbed_dockerhub_login)
   end
 
   test '#create duplicate credential' do

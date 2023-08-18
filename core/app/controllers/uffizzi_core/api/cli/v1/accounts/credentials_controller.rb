@@ -50,6 +50,9 @@ class UffizziCore::Api::Cli::V1::Accounts::CredentialsController < UffizziCore::
   # @response [object<errors>] 422 Unprocessable entity
   def update
     credential = resource_account.credentials.find_by!(type: params[:type])
+    # Called every pipeline run from CLI with the --update-if-exists-option
+    return respond_with credential unless credential_changed?(credential, credential_params)
+
     credential_form = credential.becomes(UffizziCore::Api::Cli::V1::Account::Credential::UpdateForm)
     credential_form.assign_attributes(credential_params)
 
@@ -108,5 +111,11 @@ class UffizziCore::Api::Cli::V1::Accounts::CredentialsController < UffizziCore::
     else
       credential_form.registry_url
     end
+  end
+
+  def credential_changed?(credential, credential_params)
+    credential.password != credential_params[:password] ||
+      credential.username != credential_params[:username] ||
+      credential.registry_url != credential_params[:registry_url]
   end
 end
