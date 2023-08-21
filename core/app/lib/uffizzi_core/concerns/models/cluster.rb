@@ -8,6 +8,7 @@ module UffizziCore::Concerns::Models::Cluster
 
   included do
     include AASM
+    extend Enumerize
 
     self.table_name = UffizziCore.table_names[:clusters]
 
@@ -15,6 +16,10 @@ module UffizziCore::Concerns::Models::Cluster
     belongs_to :deployed_by, class_name: UffizziCore::User.name, foreign_key: :deployed_by_id, optional: true
     validates_uniqueness_of :name, conditions: -> { enabled }, scope: :project_id
     validates :name, presence: true, format: { with: /\A[a-zA-Z0-9-]*\z/ }
+
+    enumerize :creation_source, in: UffizziCore.cluster_creation_sources, scope: true, predicates: true
+    attribute :creation_source, :string, default: :manual
+    validates :creation_source, presence: true
 
     aasm(:state) do
       state :deploying_namespace, initial: true
