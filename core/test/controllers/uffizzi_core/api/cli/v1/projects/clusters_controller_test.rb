@@ -61,7 +61,7 @@ class UffizziCore::Api::Cli::V1::Projects::ClustersControllerTest < ActionContro
     expected_request = {
       name: cluster_creation_data[:name],
       manifest: nil,
-      base_ingress_host: /#{UffizziCore::Cluster::NAMESPACE_PREFIX}-\d/,
+      base_ingress_host: /#{UffizziCore::Cluster::NAMESPACE_PREFIX}\d/,
     }
     stubbed_create_cluster_request = stub_create_cluster_request_with_expected(cluster_creation_data, expected_request)
     stubbed_create_namespace_request = stub_create_namespace_request
@@ -124,7 +124,7 @@ class UffizziCore::Api::Cli::V1::Projects::ClustersControllerTest < ActionContro
     expected_request = {
       name: cluster_creation_data[:name],
       manifest: manifest,
-      base_ingress_host: /#{UffizziCore::Cluster::NAMESPACE_PREFIX}-\d/,
+      base_ingress_host: /#{UffizziCore::Cluster::NAMESPACE_PREFIX}\d/,
     }
     stubbed_create_cluster_request = stub_create_cluster_request_with_expected(cluster_creation_data, expected_request)
     stubbed_get_cluster_request = stub_get_cluster_request(cluster_show_data)
