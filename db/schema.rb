@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2023_07_11_101901) do
+ActiveRecord::Schema.define(version: 2023_08_24_150022) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -328,7 +328,7 @@ ActiveRecord::Schema.define(version: 2023_07_11_101901) do
     t.string "state"
     t.string "slug"
     t.string "description"
-    t.index ["account_id", "name"], name: "index_projects_on_account_id_and_name", unique: true
+    t.index ["account_id", "name"], name: "proj_uniq_name", unique: true, where: "((state)::text = 'active'::text)"
     t.index ["account_id"], name: "index_projects_on_account_id"
   end
 

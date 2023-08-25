@@ -24,7 +24,8 @@ module UffizziCore::Concerns::Models::Project
     has_many :host_volume_files, dependent: :destroy
     has_many :clusters, dependent: :destroy
 
-    validates :name, presence: true, uniqueness: { scope: :account }
+    validates :name, presence: true
+    validates_uniqueness_of :name, conditions: -> { where(state: :active) }
     validates :slug, presence: true, uniqueness: true
 
     aasm(:state) do
