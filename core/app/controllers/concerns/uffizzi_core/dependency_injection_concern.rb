@@ -27,6 +27,12 @@ module UffizziCore::DependencyInjectionConcern
     module_class(:volume_parser)
   end
 
+  def ci_module
+    return unless module_exists?(:ci_module)
+
+    module_class(:ci_module)
+  end
+
   def ci_session
     return unless module_exists?(:ci_session)
 
@@ -71,12 +77,6 @@ module UffizziCore::DependencyInjectionConcern
     return unless module_exists?(:controller_settings)
 
     module_class(:controller_settings)
-  end
-
-  def ci_module
-    return unless module_exists?(:ci_module)
-
-    module_class(:ci_module)
   end
 
   private
