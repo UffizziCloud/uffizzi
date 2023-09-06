@@ -1,7 +1,7 @@
 PATH
   remote: core
   specs:
-    uffizzi_core (2.2.18)
+    uffizzi_core (2.2.19)
       aasm
       actionpack (~> 6.1.0)
       active_model_serializers
@@ -111,7 +111,7 @@ GEM
     ast (2.4.2)
     awesome_print (1.9.2)
     aws-eventstream (1.2.0)
-    aws-partitions (1.812.0)
+    aws-partitions (1.817.0)
     aws-sdk-core (3.181.0)
       aws-eventstream (~> 1, >= 1.0.2)
       aws-partitions (~> 1, >= 1.651.0)
@@ -120,7 +120,7 @@ GEM
     aws-sdk-ecr (1.63.0)
       aws-sdk-core (~> 3, >= 3.177.0)
       aws-sigv4 (~> 1.1)
-    aws-sdk-eventbridge (1.48.0)
+    aws-sdk-eventbridge (1.49.0)
       aws-sdk-core (~> 3, >= 3.177.0)
       aws-sigv4 (~> 1.1)
     aws-sdk-iam (1.86.0)
