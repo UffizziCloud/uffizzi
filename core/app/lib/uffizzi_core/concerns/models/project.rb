@@ -25,7 +25,7 @@ module UffizziCore::Concerns::Models::Project
     has_many :clusters, dependent: :destroy
 
     validates :name, presence: true
-    validates_uniqueness_of :name, conditions: -> { where(state: :active) }
+    validates_uniqueness_of :name, conditions: -> { where(state: :active)  }, scope: :account_id
     validates :slug, presence: true, uniqueness: true
 
     aasm(:state) do
