@@ -74,6 +74,7 @@ en:
     required_start_commands: "When 'test' is a list the first item must be one of: '%{available_commands}'"
     volumes_should_be_array: Volumes '%{volumes}' should be an arra
     healthcheck_missing_required_option: "One of these options is required: %{required_options}"
+    build_not_implemented: "The 'build' directive is not supported by the uffizzi command-line tool. Use 'image' instead, or configure Uffizzi CI if you want Uffizzi Cloud to build your application from source. See https://docs.uffizzi.com/references/compose-spec/"
 
   secrets:
     duplicates_exists: Secret with key %{secrets} already exist.
