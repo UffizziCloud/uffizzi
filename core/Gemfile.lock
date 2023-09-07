@@ -1,7 +1,7 @@
 PATH
   remote: .
   specs:
-    uffizzi_core (2.2.20)
+    uffizzi_core (2.2.21)
       aasm
       actionpack (~> 6.1.0)
       active_model_serializers
@@ -110,7 +110,7 @@ GEM
       activerecord (>= 5.2.6)
     awesome_print (1.9.2)
     aws-eventstream (1.2.0)
-    aws-partitions (1.817.0)
+    aws-partitions (1.818.0)
     aws-sdk-core (3.181.0)
       aws-eventstream (~> 1, >= 1.0.2)
       aws-partitions (~> 1, >= 1.651.0)
