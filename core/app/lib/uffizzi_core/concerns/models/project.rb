@@ -43,10 +43,15 @@ module UffizziCore::Concerns::Models::Project
 
     def after_disable
       disable_deployments
+      disable_clusters
     end
 
     def active_deployments
-      deployments.active
+      deployments.enabled
+    end
+
+    def active_clusters
+      clusters.enabled
     end
 
     def disable_deployments
@@ -54,6 +59,10 @@ module UffizziCore::Concerns::Models::Project
         UffizziCore::DeploymentService.disable!(deployment)
         deployment.deployment_events.create!(deployment_state: deployment.state, message: 'Disabled after project was disabled')
       end
+    end
+
+    def disable_clusters
+      active_clusters.each(&:disable!)
     end
 
     def compose_file
