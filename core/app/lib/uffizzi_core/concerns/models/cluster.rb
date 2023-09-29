@@ -26,6 +26,7 @@ module UffizziCore::Concerns::Models::Cluster
       state :failed_deploy_namespace
       state :deploying
       state :deployed
+      state :scaled_down
       state :failed
       state :disabled
 
@@ -39,6 +40,14 @@ module UffizziCore::Concerns::Models::Cluster
 
       event :finish_deploy do
         transitions from: [:deploying], to: :deployed
+      end
+
+      event :scale_down do
+        transitions from: [:deployed], to: :scaled_down
+      end
+
+      event :scale_up do
+        transitions from: [:scaled_down], to: :deployed
       end
 
       event :fail do

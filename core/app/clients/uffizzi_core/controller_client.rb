@@ -78,6 +78,10 @@ class UffizziCore::ControllerClient
     get("/namespaces/#{namespace}/cluster/#{name}")
   end
 
+  def update_cluster(name:, namespace:, body:)
+    connection.put("/namespaces/#{namespace}/cluster/#{name}", body)
+  end
+
   private
 
   def get(url, params = {})

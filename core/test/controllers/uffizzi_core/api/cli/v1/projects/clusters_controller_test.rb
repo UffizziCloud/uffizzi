@@ -187,6 +187,42 @@ class UffizziCore::Api::Cli::V1::Projects::ClustersControllerTest < ActionContro
     assert_response(:success)
   end
 
+  test '#scale_down' do
+    sign_in(@admin)
+
+    cluster = create(:cluster, project: @project, deployed_by: @admin, name: 'test', state: UffizziCore::Cluster::STATE_DEPLOYED)
+    stubbed_scale_request = stub_scale_cluster_request
+
+    params = {
+      project_slug: @project.slug,
+      name: cluster.name,
+    }
+
+    put :scale_down, params: params, format: :json
+
+    assert_response(:success)
+    assert(cluster.reload.scaled_down?)
+    assert_requested(stubbed_scale_request)
+  end
+
+  test '#scale_up' do
+    sign_in(@admin)
+
+    cluster = create(:cluster, project: @project, deployed_by: @admin, name: 'test', state: UffizziCore::Cluster::STATE_SCALED_DOWN)
+    stubbed_scale_request = stub_scale_cluster_request
+
+    params = {
+      project_slug: @project.slug,
+      name: cluster.name,
+    }
+
+    put :scale_up, params: params, format: :json
+
+    assert_response(:success)
+    assert(cluster.reload.deployed?)
+    assert_requested(stubbed_scale_request)
+  end
+
   test '#destroy developer can destroy a cluster created by him' do
     sign_in(@developer)
 

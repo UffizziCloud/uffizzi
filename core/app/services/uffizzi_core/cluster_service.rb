@@ -24,6 +24,16 @@ class UffizziCore::ClusterService
       UffizziCore::Cluster::ManageDeployingJob.perform_in(5.seconds, cluster.id)
     end
 
+    def scale_up!(cluster)
+      cluster.scale_up!
+      UffizziCore::ControllerService.update_cluster(cluster, sleep: false)
+    end
+
+    def scale_down!(cluster)
+      cluster.scale_down!
+      UffizziCore::ControllerService.update_cluster(cluster, sleep: true)
+    end
+
     def manage_deploying(cluster, try)
       return if cluster.disabled?
       return cluster.fail! if try > Settings.vcluster.max_creation_retry_count

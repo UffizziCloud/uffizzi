@@ -110,6 +110,14 @@ class UffizziCore::ControllerService
       controller_client(cluster).delete_cluster(namespace: cluster.namespace)
     end
 
+    def update_cluster(cluster, sleep:)
+      body = UffizziCore::Controller::UpdateCluster::ClusterSerializer.new(cluster).as_json
+      body[:sleep_after] = '3600'
+      body[:sleep] = sleep
+
+      controller_client(cluster).update_cluster(name: cluster.name, namespace: cluster.namespace, body: body)
+    end
+
     private
 
     def check_any_container_has_public_port(containers)
