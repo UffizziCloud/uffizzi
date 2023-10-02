@@ -25,13 +25,13 @@ class UffizziCore::ClusterService
     end
 
     def scale_up!(cluster)
-      cluster.scale_up!
       UffizziCore::ControllerService.update_cluster(cluster, sleep: false)
+      cluster.scale_up!
     end
 
     def scale_down!(cluster)
-      cluster.scale_down!
       UffizziCore::ControllerService.update_cluster(cluster, sleep: true)
+      cluster.scale_down!
     end
 
     def manage_deploying(cluster, try)
