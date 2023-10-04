@@ -25,13 +25,17 @@ class UffizziCore::ClusterService
     end
 
     def scale_up!(cluster)
-      UffizziCore::ControllerService.update_cluster(cluster, sleep: false)
-      cluster.scale_up!
+      UffizziCore::ControllerService.patch_cluster(cluster, sleep: false)
+      return cluster.scale_up! unless asleep?(cluster)
+
+      raise UffizziCore::ClusterScaleError, 'scale up'
     end
 
     def scale_down!(cluster)
-      UffizziCore::ControllerService.update_cluster(cluster, sleep: true)
-      cluster.scale_down!
+      UffizziCore::ControllerService.patch_cluster(cluster, sleep: true)
+      return cluster.scale_down! if asleep?(cluster)
+
+      raise UffizziCore::ClusterScaleError, 'scale down'
     end
 
     def manage_deploying(cluster, try)
@@ -50,6 +54,14 @@ class UffizziCore::ClusterService
       end
 
       UffizziCore::Cluster::ManageDeployingJob.perform_in(5.seconds, cluster.id, ++try)
+    end
+
+    private
+
+    def asleep?(cluster)
+      data = UffizziCore::ControllerService.show_cluster(cluster)
+
+      data.status.sleep
     end
   end
 end

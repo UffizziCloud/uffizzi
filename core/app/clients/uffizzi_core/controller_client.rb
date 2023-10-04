@@ -78,8 +78,8 @@ class UffizziCore::ControllerClient
     get("/namespaces/#{namespace}/cluster/#{name}")
   end
 
-  def update_cluster(name:, namespace:, body:)
-    connection.put("/namespaces/#{namespace}/cluster/#{name}", body)
+  def patch_cluster(name:, namespace:, body:)
+    patch("/namespaces/#{namespace}/cluster/#{name}", body)
   end
 
   private
@@ -90,6 +90,10 @@ class UffizziCore::ControllerClient
 
   def post(url, params = {})
     make_request(:post, url, params)
+  end
+
+  def patch(url, params = {})
+    make_request(:patch, url, params)
   end
 
   def make_request(method, url, params)

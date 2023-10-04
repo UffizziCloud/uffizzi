@@ -31,13 +31,13 @@ class UffizziCore::Api::Cli::V1::Projects::ClustersController < UffizziCore::Api
       return respond_with resource_cluster
     end
 
-    return render_invalid_transition(I18n.t('cluster.already_asleep', name: resource_cluster.name)) if resource_cluster.scaled_down?
+    return render_scale_error(I18n.t('cluster.already_asleep', name: resource_cluster.name)) if resource_cluster.scaled_down?
 
     if resource_cluster.deploying_namespace? || resource_cluster.deploying?
-      render_invalid_transition(I18n.t('cluster.deploy_in_process', name: resource_cluster.name))
+      render_scale_error(I18n.t('cluster.deploy_in_process', name: resource_cluster.name))
     end
-  rescue AASM::InvalidTransition => e
-    render_invalid_transition(e.message)
+  rescue AASM::InvalidTransition, UffizziCore::ClusterScaleError => e
+    render_scale_error(e.message)
   end
 
   def scale_up
@@ -46,9 +46,9 @@ class UffizziCore::Api::Cli::V1::Projects::ClustersController < UffizziCore::Api
       return respond_with resource_cluster
     end
 
-    return render_invalid_transition(I18n.t('cluster.already_awake', name: resource_cluster.name)) if resource_cluster.deployed?
-  rescue AASM::InvalidTransition => e
-    render_invalid_transition(e)
+    return render_scale_error(I18n.t('cluster.already_awake', name: resource_cluster.name)) if resource_cluster.deployed?
+  rescue AASM::InvalidTransition, UffizziCore::ClusterScaleError => e
+    render_scale_error(e.message)
   end
 
   def show
@@ -84,7 +84,7 @@ class UffizziCore::Api::Cli::V1::Projects::ClustersController < UffizziCore::Api
     params.require(:cluster)
   end
 
-  def render_invalid_transition(message)
+  def render_scale_error(message)
     render json: { errors: { state: [message] } }, status: :unprocessable_entity
   end
 end

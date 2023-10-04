@@ -193,6 +193,9 @@ class UffizziCore::Api::Cli::V1::Projects::ClustersControllerTest < ActionContro
     cluster = create(:cluster, project: @project, deployed_by: @admin, name: 'test', state: UffizziCore::Cluster::STATE_DEPLOYED)
     stubbed_scale_request = stub_scale_cluster_request
 
+    cluster_show_data = json_fixture('files/controller/cluster_asleep.json')
+    stubbed_cluster_request = stub_get_cluster_request(cluster_show_data)
+
     params = {
       project_slug: @project.slug,
       name: cluster.name,
@@ -203,6 +206,28 @@ class UffizziCore::Api::Cli::V1::Projects::ClustersControllerTest < ActionContro
     assert_response(:success)
     assert(cluster.reload.scaled_down?)
     assert_requested(stubbed_scale_request)
+    assert_requested(stubbed_cluster_request)
+  end
+
+  test '#scale_down failure' do
+    sign_in(@admin)
+
+    cluster = create(:cluster, project: @project, deployed_by: @admin, name: 'test', state: UffizziCore::Cluster::STATE_DEPLOYED)
+    stubbed_scale_request = stub_scale_cluster_request
+    cluster_show_data = json_fixture('files/controller/cluster_awake.json')
+    stubbed_cluster_request = stub_get_cluster_request(cluster_show_data)
+
+    params = {
+      project_slug: @project.slug,
+      name: cluster.name,
+    }
+
+    put :scale_down, params: params, format: :json
+
+    assert_response(:unprocessable_entity)
+    assert(cluster.reload.deployed?)
+    assert_requested(stubbed_scale_request)
+    assert_requested(stubbed_cluster_request)
   end
 
   test '#scale_up' do
@@ -210,6 +235,8 @@ class UffizziCore::Api::Cli::V1::Projects::ClustersControllerTest < ActionContro
 
     cluster = create(:cluster, project: @project, deployed_by: @admin, name: 'test', state: UffizziCore::Cluster::STATE_SCALED_DOWN)
     stubbed_scale_request = stub_scale_cluster_request
+    cluster_show_data = json_fixture('files/controller/cluster_awake.json')
+    stubbed_cluster_request = stub_get_cluster_request(cluster_show_data)
 
     params = {
       project_slug: @project.slug,
@@ -221,6 +248,28 @@ class UffizziCore::Api::Cli::V1::Projects::ClustersControllerTest < ActionContro
     assert_response(:success)
     assert(cluster.reload.deployed?)
     assert_requested(stubbed_scale_request)
+    assert_requested(stubbed_cluster_request)
+  end
+
+  test '#scale_up failure' do
+    sign_in(@admin)
+
+    cluster = create(:cluster, project: @project, deployed_by: @admin, name: 'test', state: UffizziCore::Cluster::STATE_SCALED_DOWN)
+    stubbed_scale_request = stub_scale_cluster_request
+    cluster_show_data = json_fixture('files/controller/cluster_asleep.json')
+    stubbed_cluster_request = stub_get_cluster_request(cluster_show_data)
+
+    params = {
+      project_slug: @project.slug,
+      name: cluster.name,
+    }
+
+    put :scale_up, params: params, format: :json
+
+    assert_response(:unprocessable_entity)
+    assert(cluster.reload.scaled_down?)
+    assert_requested(stubbed_scale_request)
+    assert_requested(stubbed_cluster_request)
   end
 
   test '#destroy developer can destroy a cluster created by him' do
