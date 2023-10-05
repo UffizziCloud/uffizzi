@@ -25,17 +25,16 @@ class UffizziCore::ClusterService
     end
 
     def scale_up!(cluster)
+      cluster.start_scaling_up!
       UffizziCore::ControllerService.patch_cluster(cluster, sleep: false)
+      UffizziCore::Cluster::ManageScalingUpJob.perform_in(5.seconds, cluster.id)
+    end
 
-      Timeout.timeout(600) do
-        loop do
-          return cluster.scale_up! if awake?(cluster)
+    def manage_scale_up(cluster, try)
+      return cluster.fail_scale_up! if try > Settings.vcluster.max_scale_up_retry_count
+      return cluster.scale_up! if awake?(cluster)
 
-          sleep(5)
-        end
-      end
-
-      raise UffizziCore::ClusterScaleError, 'scale up'
+      UffizziCore::Cluster::ManageScalingUpJob.perform_in(5.seconds, cluster.id, ++try)
     end
 
     def scale_down!(cluster)

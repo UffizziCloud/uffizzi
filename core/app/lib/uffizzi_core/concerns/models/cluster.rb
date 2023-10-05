@@ -6,6 +6,7 @@ module UffizziCore::Concerns::Models::Cluster
 
   NAMESPACE_PREFIX = 'c'
 
+# rubocop:disable Metrics/BlockLength
   included do
     include AASM
     extend Enumerize
@@ -27,6 +28,8 @@ module UffizziCore::Concerns::Models::Cluster
       state :deploying
       state :deployed
       state :scaled_down
+      state :scaling_up
+      state :failed_scale_up
       state :failed
       state :disabled
 
@@ -46,8 +49,16 @@ module UffizziCore::Concerns::Models::Cluster
         transitions from: [:deployed], to: :scaled_down
       end
 
+      event :start_scaling_up do
+        transitions from: [:scaled_down, :failed_scale_up], to: :scaling_up
+      end
+
       event :scale_up do
-        transitions from: [:scaled_down], to: :deployed
+        transitions from: [:scaling_up], to: :deployed
+      end
+
+      event :fail_scale_up do
+        transitions from: [:scaling_up], to: :failed_scale_up
       end
 
       event :fail do
@@ -67,4 +78,5 @@ module UffizziCore::Concerns::Models::Cluster
       [NAMESPACE_PREFIX, id].join
     end
   end
+  # rubocop:enable Metrics/BlockLength
 end
