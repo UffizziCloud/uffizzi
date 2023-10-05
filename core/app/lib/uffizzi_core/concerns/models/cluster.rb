@@ -6,7 +6,7 @@ module UffizziCore::Concerns::Models::Cluster
 
   NAMESPACE_PREFIX = 'c'
 
-# rubocop:disable Metrics/BlockLength
+  # rubocop:disable Metrics/BlockLength
   included do
     include AASM
     extend Enumerize
