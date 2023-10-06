@@ -3,6 +3,7 @@
 module UffizziCore::Concerns::Models::Project
   extend ActiveSupport::Concern
 
+  # rubocop:disable Metrics/BlockLength
   included do
     include AASM
     include UffizziCore::StateMachineConcern
@@ -43,10 +44,15 @@ module UffizziCore::Concerns::Models::Project
 
     def after_disable
       disable_deployments
+      disable_clusters
     end
 
     def active_deployments
-      deployments.active
+      deployments.enabled
+    end
+
+    def active_clusters
+      clusters.enabled
     end
 
     def disable_deployments
@@ -56,8 +62,13 @@ module UffizziCore::Concerns::Models::Project
       end
     end
 
+    def disable_clusters
+      active_clusters.each(&:disable!)
+    end
+
     def compose_file
       compose_files.main.first
     end
   end
+  # rubocop:enable Metrics/BlockLength
 end
