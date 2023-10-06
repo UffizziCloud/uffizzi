@@ -3,6 +3,7 @@
 module UffizziCore::Concerns::Models::Project
   extend ActiveSupport::Concern
 
+  # rubocop:disable Metrics/BlockLength
   included do
     include AASM
     include UffizziCore::StateMachineConcern
@@ -69,4 +70,5 @@ module UffizziCore::Concerns::Models::Project
       compose_files.main.first
     end
   end
+  # rubocop:enable Metrics/BlockLength
 end
