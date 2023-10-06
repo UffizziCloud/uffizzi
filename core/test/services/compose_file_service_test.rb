@@ -366,7 +366,7 @@ class UffizziCore::ComposeFileServiceTest < ActiveSupport::TestCase
       UffizziCore::ComposeFileService.parse(content)
     end
 
-    assert_match("'build' option is not implemented", e.message)
+    assert_match("The 'build' directive is not supported", e.message)
   end
 
   test '#parse - parses compose file with healthcheck and converts time to seconds when the test command is array' do
