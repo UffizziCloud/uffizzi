@@ -38,10 +38,16 @@ class UffizziCore::ClusterService
     end
 
     def scale_down!(cluster)
+      cluster.start_scaling_down!
       UffizziCore::ControllerService.patch_cluster(cluster, sleep: true)
+
+      UffizziCore::Cluster::ManageScalingDownJob.perform_in(5.seconds, cluster.id)
+    end
+
+    def manage_scale_down(cluster)
       return cluster.scale_down! unless awake?(cluster)
 
-      raise UffizziCore::ClusterScaleError, 'scale down'
+      UffizziCore::Cluster::ManageScalingDownJob.perform_in(5.seconds, cluster.id)
     end
 
     def manage_deploying(cluster, try)
