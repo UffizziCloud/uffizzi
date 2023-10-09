@@ -78,7 +78,7 @@ module UffizziCore::Concerns::Models::Cluster
           :deployed,
           :scaling_down,
           :scaled_down,
-          :failed
+          :failed,
         ], to: :disabled
       end
     end
