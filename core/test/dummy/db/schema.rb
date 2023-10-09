@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2023_08_24_150022) do
+ActiveRecord::Schema.define(version: 2023_10_09_102139) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -84,6 +84,7 @@ ActiveRecord::Schema.define(version: 2023_08_24_150022) do
     t.datetime "updated_at", precision: 6, null: false
     t.string "host"
     t.string "creation_source"
+    t.string "k8s_version"
     t.index ["project_id"], name: "index_cluster_on_project_id"
   end
 

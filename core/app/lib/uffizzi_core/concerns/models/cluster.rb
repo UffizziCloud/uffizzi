@@ -5,6 +5,8 @@ module UffizziCore::Concerns::Models::Cluster
   include UffizziCore::ClusterRepo
 
   NAMESPACE_PREFIX = 'c'
+  DEFAULT_K8S_VERSION = '1.27'
+  AVAILABLE_K8S_VERSIONS = ['1.26', DEFAULT_K8S_VERSION, '1.28'].freeze
 
   included do
     include AASM
@@ -20,6 +22,8 @@ module UffizziCore::Concerns::Models::Cluster
     enumerize :creation_source, in: UffizziCore.cluster_creation_sources, scope: true, predicates: true
     attribute :creation_source, :string, default: :manual
     validates :creation_source, presence: true
+    enumerize :k8s_version, in: AVAILABLE_K8S_VERSIONS, default: DEFAULT_K8S_VERSION
+    validates :k8s_version, presence: true, on: :create
 
     aasm(:state) do
       state :deploying_namespace, initial: true
