@@ -1,4 +1,5 @@
 # frozen_string_literal: true
+
 # This migration comes from uffizzi_core (originally 20230810140316)
 
 class AddSourceToUffizziCoreClusters < ActiveRecord::Migration[6.1]

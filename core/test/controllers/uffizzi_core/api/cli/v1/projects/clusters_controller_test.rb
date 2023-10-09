@@ -11,6 +11,7 @@ class UffizziCore::Api::Cli::V1::Projects::ClustersControllerTest < ActionContro
     @developer = create(:user)
     create(:membership, :developer, account: @account, user: @developer)
     create(:user_project, :developer, project: @project, user: @developer)
+    create(:kubernetes_distribution, :default)
   end
 
   teardown do

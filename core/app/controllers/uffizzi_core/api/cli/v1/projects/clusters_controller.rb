@@ -15,9 +15,14 @@ class UffizziCore::Api::Cli::V1::Projects::ClustersController < UffizziCore::Api
   end
 
   def create
+    version = cluster_params[:k8s_version]
+    kubernetes_distribution = find_kubernetes_distribution(version)
+    return render_distribution_version_error(version) if kubernetes_distribution.blank?
+
     cluster_form = UffizziCore::Api::Cli::V1::Cluster::CreateForm.new(cluster_params)
     cluster_form.project = resource_project
     cluster_form.deployed_by = current_user
+    cluster_form.kubernetes_distribution = kubernetes_distribution
     return respond_with cluster_form unless cluster_form.save
 
     UffizziCore::ClusterService.start_deploy(cluster_form)
@@ -56,5 +61,17 @@ class UffizziCore::Api::Cli::V1::Projects::ClustersController < UffizziCore::Api
 
   def cluster_params
     params.require(:cluster)
+  end
+
+  def find_kubernetes_distribution(version)
+    return UffizziCore::KubernetesDistribution.default if version.blank?
+
+    UffizziCore::KubernetesDistribution.find_by(version: version)
+  end
+
+  def render_distribution_version_error(version)
+    available_versions = DockerDistribution.pluck(:version).join(', ')
+    message = I18n.t('kubernetes_distribution.not_available', version: version, available_versions: available_versions)
+    render json: { errors: { kubernetes_distribution: [message] } }, status: :unprocessable_entity
   end
 end
