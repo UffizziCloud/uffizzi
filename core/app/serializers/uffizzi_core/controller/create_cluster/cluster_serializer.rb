@@ -4,7 +4,7 @@ class UffizziCore::Controller::CreateCluster::ClusterSerializer < UffizziCore::B
   include UffizziCore::DependencyInjectionConcern
   include_module_if_exists('UffizziCore::Controller::CreateCluster::ClusterSerializerModule')
 
-  attributes :name, :manifest, :base_ingress_host
+  attributes :name, :manifest, :base_ingress_host, :k8s_version
 
   def base_ingress_host
     managed_dns_zone = controller_settings_service.vcluster(object).managed_dns_zone
