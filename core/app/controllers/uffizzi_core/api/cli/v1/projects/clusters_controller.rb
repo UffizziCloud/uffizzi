@@ -11,7 +11,7 @@ class UffizziCore::Api::Cli::V1::Projects::ClustersController < UffizziCore::Api
     clusters = resource_project.clusters.enabled
     return respond_with clusters if request_by_admin? || valid_request_from_ci_workflow?
 
-    respond_with clusters.deployed_by_user(current_user)
+    respond_with clusters.deployed_by_user(current_user), each_serializer: UffizziCore::Api::Cli::V1::Projects::ShortClusterSerializer
   end
 
   def create
