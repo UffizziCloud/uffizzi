@@ -1,0 +1,347 @@
+{
+  "metadata": {
+    "resource_version": "63142264"
+  },
+  "items": [
+    {
+      "metadata": {
+        "name": "result-x-default-x-uc-pr-82",
+        "namespace": "c169515535810170",
+        "uid": "a46d2a3c-f111-4bc8-8301-b8d51c668059",
+        "resource_version": "62737159",
+        "generation": 1,
+        "creation_timestamp": "2023-09-19T20:30:07Z",
+        "labels": {
+          "vcluster.loft.sh/managed_by": "uc-pr-82",
+          "vcluster.loft.sh/namespace": "default"
+        },
+        "annotations": {
+          "app.uffizzi.com/ingress_sync": "true",
+          "kubectl.kubernetes.io/last_applied_configuration": "{\"apiVersion\":\"networking.k8s.io/v1\",\"kind\":\"Ingress\",\"metadata\":{\"annotations\":{},\"name\":\"result\",\"namespace\":\"default\"},\"spec\":{\"ingressClassName\":\"uffizzi\",\"rules\":[{\"host\":\"result.example.com\",\"http\":{\"paths\":[{\"backend\":{\"service\":{\"name\":\"result\",\"port\":{\"number\":5001}}},\"path\":\"/\",\"pathType\":\"Prefix\"}]}}],\"tls\":[{\"hosts\":[\"result.example.com\"]}]}}\n",
+          "vcluster.loft.sh/managed_annotations": "app.uffizzi.com/ingress-sync\nkubectl.kubernetes.io/last-applied-configuration",
+          "vcluster.loft.sh/object_name": "result",
+          "vcluster.loft.sh/object_namespace": "default"
+        },
+        "owner_references": [
+          {
+            "api_version": "v1",
+            "kind": "Service",
+            "name": "uc-pr-82",
+            "uid": "8c502e06-1e48-40bd-a36c-96ecfd7ac414"
+          }
+        ],
+        "managed_fields": [
+          {
+            "manager": "plugin",
+            "operation": "Update",
+            "api_version": "networking.k8s.io/v1",
+            "time": "2023-09-19T20:30:07Z",
+            "fields_type": "FieldsV1",
+            "fields_v1": {
+              "f:metadata": {
+                "f:annotations": {
+                  ".": {},
+                  "f:app.uffizzi.com/ingress_sync": {},
+                  "f:kubectl.kubernetes.io/last_applied_configuration": {},
+                  "f:vcluster.loft.sh/managed_annotations": {},
+                  "f:vcluster.loft.sh/object_name": {},
+                  "f:vcluster.loft.sh/object_namespace": {}
+                },
+                "f:labels": {
+                  ".": {},
+                  "f:vcluster.loft.sh/managed_by": {},
+                  "f:vcluster.loft.sh/namespace": {}
+                },
+                "f:owner_references": {
+                  ".": {},
+                  "k:{\"uid\":\"8c502e06_1e48_40bd_a36c_96ecfd7ac414\"}": {}
+                }
+              },
+              "f:spec": {
+                "f:ingress_class_name": {},
+                "f:rules": {},
+                "f:tls": {}
+              }
+            }
+          },
+          {
+            "manager": "nginx-ingress-controller",
+            "operation": "Update",
+            "api_version": "networking.k8s.io/v1",
+            "time": "2023-09-19T22:14:31Z",
+            "fields_type": "FieldsV1",
+            "fields_v1": {
+              "f:status": {
+                "f:load_balancer": {
+                  "f:ingress": {}
+                }
+              }
+            },
+            "subresource": "status"
+          }
+        ]
+      },
+      "spec": {
+        "ingress_class_name": "uffizzi",
+        "tls": [
+          {
+            "hosts": [
+              "result-default-pr-82-c169515535810170.uclusters.app.qa-gke.uffizzi.com"
+            ]
+          }
+        ],
+        "rules": [
+          {
+            "host": "result-default-pr-82-c169515535810170.uclusters.app.qa-gke.uffizzi.com",
+            "http": {
+              "paths": [
+                {
+                  "path": "/",
+                  "path_type": "Prefix",
+                  "backend": {
+                    "service": {
+                      "name": "result-x-default-x-uc-pr-82",
+                      "port": {
+                        "number": 5001
+                      }
+                    }
+                  }
+                }
+              ]
+            }
+          }
+        ]
+      },
+      "status": {
+        "load_balancer": {
+          "ingress": [
+            {
+              "ip": "34.134.99.100"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "metadata": {
+        "name": "uc-pr-82",
+        "namespace": "c169515535810170",
+        "uid": "ac012e17-b76c-4630-bc76-2039d1ff6270",
+        "resource_version": "62737153",
+        "generation": 1,
+        "creation_timestamp": "2023-09-19T20:29:21Z",
+        "labels": {
+          "app.kubernetes.io/managed_by": "Helm",
+          "helm.toolkit.fluxcd.io/name": "uc-pr-82",
+          "helm.toolkit.fluxcd.io/namespace": "c169515535810170"
+        },
+        "annotations": {
+          "app.uffizzi.com/ingress_sync": "true",
+          "meta.helm.sh/release_name": "uc-pr-82",
+          "meta.helm.sh/release_namespace": "c169515535810170",
+          "nginx.ingress.kubernetes.io/backend_protocol": "HTTPS",
+          "nginx.ingress.kubernetes.io/ssl_passthrough": "true",
+          "nginx.ingress.kubernetes.io/ssl_redirect": "true"
+        },
+        "managed_fields": [
+          {
+            "manager": "helm-controller",
+            "operation": "Update",
+            "api_version": "networking.k8s.io/v1",
+            "time": "2023-09-19T20:29:21Z",
+            "fields_type": "FieldsV1",
+            "fields_v1": {
+              "f:metadata": {
+                "f:annotations": {
+                  ".": {},
+                  "f:app.uffizzi.com/ingress_sync": {},
+                  "f:meta.helm.sh/release_name": {},
+                  "f:meta.helm.sh/release_namespace": {},
+                  "f:nginx.ingress.kubernetes.io/backend_protocol": {},
+                  "f:nginx.ingress.kubernetes.io/ssl_passthrough": {},
+                  "f:nginx.ingress.kubernetes.io/ssl_redirect": {}
+                },
+                "f:labels": {
+                  ".": {},
+                  "f:app.kubernetes.io/managed_by": {},
+                  "f:helm.toolkit.fluxcd.io/name": {},
+                  "f:helm.toolkit.fluxcd.io/namespace": {}
+                }
+              },
+              "f:spec": {
+                "f:rules": {}
+              }
+            }
+          },
+          {
+            "manager": "nginx-ingress-controller",
+            "operation": "Update",
+            "api_version": "networking.k8s.io/v1",
+            "time": "2023-09-19T22:14:30Z",
+            "fields_type": "FieldsV1",
+            "fields_v1": {
+              "f:status": {
+                "f:load_balancer": {
+                  "f:ingress": {}
+                }
+              }
+            },
+            "subresource": "status"
+          }
+        ]
+      },
+      "spec": {
+        "ingress_class_name": "uffizzi",
+        "rules": [
+          {
+            "host": "pr-82-c169515535810170.uclusters.app.qa-gke.uffizzi.com",
+            "http": {
+              "paths": [
+                {
+                  "path": "/",
+                  "path_type": "ImplementationSpecific",
+                  "backend": {
+                    "service": {
+                      "name": "uc-pr-82",
+                      "port": {
+                        "name": "https"
+                      }
+                    }
+                  }
+                }
+              ]
+            }
+          }
+        ]
+      },
+      "status": {
+        "load_balancer": {
+          "ingress": [
+            {
+              "ip": "34.134.99.100"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "metadata": {
+        "name": "vote-x-default-x-uc-pr-82",
+        "namespace": "c169515535810170",
+        "uid": "114b3dc2-6644-4d88-89f2-bbaa0b141787",
+        "resource_version": "62737156",
+        "generation": 1,
+        "creation_timestamp": "2023-09-19T20:30:07Z",
+        "labels": {
+          "vcluster.loft.sh/managed_by": "uc-pr-82",
+          "vcluster.loft.sh/namespace": "default"
+        },
+        "annotations": {
+          "app.uffizzi.com/ingress_sync": "true",
+          "kubectl.kubernetes.io/last_applied_configuration": "{\"apiVersion\":\"networking.k8s.io/v1\",\"kind\":\"Ingress\",\"metadata\":{\"annotations\":{},\"name\":\"vote\",\"namespace\":\"default\"},\"spec\":{\"ingressClassName\":\"uffizzi\",\"rules\":[{\"host\":\"vote.example.com\",\"http\":{\"paths\":[{\"backend\":{\"service\":{\"name\":\"vote\",\"port\":{\"number\":5000}}},\"path\":\"/\",\"pathType\":\"Prefix\"}]}}],\"tls\":[{\"hosts\":[\"vote.example.com\"]}]}}\n",
+          "vcluster.loft.sh/managed_annotations": "app.uffizzi.com/ingress-sync\nkubectl.kubernetes.io/last-applied-configuration",
+          "vcluster.loft.sh/object_name": "vote",
+          "vcluster.loft.sh/object_namespace": "default"
+        },
+        "owner_references": [
+          {
+            "api_version": "v1",
+            "kind": "Service",
+            "name": "uc-pr-82",
+            "uid": "8c502e06-1e48-40bd-a36c-96ecfd7ac414"
+          }
+        ],
+        "managed_fields": [
+          {
+            "manager": "plugin",
+            "operation": "Update",
+            "api_version": "networking.k8s.io/v1",
+            "time": "2023-09-19T20:30:07Z",
+            "fields_type": "FieldsV1",
+            "fields_v1": {
+              "f:metadata": {
+                "f:annotations": {
+                  ".": {},
+                  "f:app.uffizzi.com/ingress_sync": {},
+                  "f:kubectl.kubernetes.io/last_applied_configuration": {},
+                  "f:vcluster.loft.sh/managed_annotations": {},
+                  "f:vcluster.loft.sh/object_name": {},
+                  "f:vcluster.loft.sh/object_namespace": {}
+                },
+                "f:labels": {
+                  ".": {},
+                  "f:vcluster.loft.sh/managed_by": {},
+                  "f:vcluster.loft.sh/namespace": {}
+                },
+                "f:owner_references": {
+                  ".": {},
+                  "k:{\"uid\":\"8c502e06_1e48_40bd_a36c_96ecfd7ac414\"}": {}
+                }
+              },
+              "f:spec": {
+                "f:ingress_class_name": {},
+                "f:rules": {},
+                "f:tls": {}
+              }
+            }
+          },
+          {
+            "manager": "nginx-ingress-controller",
+            "operation": "Update",
+            "api_version": "networking.k8s.io/v1",
+            "time": "2023-09-19T22:14:30Z",
+            "fields_type": "FieldsV1",
+            "fields_v1": {
+              "f:status": {
+                "f:load_balancer": {
+                  "f:ingress": {}
+                }
+              }
+            },
+            "subresource": "status"
+          }
+        ]
+      },
+      "spec": {
+        "ingress_class_name": "uffizzi",
+        "tls": [
+          {
+            "hosts": [
+              "vote-default-pr-82-c169515535810170.uclusters.app.qa-gke.uffizzi.com"
+            ]
+          }
+        ],
+        "rules": [
+          {
+            "host": "vote-default-pr-82-c169515535810170.uclusters.app.qa-gke.uffizzi.com",
+            "http": {
+              "paths": [
+                {
+                  "path": "/",
+                  "path_type": "Prefix",
+                  "backend": {
+                    "service": {
+                      "name": "vote-x-default-x-uc-pr-82",
+                      "port": {
+                        "number": 5000
+                      }
+                    }
+                  }
+                }
+              ]
+            }
+          }
+        ]
+      },
+      "status": {
+        "load_balancer": {
+          "ingress": [
+            {
+              "ip": "34.134.99.100"
+            }
+          ]
+        }
+      }
+    }
+  ]
+}

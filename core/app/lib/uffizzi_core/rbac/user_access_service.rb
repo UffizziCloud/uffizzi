@@ -21,5 +21,9 @@ module UffizziCore::Rbac::UserAccessService
     def any_access_to_project?(_user, _project)
       true
     end
+
+    def admin_access_to_project?(_user, _project)
+      true
+    end
   end
 end

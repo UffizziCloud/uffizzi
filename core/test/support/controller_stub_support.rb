@@ -135,6 +135,12 @@ module UffizziCore::ControllerStubSupport
     end.to_return(status: status, body: returned_data.to_json, headers: { 'Content-Type' => 'application/json' })
   end
 
+  def stub_get_ingresses(data = {}, status = 200)
+    uri = %r{#{Regexp.quote(Settings.controller.url.to_s)}/namespaces/([A-Za-z0-9\-]+)/ingresses}
+
+    stub_request(:get, uri).to_return(status: status, body: data.to_json, headers: { 'Content-Type' => 'application/json' })
+  end
+
   private
 
   def equal_hashes?(expected, actual)
