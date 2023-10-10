@@ -70,7 +70,7 @@ class UffizziCore::Api::Cli::V1::Projects::ClustersController < UffizziCore::Api
   end
 
   def render_distribution_version_error(version)
-    available_versions = DockerDistribution.pluck(:version).join(', ')
+    available_versions = UffizziCore::KubernetesDistribution.pluck(:version).join(', ')
     message = I18n.t('kubernetes_distribution.not_available', version: version, available_versions: available_versions)
     render json: { errors: { kubernetes_distribution: [message] } }, status: :unprocessable_entity
   end
