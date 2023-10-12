@@ -32,7 +32,7 @@ class UffizziCore::ClusterService
 
     def manage_scale_up(cluster, try)
       return cluster.fail_scale_up! if try > Settings.vcluster.max_scale_up_retry_count
-      return cluster.scale_up! if awake?(cluster)
+      return cluster.scale_up! if ready?(cluster)
 
       UffizziCore::Cluster::ManageScalingUpJob.perform_in(5.seconds, cluster.id, ++try)
     end
@@ -74,6 +74,12 @@ class UffizziCore::ClusterService
       data = UffizziCore::ControllerService.show_cluster(cluster)
 
       !data.status.sleep
+    end
+
+    def ready?(cluster)
+      data = UffizziCore::ControllerService.show_cluster(cluster)
+
+      data.status.ready
     end
   end
 end
