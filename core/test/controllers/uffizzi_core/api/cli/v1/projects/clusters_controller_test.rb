@@ -11,6 +11,7 @@ class UffizziCore::Api::Cli::V1::Projects::ClustersControllerTest < ActionContro
     @developer = create(:user)
     create(:membership, :developer, account: @account, user: @developer)
     create(:user_project, :developer, project: @project, user: @developer)
+    create(:kubernetes_distribution, :default)
   end
 
   teardown do
@@ -81,6 +82,28 @@ class UffizziCore::Api::Cli::V1::Projects::ClustersControllerTest < ActionContro
     assert_requested(stubbed_create_cluster_request)
     assert_requested(stubbed_create_namespace_request)
     assert_requested(stubbed_cluster_request)
+  end
+
+  test '#create with wrong k8s version' do
+    sign_in(@admin)
+
+    params = {
+      project_slug: @project.slug,
+      cluster: {
+        name: 'my cluster',
+        k8s_version: 'wrong.version',
+      },
+    }
+
+    differences = {
+      -> { UffizziCore::Cluster.count } => 0,
+    }
+
+    assert_difference differences do
+      post :create, params: params, format: :json
+    end
+
+    assert_response(:unprocessable_entity)
   end
 
   test '#create when enabled cluster with the same name exists' do

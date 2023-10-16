@@ -20,6 +20,7 @@ module UffizziCore::Concerns::Models::Cluster
     enumerize :creation_source, in: UffizziCore.cluster_creation_sources, scope: true, predicates: true
     attribute :creation_source, :string, default: :manual
     validates :creation_source, presence: true
+    belongs_to :kubernetes_distribution, optional: true
 
     aasm(:state) do
       state :deploying_namespace, initial: true

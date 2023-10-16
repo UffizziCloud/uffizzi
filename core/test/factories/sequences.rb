@@ -121,4 +121,8 @@ FactoryBot.define do
   sequence :cluster_name do |n|
     "cluster-name-#{n}"
   end
+
+  sequence :version do |n|
+    "#{n}.#{n}#{n}"
+  end
 end
