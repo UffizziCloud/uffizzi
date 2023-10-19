@@ -1,0 +1,10 @@
+{
+  "name": "uffizzi-test-cluster-vcluster",
+  "namespace": "uffizzi-test-cluster",
+  "uid": "90cffab2-812b-418f-a84b-5dcdded15bfd",
+  "status": {
+    "ready": true,
+    "sleep": false,
+    "kubeConfig": "test-kubeconfig"
+  }
+}

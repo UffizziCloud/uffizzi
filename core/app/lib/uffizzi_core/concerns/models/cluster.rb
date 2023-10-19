@@ -6,6 +6,7 @@ module UffizziCore::Concerns::Models::Cluster
 
   NAMESPACE_PREFIX = 'c'
 
+  # rubocop:disable Metrics/BlockLength
   included do
     include AASM
     extend Enumerize
@@ -27,6 +28,10 @@ module UffizziCore::Concerns::Models::Cluster
       state :failed_deploy_namespace
       state :deploying
       state :deployed
+      state :scaling_down
+      state :scaled_down
+      state :scaling_up
+      state :failed_scale_up
       state :failed
       state :disabled
 
@@ -42,12 +47,40 @@ module UffizziCore::Concerns::Models::Cluster
         transitions from: [:deploying], to: :deployed
       end
 
+      event :start_scaling_down do
+        transitions from: [:deployed], to: :scaling_down
+      end
+
+      event :scale_down do
+        transitions from: [:scaling_down], to: :scaled_down
+      end
+
+      event :start_scaling_up do
+        transitions from: [:scaled_down, :failed_scale_up], to: :scaling_up
+      end
+
+      event :scale_up do
+        transitions from: [:scaling_up], to: :deployed
+      end
+
+      event :fail_scale_up do
+        transitions from: [:scaling_up], to: :failed_scale_up
+      end
+
       event :fail do
         transitions from: [:deploying], to: :failed
       end
 
       event :disable, after: :after_disable do
-        transitions from: [:deploying_namespace, :failed_deploy_namespace, :deploying, :deployed, :failed], to: :disabled
+        transitions from: [
+          :deploying_namespace,
+          :failed_deploy_namespace,
+          :deploying,
+          :deployed,
+          :scaling_down,
+          :scaled_down,
+          :failed,
+        ], to: :disabled
       end
     end
 
@@ -59,4 +92,5 @@ module UffizziCore::Concerns::Models::Cluster
       [NAMESPACE_PREFIX, id].join
     end
   end
+  # rubocop:enable Metrics/BlockLength
 end

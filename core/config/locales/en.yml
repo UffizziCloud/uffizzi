@@ -83,6 +83,12 @@ en:
   deployment:
     invalid_state: Preview with ID deployment-%{id} %{state}
     already_exists: An active deployment already exists
+  
+  cluster:
+    already_asleep: The cluster %{name} is already asleep.
+    already_awake: The cluster %{name} is already awake.
+    scaling_failed: Failed to %{action} cluster.
+    deploy_in_process: Please wait until the cluster %{name} is deployed.
 
   session:
     unsupported_login_type: This type of login is not supported

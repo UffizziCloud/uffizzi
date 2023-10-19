@@ -1,6 +1,6 @@
 FROM ruby:3.0.2-alpine3.14
 
-RUN apk update && apk upgrade && apk add bash curl-dev ruby-dev build-base git \
+RUN apk update && apk upgrade && apk add bash curl-dev ruby-dev build-base git gcompat \
                                  curl ruby-json openssl postgresql-dev postgresql-client tzdata
 
 RUN mkdir -p /gem
