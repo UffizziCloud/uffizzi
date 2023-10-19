@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2023_08_24_150022) do
+ActiveRecord::Schema.define(version: 2023_10_09_163516) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -83,6 +83,7 @@ ActiveRecord::Schema.define(version: 2023_08_24_150022) do
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
     t.string "host"
+    t.string "creation_source"
     t.index ["project_id"], name: "index_cluster_on_project_id"
   end
 
@@ -274,6 +275,15 @@ ActiveRecord::Schema.define(version: 2023_08_24_150022) do
     t.string "role", null: false
     t.bigint "invitee_id"
     t.index ["token"], name: "index_invitations_on_token", unique: true
+  end
+
+  create_table "uffizzi_core_kubernetes_distributions", force: :cascade do |t|
+    t.string "version"
+    t.string "distro"
+    t.string "image"
+    t.boolean "default"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
   end
 
   create_table "uffizzi_core_memberships", force: :cascade do |t|

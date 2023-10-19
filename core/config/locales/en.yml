@@ -94,6 +94,9 @@ en:
     unsupported_login_type: This type of login is not supported
     unauthorized: Unauthorized
 
+  kubernetes_distribution:
+    not_available: "The k8s version %{version} is not supported. Available version are: %{available_versions}."
+
   enumerize:
     credential:
       type:
