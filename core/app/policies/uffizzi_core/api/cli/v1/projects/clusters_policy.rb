@@ -13,6 +13,14 @@ class UffizziCore::Api::Cli::V1::Projects::ClustersPolicy < UffizziCore::Applica
     context.user_access_module.admin_or_developer_access_to_project?(context.user, context.project)
   end
 
+  def scale_down?
+    context.user_access_module.admin_or_developer_access_to_project?(context.user, context.project)
+  end
+
+  def scale_up?
+    context.user_access_module.admin_or_developer_access_to_project?(context.user, context.project)
+  end
+
   def destroy?
     context.user_access_module.admin_or_developer_access_to_project?(context.user, context.project)
   end

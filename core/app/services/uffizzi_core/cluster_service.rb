@@ -24,6 +24,32 @@ class UffizziCore::ClusterService
       UffizziCore::Cluster::ManageDeployingJob.perform_in(5.seconds, cluster.id)
     end
 
+    def scale_up!(cluster)
+      cluster.start_scaling_up!
+      UffizziCore::ControllerService.patch_cluster(cluster, sleep: false)
+      UffizziCore::Cluster::ManageScalingUpJob.perform_in(5.seconds, cluster.id)
+    end
+
+    def manage_scale_up(cluster, try)
+      return cluster.fail_scale_up! if try > Settings.vcluster.max_scale_up_retry_count
+      return cluster.scale_up! if ready?(cluster)
+
+      UffizziCore::Cluster::ManageScalingUpJob.perform_in(5.seconds, cluster.id, ++try)
+    end
+
+    def scale_down!(cluster)
+      cluster.start_scaling_down!
+      UffizziCore::ControllerService.patch_cluster(cluster, sleep: true)
+
+      UffizziCore::Cluster::ManageScalingDownJob.perform_in(5.seconds, cluster.id)
+    end
+
+    def manage_scale_down(cluster)
+      return cluster.scale_down! unless awake?(cluster)
+
+      UffizziCore::Cluster::ManageScalingDownJob.perform_in(5.seconds, cluster.id)
+    end
+
     def manage_deploying(cluster, try)
       return if cluster.disabled?
       return cluster.fail! if try > Settings.vcluster.max_creation_retry_count
@@ -40,6 +66,20 @@ class UffizziCore::ClusterService
       end
 
       UffizziCore::Cluster::ManageDeployingJob.perform_in(5.seconds, cluster.id, ++try)
+    end
+
+    private
+
+    def awake?(cluster)
+      data = UffizziCore::ControllerService.show_cluster(cluster)
+
+      !data.status.sleep
+    end
+
+    def ready?(cluster)
+      data = UffizziCore::ControllerService.show_cluster(cluster)
+
+      data.status.ready
     end
   end
 end

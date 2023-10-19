@@ -79,3 +79,4 @@ deployment:
     length_limit: 63
 vcluster:
   max_creation_retry_count: 5
+  max_scale_up_retry_count: 5
