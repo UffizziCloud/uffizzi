@@ -117,6 +117,16 @@ class UffizziCore::ControllerService
       controller_client(cluster).patch_cluster(name: cluster.name, namespace: cluster.namespace, body: body)
     end
 
+    def ingress_hosts(cluster)
+      namespace = cluster.namespace
+
+      ingresses = controller_client(cluster).ingresses(namespace: namespace).result.items
+
+      ingresses.map do |ingress|
+        ingress.spec.rules.map(&:host)
+      end.flatten
+    end
+
     private
 
     def check_any_container_has_public_port(containers)

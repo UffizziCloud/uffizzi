@@ -15,6 +15,9 @@ UffizziCore::Engine.routes.draw do
                 put :scale_down
                 put :scale_up
               end
+              scope module: :clusters do
+                resources :ingresses, only: ['index']
+              end
             end
             resources :deployments, only: ['index', 'show', 'create', 'destroy', 'update'] do
               post :deploy_containers, on: :member

@@ -68,6 +68,10 @@ class UffizziCore::ClusterService
       UffizziCore::Cluster::ManageDeployingJob.perform_in(5.seconds, cluster.id, ++try)
     end
 
+    def filter_user_ingress_host(cluster, ingress_hosts)
+      ingress_hosts.reject { |h| h == cluster.host }
+    end
+
     private
 
     def awake?(cluster)
