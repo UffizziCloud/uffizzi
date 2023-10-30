@@ -82,6 +82,10 @@ class UffizziCore::ControllerClient
     patch("/namespaces/#{namespace}/cluster/#{name}", body)
   end
 
+  def ingresses(namespace:)
+    get("/namespaces/#{namespace}/ingresses")
+  end
+
   private
 
   def get(url, params = {})
