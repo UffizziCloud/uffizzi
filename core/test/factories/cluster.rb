@@ -9,5 +9,9 @@ FactoryBot.define do
     trait :deployed do
       state { :deployed }
     end
+
+    trait :dev do
+      kind { UffizziCore::Cluster.kind.dev }
+    end
   end
 end

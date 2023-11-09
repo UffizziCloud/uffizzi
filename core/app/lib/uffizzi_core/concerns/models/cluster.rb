@@ -15,13 +15,18 @@ module UffizziCore::Concerns::Models::Cluster
 
     belongs_to :project, class_name: UffizziCore::Project.name
     belongs_to :deployed_by, class_name: UffizziCore::User.name, foreign_key: :deployed_by_id, optional: true
+    belongs_to :kubernetes_distribution, optional: true
+
     validates_uniqueness_of :name, conditions: -> { enabled }, scope: :project_id
     validates :name, presence: true, format: { with: /\A[a-zA-Z0-9-]*\z/ }
 
     enumerize :creation_source, in: UffizziCore.cluster_creation_sources, scope: true, predicates: true
     attribute :creation_source, :string, default: :manual
+
+    enumerize :kind, in: [:basic, :dev], scope: true, predicates: true
+    attribute :kind, :string, default: :basic
+
     validates :creation_source, presence: true
-    belongs_to :kubernetes_distribution, optional: true
 
     aasm(:state) do
       state :deploying_namespace, initial: true

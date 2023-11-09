@@ -166,6 +166,65 @@ class UffizziCore::Api::Cli::V1::Projects::ClustersControllerTest < ActionContro
     assert_requested(stubbed_get_cluster_request)
   end
 
+  test '#create dev when dev exists for same user and project' do
+    sign_in(@admin)
+    create(:cluster, :deployed, :dev, project: @project, deployed_by: @admin)
+
+    params = {
+      project_slug: @project.slug,
+      cluster: {
+        name: 'test',
+        kind: UffizziCore::Cluster.kind.dev,
+      },
+    }
+
+    differences = {
+      -> { UffizziCore::Cluster.count } => 0,
+    }
+
+    assert_difference differences do
+      post :create, params: params, format: :json
+    end
+
+    assert_response(:unprocessable_entity)
+  end
+
+  test '#create multiple basic clusters for same user and project' do
+    sign_in(@admin)
+    create(:cluster, :deployed, project: @project, deployed_by: @admin)
+    cluster_creation_data = json_fixture('files/controller/cluster_not_ready.json')
+    params = {
+      project_slug: @project.slug,
+      cluster: {
+        name: cluster_creation_data[:name],
+      },
+    }
+
+    expected_request = {
+      name: cluster_creation_data[:name],
+      manifest: nil,
+      base_ingress_host: /#{UffizziCore::Cluster::NAMESPACE_PREFIX}\d/,
+    }
+    stubbed_create_cluster_request = stub_create_cluster_request_with_expected(cluster_creation_data, expected_request)
+    stubbed_create_namespace_request = stub_create_namespace_request
+    cluster_show_data = json_fixture('files/controller/cluster_ready.json')
+    stubbed_cluster_request = stub_get_cluster_request(cluster_show_data)
+
+    differences = {
+      -> { UffizziCore::Cluster.count } => 1,
+    }
+
+    assert_difference differences do
+      post :create, params: params, format: :json
+    end
+
+    assert_response(:success)
+    assert(UffizziCore::Cluster.find_by(name: cluster_creation_data[:name]).creation_source.manual?)
+    assert_requested(stubbed_create_cluster_request)
+    assert_requested(stubbed_create_namespace_request)
+    assert_requested(stubbed_cluster_request)
+  end
+
   test '#show shows cluster created by the same developer' do
     cluster = create(:cluster, project: @project, deployed_by: @developer, name: 'test')
     sign_in(@developer)

@@ -15,9 +15,9 @@ class UffizziCore::Api::Cli::V1::Projects::ClustersController < UffizziCore::Api
   end
 
   def create
-    version = cluster_params[:k8s_version]
-    kubernetes_distribution = find_kubernetes_distribution(version)
-    return render_distribution_version_error(version) if kubernetes_distribution.blank?
+    k8s_version = cluster_params[:k8s_version]
+    kubernetes_distribution = find_kubernetes_distribution(k8s_version)
+    return render_distribution_version_error(k8s_version) if kubernetes_distribution.blank?
 
     cluster_form = UffizziCore::Api::Cli::V1::Cluster::CreateForm.new(cluster_params)
     cluster_form.project = resource_project
