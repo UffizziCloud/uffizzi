@@ -4,6 +4,57 @@ entries:
   - annotations:
       artifacthub.io/prerelease: "false"
     apiVersion: v2
+    appVersion: 2.3.0
+    created: "2023-11-13T23:58:00.615376706Z"
+    dependencies:
+    - name: uffizzi-controller
+      repository: https://uffizzicloud.github.io/uffizzi_controller/
+      version: ^2
+    - condition: postgresql.enabled
+      name: postgresql
+      repository: https://charts.bitnami.com/bitnami
+      version: ~13
+    - condition: redis.enabled
+      name: redis
+      repository: https://charts.bitnami.com/bitnami
+      version: ~18
+    description: Uffizzi is an open-source engine for creating lightweight, ephemeral
+      test environments for APIs and full-stack applications. Uffizzi enables teams
+      to preview new features before merging.
+    digest: b0cb4638856aa7e22302a375b5dd8630d5fb8ea1088a8d5ac921d7f8e3b44395
+    home: https://uffizzi.com/
+    icon: https://app.uffizzi.com/favicon.png
+    keywords:
+    - devops
+    - uffizzi
+    - continuous-previews
+    - ephemeral
+    - environments
+    - pull-request
+    - merge-request
+    - on-demand
+    - ci
+    - cd
+    - cp
+    - idp
+    kubeVersion: '>= 1.21.0-0'
+    maintainers:
+    - email: info@uffizzi.com
+      name: Uffizzi
+      url: https://uffizzi.com
+    - email: adam.vollrath@uffizzi.com
+      name: Adam Vollrath
+      url: https://github.com/axisofentropy
+    name: uffizzi-app
+    sources:
+    - https://github.com/UffizziCloud/uffizzi
+    type: application
+    urls:
+    - https://github.com/UffizziCloud/uffizzi/releases/download/uffizzi-app-1.3.0/uffizzi-app-1.3.0.tgz
+    version: 1.3.0
+  - annotations:
+      artifacthub.io/prerelease: "false"
+    apiVersion: v2
     appVersion: 1.0.0
     created: "2023-07-14T13:57:59.219372041Z"
     dependencies:
@@ -654,4 +705,4 @@ entries:
     urls:
     - https://github.com/UffizziCloud/uffizzi_app/releases/download/uffizzi-app-1.0.1/uffizzi-app-1.0.1.tgz
     version: 1.0.1
-generated: "2023-07-14T13:57:59.219599441Z"
+generated: "2023-11-13T23:58:00.615470872Z"
