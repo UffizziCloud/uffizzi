@@ -119,6 +119,15 @@ Enter Password:
 Enter Project Name (default: default):
 ```
 
+### Troubleshooting
+
+When installing this chart, you may see errors like this:
+```
+clusterroles.rbac.authorization.k8s.io "my-uffizzi-controller-flux-default-source-controller-helmchart" already exists
+```
+
+This happens when more than one resource within a dependency chart (in this case `flux`) has a very long name truncated into the same name as another resource. To avoid this, use shorter release names as in the example above.
+
 ## Usage
 
 If everything went well, you can now connect to the Uffizzi API service and begin Continously Deploying Previews! Use [the Uffizzi CLI](https://github.com/UffizziCloud/uffizzi_cli) or [the Uffizzi GitHub Action](https://github.com/UffizziCloud/preview-action) or your own API client.
