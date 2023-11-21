@@ -9,6 +9,7 @@ module UffizziCore::Concerns::Models::Deployment
     include UffizziCore::StateMachineConcern
     include UffizziCore::DeploymentRepo
     extend Enumerize
+    include UffizziCore::DependencyInjectionConcern
 
     self.table_name = UffizziCore.table_names[:deployments]
 
@@ -71,7 +72,8 @@ module UffizziCore::Concerns::Models::Deployment
     end
 
     def preview_url
-      "#{subdomain}.#{Settings.app.managed_dns_zone}"
+      managed_dns_zone = controller_settings_service.deployment(self).managed_dns_zone
+      "#{subdomain}.#{managed_dns_zone}"
     end
 
     def namespace
