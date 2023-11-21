@@ -145,7 +145,7 @@ class UffizziCore::ControllerService
     def controller_client(deployable)
       settings = case deployable
                  when UffizziCore::Deployment
-                   Settings.controller
+                   controller_settings_service.deployment(deployable)
                  when UffizziCore::Cluster
                    controller_settings_service.vcluster(deployable)
                  else
