@@ -29,6 +29,7 @@ class UffizziCore::ComposeFile::Builders::ContainerBuilderService
     is_ingress = ingress_container?(container_name, ingress_data)
     repo_attributes = repo_attributes(container_data, continuous_preview_global_data)
     additional_subdomains = is_ingress ? ingress_data.fetch(:additional_subdomains, []) : []
+    memory_limit = memory_limit(deploy_data)
 
     {
       tag: tag(image_data, repo_attributes),
@@ -40,8 +41,8 @@ class UffizziCore::ComposeFile::Builders::ContainerBuilderService
       command: command(container_data),
       variables: variables(environment, env_file_dependencies),
       secret_variables: secret_variables(secrets),
-      memory_limit: memory(deploy_data),
-      memory_request: memory(deploy_data),
+      memory_limit: memory_limit,
+      memory_request: memory_request(memory_limit),
       repo_attributes: repo_attributes,
       continuously_deploy: continuously_deploy(deploy_data),
       receive_incoming_requests: is_ingress,
@@ -161,7 +162,7 @@ class UffizziCore::ComposeFile::Builders::ContainerBuilderService
     command_data[:command_args].to_s
   end
 
-  def memory(deploy_data)
+  def memory_limit(deploy_data)
     memory = deploy_data[:memory]
     return Settings.compose.default_memory if memory.nil?
 
@@ -182,6 +183,10 @@ class UffizziCore::ComposeFile::Builders::ContainerBuilderService
     end
 
     memory_value
+  end
+
+  def memory_request(memory)
+    memory / UffizziCore::Container::REQUEST_MEMORY_RATIO
   end
 
   def continuously_deploy(deploy_data)

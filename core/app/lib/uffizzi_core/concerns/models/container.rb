@@ -2,6 +2,7 @@
 
 module UffizziCore::Concerns::Models::Container
   extend ActiveSupport::Concern
+  REQUEST_MEMORY_RATIO = 4
 
   # rubocop:disable Metrics/BlockLength
   included do
