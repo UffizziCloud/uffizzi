@@ -255,7 +255,7 @@ class UffizziCore::Api::Cli::V1::Projects::DeploymentsControllerTest < ActionCon
       target_port: nil,
       controller_name: nil,
       receive_incoming_requests: false,
-      memory_request: 125,
+      memory_request: 125 / UffizziCore::Container::REQUEST_MEMORY_RATIO,
       memory_limit: 125,
       secret_variables: [],
       entrypoint: nil,
