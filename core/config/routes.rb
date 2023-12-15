@@ -14,7 +14,7 @@ UffizziCore::Engine.routes.draw do
               member do
                 put :scale_down
                 put :scale_up
-                put :sync_cluster
+                put :sync
               end
               scope module: :clusters do
                 resources :ingresses, only: ['index']

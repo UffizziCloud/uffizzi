@@ -253,7 +253,7 @@ class UffizziCore::Api::Cli::V1::Projects::ClustersControllerTest < ActionContro
     assert_requested(stubbed_cluster_request)
   end
 
-  test '#sync_cluster when the data is actual' do
+  test '#sync when the data is actual' do
     sign_in(@admin)
     cluster = create(:cluster, project: @project, deployed_by: @admin, name: 'test', state: UffizziCore::Cluster::STATE_DEPLOYED)
 
@@ -265,13 +265,13 @@ class UffizziCore::Api::Cli::V1::Projects::ClustersControllerTest < ActionContro
       name: cluster.name,
     }
 
-    put :sync_cluster, params: params, format: :json
+    put :sync, params: params, format: :json
 
     assert_requested(stubbed_cluster_request)
     assert(cluster.reload.deployed?)
   end
 
-  test '#sync_cluster when the data needs to be updated' do
+  test '#sync when the data needs to be updated' do
     sign_in(@admin)
     cluster = create(:cluster, project: @project, deployed_by: @admin, name: 'test', state: UffizziCore::Cluster::STATE_DEPLOYED)
 
@@ -283,7 +283,7 @@ class UffizziCore::Api::Cli::V1::Projects::ClustersControllerTest < ActionContro
       name: cluster.name,
     }
 
-    put :sync_cluster, params: params, format: :json
+    put :sync, params: params, format: :json
 
     assert_requested(stubbed_cluster_request)
     assert(cluster.reload.scaled_down?)
