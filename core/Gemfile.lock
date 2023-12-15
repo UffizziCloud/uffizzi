@@ -1,7 +1,7 @@
 PATH
   remote: .
   specs:
-    uffizzi_core (2.3.2)
+    uffizzi_core (2.4.1)
       aasm
       actionpack (~> 6.1.0)
       active_model_serializers
@@ -110,7 +110,7 @@ GEM
       activerecord (>= 5.2.6)
     awesome_print (1.9.2)
     aws-eventstream (1.3.0)
-    aws-partitions (1.863.0)
+    aws-partitions (1.867.0)
     aws-sdk-core (3.190.0)
       aws-eventstream (~> 1, >= 1.3.0)
       aws-partitions (~> 1, >= 1.651.0)
@@ -271,7 +271,7 @@ GEM
       power_assert (>= 1.1)
     mocha (1.13.0)
     multipart-post (2.3.0)
-    net-imap (0.4.7)
+    net-imap (0.4.8)
       date
       net-protocol
     net-pop (0.1.2)
