@@ -11,7 +11,7 @@ class UffizziCore::Api::Cli::V1::Cluster::SyncForm < UffizziCore::Cluster
     asleep_in_cluster = cluster_data.status.sleep
     return if actual_status?(asleep_in_cluster)
 
-    self.state = scaled_down ? UffizziCore::Cluster::STATE_SCALED_DOWN : UffizziCore::Cluster::STATE_DEPLOYED
+    self.state = asleep_in_cluster ? UffizziCore::Cluster::STATE_SCALED_DOWN : UffizziCore::Cluster::STATE_DEPLOYED
 
     self
   end
