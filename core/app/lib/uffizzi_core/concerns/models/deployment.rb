@@ -72,7 +72,7 @@ module UffizziCore::Concerns::Models::Deployment
     end
 
     def preview_url
-      managed_dns_zone = controller_settings_service.deployment(self).managed_dns_zone
+      managed_dns_zone = controller_settings_service.deployment_settings_by_deployment(self).managed_dns_zone
       "#{subdomain}.#{managed_dns_zone}"
     end
 
