@@ -253,6 +253,42 @@ class UffizziCore::Api::Cli::V1::Projects::ClustersControllerTest < ActionContro
     assert_requested(stubbed_cluster_request)
   end
 
+  test '#sync when the data is actual' do
+    sign_in(@admin)
+    cluster = create(:cluster, project: @project, deployed_by: @admin, name: 'test', state: UffizziCore::Cluster::STATE_DEPLOYED)
+
+    cluster_show_data = json_fixture('files/controller/cluster_awake.json')
+    stubbed_cluster_request = stub_get_cluster_request(cluster_show_data)
+
+    params = {
+      project_slug: @project.slug,
+      name: cluster.name,
+    }
+
+    put :sync, params: params, format: :json
+
+    assert_requested(stubbed_cluster_request)
+    assert(cluster.reload.deployed?)
+  end
+
+  test '#sync when the data needs to be updated' do
+    sign_in(@admin)
+    cluster = create(:cluster, project: @project, deployed_by: @admin, name: 'test', state: UffizziCore::Cluster::STATE_DEPLOYED)
+
+    cluster_show_data = json_fixture('files/controller/cluster_asleep.json')
+    stubbed_cluster_request = stub_get_cluster_request(cluster_show_data)
+
+    params = {
+      project_slug: @project.slug,
+      name: cluster.name,
+    }
+
+    put :sync, params: params, format: :json
+
+    assert_requested(stubbed_cluster_request)
+    assert(cluster.reload.scaled_down?)
+  end
+
   test '#destroy developer can destroy a cluster created by him' do
     sign_in(@developer)
 
