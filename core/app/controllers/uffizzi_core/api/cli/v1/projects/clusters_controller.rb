@@ -60,6 +60,14 @@ class UffizziCore::Api::Cli::V1::Projects::ClustersController < UffizziCore::Api
     respond_with resource_cluster
   end
 
+  def sync_cluster
+    cluster_form = resource_cluster.becomes(UffizziCore::Api::Cli::V1::Cluster::SyncForm)
+    cluster_form.sync_status
+    cluster_form.save
+
+    respond_with cluster_form
+  end
+
   def destroy
     resource_cluster.disable!
 
