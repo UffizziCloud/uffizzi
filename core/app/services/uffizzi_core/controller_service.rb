@@ -145,9 +145,9 @@ class UffizziCore::ControllerService
     def controller_client(deployable)
       settings = case deployable
                  when UffizziCore::Deployment
-                   controller_settings_service.deployment(deployable)
+                   controller_settings_service.deployment_settings_by_deployment(deployable)
                  when UffizziCore::Cluster
-                   controller_settings_service.vcluster(deployable)
+                   controller_settings_service.vcluster_settings_by_vcluster(deployable)
                  else
                    raise StandardError, "Deployable #{deployable.class.name} undefined"
       end
