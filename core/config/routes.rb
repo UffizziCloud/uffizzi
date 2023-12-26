@@ -51,7 +51,7 @@ UffizziCore::Engine.routes.draw do
           resource :session, only: ['create']
         end
 
-        resources :accounts, only: ['show'], param: :name
+        resources :accounts, only: ['show', 'update'], param: :name
 
         resources :accounts, only: ['index'] do
           scope module: :accounts do

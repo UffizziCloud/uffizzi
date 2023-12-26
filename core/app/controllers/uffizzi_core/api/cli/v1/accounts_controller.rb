@@ -3,6 +3,8 @@
 # @resource Project
 
 class UffizziCore::Api::Cli::V1::AccountsController < UffizziCore::Api::Cli::V1::ApplicationController
+  include UffizziCore::Api::Cli::V1::AccountsControllerModule
+
   before_action :authorize_uffizzi_core_api_cli_v1_accounts
 
   # Get accounts of current user

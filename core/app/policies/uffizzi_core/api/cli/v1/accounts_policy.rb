@@ -8,4 +8,8 @@ class UffizziCore::Api::Cli::V1::AccountsPolicy < UffizziCore::ApplicationPolicy
   def show?
     context.user_access_module.any_access_to_account?(context.user, context.account)
   end
+
+  def update?
+    false
+  end
 end
