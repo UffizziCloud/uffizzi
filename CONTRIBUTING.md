@@ -6,7 +6,7 @@ Uffizzi welcomes contributions from everyone!
 
 ## Communication:
 
-If you need any help contributing, several maintainers are on the Uffizzi Users Slack group https://join.slack.com/t/uffizzi/shared_invite/zt-ffr4o3x0-J~0yVT6qgFV~wmGm19Ux9A.
+If you need any help contributing, several maintainers are on the [Uffizzi Users Slack group](https://join.slack.com/t/uffizzi/shared_invite/zt-ffr4o3x0-J~0yVT6qgFV~wmGm19Ux9A).
 
 ## Releases
 
