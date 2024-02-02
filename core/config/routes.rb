@@ -57,6 +57,15 @@ UffizziCore::Engine.routes.draw do
           scope module: :accounts do
             resources :projects, only: ['index', 'create']
             resources :clusters, only: ['index']
+            scope module: :user do
+              resource :user, only: [] do
+                scope module: :projects do
+                  resources :projects, only: [], param: :slug do
+                    resources :clusters, only: ['index']
+                  end
+                end
+              end
+            end
             resources :credentials, only: ['index', 'create', 'update', 'destroy'], param: :type do
               member do
                 get :check_credential

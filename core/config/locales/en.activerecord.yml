@@ -28,3 +28,7 @@ en:
           attributes:
             email:
               invalid: Invalid email address
+        uffizzi_core/cluster:
+          attributes:
+            deployed_by_id:
+              taken: User already has dev cluster for project
