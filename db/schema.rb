@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2023_10_09_163516) do
+ActiveRecord::Schema.define(version: 2024_03_01_200916) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -84,6 +84,8 @@ ActiveRecord::Schema.define(version: 2023_10_09_163516) do
     t.datetime "updated_at", precision: 6, null: false
     t.string "host"
     t.string "creation_source"
+    t.integer "kubernetes_distribution_id"
+    t.string "node_selector"
     t.index ["project_id"], name: "index_cluster_on_project_id"
   end
 

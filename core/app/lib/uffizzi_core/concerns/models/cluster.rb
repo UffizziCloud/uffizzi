@@ -19,6 +19,7 @@ module UffizziCore::Concerns::Models::Cluster
     validates :name, presence: true, format: { with: /\A[a-zA-Z0-9-]*\z/ }
 
     enumerize :creation_source, in: UffizziCore.cluster_creation_sources, scope: true, predicates: true
+    enumerize :node_selector, in: [:gvisor, :vanilla]
     attribute :creation_source, :string, default: :manual
     validates :creation_source, presence: true
     belongs_to :kubernetes_distribution, optional: true

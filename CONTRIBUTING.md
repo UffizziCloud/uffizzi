@@ -84,7 +84,7 @@ In order to add a new migration do the following steps:
 2. Run the command inside the `web` container
 
 ```bash
-rake app:uffizzi_core:install
+rake uffizzi_core:install:migrations
 ```
 
 This command copies the new migration to the `db/migrate` folder
