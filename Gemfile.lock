@@ -1,7 +1,7 @@
 PATH
   remote: core
   specs:
-    uffizzi_core (2.4.5)
+    uffizzi_core (2.4.6)
       aasm
       actionpack (~> 6.1.0)
       active_model_serializers
@@ -111,8 +111,8 @@ GEM
     ast (2.4.2)
     awesome_print (1.9.2)
     aws-eventstream (1.3.0)
-    aws-partitions (1.885.0)
-    aws-sdk-core (3.191.0)
+    aws-partitions (1.895.0)
+    aws-sdk-core (3.191.3)
       aws-eventstream (~> 1, >= 1.3.0)
       aws-partitions (~> 1, >= 1.651.0)
       aws-sigv4 (~> 1.8)
@@ -132,6 +132,7 @@ GEM
       descendants_tracker (~> 0.0.4)
       ice_nine (~> 0.11.0)
       thread_safe (~> 0.3, >= 0.3.1)
+    base64 (0.2.0)
     bcrypt (3.1.16)
     bootsnap (1.10.3)
       msgpack (~> 1.2)
@@ -231,7 +232,8 @@ GEM
     ice_nine (0.11.2)
     jmespath (1.6.2)
     jsonapi-renderer (0.2.2)
-    jwt (2.7.1)
+    jwt (2.8.1)
+      base64
     kaminari (1.2.2)
       activesupport (>= 4.1.0)
       kaminari-actionview (= 1.2.2)
@@ -255,12 +257,13 @@ GEM
     mini_portile2 (2.8.0)
     minitest (5.15.0)
     msgpack (1.4.5)
-    multipart-post (2.3.0)
+    multipart-post (2.4.0)
     nio4r (2.5.8)
     nokogiri (1.13.3)
       mini_portile2 (~> 2.8.0)
       racc (~> 1.4)
-    octokit (8.0.0)
+    octokit (8.1.0)
+      base64
       faraday (>= 1, < 3)
       sawyer (~> 0.9)
     parallel (1.21.0)
@@ -348,7 +351,7 @@ GEM
       connection_pool (>= 2.2.2)
       rack (~> 2.0)
       redis (>= 4.2.0)
-    sidekiq-unique-jobs (7.1.31)
+    sidekiq-unique-jobs (7.1.33)
       brpoplpush-redis_script (> 0.1.1, <= 2.0.0)
       concurrent-ruby (~> 1.0, >= 1.0.5)
       redis (< 5.0)
@@ -376,7 +379,7 @@ GEM
     websocket-driver (0.7.5)
       websocket-extensions (>= 0.1.0)
     websocket-extensions (0.1.5)
-    yard (0.9.34)
+    yard (0.9.36)
     zeitwerk (2.5.4)
 
 PLATFORMS

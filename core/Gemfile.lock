@@ -1,7 +1,7 @@
 PATH
   remote: .
   specs:
-    uffizzi_core (2.4.5)
+    uffizzi_core (2.4.6)
       aasm
       actionpack (~> 6.1.0)
       active_model_serializers
@@ -110,8 +110,8 @@ GEM
       activerecord (>= 5.2.6)
     awesome_print (1.9.2)
     aws-eventstream (1.3.0)
-    aws-partitions (1.885.0)
-    aws-sdk-core (3.191.0)
+    aws-partitions (1.895.0)
+    aws-sdk-core (3.191.3)
       aws-eventstream (~> 1, >= 1.3.0)
       aws-partitions (~> 1, >= 1.651.0)
       aws-sigv4 (~> 1.8)
@@ -131,6 +131,7 @@ GEM
       descendants_tracker (~> 0.0.4)
       ice_nine (~> 0.11.0)
       thread_safe (~> 0.3, >= 0.3.1)
+    base64 (0.2.0)
     bcrypt (3.1.16)
     brpoplpush-redis_script (0.1.3)
       concurrent-ruby (~> 1.0, >= 1.0.5)
@@ -159,7 +160,7 @@ GEM
     digest (3.1.1)
     docker_distribution (0.1.2)
       digest (~> 3)
-    dotenv (2.8.1)
+    dotenv (3.1.0)
     dry-configurable (0.14.0)
       concurrent-ruby (~> 1.0)
       dry-core (~> 0.6)
@@ -239,7 +240,8 @@ GEM
     iri (0.5.1)
     jmespath (1.6.2)
     jsonapi-renderer (0.2.2)
-    jwt (2.7.1)
+    jwt (2.8.1)
+      base64
     kaminari (1.2.2)
       activesupport (>= 4.1.0)
       kaminari-actionview (= 1.2.2)
@@ -260,7 +262,7 @@ GEM
       net-imap
       net-pop
       net-smtp
-    marcel (1.0.2)
+    marcel (1.0.4)
     method_source (1.0.0)
     mini_mime (1.1.5)
     minitest (5.15.0)
@@ -270,8 +272,8 @@ GEM
       minitest
       power_assert (>= 1.1)
     mocha (1.13.0)
-    multipart-post (2.3.0)
-    net-imap (0.4.9.1)
+    multipart-post (2.4.0)
+    net-imap (0.4.10)
       date
       net-protocol
     net-pop (0.1.2)
@@ -281,15 +283,16 @@ GEM
     net-smtp (0.4.0.1)
       net-protocol
     nio4r (2.5.8)
-    nokogiri (1.16.0-aarch64-linux)
+    nokogiri (1.16.2-aarch64-linux)
       racc (~> 1.4)
-    nokogiri (1.16.0-x86_64-linux)
+    nokogiri (1.16.2-x86_64-linux)
       racc (~> 1.4)
-    octokit (8.0.0)
+    octokit (8.1.0)
+      base64
       faraday (>= 1, < 3)
       sawyer (~> 0.9)
     parslet (2.0.0)
-    pg (1.5.4)
+    pg (1.5.6)
     power_assert (2.0.1)
     pry (0.13.1)
       coderay (~> 1.1)
@@ -364,7 +367,7 @@ GEM
       connection_pool (>= 2.2.5, < 3)
       rack (~> 2.0)
       redis (>= 4.5.0, < 5)
-    sidekiq-unique-jobs (7.1.31)
+    sidekiq-unique-jobs (7.1.33)
       brpoplpush-redis_script (> 0.1.1, <= 2.0.0)
       concurrent-ruby (~> 1.0, >= 1.0.5)
       redis (< 5.0)
@@ -380,7 +383,7 @@ GEM
     swagger_yard (1.1.1)
       parslet
       yard
-    thor (1.3.0)
+    thor (1.3.1)
     thread_safe (0.3.6)
     timeout (0.4.1)
     tzinfo (2.0.4)
@@ -397,7 +400,7 @@ GEM
     websocket-driver (0.7.6)
       websocket-extensions (>= 0.1.0)
     websocket-extensions (0.1.5)
-    yard (0.9.34)
+    yard (0.9.36)
     zeitwerk (2.5.4)
 
 PLATFORMS
