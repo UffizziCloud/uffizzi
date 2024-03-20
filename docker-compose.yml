@@ -64,7 +64,7 @@ services:
     depends_on:
       - redis
       - web
-    command: bash -c "bundle exec sidekiq -C /app/config/sidekiq.yml"
+    command: bash -c "bundle install && bundle exec sidekiq -C /app/config/sidekiq.yml"
 
   redis:
     image: redis

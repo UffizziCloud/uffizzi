@@ -78,7 +78,7 @@ docker-compose run --rm -e UFFIZZI_USER_EMAIL=user@uffizzi.com -e UFFIZZI_USER_P
 
 ```bash
 docker-compose run --rm gem bash
-bundle exec uffizzi login --hostname http://web:7000 -u admin@uffizzi.com
+bundle exec uffizzi login --hostname http://web:7000 --email user@uffizzi.com
 ```
 
 ## API Documentation
