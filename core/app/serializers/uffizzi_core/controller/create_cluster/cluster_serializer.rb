@@ -21,7 +21,7 @@ class UffizziCore::Controller::CreateCluster::ClusterSerializer < UffizziCore::B
   end
 
   def account_id
-    object.project.account_id.to_s
+    object.project.account_id
   end
 
   private
