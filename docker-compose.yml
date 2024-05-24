@@ -81,3 +81,4 @@ volumes:
 networks:
   default:
     name: 'uffizzi_default_network'
+    external: true
