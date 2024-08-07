@@ -16,7 +16,7 @@ jobs:
       - name: Create env file
         uses: SpicyPizza/create-envfile@v1.3
       - name: Release Gem
-        run: docker-compose run --rm core bash -c "make release_gem"
+        run: docker compose run --rm core bash -c "make release_gem"
         env:
           RUBYGEMS_API_KEY: ${{secrets.RUBYGEMS_API_KEY}}
       - name: Set up Docker Buildx
